@@ -1,4 +1,5 @@
 #include "smt/formats/archive/cpk.h"
+#include "smt/formats/archive/cvm.h"
 #include "smt/formats/video/pmsf.h"
 #include "smt/formats/image/tmx.h"
 #include "smt/formats/image/dds.h"
@@ -21,7 +22,7 @@ namespace SMT
 
 		// However this is the place to specify all default directories
 		const Common::FSNode gameDataDir(ConfMan.get("path"));
-		SearchMan.addSubDirectoryMatching(gameDataDir, "sound/pmsf");
+		//SearchMan.addSubDirectoryMatching(gameDataDir, "sound/pmsf");
 
 		// Here is the right place to set up the engine specific debug channels
 		DebugMan.addDebugChannel(kSMTDebug, "example", "this is just an example for a engine specific debug channel");
@@ -67,7 +68,7 @@ namespace SMT
 			initGraphics(1920, 1080, format);
 		}
 
-		//_cpk.ReadFile("umd0.cpk");
+		//CPK::CPKFile _cpk = CPK::CPKFile("umd0.cpk");
 
 		//PMSFFile _pmsf = PMSFFile();
 
@@ -78,6 +79,31 @@ namespace SMT
 		//ADXFile _adx("test/TEST.ADX");
 
 		//CVMArchive _bgm("BGM.CVM");
+	Common::ArchiveMemberList list;
+	SearchMan.listMembers(list);
+
+
+	for (auto &&l : list)
+	{
+		//debug(l.get()->getName().c_str());
+	}
+	list = Common::ArchiveMemberList();
+	Common::File f;
+
+	/*
+	if (!f.open("bgm01.wav", *_archives["STREAM.PAK"].get()))
+	{
+		error("can't read archive");
+	} */
+
+	CVMArchive _data("DATA.CVM");
+	_data.listMembers(list);
+	for (auto &&l : list)
+	{
+		debug(l.get()->getName().c_str());
+	}
+
+
 		//CVMArchive _data("DATA.CVM");
 		//CVMArchive _btl("BTL.CVM");
 

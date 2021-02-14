@@ -5,6 +5,7 @@ MODULE_OBJS := \
 	gfx.o \
 	detection.o \
 	formats/archive/cpk.o \
+	formats/archive/cvm.o \
 	formats/video/pmsf.o \
 	formats/image/tmx.o \
 	formats/image/dds.o \
