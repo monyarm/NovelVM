@@ -816,8 +816,8 @@ unknownOption:
 
 /** List all supported game IDs, i.e. all games which any loaded plugin supports. */
 static void listGames() {
-	printf("Game ID                        Full Title                                                 \n"
-	       "------------------------------ -----------------------------------------------------------\n");
+	printf("Game ID                        Full Title                                                   State                         URL                                                         \n"
+	       "------------------------------ ------------------------------------------------------------ ----------------------------- ------------------------------------------------------------\n");
 
 	const PluginList &plugins = EngineMan.getPlugins();
 	for (PluginList::const_iterator iter = plugins.begin(); iter != plugins.end(); ++iter) {
@@ -825,7 +825,7 @@ static void listGames() {
 
 		PlainGameList list = metaengine.getSupportedGames();
 		for (PlainGameList::const_iterator v = list.begin(); v != list.end(); ++v) {
-			printf("%-30s %s\n", buildQualifiedGameName(metaengine.getEngineId(), v->gameId).c_str(), v->description);
+			printf("%-30s %-60s %-30s %-60s\n", buildQualifiedGameName(metaengine.getEngineId(), v->gameId).c_str(), v->description, v->state, v->url);
 		}
 	}
 }

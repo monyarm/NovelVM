@@ -72,9 +72,9 @@ PlainGameDescriptor findGameID(
 			if (0 == scumm_stricmp(gameid, o->from)) {
 				g = findPlainGameDescriptor(o->to, gameids);
 				if (g && g->description)
-					return PlainGameDescriptor::of(gameid, g->description);
+					return PlainGameDescriptor::of(gameid, g->description, g->state, g->url);
 				else
-					return PlainGameDescriptor::of(gameid, "Obsolete game ID");
+					return PlainGameDescriptor::of(gameid, "Obsolete game ID", "", "");
 			}
 			o++;
 		}
