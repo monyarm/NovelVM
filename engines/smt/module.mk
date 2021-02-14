@@ -6,8 +6,7 @@ MODULE_OBJS := \
 	formats/archive/cpk.o \
 	formats/video/pmsf.o \
 	formats/image/tmx.o \
-	formats/archive/cvm/cvmfile.o \
-	formats/archive/cvm/isodirectory.o
+	formats/image/dds.o \
 
 MODULE_DIRS += \
 	engines/smt
