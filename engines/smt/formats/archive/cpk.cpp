@@ -1,21 +1,20 @@
 #include "smt/formats/archive/cpk.h"
-Common::File f;
 
 
 void CPKFile::ReadFile(char* path)
 {
 
-    if (f.open(path))
+    if (f->open(path))
     {
 
-        uint32 magic = f.readUint32BE();
+        uint32 magic = f->readUint32BE();
 
         Common::Array<byte> CPK_Packet = ReadUTFData();
 
         FileEntry CPAK_entry;
 
         CPAK_entry.FileName = "CPK_HDR";
-        CPAK_entry.FileOffsetPos = f.pos() + 0x10;
+        CPAK_entry.FileOffsetPos = f->pos() + 0x10;
         CPAK_entry.FileSize = CPK_Packet.size();
         CPAK_entry.Encrypted = isUtfEncrypted;
         CPAK_entry.FileType = "CPK";
@@ -29,10 +28,10 @@ void CPKFile::ReadFile(char* path)
 
 Common::Array<byte> CPKFile::ReadUTFData()
 {
-    f.readSint32LE();
-    int64 utf_size = f.readSint64LE();
+    f->readSint32LE();
+    int64 utf_size = f->readSint64LE();
     byte* _utf_packet = new byte[utf_size];
-    f.read(_utf_packet, utf_size);
+    f->read(_utf_packet, utf_size);
     Common::Array<byte> utf_packet(_utf_packet, utf_size);
 
     if (utf_packet[0] != 0x40 && utf_packet[1] != 0x55 && utf_packet[2] != 0x54 && utf_packet[3] != 0x46) //@UTF

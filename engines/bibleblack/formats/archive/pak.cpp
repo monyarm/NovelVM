@@ -22,17 +22,19 @@ PAKArchive::PAKArchive(const Common::String &filename) : _pakFilename(filename)
         return;
     }
 
-    uint16 numHeaders = pakFile.readUint16BE();
+    uint16 numHeaders = pakFile.readUint16LE();
 
     Common::Array<PakHeader> _tempHeaders;
 
     for (int i = 0; i < numHeaders; i++)
     {
         PakHeader header;
-        char __name[8];
-        char __extension[4];
+        char __name[9];
+        char __extension[5];
 
         pakFile.read(__name, 8);
+        __name[8] = '\0';
+        __extension[4] = '\0';
 
         pakFile.read(__extension, 4);
 
@@ -47,7 +49,6 @@ PAKArchive::PAKArchive(const Common::String &filename) : _pakFilename(filename)
         _name = _name + "." + _extension;
 
         header.name = _name;
-
         //debug(header.name.c_str());
         header.position = pakFile.readUint32LE();
         _tempHeaders.push_back(header);

@@ -2,9 +2,8 @@
 
 #include "bibleblack/formats/archive/pak.h"
 
-
 #include "bibleblack/bibleblack.h"
-
+#include "common/events.h"
 
 namespace BibleBlack
 {
@@ -52,7 +51,6 @@ Common::Error BibleBlackEngine::run()
 
 	Graphics::PixelFormat format = g_system->getScreenFormat();
 
-
 	Common::Archive *A98FAST_PAK = makePAKArchive("A98FAST.PAK");
 	_archives["A98FAST.PAK"].reset(A98FAST_PAK);
 
@@ -73,15 +71,25 @@ Common::Error BibleBlackEngine::run()
 
 	Common::File f;
 
-	
-	if (!f.open("BGM01.WAV", *_archives["STREAM.PAK"].get()))
+	if (!f.open("bgm01.wav", *_archives["STREAM.PAK"].get()))
 	{
-		debug("can't read archive");
+		error("can't read archive");
 	}
-	
+
 	Audio::SeekableAudioStream *str;
-	str = Audio::makeWAVStream(f.readStream(f.size()),DisposeAfterUse::YES);
-	_mixer->playStream(Audio::Mixer::SoundType::kMusicSoundType, _shandle, str);
+	str = Audio::makeWAVStream(f.readStream(f.size()), DisposeAfterUse::YES);
+	if (str == nullptr)
+	{
+		error("something wrong with the stream");
+	}
+	_mixer->playStream(Audio::Mixer::SoundType::kMusicSoundType, &_shandle, str);
+
+	Common::Event e;
+	while (!shouldQuit())
+	{
+		g_system->getEventManager()->pollEvent(e);
+		g_system->delayMillis(10);
+	}
 
 	// You could use backend transactions directly as an alternative,
 	// but it isn't recommended, until you want to handle the error values

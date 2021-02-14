@@ -35,6 +35,7 @@ private:
     Common::Array<byte> ReadUTFData();
     bool isUtfEncrypted;
 
+    Common::File *f;
     Common::Array<FileEntry> fileTable;
 };
 
