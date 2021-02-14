@@ -1,3 +1,0 @@
-put point(10, 20)
-set x = point(20,30)
-put x
