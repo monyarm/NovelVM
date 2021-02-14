@@ -427,6 +427,13 @@ public:
 		}
 	}
 
+	Common::String readFourCC()
+	{
+		uint32 val;
+		read(&val, 4);
+		Common::String str((char*)&val,4);
+		return str;
+	}
 
 	uint64 readUint64(bool LE)
 	{
