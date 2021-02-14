@@ -70,21 +70,22 @@ CVMEntry CVMArchive::ReadISORecord(Common::SeekableReadStream &reader, bool isRo
 			mName = "..";
 	} else {
 		mName = Common::String((char *)nameBytes, (char *)nameBytes + sizeof(nameBytes));
-        if(parentName != ""){
-            mName =  parentName + '/' + mName.substr(0, mName.findFirstOf(';'));
-        }
-        else
-        {
-		mName = /*_cvmFilename +"/"+ */mName.substr(0, mName.findFirstOf(';'));
-
-        }
-
+		if (parentName != "") {
+			mName = parentName + '/' + mName.substr(0, mName.findFirstOf(';'));
+		} else {
+			mName = /*_cvmFilename +"/"+ */ mName.substr(0, mName.findFirstOf(';'));
+		}
 	}
 	//debug(mName.c_str());
 
 	bool isDirectory = ((mFlags & (int)RecordFlags::DirectoryRecord) == (int)RecordFlags::DirectoryRecord) || isRoot;
 
 	if (!isDirectory) {
+		if (mName == "EVENT/SYS/ARC_C002.TMX") {
+			debug(mName.c_str());
+			debug("%i", mSize);
+			debug("%i", CVM_HEADER_SIZE + ((long)mLba * ISO_BLOCKSIZE));
+		}
 		record.name = mName;
 		record.size = mSize;
 		record.offset = CVM_HEADER_SIZE + ((long)mLba * ISO_BLOCKSIZE);
@@ -162,9 +163,9 @@ Common::SeekableReadStream *CVMArchive::createReadStreamForMember(const Common::
 	CVMEntry *hdr = _entries[name].get();
 
 	Common::File f;
-	f.open(_cvmFilename);
+	f.open(hdr->cvmFile);
 	f.seek(hdr->offset, SEEK_SET);
-	byte data[hdr->size];
+	byte* data = new byte[hdr->size];
 	f.read(data, hdr->size);
 
 	return new Common::MemoryReadStream(data, hdr->size, DisposeAfterUse::YES);
@@ -175,3 +176,4 @@ CVMArchive *makeCVMArchive(const Common::String &name) {
 }
 
 } // End of namespace SMT
+
