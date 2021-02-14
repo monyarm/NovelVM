@@ -52,7 +52,7 @@ Common::Array<byte> CPKFile::DecryptUTF(Common::Array<byte> utf)
     m = 0x0000655f;
     t = 0x00004115;
 
-    for (ulong i = 0; i < sizeof(utf); i++)
+    for (uint32 i = 0; i < sizeof(utf); i++)
     {
         d = utf[i];
         d = (byte)(d ^ (byte)(m & 0xff));

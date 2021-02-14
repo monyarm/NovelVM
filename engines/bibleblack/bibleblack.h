@@ -57,7 +57,6 @@ private:
 	Console *_console;
 	GameArchives _archives;
  
-	Audio::Mixer *_mixer;
 	Audio::SoundHandle _shandle;
 	// We need random numbers
 	Common::RandomSource *_rnd;
