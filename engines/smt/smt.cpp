@@ -1,4 +1,5 @@
 #include "smt/formats/archive/cpk.h"
+#include "smt/formats/archive/cvm/cvmfile.h"
 #include "smt/formats/video/pmsf.h"
 #include "smt/formats/image/tmx.h"
 
@@ -65,15 +66,17 @@ Common::Error SMTEngine::run()
 		initGraphics(1920, 1080, format);
 	}
 
-	//CPKFile _cpk = CPKFile();
-
 	//_cpk.ReadFile("umd0.cpk");
 
 	//PMSFFile _pmsf = PMSFFile();
 
 	//_pmsf.ReadFile("p3opmv_p3p.pmsf");
 
-	TMXFile _tmx = TMXFile("test/PSMT8.tmx");
+	TMXFile _tmx = TMXFile("test/PSMT4.tmx");
+
+	//CVMArchive _bgm("BGM.CVM");
+	CVMArchive _data("DATA.CVM");
+	//CVMArchive _btl("BTL.CVM");
 
 	// You could use backend transactions directly as an alternative,
 	// but it isn't recommended, until you want to handle the error values
@@ -86,7 +89,6 @@ Common::Error SMTEngine::run()
 	//	// Specify dimensions of game graphics window.
 	//	// In this example: 320x200
 	//	_system->initSize(320, 200);
-	//FIXME: You really want to handle
 	//OSystem::kTransactionSizeChangeFailed here
 	//_system->endGFXTransaction();
 
