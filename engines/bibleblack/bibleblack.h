@@ -3,7 +3,25 @@
  
 #include "common/random.h"
 #include "engines/engine.h"
+#include "common/file.h"
 #include "gui/debugger.h"
+#include "common/scummsys.h"
+
+#include "common/system.h"
+#include "common/config-manager.h"
+#include "common/debug.h"
+#include "common/debug-channels.h"
+#include "common/error.h"
+#include "common/file.h"
+#include "common/fs.h"
+#include "common/str.h"
+#include "common/hex.h"
+
+#include "engines/util.h"
+
+#include "audio/audiostream.h"
+#include "audio/mixer.h"
+#include "audio/decoders/wave.h"
 
 struct ADGameDescription;
  
@@ -19,11 +37,14 @@ enum {
 	// next new channel must be 1 << 2 (4)
 	// the current limitation is 32 debug channels (1 << 31 is the last one)
 };
- 
+ typedef Common::HashMap<Common::String, Common::ScopedPtr<Common::Archive>, Common::IgnoreCase_Hash, Common::IgnoreCase_EqualTo> GameArchives;
+
 class BibleBlackEngine : public Engine {
 public:
 	BibleBlackEngine(OSystem *syst, const ADGameDescription *gameDesc);
 	~BibleBlackEngine();
+
+	
  
 	virtual Common::Error run();
 
@@ -34,7 +55,10 @@ public:
  
 private:
 	Console *_console;
+	GameArchives _archives;
  
+	Audio::Mixer *_mixer;
+	Audio::SoundHandle *_shandle;
 	// We need random numbers
 	Common::RandomSource *_rnd;
 };

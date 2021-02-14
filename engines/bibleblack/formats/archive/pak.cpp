@@ -10,6 +10,11 @@ namespace BibleBlack
 PAKArchive::PAKArchive(const Common::String &filename) : _pakFilename(filename)
 {
     Common::File pakFile;
+    debug(_pakFilename.c_str());
+
+
+	Common::ArchiveMemberList list;
+	SearchMan.listMembers(list);
 
     if (!pakFile.open(_pakFilename))
     {
@@ -48,7 +53,7 @@ PAKArchive::PAKArchive(const Common::String &filename) : _pakFilename(filename)
         _tempHeaders.push_back(header);
     }
 
-    for (byte i = numHeaders - 1; i >= 0; i--)
+    for (char i = numHeaders - 1; i >= 0; i--)
     {
         if (i == numHeaders - 1)
         {
@@ -63,6 +68,8 @@ PAKArchive::PAKArchive(const Common::String &filename) : _pakFilename(filename)
     {
         _headers[header.name].reset(new PakHeader(header));
     }
+
+    
 }
 
 PAKArchive::~PAKArchive()
@@ -111,7 +118,7 @@ Common::SeekableReadStream *PAKArchive::createReadStreamForMember(const Common::
 	byte *data = (byte *)malloc(hdr->size);
 	assert(data);
 
-	int32 len = archiveFile.read(data, hdr->size);
+	uint32 len = archiveFile.read(data, hdr->size);
 	assert(len == hdr->size);
 
 	return new Common::MemoryReadStream(data, hdr->size, DisposeAfterUse::YES);
