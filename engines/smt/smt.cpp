@@ -42,7 +42,6 @@ SMTEngine::SMTEngine(OSystem *syst, const ADGameDescription *desc)
 
 	Common::File f;
 	f.open("p3opmv_p3p.pmsf");
-
 	ulong _magic = f.readUint32LE();
 	char* magic = toChars(_magic);
 	debug(magic);
@@ -53,8 +52,8 @@ SMTEngine::SMTEngine(OSystem *syst, const ADGameDescription *desc)
 
 	ulong data_offset = f.readUint32LE();
 	ulong data_size = f.readUint32LE();
-	debug(BytesToHex(&data_offset));
-	debug(BytesToHex(&data_size));
+	debug(BytesToHex(data_offset));
+	debug(BytesToHex(data_size));
 
 
 	debug("SMTEngine::SMTEngine");
