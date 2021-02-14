@@ -2,11 +2,13 @@ MODULE := engines/smt
 
 MODULE_OBJS := \
 	smt.o \
+	gfx.o \
 	detection.o \
 	formats/archive/cpk.o \
 	formats/video/pmsf.o \
 	formats/image/tmx.o \
 	formats/image/dds.o \
+	formats/audio/adx.o \
 
 MODULE_DIRS += \
 	engines/smt
