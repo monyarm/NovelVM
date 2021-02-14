@@ -11,6 +11,7 @@
 #include "common/hashmap.h"
 #include "common/memstream.h"
 
+#include "common/quicksort.h"
 #include "common/csharpshim.h"
 
 using namespace CSharpShim;
@@ -196,8 +197,6 @@ private:
     bool ReadETOC(Common::SeekableReadStream &br, uint64 startoffset);
 
     void ReadUTFData(Common::SeekableReadStream &br);
-
-    static int compareInt(const void *a, const void *b);
 
     bool ReadITOC(Common::SeekableReadStream &br, uint64 startoffset, uint64 ContentOffset, uint16 Align);
 

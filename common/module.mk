@@ -28,6 +28,7 @@ MODULE_OBJS := \
 	osd_message_queue.o \
 	platform.o \
 	quicktime.o \
+	quicksort.o \
 	random.o \
 	rational.o \
 	rendermode.o \

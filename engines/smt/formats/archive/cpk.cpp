@@ -12,15 +12,20 @@ CPKFile::CPKFile(const char *path)
     {
         ReadCPKFile(f);
     }
+    else
+    {
+        debug(path);
+        debug("cpk file not found");
+    }
+
 }
 
 bool CPKFile::ReadCPKFile(Common::SeekableReadStream &br)
 {
 
-    uint Files;
+    //uint Files;
     ushort Align;
 
-    bool LE = true;
 
     char cpkMagic[5];
     br.read(cpkMagic, 4);
@@ -51,7 +56,7 @@ bool CPKFile::ReadCPKFile(Common::SeekableReadStream &br)
         return false;
     }
 
-    for (int i = 0; i < utf.columns.size(); i++)
+    for (size_t i = 0; i < utf.columns.size(); i++)
     {
         cpkdata[utf.columns[i].name] = (utf.rows[0].rows[i].GetValue());
     }
@@ -72,7 +77,7 @@ bool CPKFile::ReadCPKFile(Common::SeekableReadStream &br)
     int64 ContentOffsetPos = GetColumnPostion(utf, 0, "ContentOffset");
     fileTable.push_back(CreateFileEntry("CONTENT_OFFSET", ContentOffset, Type::T_uint64, ContentOffsetPos, "CPK", "CONTENT", false));
 
-    Files = (uint32)GetColumsData(utf, 0, "Files", E_ColumnDataType::DATA_TYPE_UINT32).getValue.u32;
+    //Files = (uint32)GetColumsData(utf, 0, "Files", E_ColumnDataType::DATA_TYPE_UINT32).getValue.u32;
     Align = (uint16)GetColumsData(utf, 0, "Align", E_ColumnDataType::DATA_TYPE_USHORT).getValue.u16;
 
 
@@ -81,7 +86,7 @@ bool CPKFile::ReadCPKFile(Common::SeekableReadStream &br)
                     FileEntry entry = CreateFileEntry("TOC_HDR", TocOffset, Type::T_uint64, TocOffsetPos, "CPK", "HDR", false);
                     fileTable.push_back(entry);
 
-                    if (!ReadTOC(br, TocOffset, ContentOffset))
+                    if (!ReadTOC(br,  TocOffset,  ContentOffset))
                         return false;
                 }
 
@@ -130,31 +135,30 @@ FileEntry CPKFile::CreateFileEntry(string FileName, uint64 FileOffset, Type File
     return entry;
 }
 
-bool CPKFile::ReadTOC(Common::SeekableReadStream &br, uint64 TocOffset, uint64 ContentOffset)
-
+bool CPKFile::ReadTOC(Common::SeekableReadStream &br, uint64 _TocOffset, uint64 _ContentOffset)
 {
-    uint64 fTocOffset = TocOffset;
+    uint64 fTocOffset = _TocOffset;
     uint64 add_offset = 0;
 
     if (fTocOffset > (uint64)0x800)
         fTocOffset = (uint64)0x800;
 
-    if (ContentOffset < 0)
-        add_offset = fTocOffset;
-    else
-    {
-        if (TocOffset < 0)
-            add_offset = ContentOffset;
-        else
-        {
-            if (ContentOffset < fTocOffset)
-                add_offset = ContentOffset;
+    //if (ContentOffset < 0)
+    //    add_offset = fTocOffset;
+    //else
+    //{
+        //if (TocOffset < 0)
+        //    add_offset = ContentOffset;
+        //else
+        //{
+            if (_ContentOffset < fTocOffset)
+                add_offset = _ContentOffset;
             else
                 add_offset = fTocOffset;
-        }
-    }
+        //}
+    //}
 
-    br.seek((int64)TocOffset);
+    br.seek((int64)_TocOffset);
     char utfMagic[5];
     br.read(utfMagic, 4);
     utfMagic[4] = 0;
@@ -223,9 +227,9 @@ bool CPKFile::ReadTOC(Common::SeekableReadStream &br, uint64 TocOffset, uint64 C
     return true;
 }
 
-object CPKFile::GetColumsData(UTF utf, int row, string Name, E_ColumnDataType type)
+object CPKFile::GetColumsData(UTF _utf, int row, string Name, E_ColumnDataType type)
 {
-    object Temp = GetColumnData(utf, row, Name);
+    object Temp = GetColumnData(_utf, row, Name);
 
     if (Temp.type == Type::T_NULL)
     {
@@ -265,19 +269,19 @@ object CPKFile::GetColumsData(UTF utf, int row, string Name, E_ColumnDataType ty
     return 0;
 }
 
-object CPKFile::GetColumnData(UTF utf, int row, string pName)
+object CPKFile::GetColumnData(UTF _utf, int row, string pName)
 {
     object result;
 
-    for (int i = 0; i < utf.num_columns; i++)
+    for (int i = 0; i < _utf.num_columns; i++)
     {
-        int storageFlag = utf.columns[i].flags & (int)UTF::COLUMN_FLAGS::STORAGE_MASK;
-        int columnType = utf.columns[i].flags & (int)UTF::COLUMN_FLAGS::TYPE_MASK;
+        int storageFlag = _utf.columns[i].flags & (int)UTF::COLUMN_FLAGS::STORAGE_MASK;
+        //int columnType = _utf.columns[i].flags & (int)UTF::COLUMN_FLAGS::TYPE_MASK;
         if (storageFlag == (int)UTF::COLUMN_FLAGS::STORAGE_CONSTANT)
         {
-            if (utf.columns[i].name == pName)
+            if (_utf.columns[i].name == pName)
             {
-                result = utf.columns[i].GetValue();
+                result = _utf.columns[i].GetValue();
                 break;
             }
         }
@@ -287,9 +291,9 @@ object CPKFile::GetColumnData(UTF utf, int row, string pName)
             continue;
         }
 
-        if (utf.columns[i].name == pName)
+        if (_utf.columns[i].name == pName)
         {
-            result = utf.rows[row].rows[i].GetValue();
+            result = _utf.rows[row].rows[i].GetValue();
             break;
         }
     }
@@ -297,20 +301,20 @@ object CPKFile::GetColumnData(UTF utf, int row, string pName)
     return result;
 }
 
-int64 CPKFile::GetColumnPostion(UTF utf, int row, string pName)
+int64 CPKFile::GetColumnPostion(UTF _utf, int row, string pName)
 
 {
     int64 result = -1;
 
-    for (int i = 0; i < utf.num_columns; i++)
+    for (int i = 0; i < _utf.num_columns; i++)
     {
-        int storageFlag = utf.columns[i].flags & (int)UTF::COLUMN_FLAGS::STORAGE_MASK;
-        int columnType = utf.columns[i].flags & (int)UTF::COLUMN_FLAGS::TYPE_MASK;
+        int storageFlag = _utf.columns[i].flags & (int)UTF::COLUMN_FLAGS::STORAGE_MASK;
+        //int columnType = _utf.columns[i].flags & (int)UTF::COLUMN_FLAGS::TYPE_MASK;
         if (storageFlag == (int)UTF::COLUMN_FLAGS::STORAGE_CONSTANT)
         {
-            if (utf.columns[i].name == pName)
+            if (_utf.columns[i].name == pName)
             {
-                result = utf.columns[i].position;
+                result = _utf.columns[i].position;
                 break;
             }
         }
@@ -320,9 +324,9 @@ int64 CPKFile::GetColumnPostion(UTF utf, int row, string pName)
             continue;
         }
 
-        if (utf.columns[i].name == pName)
+        if (_utf.columns[i].name == pName)
         {
-            result = utf.rows[row].rows[i].position;
+            result = _utf.rows[row].rows[i].position;
             break;
         }
     }
@@ -330,20 +334,20 @@ int64 CPKFile::GetColumnPostion(UTF utf, int row, string pName)
     return result;
 }
 
-Type CPKFile::GetColumnType(UTF utf, int row, string pName)
+Type CPKFile::GetColumnType(UTF _utf, int row, string pName)
 
 {
     Type result = Type::T_NULL;
 
-    for (int i = 0; i < utf.num_columns; i++)
+    for (int i = 0; i < _utf.num_columns; i++)
     {
-        int storageFlag = utf.columns[i].flags & (int)UTF::COLUMN_FLAGS::STORAGE_MASK;
-        int columnType = utf.columns[i].flags & (int)UTF::COLUMN_FLAGS::TYPE_MASK;
+        int storageFlag = _utf.columns[i].flags & (int)UTF::COLUMN_FLAGS::STORAGE_MASK;
+        //int columnType = _utf.columns[i].flags & (int)UTF::COLUMN_FLAGS::TYPE_MASK;
         if (storageFlag == (int)UTF::COLUMN_FLAGS::STORAGE_CONSTANT)
         {
-            if (utf.columns[i].name == pName)
+            if (_utf.columns[i].name == pName)
             {
-                result = utf.columns[i].GetType();
+                result = _utf.columns[i].GetType();
                 break;
             }
         }
@@ -352,9 +356,9 @@ Type CPKFile::GetColumnType(UTF utf, int row, string pName)
         {
             continue;
         }
-        if (utf.columns[i].name == pName)
+        if (_utf.columns[i].name == pName)
         {
-            result = utf.rows[row].rows[i].GetType();
+            result = _utf.rows[row].rows[i].GetType();
             break;
         }
     }
@@ -397,7 +401,7 @@ List<byte> CPKFile::DecompressCRILAYLA(List<byte> input, int USize)
 {
     List<byte> result; // = new byte[USize];
 
-    Common::MemoryReadStream br(input.data, USize); //LE
+    Common::MemoryReadStream br(input.data(), USize); //LE
 
     br.seek(8); // Skip CRILAYLA
     int uncompressed_size = br.readSint32LE();
@@ -464,11 +468,11 @@ List<byte> CPKFile::DecompressLegacyCRI(List<byte> input, int USize)
 
     List<byte> result; // = new byte[USize];
 
-    Common::MemoryReadStream br(input.data, USize); //LE
+    Common::MemoryReadStream br(input.data(), USize); //LE
 
     br.seek(8); // Skip CRILAYLA
     int uncompressed_size = br.readSint32LE();
-    int uncompressed_header_offset = br.readSint32LE();
+    /*int uncompressed_header_offset =*/ br.readSint32LE();
 
     result = List<byte>(uncompressed_size + 0x100);
 
@@ -531,7 +535,7 @@ List<byte> CPKFile::DecryptUTF(List<byte> input)
     m = 0x0000655f;
     t = 0x00004115;
 
-    for (int i = 0; i < input.size(); i++)
+    for (size_t i = 0; i < input.size(); i++)
     {
         d = input[i];
         d = (byte)(d ^ (byte)(m & 0xff));
@@ -621,7 +625,7 @@ bool CPKFile::ReadETOC(Common::SeekableReadStream &br, uint64 startoffset)
         }
     }
 
-    for (int i = 0; i < fileEntries.size(); i++)
+    for (size_t i = 0; i < fileEntries.size(); i++)
     {
         fileTable[i].LocalDir = GetColumnData(files, i, "LocalDir").getValue.s;
         auto tUpdateDateTime = GetColumnData(files, i, "UpdateDateTime");
@@ -649,17 +653,7 @@ void CPKFile::ReadUTFData(Common::SeekableReadStream &br)
     }
 }
 
-int CPKFile::compareInt(const void *a, const void *b)
-{
-    if ((*(const int *)a) < (*(const int *)b))
-        return -1;
-    else if ((*(const int *)a) > (*(const int *)b))
-        return 1;
-    else
-        return 0;
-}
-
-bool CPKFile::ReadITOC(Common::SeekableReadStream &br, uint64 startoffset, uint64 ContentOffset, uint16 Align)
+bool CPKFile::ReadITOC(Common::SeekableReadStream &br, uint64 startoffset, uint64 _ContentOffset, uint16 Align)
 
 {
     br.seek((int64)startoffset);
@@ -710,7 +704,7 @@ bool CPKFile::ReadITOC(Common::SeekableReadStream &br, uint64 startoffset, uint6
     Dictionary<int, int64> SizePosTable, CSizePosTable;
     Dictionary<int, Type> SizeTypeTable, CSizeTypeTable;
 
-    SortedList<int> IDs(compareInt);
+    List<int> IDs;
 
     uint16 ID, size1;
     uint size2;
@@ -719,8 +713,8 @@ bool CPKFile::ReadITOC(Common::SeekableReadStream &br, uint64 startoffset, uint6
 
     if (DataL.size() != 0)
     {
-        Common::MemoryReadStream ms(DataL.data(), DataL.size());
-        utfDataL.ReadUTF(ms, false);
+        Common::MemoryReadStream _ms(DataL.data(), DataL.size());
+        utfDataL.ReadUTF(_ms, false);
 
         for (int i = 0; i < utfDataL.num_rows; i++)
         {
@@ -745,13 +739,13 @@ bool CPKFile::ReadITOC(Common::SeekableReadStream &br, uint64 startoffset, uint6
                 type = GetColumnType(utfDataL, i, "ExtractSize");
                 CSizeTypeTable[(int)ID] = (type);
             }
-            IDs.insert((int)ID);
+            IDs.push_back((int)ID);
         }
     }
 
     if (DataH.size() != 0)
     {
-        auto _ms = Common::MemoryReadStream(DataH.data(), DataH.size());
+        Common::MemoryReadStream _ms(DataH.data(), DataH.size());
         utfDataH.ReadUTF(_ms, false);
 
         for (int i = 0; i < utfDataH.num_rows; i++)
@@ -778,20 +772,22 @@ bool CPKFile::ReadITOC(Common::SeekableReadStream &br, uint64 startoffset, uint6
                 CSizeTypeTable[(int)ID] = (type);
             }
 
-            IDs.insert(ID);
+            IDs.push_back(ID);
         }
     }
+
+    quicksort(IDs,0, IDs.size() -1);
 
     FileEntry temp;
     //int id = 0;
     uint value = 0, value2 = 0;
-    uint64 baseoffset = ContentOffset;
+    uint64 baseoffset = _ContentOffset;
 
     for (auto id : IDs)
     {
 
-        auto value = SizeTable[id];
-        auto value2 = CSizeTable[id];
+         value = SizeTable[id];
+         value2 = CSizeTable[id];
 
         temp.TOCName = "ITOC";
 
@@ -868,6 +864,8 @@ object TypeData::GetValue()
     case (int)E_StructTypes::DATA_TYPE_BYTEARRAY:
         return object(this->data);
     }
+
+    return object();
 }
 
 Type TypeData::GetType()
@@ -901,12 +899,14 @@ Type TypeData::GetType()
     case (int)E_StructTypes::DATA_TYPE_BYTEARRAY:
         return Type::T_ListByte;
     }
+
+    return Type::T_NULL;
 }
 
 void TypeData::UpdateTypedData(Common::SeekableReadStream &br, int flags, int64 strings_offset, int64 data_offset, bool LE)
 {
-    int type = flags & (int)UTF::COLUMN_FLAGS::TYPE_MASK;
-    this->type = type;
+    int _type = flags & (int)UTF::COLUMN_FLAGS::TYPE_MASK;
+    this->type = _type;
     this->position = br.pos();
     switch (type)
     {
@@ -967,6 +967,8 @@ void TypeData::UpdateTypedData(Common::SeekableReadStream &br, int flags, int64 
         break;
 
     case 0xA:
+    {
+
         int64 offset;
 
         if (LE)
@@ -983,8 +985,11 @@ void TypeData::UpdateTypedData(Common::SeekableReadStream &br, int flags, int64 
         br.seek(backup);
 
         break;
+    }
 
     case (int)E_StructTypes::DATA_TYPE_BYTEARRAY:
+    {
+
         int64 offset;
         int size;
         if (LE)
@@ -1006,6 +1011,7 @@ void TypeData::UpdateTypedData(Common::SeekableReadStream &br, int flags, int64 
         br.seek(backup);
         this->data = result;
         break;
+    }
     }
 }
 
@@ -1052,7 +1058,7 @@ bool UTF::ReadUTF(Common::SeekableReadStream &br, bool LE)
             br.seek(3, br.pos());
             column.flags = br.readByte();
         }
-        auto offset = (int64)(br.readSint32(LE)) + strings_offset;
+        offset = (int64)(br.readSint32(LE)) + strings_offset;
         auto backup = br.pos();
         br.seek(offset);
         column.name = br.readString();
