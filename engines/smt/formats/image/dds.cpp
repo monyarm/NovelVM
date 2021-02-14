@@ -1,4 +1,4 @@
-#include "smt/formats/image/dds.h"
+k#include "smt/formats/image/dds.h"
 
 DDSFile::DDSFile(const char *path)
 {
@@ -60,7 +60,7 @@ void DDSFile::readHeader(Common::SeekableReadStream *f)
 
 void DDSFile::readTexture(Common::SeekableReadStream *f)
 {
-    const Graphics::PixelFormat *format = new Graphics::PixelFormat(4, 8, 8, 8, 8, 24, 16, 8, 0);
+    const Graphics::PixelFormat *format = new Graphics::PixelFormat(4, 8, 8, 8, 8, 0,8,16,24);//24, 16, 8, 0);
     uint32 *data = new uint32[dat.header.dwHeight * dat.header.dwWidth];
 
     switch (dat.header.ddpfPixelFormat.dwFlags)
@@ -114,9 +114,18 @@ void DDSFile::readTexture(Common::SeekableReadStream *f)
     Common::DumpFile df;
     df.open("dumps/dds.data", true);
 
+            for (size_t i = 0; i < dat.header.dwWidth * dat.header.dwHeight; i++)
+            {
+    
+    ((uint32 *)data)[i] = (((uint32 *)data)[i] & 0x0000FFFF) << 16 | (((uint32 *)data)[i] & 0xFFFF0000) >> 16;
+    ((uint32 *)data)[i] = (((uint32 *)data)[i] & 0x00FF00FF) << 8 | (((uint32 *)data)[i] & 0xFF00FF00) >> 8;
+
+
+            }
     _surface.create(dat.header.dwWidth, dat.header.dwHeight,
                     *format);
 
 
     _surface.setPixels(data);
 }
+
