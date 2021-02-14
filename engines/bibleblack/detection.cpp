@@ -57,7 +57,7 @@ public:
 
 	const char *getOriginalCopyright() const override
 	{
-		return "Shin Megami Tensei (C) Atlus";
+		return "";
 	}
 
 	bool hasFeature(MetaEngineFeature f) const override;
