@@ -2,6 +2,9 @@
 #define DDS_H
 
 #include "common/file.h"
+#include "common/file-format.h"
+#include "common/str-array.h"
+
 #include "common/fs.h"
 #include "common/str.h"
 #include "common/debug.h"
@@ -94,7 +97,7 @@ struct DDSData
     Common::Array<byte> AttachedSurfaceData;
 };
 
-class DDSFile
+class DDSFile : public Common::FileFormat
 {
 public:
     DDSFile(const char *path);
@@ -105,6 +108,12 @@ public:
     }
 
     Graphics::TransparentSurface * const getSurface();
+
+    bool isValid(Common::SeekableReadStream *stream);
+    
+	const Common::String FileExtensions[2]{".dds", ".DDS"};
+    const Common::Array<Common::String> getFileExtensions();
+
 private:
     Graphics::TransparentSurface _surface;
     DDSData dat;
