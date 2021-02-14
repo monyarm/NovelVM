@@ -8,9 +8,10 @@
 #include "common/file.h"
 #include "common/fs.h"
 #include "common/str.h"
-#include "common/hex.h"
 
 #include "smt/formats/archive/cpk.h"
+#include "smt/formats/video/pmsf.h"
+#include "smt/formats/image/tmx.h"
 
 #include "engines/util.h"
 
@@ -40,21 +41,6 @@ SMTEngine::SMTEngine(OSystem *syst, const ADGameDescription *desc)
 	// Don't forget to register your random source
 	_rnd = new Common::RandomSource("smt");
 
-	Common::File f;
-	f.open("p3opmv_p3p.pmsf");
-	ulong _magic = f.readUint32LE();
-	char* magic = toChars(_magic);
-	debug(magic);
-	
-	ulong __v = f.readUint32LE();
-	char* _v = toChars(__v);
-	debug(_v);
-
-	ulong data_offset = f.readUint32LE();
-	ulong data_size = f.readUint32LE();
-	debug(BytesToHex(data_offset));
-	debug(BytesToHex(data_size));
-
 
 	debug("SMTEngine::SMTEngine");
 }
@@ -81,9 +67,19 @@ Common::Error SMTEngine::run()
 
 	Graphics::PixelFormat format = g_system->getScreenFormat();
 	
-	CPKFile _cpk = CPKFile();
+	//CPKFile _cpk = CPKFile();
 
-	_cpk.ReadFile();
+	//_cpk.ReadFile("umd0.cpk");
+
+
+	//PMSFFile _pmsf = PMSFFile();
+
+	//_pmsf.ReadFile("p3opmv_p3p.pmsf");
+
+	TMXFile _tmx = TMXFile();
+
+	_tmx.ReadFile("test.tmx");
+
 
 	// You could use backend transactions directly as an alternative,
 	// but it isn't recommended, until you want to handle the error values
