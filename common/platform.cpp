@@ -60,6 +60,10 @@ const PlatformDescription g_platforms[] = {
 	{ "ppc", "ppc", "ppc", "PocketPC", kPlatformPocketPC },
 	{ "megadrive", "genesis", "md", "Mega Drive/Genesis", kPlatformMegaDrive },
 	{ "saturn", "saturn", "saturn", "Sega Saturn", kPlatformSaturn },
+        { "psp", "psp", "psp", "Sony Playstation Portable", kPlatformPSP },
+        { "psv", "psv", "psv", "Sony Playstation Vita", kPlatformPSVita },
+        { "ps3", "ps3", "ps3", "Sony Playstation 3", kPlatformPS3 },
+        { "ps4", "ps4", "ps4", "Sony Playstation 4", kPlatformPS4 },
 
 	{ nullptr, nullptr, nullptr, "Default", kPlatformUnknown }
 };

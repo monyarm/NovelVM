@@ -73,6 +73,10 @@ enum Platform {
 	kPlatformPocketPC,
 	kPlatformMegaDrive,
 	kPlatformSaturn,
+        kPlatformPSP,
+        kPlatformPSVita,
+        kPlatformPS3,
+        kPlatformPS4,
 
 	kPlatformUnknown = -1
 };
