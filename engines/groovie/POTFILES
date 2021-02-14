@@ -1,4 +1,0 @@
-engines/groovie/detection.cpp
-engines/groovie/metaengine.cpp
-engines/groovie/saveload.cpp
-engines/groovie/script.cpp
