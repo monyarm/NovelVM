@@ -1,5 +1,6 @@
 #include "smt/formats/archive/cpk.h"
 #include "smt/formats/archive/cvm.h"
+#include "smt/formats/archive/pac.h"
 #include "smt/formats/audio/adx.h"
 #include "smt/formats/image/dds.h"
 #include "smt/formats/image/tmx.h"
@@ -96,19 +97,20 @@ Common::Error SMTEngine::run() {
 		error("can't read archive");
 	} */
 
-	CVMArchive _data("DATA.CVM");
+	//CVMArchive _data("DATA.CVM");
+	PACArchive _data("test/test.pac");
+	//Common::DumpFile df;
+	//df.open("dumps/i_bust_02_61.tmx");
+	auto _dfile = _data.createReadStreamForMember("i_bust_02_61.tmx");
+	//df.writeStream(_dfile);
 
-	Common::DumpFile df;
-	df.open("dumps/ARC_C002.TMX");
-	df.writeStream(_data.createReadStreamForMember("EVENT/SYS/ARC_C002.TMX"));
-
-	TMXFile _tmx("test/SHA_CARD00.TMX");
+	TMXFile _tmx(_dfile);
 	//TMXFile _tmx("test/PSMT8.tmx");
 
 	_data.listMembers(list);
 	for (auto &&l : list)
 	{
-	//	debug(l.get()->getName().c_str());
+		debug(l.get()->getName().c_str());
 	}
 
 
@@ -169,4 +171,3 @@ Common::Error SMTEngine::run() {
 }
 
 } // End of namespace SMT
-
