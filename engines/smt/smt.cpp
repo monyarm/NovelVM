@@ -2,6 +2,7 @@
 #include "smt/formats/video/pmsf.h"
 #include "smt/formats/image/tmx.h"
 #include "smt/formats/image/dds.h"
+#include "smt/formats/audio/adx.h"
 
 #include "smt/smt.h"
 
@@ -72,8 +73,9 @@ namespace SMT
 
 		//_pmsf.ReadFile("p3opmv_p3p.pmsf");
 
-		TMXFile _tmx("test/PSMT8.tmx");
-		DDSFile _dds("test/DXT5.dds");
+		//TMXFile _tmx("test/PSMT8.tmx");
+		//DDSFile _dds("test/DXT5.dds");
+		//ADXFile _adx("test/TEST.ADX");
 
 		//CVMArchive _bgm("BGM.CVM");
 		//CVMArchive _data("DATA.CVM");
@@ -103,16 +105,15 @@ namespace SMT
 
 		g_system->getEventManager()->pollEvent(e);
 		g_system->delayMillis(10);
-
 		Graphics::Surface *screen = g_system->lockScreen();
-		screen->fillRect(Common::Rect(0, 0, g_system->getWidth(), g_system->getHeight()), 223330);
+		//screen->fillRect(Common::Rect(0, 0, screen->w, screen->h), 0);
 
-		Graphics::TransparentSurface *surfacetmx = _tmx.getSurface();
-		surfacetmx->blit(*screen, 0, 0, 0);
+		//Graphics::TransparentSurface *surfacetmx = _tmx.getSurface();
+		//surfacetmx->blit(*screen, 0, 0, 0);
 
-		Graphics::TransparentSurface *surfacedds = _dds.getSurface();
+		//Graphics::TransparentSurface *surfacedds = _dds.getSurface();
 
-		surfacedds->blit(*screen, 600, 0, 0);
+		//surfacedds->blit(*screen, 600, 0, 0);
 
 		g_system->unlockScreen();
 		g_system->updateScreen();
@@ -121,6 +122,7 @@ namespace SMT
 		{
 			g_system->getEventManager()->pollEvent(e);
 			g_system->delayMillis(10);
+			debug("helo");
 		}
 
 		return Common::kNoError;

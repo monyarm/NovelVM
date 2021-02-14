@@ -1,0 +1,171 @@
+From bdff103f8ff63d7cbc6cddcb2666279e9d6be6ed Mon Sep 17 00:00:00 2001
+From: monyarm <monyarm@gmail.com>
+Date: Mon, 18 May 2020 12:32:57 +0300
+Subject: [PATCH] started work on adx format
+
+---
+ engines/smt/formats/audio/adx.cpp  | 54 ++++++++++++++++++++++++++
+ engines/smt/formats/audio/adx.h    | 62 ++++++++++++++++++++++++++++++
+ engines/smt/{video.cpp => gfx.cpp} |  0
+ engines/smt/{video.h => gfx.h}     |  0
+ engines/smt/module.mk              |  2 +
+ 5 files changed, 128 insertions(+), 8 deletions(-)
+ create mode 100644 engines/smt/formats/audio/adx.cpp
+ create mode 100644 engines/smt/formats/audio/adx.h
+ rename engines/smt/{video.cpp => gfx.cpp} (100%)
+ rename engines/smt/{video.h => gfx.h} (100%)
+
+diff --git a/engines/smt/formats/audio/adx.cpp b/engines/smt/formats/audio/adx.cpp
+new file mode 100644
+index 000000000..7d734d693
+--- /dev/null
++++ b/engines/smt/formats/audio/adx.cpp
+@@ -0,0 +1,54 @@
++#include "smt/formats/audio/adx.h"
++
++ADXFile::ADXFile(const char *path) {
++
++	Common::File f;
++	if (f.open(path)) {
++		readFile(&f);
++	}
++}
++
++ADXFile::ADXFile(Common::SeekableReadStream *stream) {
++	readFile(stream);
++}
++
++void ADXFile::readFile(Common::SeekableReadStream *stream) {
++	stream->seek(2, SEEK_CUR);
++
++	readHeader(stream);
++
++	stream->seek(dat.header.dataoffset);
++
++	readData(stream);
++}
++
++void ADXFile::readHeader(Common::SeekableReadStream *stream) {
++	dat.header.dataoffset = stream->readUint16BE();
++	dat.header.format = (formatEnum)stream->readByte();
++	debug("%i", (int)dat.header.format);
++	dat.header.blocksize = stream->readByte();
++	dat.header.bitsperchannel = stream->readByte();
++	dat.header.channelcount = stream->readByte();
++	dat.header.samplerate = stream->readUint32BE();
++	dat.header.samplecount = stream->readUint32BE();
++	dat.header.highpasscutoff = stream->readUint16BE();
++	dat.header.loopdatastyle = stream->readByte();
++	dat.header.encrypted = stream->readByte();
++	debug("%i",dat.header.loopdatastyle);
++	if (dat.header.loopdatastyle == 3) {
++
++		stream->seek(4, SEEK_CUR);
++	} else {
++
++		stream->seek(16, SEEK_CUR);
++	}
++	dat.loopdata.loopflag = stream->readUint32BE();
++	dat.loopdata.loopstartsample = stream->readUint32BE();
++	dat.loopdata.loopstartbyte = stream->readUint32BE();
++	dat.loopdata.loopendsample = stream->readUint32BE();
++	dat.loopdata.loopendbyte = stream->readUint32BE();
++}
++
++void ADXFile::readData(Common::SeekableReadStream *stream) {
++	debug("%i",stream->size());
++}
+diff --git a/engines/smt/formats/audio/adx.h b/engines/smt/formats/audio/adx.h
+new file mode 100644
+index 000000000..0a80d8679
+--- /dev/null
++++ b/engines/smt/formats/audio/adx.h
+@@ -0,0 +1,62 @@
++#ifndef ADX_H
++#define ADX_H
++
++#include "common/debug.h"
++#include "common/file.h"
++#include "common/fs.h"
++#include "common/hex.h"
++#include "common/str.h"
++#include "graphics/colormasks.h"
++#include "graphics/surface.h"
++#include "graphics/transparent_surface.h"
++
++enum class formatEnum : byte {
++	fixed = 2,
++	ADX = 3,
++	ADXexp = 4,
++	AHX = 0x11
++};
++
++struct ADXHeader {
++	uint16 dataoffset;
++	formatEnum format;
++	byte blocksize;
++	byte bitsperchannel;
++	byte channelcount;
++	uint32 samplerate;
++	uint32 samplecount;
++	uint16 highpasscutoff;
++	byte loopdatastyle;
++	byte encrypted;
++};
++
++struct ADXLoopData {
++    uint32 loopflag;
++    uint32 loopstartsample;
++    uint32 loopstartbyte;
++    uint32 loopendsample;
++    uint32 loopendbyte;
++};
++
++struct ADXData {
++	ADXHeader header;
++    ADXLoopData loopdata;
++};
++
++class ADXFile {
++public:
++	ADXFile(const char *path);
++	ADXFile(Common::SeekableReadStream *stream);
++	~ADXFile(){};
++
++private:
++	ADXData dat;
++
++	void readFile(Common::SeekableReadStream *stream);
++
++	void readData(Common::SeekableReadStream *f);
++
++	void readHeader(Common::SeekableReadStream *f);
++};
++
++#endif
+diff --git a/engines/smt/video.cpp b/engines/smt/gfx.cpp
+similarity index 100%
+rename from engines/smt/video.cpp
+rename to engines/smt/gfx.cpp
+diff --git a/engines/smt/video.h b/engines/smt/gfx.h
+similarity index 100%
+rename from engines/smt/video.h
+rename to engines/smt/gfx.h
+diff --git a/engines/smt/module.mk b/engines/smt/module.mk
+index f8d457fb5..947b9a84c 100644
+--- a/engines/smt/module.mk
++++ b/engines/smt/module.mk
+@@ -2,11 +2,13 @@ MODULE := engines/smt
+ 
+ MODULE_OBJS := \
+ 	smt.o \
++	gfx.o \
+ 	detection.o \
+ 	formats/archive/cpk.o \
+ 	formats/video/pmsf.o \
+ 	formats/image/tmx.o \
+ 	formats/image/dds.o \
++	formats/audio/adx.o \
+ 
+ MODULE_DIRS += \
+ 	engines/smt
