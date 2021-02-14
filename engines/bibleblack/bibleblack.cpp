@@ -1,19 +1,10 @@
-#include "common/scummsys.h"
 
-#include "common/system.h"
-#include "common/config-manager.h"
-#include "common/debug.h"
-#include "common/debug-channels.h"
-#include "common/error.h"
-#include "common/file.h"
-#include "common/fs.h"
-#include "common/str.h"
-#include "common/hex.h"
+
 #include "bibleblack/formats/archive/pak.h"
 
-#include "engines/util.h"
 
 #include "bibleblack/bibleblack.h"
+
 
 namespace BibleBlack
 {
@@ -30,11 +21,6 @@ BibleBlackEngine::BibleBlackEngine(OSystem *syst, const ADGameDescription *desc)
 
 	// However this is the place to specify all default directories
 	const Common::FSNode gameDataDir(ConfMan.get("path"));
-	SearchMan.addSubDirectoryMatching(gameDataDir, "music");
-
-	Common::Archive *pak = makePAKArchive("STREAM.PAK");
-	SearchMan.add("STREAM.pak", pak, 99, false);
-	
 	// Here is the right place to set up the engine specific debug channels
 	DebugMan.addDebugChannel(kBibleBlackDebug, "example", "this is just an example for a engine specific debug channel");
 	DebugMan.addDebugChannel(kBibleBlackDebug2, "example2", "also an example");
@@ -66,12 +52,37 @@ Common::Error BibleBlackEngine::run()
 
 	Graphics::PixelFormat format = g_system->getScreenFormat();
 
+
+	Common::Archive *A98FAST_PAK = makePAKArchive("A98FAST.PAK");
+	_archives["A98FAST.PAK"].reset(A98FAST_PAK);
+
+	Common::Archive *A98SYS_PAK = makePAKArchive("A98SYS.PAK");
+	_archives["A98SYS.PAK"].reset(A98SYS_PAK);
+
+	Common::Archive *STREAM_PAK = makePAKArchive("STREAM.PAK");
+	_archives["STREAM.PAK"].reset(STREAM_PAK);
+
+	/*
+	Common::Archive *VOICE_PAK = makePAKArchive("VOICE.PAK");
+	Common::Archive *VOICE2_PAK = makePAKArchive("VOICE2.PAK");
+	
+	*/
+
+	Common::ArchiveMemberList list;
+	SearchMan.listMembers(list);
+
 	Common::File f;
 
-	if (!f.open("bgm1.wav"))
+	
+	if (!f.open("BGM01.WAV", *_archives["STREAM.PAK"].get()))
 	{
 		debug("can't read archive");
 	}
+	
+	Audio::SeekableAudioStream *str;
+	str = Audio::makeWAVStream(f.readStream(f.size()),DisposeAfterUse::YES);
+	_mixer->playStream(Audio::Mixer::SoundType::kMusicSoundType, _shandle, str);
+
 	// You could use backend transactions directly as an alternative,
 	// but it isn't recommended, until you want to handle the error values
 	// from OSystem::endGFXTransaction yourself.
