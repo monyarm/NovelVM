@@ -13,7 +13,6 @@ TMXFile::TMXFile(const char *path)
 TMXFile::TMXFile(Common::SeekableReadStream *stream)
 {
     readFile(stream);
-
 }
 
 Graphics::TransparentSurface *const TMXFile::getSurface()
@@ -75,23 +74,23 @@ void TMXFile::readPalette(Common::SeekableReadStream *f)
 
             for (size_t i = 0; i < 256; i++)
             {
-                ((uint32 *)palette.data())[i] = (((uint32 *)palette.data())[i] & 0x0000FFFF) << 16 | (((uint32 *)palette.data())[i] & 0xFFFF0000) >> 16;
                 ((uint32 *)palette.data())[i] = (((uint32 *)palette.data())[i] & 0x00FF00FF) << 8 | (((uint32 *)palette.data())[i] & 0xFF00FF00) >> 8;
-            }
+                ((uint32 *)palette.data())[i] = (((uint32 *)palette.data())[i] & 0x0000FFFF) << 16 | (((uint32 *)palette.data())[i] & 0xFFFF0000) >> 16;
 
+            }
+ 
             dat.palette = ((uint32 *)palette.data());
         }
         else if (dat.formatsettings.pixelFmt == PSMT4)
         {
             byte *_palette = new byte[16 * 4];
-	    for (size_t i = 0; i < 16; i++)
+            for (size_t i = 0; i < 16; i++)
             {
                 ((uint32 *)_palette)[i] = (((uint32 *)_palette)[i] & 0x0000FFFF) << 16 | (((uint32 *)_palette)[i] & 0xFFFF0000) >> 16;
                 ((uint32 *)_palette)[i] = (((uint32 *)_palette)[i] & 0x00FF00FF) << 8 | (((uint32 *)_palette)[i] & 0xFF00FF00) >> 8;
             }
 
             dat.palette = ((uint32 *)_palette);
-
         }
 
         break;
@@ -133,7 +132,7 @@ void TMXFile::readIndex(Common::SeekableReadStream *f)
 
         for (int i = 0; i < dat.formatsettings.width * dat.formatsettings.height; i++, ++destP)
         {
-             *destP = dat.palette[pixels[i]];
+            *destP = dat.palette[pixels[i]];
         }
         delete _pixels;
     }
@@ -152,7 +151,7 @@ void TMXFile::readIndex(Common::SeekableReadStream *f)
 
         for (int i = 0; i < dat.formatsettings.width * dat.formatsettings.height; i++, ++destP)
         {
-             *destP = dat.palette[pixels[i]];
+            *destP = dat.palette[pixels[i]];
         }
 
         delete[] pixels;
@@ -214,3 +213,4 @@ Common::Array<byte> TMXFile::tilePalette(Common::Array<byte> input)
     }
     return palette;
 }
+k
