@@ -1,21 +1,20 @@
 #include "smt/formats/image/tmx.h"
 
-TMXFile::TMXFile(const char *path) {
+TMXFile::TMXFile(const char *path)
+{
 
     Common::File f;
     if (f.open(path))
     {
         readHeader(&f);
         debug(path);
-        debug("%04X", dat.formatsettings.paletteFmt);
-        debug("%04X", dat.formatsettings.pixelFmt);
+        Common::hexdump((byte *)&dat.formatsettings.paletteFmt, 1);
+        Common::hexdump((byte *)&dat.formatsettings.pixelFmt, 1);
 
         readPalette(&f);
         readIndex(&f);
     }
 }
-
-
 
 const Graphics::Surface *TMXFile::getSurface() const
 {
@@ -84,13 +83,20 @@ void TMXFile::readPalette(Common::File *f)
 void TMXFile::readIndex(Common::File *f)
 {
 
+    const Graphics::PixelFormat *format = new Graphics::PixelFormat(4, 8, 8, 8, 8, 0, 8, 16, 24);
     switch (dat.formatsettings.pixelFmt)
     {
     case PSMT4:
     {
+
+        _surface.create(dat.formatsettings.width, dat.formatsettings.height,
+                        *format);
+
         byte *_pixels = new byte[(sizeof(byte) * dat.formatsettings.width * dat.formatsettings.height) / 2];
 
         f->read(_pixels, (sizeof(byte) * dat.formatsettings.width * dat.formatsettings.height) / 2);
+
+        debug(format->toString().c_str());
 
         Common::Array<byte> pixels;
         for (size_t i = 0; i < (sizeof(byte) * dat.formatsettings.width * dat.formatsettings.height); i++)
@@ -99,13 +105,21 @@ void TMXFile::readIndex(Common::File *f)
             pixels.push_back(_pixels[i] & 0x0f);
             pixels.push_back(_pixels[i] >> 4);
         }
+
+        uint32 *truepalette = (uint32 *)dat.palette;
+        uint32 *destP = (uint32 *)_surface.getPixels();
+
+        for (int i = 0; i < dat.formatsettings.width * dat.formatsettings.height; i++, ++destP)
+        {
+            *destP = truepalette[pixels[i]];
+        }
         delete _pixels;
+
     }
     break;
     case PSMT8:
     {
 
-        const Graphics::PixelFormat *format = new Graphics::PixelFormat(4, 8, 8, 8, 8, 0, 8, 16, 24);
         _surface.create(dat.formatsettings.width, dat.formatsettings.height,
                         *format);
 
@@ -121,15 +135,6 @@ void TMXFile::readIndex(Common::File *f)
             *destP = truepalette[pixels[i]];
         }
 
-        
-        Common::DumpFile img;
-
-        img.open("dumps/image.data", true);
-
-        img.write(_surface.getPixels(),dat.formatsettings.width*dat.formatsettings.height*4);
-        img.flush();
-        img.close();
-        
         delete[] pixels;
     }
     break;
