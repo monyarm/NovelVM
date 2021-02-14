@@ -42,6 +42,7 @@ void TMXFile::readHeader(Common::SeekableReadStream *f)
     dat.header.pad1 = f->readUint32BE();
 
     dat.formatsettings.numPalettes = f->readByte();
+    debug("%i",dat.formatsettings.numPalettes);
     dat.formatsettings.paletteFmt = (PS2PixelFormat)f->readByte();
     dat.formatsettings.width = f->readUint16LE();
     dat.formatsettings.height = f->readUint16LE();
@@ -52,7 +53,6 @@ void TMXFile::readHeader(Common::SeekableReadStream *f)
     dat.formatsettings.wrapModes = f->readByte();
     dat.formatsettings.userTextureID = f->readUint32BE();
     dat.formatsettings.userClutID = f->readUint32LE();
-
     f->read(&dat.formatsettings.userComment, 28);
 }
 
@@ -63,7 +63,6 @@ void TMXFile::readPalette(Common::SeekableReadStream *f)
     {
     case PSMTC32:
     {
-
         if (dat.formatsettings.pixelFmt == PSMT8)
         {
 
@@ -83,14 +82,17 @@ void TMXFile::readPalette(Common::SeekableReadStream *f)
         }
         else if (dat.formatsettings.pixelFmt == PSMT4)
         {
-            byte *_palette = new byte[16 * 4];
+            Common::Array<byte> _palette(16*4);
+            
+            f->read(_palette.data(), 16 * 4);
+
             for (size_t i = 0; i < 16; i++)
             {
-                ((uint32 *)_palette)[i] = (((uint32 *)_palette)[i] & 0x0000FFFF) << 16 | (((uint32 *)_palette)[i] & 0xFFFF0000) >> 16;
-                ((uint32 *)_palette)[i] = (((uint32 *)_palette)[i] & 0x00FF00FF) << 8 | (((uint32 *)_palette)[i] & 0xFF00FF00) >> 8;
+                ((uint32 *)_palette.data())[i] = (((uint32 *)_palette.data())[i] & 0x00FF00FF) << 8  | (((uint32 *)_palette.data())[i] & 0xFF00FF00) >> 8;
+                ((uint32 *)_palette.data())[i] = (((uint32 *)_palette.data())[i] & 0x0000FFFF) << 16 | (((uint32 *)_palette.data())[i] & 0xFFFF0000) >> 16;
             }
 
-            dat.palette = ((uint32 *)_palette);
+            dat.palette = ((uint32 *)_palette.data());
         }
 
         break;
@@ -118,7 +120,6 @@ void TMXFile::readIndex(Common::SeekableReadStream *f)
 
         f->read(_pixels, (sizeof(byte) * dat.formatsettings.width * dat.formatsettings.height) / 2);
 
-        debug(format->toString().c_str());
 
         Common::Array<byte> pixels;
         for (size_t i = 0; i < (sizeof(byte) * dat.formatsettings.width * dat.formatsettings.height); i++)
@@ -144,14 +145,15 @@ void TMXFile::readIndex(Common::SeekableReadStream *f)
                         *format);
 
         debug(format->toString().c_str());
-        byte *pixels = new byte[(sizeof(byte) * dat.formatsettings.width * dat.formatsettings.height)];
-        f->read(pixels, sizeof(PS2PixelFormat) * dat.formatsettings.width * dat.formatsettings.height);
+        byte *pixels = new byte[dat.formatsettings.width * dat.formatsettings.height];
+        f->read(pixels,  dat.formatsettings.width * dat.formatsettings.height);
 
         uint32 *destP = (uint32 *)_surface.getPixels();
 
-        for (int i = 0; i < dat.formatsettings.width * dat.formatsettings.height; i++, ++destP)
+        for (uint32 i = 0; i < (dat.formatsettings.width * dat.formatsettings.height); i++, ++destP)
         {
-            *destP = dat.palette[pixels[i]];
+            //*destP = dat.palette[pixels[i]];
+            *destP = dat.palette[pixels[i] % 256];
         }
 
         delete[] pixels;
@@ -213,4 +215,4 @@ Common::Array<byte> TMXFile::tilePalette(Common::Array<byte> input)
     }
     return palette;
 }
-k
+
