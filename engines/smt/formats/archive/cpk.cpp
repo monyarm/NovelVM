@@ -176,6 +176,7 @@ bool CPKFile::ReadTOC(Common::SeekableReadStream &br, uint64 _TocOffset, uint64 
     FileEntry toc_entry;
     for (auto file : fileTable)
     {
+        debug(file.FileName.c_str());
         if (strcmp(file.FileName.c_str(), "TOC_HDR"))
         {
             toc_entry = file;
