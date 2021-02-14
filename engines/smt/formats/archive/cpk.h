@@ -6,8 +6,6 @@
 #include "common/str.h"
 #include "common/debug.h"
 #include "common/hex.h"
-#include <vector>
-#include <map>
 
 struct FileEntry
 {
@@ -30,14 +28,14 @@ class CPKFile
 public:
     CPKFile();
 
-    void ReadFile();
+    void ReadFile(char* path);
 
 private:
-    std::vector<byte> DecryptUTF(std::vector<byte> byte);
-    std::vector<byte> ReadUTFData();
+    Common::Array<byte> DecryptUTF(Common::Array<byte> byte);
+    Common::Array<byte> ReadUTFData();
     bool isUtfEncrypted;
 
-    std::vector<FileEntry> fileTable;
+    Common::Array<FileEntry> fileTable;
 };
 
 #endif

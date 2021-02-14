@@ -2,16 +2,15 @@
 Common::File f;
 
 
-void CPKFile::ReadFile()
+void CPKFile::ReadFile(char* path)
 {
 
-    if (f.open("umd0.cpk"))
+    if (f.open(path))
     {
 
-        char magic[5];
-        f.read(magic, 4);
+        uint32 magic = f.readUint32BE();
 
-        std::vector<byte> CPK_Packet = ReadUTFData();
+        Common::Array<byte> CPK_Packet = ReadUTFData();
 
         FileEntry CPAK_entry;
 
@@ -23,18 +22,18 @@ void CPKFile::ReadFile()
 
         fileTable.push_back(CPAK_entry);
 
-        debug(magic);
-        debug(VectorToHex(CPK_Packet));
+        debug(tag2str(magic));
+        Common::hexdump(CPK_Packet.begin(), CPK_Packet.size());
     }
 }
 
-std::vector<byte> CPKFile::ReadUTFData()
+Common::Array<byte> CPKFile::ReadUTFData()
 {
     f.readSint32LE();
     int64 utf_size = f.readSint64LE();
     byte* _utf_packet = new byte[utf_size];
     f.read(_utf_packet, utf_size);
-    std::vector<byte> utf_packet(_utf_packet, _utf_packet + (sizeof(_utf_packet) / sizeof(_utf_packet[0])));
+    Common::Array<byte> utf_packet(_utf_packet, utf_size);
 
     if (utf_packet[0] != 0x40 && utf_packet[1] != 0x55 && utf_packet[2] != 0x54 && utf_packet[3] != 0x46) //@UTF
     {
@@ -43,10 +42,10 @@ std::vector<byte> CPKFile::ReadUTFData()
     }
     return utf_packet;
 }
-std::vector<byte> CPKFile::DecryptUTF(std::vector<byte> utf)
+Common::Array<byte> CPKFile::DecryptUTF(Common::Array<byte> utf)
 {
 
-    std::vector<byte> result;
+    Common::Array<byte> result;
 
     int m, t;
     byte d;
