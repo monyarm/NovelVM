@@ -507,8 +507,8 @@ bool ConfigManager::getBool(const String &key, const String &domName) const {
 	if (parseBool(value, val))
 		return val;
 
-	error("ConfigManager::getBool(%s,%s): '%s' is not a valid bool",
-	      key.c_str(), domName.c_str(), value.c_str());
+//	error("ConfigManager::getBool(%s,%s): '%s' is not a valid bool",
+//	      key.c_str(), domName.c_str(), value.c_str());
 }
 
 
