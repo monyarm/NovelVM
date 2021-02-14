@@ -42,17 +42,19 @@ PlainGameDescriptor PlainGameDescriptor::empty() {
 	return pgd;
 }
 
-PlainGameDescriptor PlainGameDescriptor::of(const char *gameId, const char *description) {
+PlainGameDescriptor PlainGameDescriptor::of(const char *gameId, const char *description, const char *state, const char *url) {
 	PlainGameDescriptor pgd;
 	pgd.gameId = gameId;
 	pgd.description = description;
+	pgd.state = state;
+	pgd.url = url;
 	return pgd;
 }
 
 QualifiedGameDescriptor::QualifiedGameDescriptor(const char *engine, const PlainGameDescriptor &pgd) :
 		engineId(engine),
 		gameId(pgd.gameId),
-		description(pgd.description) {
+		description(pgd.description), state(pgd.state), url(pgd.url) {
 }
 
 DetectedGame::DetectedGame() :

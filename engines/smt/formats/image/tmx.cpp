@@ -27,6 +27,7 @@ void TMXFile::ReadFile(char *path)
         dat.formatsettings.userClutID = f.readUint32LE();
 
         f.read(&dat.formatsettings.userComment, 28);
+
         Common::DumpFile pal;
         Common::DumpFile img;
 
@@ -39,7 +40,7 @@ void TMXFile::ReadFile(char *path)
             pal.open("dumps/pal.data", true);
             img.open("dumps/image.data", true);
 
-            byte *_pixels = (byte *)malloc((sizeof(byte) * dat.formatsettings.width * dat.formatsettings.height) / 2);
+            byte *_pixels = new byte[(sizeof(byte) * dat.formatsettings.width * dat.formatsettings.height) / 2];
 
             f.read(_pixels, (sizeof(byte) * dat.formatsettings.width * dat.formatsettings.height) / 2);
 
@@ -51,7 +52,7 @@ void TMXFile::ReadFile(char *path)
                 pixels.push_back(_pixels[i] >> 4);
             }
 
-            img.write(pixels.data, (sizeof(byte) * dat.formatsettings.width * dat.formatsettings.height));
+            img.write(pixels.data(), (sizeof(byte) * dat.formatsettings.width * dat.formatsettings.height));
 
             img.flush();
             img.close();
@@ -63,17 +64,77 @@ void TMXFile::ReadFile(char *path)
             pal.open("dumps/pal.data", true);
             img.open("dumps/image.data", true);
 
-            byte *pixels = (byte *)malloc(sizeof(byte) * dat.formatsettings.width * dat.formatsettings.height);
+
+            byte *_palette = (byte *)malloc(256);
+            f.read(_palette, 256);
+
+            byte* palette = new byte[(sizeof(byte) * dat.formatsettings.width * dat.formatsettings.height)];
+            memcpy(palette, _palette, 256);
+
+
+            int newIndex = 0;
+            int oldIndex = 0;
+            for (int i = 0; i < 8; i++)
+            {
+                for (int x = 0; x < 8; x++)
+                {
+                    palette[newIndex++] = _palette[oldIndex++];
+                }
+                oldIndex += 8;
+                for (int x = 0; x < 8; x++)
+                {
+                    palette[newIndex++] = _palette[oldIndex++];
+                }
+                oldIndex -= 16;
+                for (int x = 0; x < 8; x++)
+                {
+                    palette[newIndex++] = _palette[oldIndex++];
+                }
+                oldIndex += 8;
+                for (int x = 0; x < 8; x++)
+                {
+                    palette[newIndex++] = _palette[oldIndex++];
+                }
+            }
+
+            pal.write(palette,256);
+            pal.flush();
+            pal.close();
+
+            byte *pixels = new byte[(sizeof(byte) * dat.formatsettings.width * dat.formatsettings.height)];
 
             f.read(pixels, sizeof(PS2PixelFormat) * dat.formatsettings.width * dat.formatsettings.height);
 
             img.write(pixels, sizeof(PS2PixelFormat) * dat.formatsettings.width * dat.formatsettings.height);
+
 
             img.flush();
             img.close();
             delete pixels;
         }
         break;
+        case PSMTC32:
+            break;
+        case PSMTC24:
+            break;
+        case PSMTC16:
+            break;
+        case PSMTC16S:
+            break;
+        case PSMT8H:
+            break;
+        case PSMT4HL:
+            break;
+        case PSMT4HH:
+            break;
+        case PSMZ32:
+            break;
+        case PSMZ24:
+            break;
+        case PSMZ16:
+            break;
+        case PSMZ16S:
+            break;
 
         default:
             break;

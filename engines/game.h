@@ -49,9 +49,11 @@
 struct PlainGameDescriptor {
 	const char *gameId;
 	const char *description;
+	const char *state;
+	const char *url;
 
 	static PlainGameDescriptor empty();
-	static PlainGameDescriptor of(const char *gameId, const char *description);
+	static PlainGameDescriptor of(const char *gameId, const char *description, const char *state, const char *url);
 };
 
 /**
@@ -80,6 +82,8 @@ struct QualifiedGameDescriptor {
 	Common::String engineId;
 	Common::String gameId;
 	Common::String description;
+	Common::String state;
+	Common::String url;
 
 	QualifiedGameDescriptor() {}
 	QualifiedGameDescriptor(const char *engine, const PlainGameDescriptor &pgd);

@@ -10,14 +10,14 @@ Common::Platform SMTEngine::getPlatform() const { return _gameDescription->platf
 }
 
 static const PlainGameDescriptor SMTGames[] = {
-	{"P3", "Persona 3"},
-	{"P3F", "Persona 3 FES"},
-	{"P4", "Persona 4"},
-	{"P4G", "Persona 4 Golden"},
-	{"P5", "Persona 5"},
-	{"P5R", "Persona 5 Royal"},
-	{"P3P", "P3P: Persona 3 Portable"},
-	{0, 0}
+	{"P3", "Persona 3", "file_formats", "https://megamitensei.fandom.com/wiki/Persona_3"},
+	{"P3F", "Persona 3 FES", "file_formats", "https://megamitensei.fandom.com/wiki/Persona_3_FES"},
+	{"P4", "Persona 4", "file_formats", "https://megamitensei.fandom.com/wiki/Persona_4"},
+	{"P4G", "Persona 4 Golden", "file_formats","https://megamitensei.fandom.com/wiki/Persona_4_Golden"},
+	{"P5", "Persona 5", "file_formats","https://megamitensei.fandom.com/wiki/Persona_5"},
+	{"P5R", "Persona 5 Royal", "file_formats","https://megamitensei.fandom.com/wiki/Persona_5_Royal"},
+	{"P3P", "P3P: Persona 3 Portable", "file_formats","https://megamitensei.fandom.com/wiki/Persona_3_Portable"},
+	{0, 0, 0, 0}
 };
 
 namespace SMT {
