@@ -1,0 +1,3 @@
+# This file is included from the main "configure" script
+# add_engine [name] [desc] [build-by-default] [subengines] [base games] [deps]
+add_engine smt "Shin Megami Tensei" wip "" "Persona 3, Persona 3 FES, Persona 3 Portable, Persona 4, Persona 4 Golden, Persona 5, Persona 5 Royal" "highres 16bit"
