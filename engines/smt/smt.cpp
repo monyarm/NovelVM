@@ -1,19 +1,6 @@
-#include "common/scummsys.h"
-
-#include "common/system.h"
-#include "common/config-manager.h"
-#include "common/debug.h"
-#include "common/debug-channels.h"
-#include "common/error.h"
-#include "common/file.h"
-#include "common/fs.h"
-#include "common/str.h"
-
 #include "smt/formats/archive/cpk.h"
 #include "smt/formats/video/pmsf.h"
 #include "smt/formats/image/tmx.h"
-
-#include "engines/util.h"
 
 #include "smt/smt.h"
 
@@ -41,7 +28,6 @@ SMTEngine::SMTEngine(OSystem *syst, const ADGameDescription *desc)
 	// Don't forget to register your random source
 	_rnd = new Common::RandomSource("smt");
 
-
 	debug("SMTEngine::SMTEngine");
 }
 
@@ -56,30 +42,38 @@ SMTEngine::~SMTEngine()
 	DebugMan.clearAllDebugChannels();
 }
 
-
 Common::Error SMTEngine::run()
 {
 	// Initialize graphics using following:
 
-	Common::List<Graphics::PixelFormat> formats = g_system->getSupportedFormats();
+	const Graphics::PixelFormat *format = new Graphics::PixelFormat(4, 8, 8, 8, 8, 0, 8, 16, 24);
 
-	initGraphics(480, 272, formats);
+	if (strcmp(getGameId(), "P3P") == 0)
+	{
+		//PSP
+		//initGraphics(480, 272, format);
+		initGraphics(1920, 1080, format);
+	}
+	else if (strcmp(getGameId(), "P4G") == 0)
+	{
+		//PSVita
+		initGraphics(960, 554, format);
+	}
+	else
+	{
 
-	Graphics::PixelFormat format = g_system->getScreenFormat();
-	
+		initGraphics(1920, 1080, format);
+	}
+
 	//CPKFile _cpk = CPKFile();
 
 	//_cpk.ReadFile("umd0.cpk");
-
 
 	//PMSFFile _pmsf = PMSFFile();
 
 	//_pmsf.ReadFile("p3opmv_p3p.pmsf");
 
-	TMXFile _tmx = TMXFile();
-
-	_tmx.ReadFile("test.tmx");
-
+	TMXFile _tmx = TMXFile("test/PSMT8.tmx");
 
 	// You could use backend transactions directly as an alternative,
 	// but it isn't recommended, until you want to handle the error values
@@ -102,14 +96,34 @@ Common::Error SMTEngine::run()
 	// Additional setup.
 	debug("SMTEngine::init");
 
-	// Your main even loop should be (invoked from) here.
-	debug("SMTEngine::go: Hello, World!");
+	Common::Event e;
 
-	// This test will show up if -d1 and --debugflags=example are specified on the commandline
-	debugC(1, kSMTDebug, "Example debug call");
+	g_system->getEventManager()->pollEvent(e);
+	g_system->delayMillis(10);
 
-	// This test will show up if --debugflags=example or --debugflags=example2 or both of them and -d3 are specified on the commandline
-	debugC(3, kSMTDebug | kSMTDebug2, "Example debug call two");
+	Graphics::Surface *screen = g_system->lockScreen();
+	screen->fillRect(Common::Rect(0, 0, g_system->getWidth(), g_system->getHeight()), 0);
+
+	const Graphics::Surface *surface = _tmx.getSurface(); // = tmxData
+
+	debug(surface->format.toString().c_str());
+
+	int w = CLIP<int>(surface->w, 0, g_system->getWidth());
+	int h = CLIP<int>(surface->h, 0, g_system->getHeight());
+
+	int x = (g_system->getWidth() - w) / 2;
+	int y = (g_system->getHeight() - h) / 2;
+
+	screen->copyRectToSurface(*surface, x, y, Common::Rect(0, 0, w, h));
+
+	g_system->unlockScreen();
+	g_system->updateScreen();
+
+	while (!shouldQuit())
+	{
+		g_system->getEventManager()->pollEvent(e);
+		g_system->delayMillis(10);
+	}
 
 	return Common::kNoError;
 }

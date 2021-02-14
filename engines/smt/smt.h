@@ -4,6 +4,21 @@
 #include "common/random.h"
 #include "engines/engine.h"
 #include "gui/debugger.h"
+#include "common/scummsys.h"
+
+#include "common/system.h"
+#include "common/config-manager.h"
+#include "common/debug.h"
+#include "common/debug-channels.h"
+#include "common/error.h"
+#include "common/file.h"
+#include "common/fs.h"
+#include "common/str.h"
+#include "common/events.h"
+#include "common/rect.h"
+#include "graphics/palette.h"
+#include "graphics/surface.h"
+#include "engines/util.h"
 
 struct ADGameDescription;
  
@@ -34,6 +49,7 @@ public:
  
 private:
 	Console *_console;
+
  
 	// We need random numbers
 	Common::RandomSource *_rnd;

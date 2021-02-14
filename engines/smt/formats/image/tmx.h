@@ -6,6 +6,8 @@
 #include "common/str.h"
 #include "common/debug.h"
 #include "common/hex.h"
+#include "graphics/surface.h"
+#include "graphics/colormasks.h"
 
 enum PS2PixelFormat : byte
 {
@@ -23,8 +25,6 @@ enum PS2PixelFormat : byte
     PSMZ16 = 0x32,
     PSMZ16S = 0x3A
 };
-
-
 
 struct TMXHeader
 {
@@ -97,18 +97,36 @@ struct TMXData
 {
     TMXHeader header;
     TMXFormatSettings formatsettings;
-};
 
+    byte* palette;
+    byte* index;
+};
 
 class TMXFile
 {
 public:
-    TMXFile();
+    TMXFile(const char *path);
+	~TMXFile() {
+		_surface.free();
+	}
 
-    void ReadFile(char *path);
+
+    const Graphics::Surface *getSurface() const;
 
 private:
+    Graphics::Surface _surface;
     TMXData dat;
+
+    void readHeader(Common::File* f);
+
+    void readPalette(Common::File* f);
+
+    void readIndex(Common::File* f);
+
+    Common::Array<byte> tilePalette(Common::Array<byte> input);
+
+
+    
 };
 
 #endif
