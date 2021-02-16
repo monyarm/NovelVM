@@ -30,10 +30,10 @@ static const ADGameDescription gameDescriptions[] = {
 
 } // End of namespace KoihimeDoki
 
-class KoihimeDokiMetaEngine : public AdvancedMetaEngine
+class KoihimeDokiMetaEngineDetection : public AdvancedMetaEngineDetection
 {
 public:
-	KoihimeDokiMetaEngine() : AdvancedMetaEngine(KoihimeDoki::gameDescriptions, sizeof(ADGameDescription), KoihimeDokiGames)
+	KoihimeDokiMetaEngineDetection() : AdvancedMetaEngineDetection(KoihimeDoki::gameDescriptions, sizeof(ADGameDescription), KoihimeDokiGames)
 	{
 	}
 
@@ -52,25 +52,7 @@ public:
 		return "";
 	}
 
-	bool hasFeature(MetaEngineFeature f) const override;
-	bool createInstance(OSystem *syst, Engine **engine, const ADGameDescription *desc) const override;
-};
+	};
 
-bool KoihimeDokiMetaEngine::hasFeature(MetaEngineFeature f) const
-{
-	return false;
-}
+REGISTER_PLUGIN_STATIC(KOIHIME_DOKI_DETECTION, PLUGIN_TYPE_ENGINE_DETECTION, KoihimeDokiMetaEngineDetection);
 
-bool KoihimeDokiMetaEngine::createInstance(OSystem *syst, Engine **engine, const ADGameDescription *desc) const
-{
-	if (desc)
-		*engine = new KoihimeDoki::KoihimeDokiEngine(syst, desc);
-
-	return desc != nullptr;
-}
-
-#if PLUGIN_ENABLED_DYNAMIC(KOIHIME_DOKI)
-REGISTER_PLUGIN_DYNAMIC(KOIHIME_DOKI, PLUGIN_TYPE_ENGINE, KoihimeDokiMetaEngine);
-#else
-REGISTER_PLUGIN_STATIC(KOIHIME_DOKI, PLUGIN_TYPE_ENGINE, KoihimeDokiMetaEngine);
-#endif

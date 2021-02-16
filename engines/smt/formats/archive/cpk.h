@@ -6,7 +6,7 @@
 #include "common/fs.h"
 #include "common/str.h"
 #include "common/debug.h"
-#include "common/hex.h"
+
 #include "common/stream.h"
 #include "common/hashmap.h"
 #include "common/memstream.h"
@@ -171,7 +171,7 @@ public:
     List<byte> GTOC_packet;
     uint64 TocOffset, EtocOffset, ItocOffset, GtocOffset, ContentOffset;
 
-    FileEntry CreateFileEntry(string FileName, uint64 FileOffset, Type FileOffsetType, int64 FileOffsetPos, string TOCName, string FileType, bool encrypted);
+    FileEntry CreateFileEntry(string _fileName, uint64& _fileOffset, Type _fileOffsetType, int64& _fileOffsetPos, string _tocName, string _fileType, bool encrypted);
 
     bool ReadTOC(Common::SeekableReadStream &br, uint64 TocOffset, uint64 ContentOffset);
 

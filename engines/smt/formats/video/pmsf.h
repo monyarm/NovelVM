@@ -5,7 +5,7 @@
 #include "common/fs.h"
 #include "common/str.h"
 #include "common/debug.h"
-#include "common/hex.h"
+
 
 #include "common/pack-start.h"	// START STRUCT PACKING
 struct PSMFHeader

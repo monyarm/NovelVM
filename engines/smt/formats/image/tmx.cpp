@@ -15,7 +15,7 @@ TMXFile::TMXFile(Common::SeekableReadStream *stream)
     readFile(stream);
 }
 
-Graphics::TransparentSurface *const TMXFile::getSurface()
+Graphics::TransparentSurface * TMXFile::getSurface()
 {
     return &_surface;
 }
@@ -135,7 +135,7 @@ void TMXFile::readIndex(Common::SeekableReadStream *f)
         {
             *destP = dat.palette[pixels[i]];
         }
-        delete _pixels;
+        delete[] _pixels;
     }
     break;
     case PSMT8:
@@ -144,7 +144,7 @@ void TMXFile::readIndex(Common::SeekableReadStream *f)
         _surface.create(dat.formatsettings.width, dat.formatsettings.height,
                         *format);
 
-        debug(format->toString().c_str());
+        debug("%s", format->toString().c_str());
         byte *pixels = new byte[dat.formatsettings.width * dat.formatsettings.height];
         f->read(pixels,  dat.formatsettings.width * dat.formatsettings.height);
 

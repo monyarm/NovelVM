@@ -1,7 +1,7 @@
 #include "smt/formats/image/dds.h"
 
 DDSFile::DDSFile(const char *path) {
-	debug(path);
+	debug("%s", path);
 	Common::File f;
 	if (f.open(path)) {
 		readFile(&f);
@@ -12,7 +12,7 @@ DDSFile::DDSFile(Common::SeekableReadStream *stream) {
 	readFile(stream);
 }
 
-Graphics::TransparentSurface *const DDSFile::getSurface() {
+Graphics::TransparentSurface * DDSFile::getSurface() {
 	return &_surface;
 }
 
@@ -58,7 +58,7 @@ void DDSFile::readHeader(Common::SeekableReadStream *f) {
 
 	dat.header.ddsCaps.dwReserved = f->readUint64LE();
 	dat.header.dwReserved2 = f->readUint32LE();
-	debug(dat.header.ddpfPixelFormat.dwFourCC.c_str());
+	debug("%s", dat.header.ddpfPixelFormat.dwFourCC.c_str());
 	Common::hexdump((byte *)dat.header.ddpfPixelFormat.dwFourCC.c_str(), 4);
 	Common::hexdump((byte *)&dat.header.ddpfPixelFormat.dwFlags, 4);
 }

@@ -38,13 +38,18 @@ static const ADGameDescription gameDescriptions[] = {
 
 } // End of namespace BibleBlack
 
-class BibleBlackMetaEngine : public AdvancedMetaEngine
+class BibleBlackMetaEngineDetection : public AdvancedMetaEngineDetection
 {
 public:
-	BibleBlackMetaEngine() : AdvancedMetaEngine(BibleBlack::gameDescriptions, sizeof(ADGameDescription), BibleBlackGames)
+	BibleBlackMetaEngineDetection() : AdvancedMetaEngineDetection(BibleBlack::gameDescriptions, sizeof(ADGameDescription), BibleBlackGames)
 	{
 	}
 
+
+	const char *getOriginalCopyright() const override
+	{
+		return "";
+	}
 	const char *getEngineId() const override
 	{
 		return "BibleBlack";
@@ -54,31 +59,6 @@ public:
 	{
 		return "Bible Black";
 	}
-
-	const char *getOriginalCopyright() const override
-	{
-		return "";
-	}
-
-	bool hasFeature(MetaEngineFeature f) const override;
-	bool createInstance(OSystem *syst, Engine **engine, const ADGameDescription *desc) const override;
 };
 
-bool BibleBlackMetaEngine::hasFeature(MetaEngineFeature f) const
-{
-	return false;
-}
-
-bool BibleBlackMetaEngine::createInstance(OSystem *syst, Engine **engine, const ADGameDescription *desc) const
-{
-	if (desc)
-		*engine = new BibleBlack::BibleBlackEngine(syst, desc);
-
-	return desc != nullptr;
-}
-
-#if PLUGIN_ENABLED_DYNAMIC(BIBLEBLACK)
-REGISTER_PLUGIN_DYNAMIC(BIBLEBLACK, PLUGIN_TYPE_ENGINE, BibleBlackMetaEngine);
-#else
-REGISTER_PLUGIN_STATIC(BIBLEBLACK, PLUGIN_TYPE_ENGINE, BibleBlackMetaEngine);
-#endif
+REGISTER_PLUGIN_STATIC(BIBLEBLACK_DETECTION, PLUGIN_TYPE_ENGINE_DETECTION, BibleBlackMetaEngineDetection);

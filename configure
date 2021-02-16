@@ -6123,7 +6123,7 @@ done
 
 # Sort engines to place our headline engine at start...
 # No technical reason, just historical convention
-headline_engine=scumm
+headline_engine=smt
 _sorted_engines="${headline_engine}"
 for engine in $_engines; do
 	if test "${engine}" != "${headline_engine}" ; then

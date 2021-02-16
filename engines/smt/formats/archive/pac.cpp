@@ -1,5 +1,5 @@
 #include "common/archive.h"
-#include "common/hex.h"
+
 #include "smt/smt.h"
 
 #include "smt/formats/archive/pac.h"
@@ -197,6 +197,7 @@ bool PACArchive::IsValidFormatVersion2And3(Common::SeekableReadStream &stream, i
 
 		return true;
 	}
+		return true;
 }
 
 void PACArchive::ReadEntries(Common::SeekableReadStream &stream) {
@@ -232,7 +233,7 @@ void PACArchive::ReadEntries(Common::SeekableReadStream &stream) {
 			stream.seek(entryStartPosition + 252, SEEK_SET);
 
 			// read entry length
-			int length = stream.readSint32(IsLittleEndian());
+			int length = IsLittleEndian() ? stream.readSint32LE() : stream.readSint32BE();
 
 			if (fileName.size() == 0 || length <= 0 || length > 1024 * 1024 * 100) {
 				break;
@@ -252,7 +253,7 @@ void PACArchive::ReadEntries(Common::SeekableReadStream &stream) {
 			entries[entry.name].reset(new Entry(entry));
 		}
 	} else if (Version == FormatVersion::Version2 || Version == FormatVersion::Version2BE || Version == FormatVersion::Version3 || Version == FormatVersion::Version3BE) {
-		int entryCount = stream.readSint32(IsLittleEndian());
+		int entryCount = IsLittleEndian() ? stream.readSint32LE() : stream.readSint32BE();
 		int nameLength = 32;
 		if (Version == FormatVersion::Version3)
 			nameLength = 24;
@@ -275,7 +276,7 @@ void PACArchive::ReadEntries(Common::SeekableReadStream &stream) {
 			fileName.trim();
 
 			// read entry length
-			int length = stream.readSint32(IsLittleEndian());
+			int length = IsLittleEndian() ? stream.readSint32LE() : stream.readSint32BE();
 
 			if (fileName.size() == 0 || length <= 0 || length > 1024 * 1024 * 100) {
 				break;

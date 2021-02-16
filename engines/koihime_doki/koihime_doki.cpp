@@ -60,7 +60,7 @@ Common::Error KoihimeDokiEngine::run()
 
 	for (auto &&l : list)
 	{
-		debug(l.get()->getName().c_str());
+		debug("%s", l.get()->getName().c_str());
 	}
 	list = Common::ArchiveMemberList();
 	Common::File f;
@@ -75,7 +75,7 @@ Common::Error KoihimeDokiEngine::run()
 
 	for (auto &&l : list)
 	{
-		debug(l.get()->getName().c_str());
+		debug("%s", l.get()->getName().c_str());
 	}
 	list = Common::ArchiveMemberList();
 

@@ -4,7 +4,7 @@
 #include "common/debug.h"
 #include "common/file.h"
 #include "common/fs.h"
-#include "common/hex.h"
+
 #include "common/str.h"
 #include "graphics/colormasks.h"
 #include "graphics/surface.h"

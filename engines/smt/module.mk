@@ -2,13 +2,8 @@ MODULE := engines/smt
 
 MODULE_OBJS := \
 	smt.o \
-	gfx.o \
-	gfx_opengl.o \
-	gfx_opengl_texture.o \
-	gfx_opengl_shaders.o \
-	gfx_tinygl.o \
-	gfx_tinygl_texture.o \
 	detection.o \
+	metaengine.o \
 	formats/archive/cpk.o \
 	formats/archive/cvm.o \
 	formats/archive/pac.o \
@@ -16,6 +11,12 @@ MODULE_OBJS := \
 	formats/image/tmx.o \
 	formats/image/dds.o \
 	formats/audio/adx.o \
+	gfx/gfx.o \
+	gfx/gfx_tinygl.o \
+	gfx/gfx_tinygl_texture.o \
+	gfx/gfx_opengl.o \
+	gfx/gfx_opengl_texture.o \
+	gfx/gfx_opengl_shaders.o \
 
 MODULE_DIRS += \
 	engines/smt

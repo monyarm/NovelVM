@@ -46,24 +46,20 @@ SMTEngine::~SMTEngine() {
 Common::Error SMTEngine::run() {
 	// Initialize graphics using following:
 
-	//const Graphics::PixelFormat *format = new Graphics::PixelFormat(4, 8, 8, 8, 8,0,8,16,24); /* 24, 16, 8, 0); */
+	const Graphics::PixelFormat *format = new Graphics::PixelFormat(4, 8, 8, 8, 8,0,8,16,24); /* 24, 16, 8, 0); */
 
  	if (strcmp(getGameId(), "P3P") == 0) {
-		//initGraphics(480, 272, format);
-		g_system->launcherInitSize(480, 272);
+		initGraphics(480, 272, format);
 
 	} else if (strcmp(getGameId(), "P4G") == 0) {
 		//PSVita
-		//initGraphics(960, 554, format);
-		g_system->launcherInitSize(960, 554);
+		initGraphics(960, 554, format);
 
 	} else {
 
-		//initGraphics(1920, 1080, format);
-		g_system->launcherInitSize(1920, 1080);
+		initGraphics(1920, 1080, format);
 
 	} 
-
 
 	_gfx = createRenderer(_system);
 	_gfx->init();
@@ -84,7 +80,7 @@ Common::Error SMTEngine::run() {
 	SearchMan.listMembers(list);
 
 
-	for (auto &&l : list)
+	//for (auto &&l : list)
 	{
 		//debug(l.get()->getName().c_str());
 	}
@@ -110,7 +106,7 @@ Common::Error SMTEngine::run() {
 	_data.listMembers(list);
 	for (auto &&l : list)
 	{
-		debug(l.get()->getName().c_str());
+		debug("%s", l.get()->getName().c_str());
 	}
 
 

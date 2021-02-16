@@ -47,7 +47,7 @@ endif
 endif
 
 ifeq "$(HAVE_CLANG)" "1"
-	CXXFLAGS+= -Wno-conversion -Wno-shorten-64-to-32 -Wno-sign-compare -Wno-four-char-constants
+	CXXFLAGS+= -Wno-conversion -Wno-shorten-64-to-32 -Wno-sign-compare
 	# We use a anonymous nested type declaration in an anonymous union in
 	# common/str.h. This is no standard construct and clang warns about it.
 	# It works for all our target systems though, thus we simply disable that
@@ -79,7 +79,7 @@ ZIP     ?= zip -q
 # Misc stuff - you should never have to edit this                     #
 #######################################################################
 
-EXECUTABLE  := $(EXEPRE)scummvm$(EXEEXT)
+EXECUTABLE  := $(EXEPRE)novelvm$(EXEEXT)
 
 include $(srcdir)/Makefile.common
 

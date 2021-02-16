@@ -1,5 +1,5 @@
 #include "common/archive.h"
-#include "common/hex.h"
+
 
 #include "smt/formats/archive/cvm.h"
 
@@ -82,9 +82,9 @@ CVMEntry CVMArchive::ReadISORecord(Common::SeekableReadStream &reader, bool isRo
 
 	if (!isDirectory) {
 		if (mName == "EVENT/SYS/ARC_C002.TMX") {
-			debug(mName.c_str());
+			debug("%s", mName.c_str());
 			debug("%i", mSize);
-			debug("%i", CVM_HEADER_SIZE + ((long)mLba * ISO_BLOCKSIZE));
+			debug("%li", CVM_HEADER_SIZE + ((long)mLba * ISO_BLOCKSIZE));
 		}
 		record.name = mName;
 		record.size = mSize;
