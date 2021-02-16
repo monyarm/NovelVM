@@ -8,7 +8,7 @@
 #include "common/fs.h"
 #include "common/str.h"
 #include "common/debug.h"
-#include "common/hex.h"
+
 #include "graphics/surface.h"
 #include "graphics/transparent_surface.h"
 #include "graphics/colormasks.h"
@@ -107,7 +107,7 @@ public:
         _surface.free();
     }
 
-    Graphics::TransparentSurface * const getSurface();
+    Graphics::TransparentSurface *  getSurface();
 
     bool isValid(Common::SeekableReadStream *stream);
     

@@ -305,6 +305,8 @@ dists/emscripten/emsdk-*
 
 #Ignore Atari/FreeMiNT files
 scummvm.prg
+scummvm.gtp
+scummvm.ttp
 
 #Ignore Python generated files
 __pycache__/
@@ -316,3 +318,6 @@ __pycache__/
 #Ignore Claude instruction files
 CLAUDE.md
 .claude
+
+novelvm
+novelvm.*

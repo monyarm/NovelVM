@@ -14,7 +14,7 @@ CPKFile::CPKFile(const char *path)
     }
     else
     {
-        debug(path);
+        debug("%s", path);
         debug("cpk file not found");
     }
 
@@ -120,24 +120,24 @@ bool CPKFile::ReadCPKFile(Common::SeekableReadStream &br)
                 return true;
 
 }
-FileEntry CPKFile::CreateFileEntry(string FileName, uint64 FileOffset, Type FileOffsetType, int64 FileOffsetPos, string TOCName, string FileType, bool encrypted)
+FileEntry CPKFile::CreateFileEntry(string _fileName, uint64& _fileOffset, Type _fileOffsetType, int64& _fileOffsetPos, string _tocName, string _fileType, bool encrypted)
 {
     FileEntry entry;
-    entry.FileName = FileName;
-    entry.FileOffset = FileOffset;
-    entry.FileOffsetType = FileOffsetType;
-    entry.FileOffsetPos = FileOffsetPos;
-    entry.TOCName = TOCName;
-    entry.FileType = FileType;
+    entry.FileName = _fileName;
+    entry.FileOffset = _fileOffset;
+    entry.FileOffsetType = _fileOffsetType;
+    entry.FileOffsetPos = _fileOffsetPos;
+    entry.TOCName = _tocName;
+    entry.FileType = _fileType;
     entry.Encrypted = encrypted;
     entry.Offset = 0;
 
     return entry;
 }
 
-bool CPKFile::ReadTOC(Common::SeekableReadStream &br, uint64 _TocOffset, uint64 _ContentOffset)
+bool CPKFile::ReadTOC(Common::SeekableReadStream &br, uint64 _tocOffset, uint64 _contentOffset)
 {
-    uint64 fTocOffset = _TocOffset;
+    uint64 fTocOffset = _tocOffset;
     uint64 add_offset = 0;
 
     if (fTocOffset > (uint64)0x800)
@@ -151,14 +151,14 @@ bool CPKFile::ReadTOC(Common::SeekableReadStream &br, uint64 _TocOffset, uint64 
         //    add_offset = ContentOffset;
         //else
         //{
-            if (_ContentOffset < fTocOffset)
-                add_offset = _ContentOffset;
+            if (_contentOffset < fTocOffset)
+                add_offset = _contentOffset;
             else
                 add_offset = fTocOffset;
         //}
     //}
 
-    br.seek((int64)_TocOffset);
+    br.seek((int64)_tocOffset);
     char utfMagic[5];
     br.read(utfMagic, 4);
     utfMagic[4] = 0;
@@ -174,10 +174,10 @@ bool CPKFile::ReadTOC(Common::SeekableReadStream &br, uint64 _TocOffset, uint64 
     TOC_packet = utf_packet;
 
     FileEntry toc_entry;
-    for (auto file : fileTable)
+    for (const auto& file : fileTable)
     {
-        debug(file.FileName.c_str());
-        if (strcmp(file.FileName.c_str(), "TOC_HDR"))
+        debug("%s", file.FileName.c_str());
+        if (strcmp(file.FileName.c_str(), "TOC_HDR") != 0)
         {
             toc_entry = file;
         }
@@ -564,9 +564,9 @@ bool CPKFile::ReadGTOC(Common::SeekableReadStream &br, uint64 startoffset)
 
     GTOC_packet = utf_packet;
     FileEntry gtoc_entry;
-    for (auto file : fileTable)
+    for (const auto& file : fileTable)
     {
-        if (strcmp(file.FileName.c_str(), "GTOC_HDR"))
+        if (strcmp(file.FileName.c_str(), "GTOC_HDR") != 0)
         {
             gtoc_entry = file;
         }
@@ -600,9 +600,9 @@ bool CPKFile::ReadETOC(Common::SeekableReadStream &br, uint64 startoffset)
 
     FileEntry etoc_entry;
 
-    for (auto file : fileTable)
+    for (const auto& file : fileTable)
     {
-        if (strcmp(file.FileName.c_str(), "ETOC_HDR"))
+        if (strcmp(file.FileName.c_str(), "ETOC_HDR") != 0)
         {
             etoc_entry = file;
         }
@@ -618,9 +618,9 @@ bool CPKFile::ReadETOC(Common::SeekableReadStream &br, uint64 startoffset)
     }
 
     List<FileEntry> fileEntries;
-    for (auto file : fileTable)
+    for (const auto& file : fileTable)
     {
-        if (strcmp(file.FileType.c_str(), "FILE"))
+        if (strcmp(file.FileType.c_str(), "FILE") != 0)
         {
             fileEntries.push_back(file);
         }
@@ -654,7 +654,7 @@ void CPKFile::ReadUTFData(Common::SeekableReadStream &br)
     }
 }
 
-bool CPKFile::ReadITOC(Common::SeekableReadStream &br, uint64 startoffset, uint64 _ContentOffset, uint16 Align)
+bool CPKFile::ReadITOC(Common::SeekableReadStream &br, uint64 startoffset, uint64 _contentOffset, uint16 Align)
 
 {
     br.seek((int64)startoffset);
@@ -673,9 +673,9 @@ bool CPKFile::ReadITOC(Common::SeekableReadStream &br, uint64 startoffset, uint6
     ITOC_packet = utf_packet;
 
     FileEntry itoc_entry;
-    for (auto file : fileTable)
+    for (const auto& file : fileTable)
     {
-        if (strcmp(file.FileName.c_str(), "ITOC_HDT"))
+        if (strcmp(file.FileName.c_str(), "ITOC_HDT") != 0)
         {
             itoc_entry = file;
         }
@@ -782,7 +782,7 @@ bool CPKFile::ReadITOC(Common::SeekableReadStream &br, uint64 startoffset, uint6
     FileEntry temp;
     //int id = 0;
     uint value = 0, value2 = 0;
-    uint64 baseoffset = _ContentOffset;
+    uint64 baseoffset = _contentOffset;
 
     for (auto id : IDs)
     {
@@ -793,7 +793,7 @@ bool CPKFile::ReadITOC(Common::SeekableReadStream &br, uint64 startoffset, uint6
         temp.TOCName = "ITOC";
 
         temp.DirName = "";
-        temp.FileName = id + ".bin";
+        temp.FileName = string::format("%i",id) + ".bin";
 
         temp.FileSize = value;
         temp.FileSizePos = SizePosTable[id];
@@ -1029,24 +1029,24 @@ bool UTF::ReadUTF(Common::SeekableReadStream &br, bool LE)
         return false;
     }
 
-    table_size = br.readSint32(LE);
+    table_size = LE ? br.readSint32LE() : br.readSint32BE();
 
-    rows_offset = br.readSint32(LE);
+    rows_offset = LE ? br.readSint32LE() : br.readSint32BE();
 
-    strings_offset = br.readSint32(LE);
+    strings_offset = LE ? br.readSint32LE() : br.readSint32BE();
 
-    data_offset = br.readSint32(LE);
+    data_offset = LE ? br.readSint32LE() : br.readSint32BE();
 
     // CPK Header & UTF Header are ignored, so add 8 to each offset
     rows_offset += (offset + 8);
     strings_offset += (offset + 8);
     data_offset += (offset + 8);
 
-    table_name = br.readSint32(LE);
+    table_name = LE ? br.readSint32LE() : br.readSint32BE();
 
-    num_columns = br.readSint16(LE);
-    row_length = br.readSint16(LE);
-    num_rows = br.readSint32(LE);
+    num_columns = LE ? br.readSint16LE() : br.readSint16BE();
+    row_length = LE ? br.readSint16LE() : br.readSint16BE();
+    num_rows = LE ? br.readSint32LE() : br.readSint32BE();
 
     //read Columns
     COLUMN column;
@@ -1059,7 +1059,7 @@ bool UTF::ReadUTF(Common::SeekableReadStream &br, bool LE)
             br.seek(3, br.pos());
             column.flags = br.readByte();
         }
-        offset = (int64)(br.readSint32(LE)) + strings_offset;
+        offset = (int64)(LE ? br.readSint32LE() : br.readSint32BE()) + strings_offset;
         auto backup = br.pos();
         br.seek(offset);
         column.name = br.readString();

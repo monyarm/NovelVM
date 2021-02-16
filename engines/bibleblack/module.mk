@@ -3,6 +3,7 @@ MODULE := engines/bibleblack
 MODULE_OBJS := \
 	bibleblack.o \
 	detection.o \
+	metaengine.o \
 	formats/archive/pak.o
 
 MODULE_DIRS += \

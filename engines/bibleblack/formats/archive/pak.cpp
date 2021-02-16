@@ -1,6 +1,6 @@
 #include "bibleblack/bibleblack.h"
 #include "common/archive.h"
-#include "common/hex.h"
+
 
 #include "bibleblack/formats/archive/pak.h"
 
@@ -10,7 +10,7 @@ namespace BibleBlack
 PAKArchive::PAKArchive(const Common::String &filename) : _pakFilename(filename)
 {
     Common::File pakFile;
-    debug(_pakFilename.c_str());
+    debug("%s", _pakFilename.c_str());
 
 
 	Common::ArchiveMemberList list;
@@ -29,24 +29,24 @@ PAKArchive::PAKArchive(const Common::String &filename) : _pakFilename(filename)
     for (int i = 0; i < numHeaders; i++)
     {
         PakHeader header;
-        char __name[9];
-        char __extension[5];
+        char _name[9];
+        char _extension[5];
 
-        pakFile.read(__name, 8);
-        __name[8] = '\0';
-        __extension[4] = '\0';
+        pakFile.read(_name, 8);
+        _name[8] = '\0';
+        _extension[4] = '\0';
 
-        pakFile.read(__extension, 4);
+        pakFile.read(_extension, 4);
 
-        Common::String _name(__name);
-        Common::String _extension(__extension);
+        Common::String name(_name);
+        Common::String extension(_extension);
 
 
-        _name.trim();
-        _extension.trim();
-        _name.toLowercase();
-        _extension.toLowercase();
-        _name = _name + "." + _extension;
+        name.trim();
+        extension.trim();
+        name.toLowercase();
+        extension.toLowercase();
+        name = name + "." + extension;
 
         header.name = _name;
         //debug(header.name.c_str());
@@ -54,7 +54,7 @@ PAKArchive::PAKArchive(const Common::String &filename) : _pakFilename(filename)
         _tempHeaders.push_back(header);
     }
 
-    for (char i = numHeaders - 1; i >= 0; i--)
+    for (uint16 i = numHeaders - 1; i >= 0; i--)
     {
         if (i == numHeaders - 1)
         {
@@ -65,7 +65,7 @@ PAKArchive::PAKArchive(const Common::String &filename) : _pakFilename(filename)
             _tempHeaders[i].size = _tempHeaders[i + 1].position - _tempHeaders[i].position;
         }
     }
-    for (PakHeader header : _tempHeaders)
+    for (const PakHeader& header : _tempHeaders)
     {
         _headers[header.name].reset(new PakHeader(header));
     }

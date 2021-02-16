@@ -10,7 +10,7 @@
 
 #include "koihime_doki/koihime_doki.h"
 #include "common/archive.h"
-#include "common/hex.h"
+
 
 #include "koihime_doki/formats/archive/exwlcs.h"
 
@@ -32,7 +32,7 @@ void EXWLCSArchive::unobfuscate(LCSENTRY& entry, unsigned long key) {
   entry.length ^= key;
 
   for (unsigned long i = 0; entry.filename[i]; i++) {
-    entry.filename[i] ^= key;
+    entry.filename[i] ^=  key;
   }
 }
 
@@ -64,7 +64,7 @@ EXWLCSArchive::EXWLCSArchive(const Common::String &filename) : _exwlcsFilename(f
     Common::File exwlcsFile;
     Common::File exwlcsLst;
 
-    debug(_exwlcsFilename.c_str());
+    debug("%s", _exwlcsFilename.c_str());
 
     if (!exwlcsFile.open(_exwlcsFilename))
     {

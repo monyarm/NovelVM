@@ -3,6 +3,7 @@ MODULE := engines/koihime_doki
 MODULE_OBJS := \
 	koihime_doki.o \
 	detection.o \
+	metaengine.o \
 	formats/archive/exwlcs.o
 
 MODULE_DIRS += \

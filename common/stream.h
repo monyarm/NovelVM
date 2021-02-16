@@ -449,31 +449,6 @@ public:
 	}
 
 
-	uint16 readUint16(bool LE)
-	{
-		if (LE)
-		{
-			return readUint16LE();
-		}
-		else
-		{
-			return readUint16BE();
-		}
-	}
-
-
-	unt32 readUint32(bool LE)
-	{
-		if (LE)
-		{
-			return readUint32LE();
-		}
-		else
-		{
-			return readUint32BE();
-		}
-	}
-
 	Common::String readFourCC()
 	{
 		uint32 val;
@@ -481,45 +456,6 @@ public:
 		Common::String str((char*)&val,4);
 		return str;
 	}
-
-	uint64 readUint64(bool LE)
-	{
-		if (LE)
-		{
-			return readUint64LE();
-		}
-		else
-		{
-			return readUint64BE();
-		}
-	}
-
-	FORCEINLINE int16 readSint16(bool LE)
-	{
-		return (int16)readUint16(LE);
-	}
-
-	FORCEINLINE int32 readSint32(bool LE)
-	{
-		return (int32)readUint32(LE);
-	}
-
-	FORCEINLINE int64 readSint64(bool LE)
-	{
-		return (int64)readUint64(LE);
-	}
-
-	Common::String readString()
-	{
-		Common::String result;
-		char c;
-
-		while (pos() < size() && (c = (char)readByte()) != '\0')
-			result += c;
-
-		return result;
-	}
-
 
 	/**
 	 * Read an unsigned 16-bit word stored in little endian (LSB first) order

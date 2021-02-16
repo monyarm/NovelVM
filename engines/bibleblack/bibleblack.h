@@ -15,7 +15,6 @@
 #include "common/file.h"
 #include "common/fs.h"
 #include "common/str.h"
-#include "common/hex.h"
 
 #include "engines/util.h"
 

@@ -19,6 +19,7 @@
 #include "graphics/palette.h"
 #include "graphics/surface.h"
 #include "engines/util.h"
+#include "smt/gfx/gfx.h"
 
 struct ADGameDescription;
  
@@ -49,7 +50,7 @@ public:
  
 private:
 	Console *_console;
-
+	Renderer *_gfx;
  
 	// We need random numbers
 	Common::RandomSource *_rnd;

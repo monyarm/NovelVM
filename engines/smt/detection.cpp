@@ -1,7 +1,4 @@
 #include "smt/smt.h"
-
-#include "base/plugins.h"
-
 #include "engines/advancedDetector.h"
 
 namespace SMT {
@@ -92,9 +89,9 @@ static const ADGameDescription gameDescriptions[] = {
 
 } // End of namespace SMT
 
-class SMTMetaEngine : public AdvancedMetaEngine {
+class SMTMetaEngineDetection : public AdvancedMetaEngineDetection {
 public:
-	SMTMetaEngine() : AdvancedMetaEngine(SMT::gameDescriptions, sizeof(ADGameDescription), SMTGames) {
+	SMTMetaEngineDetection() : AdvancedMetaEngineDetection(SMT::gameDescriptions, sizeof(ADGameDescription), SMTGames) {
 	}
 
 	const char *getEngineId() const override {
@@ -108,24 +105,6 @@ public:
 	const char *getOriginalCopyright() const override {
 		return "Shin Megami Tensei (C) Atlus";
 	}
-
-	bool hasFeature(MetaEngineFeature f) const override;
-	bool createInstance(OSystem *syst, Engine **engine, const ADGameDescription *desc) const override;
 };
 
-bool SMTMetaEngine::hasFeature(MetaEngineFeature f) const {
-	return false;
-}
-
-bool SMTMetaEngine::createInstance(OSystem *syst, Engine **engine, const ADGameDescription *desc) const {
-	if (desc)
-		*engine = new SMT::SMTEngine(syst, desc);
-
-	return desc != nullptr;
-}
-
-#if PLUGIN_ENABLED_DYNAMIC(SMT)
-REGISTER_PLUGIN_DYNAMIC(SMT, PLUGIN_TYPE_ENGINE, SMTMetaEngine);
-#else
-REGISTER_PLUGIN_STATIC(SMT, PLUGIN_TYPE_ENGINE, SMTMetaEngine);
-#endif
+REGISTER_PLUGIN_STATIC(SMT_DETECTION, PLUGIN_TYPE_ENGINE_DETECTION, SMTMetaEngineDetection);
