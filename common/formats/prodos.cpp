@@ -429,4 +429,4 @@ Common::SeekableReadStream *ProDOSDisk::createReadStreamForMember(const Common::
 	return f->createReadStream();
 }
 
-} // Namespace Common
+} // namespace Common

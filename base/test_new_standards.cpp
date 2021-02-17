@@ -23,7 +23,7 @@
 // It test support for main C++11 features
 // In the future, it might be extended to test also C++14, C++17, C++20 and any future standard
 //
-// In order to enable the tests, we have to `define ENABLE_TEST_CPP_11` (and of course, compile this file)
+// In order to enable the tests, we have to `define ENABLE_TEST_CPP_17` (and of course, compile this file)
 // Then it should print "Testing C++11" *during compilation*
 // If the message is printed, and there are no compilation errors - great, C++11 is supported on this platform
 // If there are errors, each one of the tests can be disabled, by defining the relevant DONT_TEST_*
@@ -39,7 +39,7 @@
 #include "config.h"
 #endif
 
-#ifdef ENABLE_TEST_CPP_11
+#ifdef ENABLE_TEST_CPP_17
 #pragma message("Testing C++11")
 // The tests are based on https://blog.petrzemek.net/2014/12/07/improving-cpp98-code-with-cpp11/
 // See there for further links and explanations

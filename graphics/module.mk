@@ -61,7 +61,6 @@ MODULE_OBJS := \
 	screen.o \
 	scaler/normal.o \
 	sjis.o \
-	s3tc.o \
 	surface.o \
 	svg.o \
 	transform_struct.o \

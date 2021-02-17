@@ -4,13 +4,8 @@ MODULE_OBJS := \
 	smt.o \
 	detection.o \
 	metaengine.o \
-	formats/archive/cpk.o \
-	formats/archive/cvm.o \
 	formats/archive/pac.o \
-	formats/video/pmsf.o \
-	formats/image/tmx.o \
-	formats/image/dds.o \
-	formats/audio/adx.o \
+	formats/graphic/tmx.o \
 	gfx/gfx.o \
 	gfx/gfx_tinygl.o \
 	gfx/gfx_tinygl_texture.o \

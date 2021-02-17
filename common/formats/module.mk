@@ -15,7 +15,12 @@ MODULE_OBJS := \
 	winexe.o \
 	winexe_ne.o \
 	winexe_pe.o \
-	xmlparser.o
+	xmlparser.o \
+	cpk.o \
+	cvm.o \
+	pmsf.o \
+	dds.o \
+	adx.o
 
 # Include common rules
 include $(srcdir)/rules.mk

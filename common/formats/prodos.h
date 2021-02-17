@@ -213,6 +213,6 @@ private:
 };
 
 
-} // Namespace Common
+} // namespace Common
 
 #endif
