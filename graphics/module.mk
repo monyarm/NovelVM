@@ -34,7 +34,6 @@ MODULE_OBJS := \
 	scaler/thumbnail_intern.o \
 	screen.o \
 	sjis.o \
-	s3tc.o \
 	surface.o \
 	transform_struct.o \
 	transform_tools.o \

@@ -1,11 +1,10 @@
 #include "common/archive.h"
 
+#include "formats/archive/cvm.h"
 
-#include "smt/formats/archive/cvm.h"
+namespace Format::Archive {
 
-namespace SMT {
-
-CVMArchive::CVMArchive(const Common::String &filename) : _cvmFilename(filename) {
+CVM::CVM(const Common::String &filename) : _cvmFilename(filename) {
 	Common::File cvmFile;
 
 	Common::ArchiveMemberList list;
@@ -19,7 +18,7 @@ CVMArchive::CVMArchive(const Common::String &filename) : _cvmFilename(filename) 
 	ReadFile(cvmFile);
 }
 
-void CVMArchive::ReadFile(Common::SeekableReadStream &cvmFile) {
+void CVM::ReadFile(Common::SeekableReadStream &cvmFile) {
 
 	cvmFile.seek(CVM_HEADER_SIZE + ISO_RESERVED_SIZE, SEEK_SET);
 
@@ -38,10 +37,10 @@ void CVMArchive::ReadFile(Common::SeekableReadStream &cvmFile) {
 	//_entries[entry.name].reset(new CVMEntry(entry));
 }
 
-CVMArchive::~CVMArchive() {
+CVM::~CVM() {
 }
 
-CVMEntry CVMArchive::ReadISORecord(Common::SeekableReadStream &reader, bool isRoot, Common::String parentName) {
+CVMEntry CVM::ReadISORecord(Common::SeekableReadStream &reader, bool isRoot, Common::String parentName) {
 	CVMEntry record;
 
 	long posStart = reader.pos();
@@ -132,11 +131,11 @@ CVMEntry CVMArchive::ReadISORecord(Common::SeekableReadStream &reader, bool isRo
 	return record;
 }
 
-bool CVMArchive::hasFile(const Common::String &name) const {
+bool CVM::hasFile(const Common::String &name) const {
 	return _entries.contains(name);
 }
 
-int CVMArchive::listMembers(Common::ArchiveMemberList &list) const {
+int CVM::listMembers(Common::ArchiveMemberList &list) const {
 	int matches = 0;
 
 	CVMEntrysMap::const_iterator it = _entries.begin();
@@ -148,14 +147,14 @@ int CVMArchive::listMembers(Common::ArchiveMemberList &list) const {
 	return matches;
 }
 
-const Common::ArchiveMemberPtr CVMArchive::getMember(const Common::String &name) const {
+const Common::ArchiveMemberPtr CVM::getMember(const Common::String &name) const {
 	if (!hasFile(name))
 		return Common::ArchiveMemberPtr();
 
 	return Common::ArchiveMemberPtr(new Common::GenericArchiveMember(name, this));
 }
 
-Common::SeekableReadStream *CVMArchive::createReadStreamForMember(const Common::String &name) const {
+Common::SeekableReadStream *CVM::createReadStreamForMember(const Common::String &name) const {
 	if (!_entries.contains(name)) {
 		return 0;
 	}
@@ -165,15 +164,14 @@ Common::SeekableReadStream *CVMArchive::createReadStreamForMember(const Common::
 	Common::File f;
 	f.open(hdr->cvmFile);
 	f.seek(hdr->offset, SEEK_SET);
-	byte* data = new byte[hdr->size];
+	byte *data = new byte[hdr->size];
 	f.read(data, hdr->size);
 
 	return new Common::MemoryReadStream(data, hdr->size, DisposeAfterUse::YES);
 }
 
-CVMArchive *makeCVMArchive(const Common::String &name) {
-	return new CVMArchive(name);
+CVM *makeCVMArchive(const Common::String &name) {
+	return new CVM(name);
 }
 
-} // End of namespace SMT
-
+} // namespace Format::Archive

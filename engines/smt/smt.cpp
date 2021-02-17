@@ -1,10 +1,10 @@
-#include "smt/formats/archive/cpk.h"
-#include "smt/formats/archive/cvm.h"
+#include "formats/archive/cpk.h"
+#include "formats/archive/cvm.h"
+#include "formats/audio/adx.h"
+#include "formats/graphic/dds.h"
+#include "formats/video/pmsf.h"
 #include "smt/formats/archive/pac.h"
-#include "smt/formats/audio/adx.h"
-#include "smt/formats/image/dds.h"
-#include "smt/formats/image/tmx.h"
-#include "smt/formats/video/pmsf.h"
+#include "smt/formats/graphic/tmx.h"
 
 #include "smt/smt.h"
 
@@ -46,9 +46,9 @@ SMTEngine::~SMTEngine() {
 Common::Error SMTEngine::run() {
 	// Initialize graphics using following:
 
-	const Graphics::PixelFormat *format = new Graphics::PixelFormat(4, 8, 8, 8, 8,0,8,16,24); /* 24, 16, 8, 0); */
+	const Graphics::PixelFormat *format = new Graphics::PixelFormat(4, 8, 8, 8, 8, 0, 8, 16, 24); /* 24, 16, 8, 0); */
 
- 	if (strcmp(getGameId(), "P3P") == 0) {
+	if (strcmp(getGameId(), "P3P") == 0) {
 		initGraphics(480, 272, format);
 
 	} else if (strcmp(getGameId(), "P4G") == 0) {
@@ -58,8 +58,7 @@ Common::Error SMTEngine::run() {
 	} else {
 
 		initGraphics(1920, 1080, format);
-
-	} 
+	}
 
 	_gfx = createRenderer(_system);
 	_gfx->init();
@@ -72,13 +71,11 @@ Common::Error SMTEngine::run() {
 
 	//_pmsf.ReadFile("p3opmv_p3p.pmsf");
 
-	DDSFile _dds("test/DXT5.dds");
+	Format::Graphic::DDSFile _dds("test/DXT5.dds");
 	//ADXFile _adx("test/TEST.ADX");
-
 
 	Common::ArchiveMemberList list;
 	SearchMan.listMembers(list);
-
 
 	//for (auto &&l : list)
 	{
@@ -86,8 +83,8 @@ Common::Error SMTEngine::run() {
 	}
 	list = Common::ArchiveMemberList();
 	Common::File f;
-	
-/* 
+
+	/* 
 	if (!f.open("bgm01.wav", *_archives["STREAM.PAK"].get()))
 	{
 		error("can't read archive");
@@ -104,11 +101,9 @@ Common::Error SMTEngine::run() {
 	//TMXFile _tmx("test/PSMT8.tmx");
 
 	_data.listMembers(list);
-	for (auto &&l : list)
-	{
+	for (auto &&l : list) {
 		debug("%s", l.get()->getName().c_str());
 	}
-
 
 	//CVMArchive _data("DATA.CVM");
 	//CVMArchive _btl("BTL.CVM");
@@ -137,30 +132,28 @@ Common::Error SMTEngine::run() {
 
 	g_system->getEventManager()->pollEvent(e);
 	g_system->delayMillis(10);
-//	Graphics::Surface *screen = g_system->lockScreen();
+	//	Graphics::Surface *screen = g_system->lockScreen();
 
 	Graphics::TransparentSurface *surfacetmx = _tmx.getSurface();
 	Common::Rect tmxRect = Common::Rect(surfacetmx->w, surfacetmx->h);
 
 	Graphics::TransparentSurface *surfacedds = _dds.getSurface();
-	Common::Rect ddsRect = Common::Rect(0 - surfacedds->w,0,surfacedds->w, surfacedds->h);
+	Common::Rect ddsRect = Common::Rect(0 - surfacedds->w, 0, surfacedds->w, surfacedds->h);
 	auto texturetmx = _gfx->createTexture(surfacetmx);
 	auto texturedds = _gfx->createTexture(surfacedds);
 
-
-	debug("%i %i",_gfx->viewport().width(), _gfx->viewport().height());
+	debug("%i %i", _gfx->viewport().width(), _gfx->viewport().height());
 	while (!shouldQuit()) {
 		_gfx->clear();
 
-		_gfx->drawTexturedRect2D(_gfx->viewport(), tmxRect, texturetmx,-.5,false);
-		_gfx->drawTexturedRect2D(_gfx->viewport(), ddsRect, texturedds,-.5,false);
+		_gfx->drawTexturedRect2D(_gfx->viewport(), tmxRect, texturetmx, -.5, false);
+		_gfx->drawTexturedRect2D(_gfx->viewport(), ddsRect, texturedds, -.5, false);
 		_gfx->flipBuffer();
 
 		g_system->updateScreen();
 
 		g_system->getEventManager()->pollEvent(e);
 		g_system->delayMillis(10);
-
 	}
 
 	return Common::kNoError;

@@ -1,5 +1,5 @@
-#ifndef SMT_CVMARCHIVE_H
-#define SMT_CVMARCHIVE_H
+#ifndef FORMAT_CVMARCHIVE_H
+#define FORMAT_CVMARCHIVE_H
 
 #include "common/ptr.h"
 #include "common/str.h"
@@ -10,7 +10,7 @@
 #include "common/hash-str.h"
 #include "common/memstream.h"
 
-namespace SMT {
+namespace Format::Archive {
 
 class Archive;
 
@@ -36,14 +36,14 @@ const int ID_PRIM_VOLUME_DESC = 0x01;
 
 typedef Common::HashMap<Common::String, Common::ScopedPtr<CVMEntry>, Common::IgnoreCase_Hash, Common::IgnoreCase_EqualTo> CVMEntrysMap;
 
-class CVMArchive : public Common::Archive {
+class CVM : public Common::Archive {
 	Common::String _cvmFilename;
 
 public:
-	CVMArchive(const Common::String &name);
+	CVM(const Common::String &name);
 	void ReadFile(Common::SeekableReadStream &reader);
 	CVMEntrysMap _entries;
-	~CVMArchive() override;
+	~CVM() override;
 
 	CVMEntry ReadISORecord(Common::SeekableReadStream &reader, bool isRoot = false, Common::String parentName = "");
 
@@ -60,8 +60,8 @@ public:
  *
  * May return 0 in case of a failure.
  */
-CVMArchive *makeCVMArchive(const Common::String &name);
+CVM *makeCVMArchive(const Common::String &name);
 
-} // End of namespace SMT
+} // namespace Format::Archive
 
 #endif

@@ -175,12 +175,12 @@ _tts=auto
 _gtk=auto
 _fribidi=auto
 _discord=auto
-_test_cxx11=no
+_test_cxx17=no
 # Default option behavior yes/no
 _debug_build=auto
 _release_build=auto
 _optimizations=auto
-_use_cxx11=yes
+_use_cxx17=yes
 _verbose_build=no
 _text_console=no
 _mt32emu=yes
@@ -276,8 +276,8 @@ add_feature vorbis "Vorbis file support" "_vorbis _tremor"
 add_feature zlib "zlib" "_zlib"
 add_feature lua "lua" "_lua"
 add_feature fribidi "FriBidi" "_fribidi"
-add_feature cxx11 "c++11" "_use_cxx11"
-add_feature test_cxx11 "Test C++11" "_test_cxx11"
+add_feature cxx17 "c++17" "_use_cxx17"
+add_feature test_cxx17 "Test C++17" "_test_cxx17"
 
 # Directories for installing ScummVM.
 # This list is closely based on what GNU autoconf does,
@@ -1036,7 +1036,7 @@ Optional Features:
   --enable-static          build a static binary instead of using shared objects
   --enable-detection-static  build detection features into executable (default)
   --enable-detection-dynamic build detection features into a library
-  --enable-c++11           build as C++11 if the compiler allows that
+  --enable-c++17           build as C++17 if the compiler allows that
   --disable-debug          disable building with debugging symbols
   --enable-Werror          treat warnings as errors
   --enable-release         enable building in release mode (this activates
@@ -1272,8 +1272,8 @@ for ac_option in $@; do
 	--disable-mad)                _mad=no                ;;
 	--enable-fribidi)             _fribidi=yes           ;;
 	--disable-fribidi)            _fribidi=no            ;;
-	--enable-test-c++11)          _test_cxx11=yes        ;;
-	--disable-test-c++11)         _test_cxx11=no         ;;
+	--enable-test-c++17)          _test_cxx17=yes        ;;
+	--disable-test-c++17)         _test_cxx17=no         ;;
 	--enable-zlib)                _zlib=yes              ;;
 	--disable-zlib)               _zlib=no               ;;
 	--enable-sparkle)             _sparkle=yes           ;;
@@ -1475,11 +1475,11 @@ for ac_option in $@; do
 	--backend=*)
 		_backend=`echo $ac_option | cut -d '=' -f 2`
 		;;
-	--enable-c++11)
-		_use_cxx11=yes
+	--enable-c++17)
+		_use_cxx17=yes
 		;;
-	--disable-c++11)
-		_use_cxx11=no
+	--disable-c++17)
+		_use_cxx17=no
 		;;
 	--enable-debug)
 		_debug_build=yes
@@ -1844,8 +1844,8 @@ switch)
 	datarootdir='${prefix}/data'
 	datadir='${datarootdir}'
 	docdir='${prefix}/doc'
-	# Switch SDK has C++11 constructs so we must enable it
-	_use_cxx11=yes
+	# Switch SDK has C++17 constructs so we must enable it
+	_use_cxx17=yes
 	;;
 wii)
 	_host_os=wii
@@ -2270,15 +2270,15 @@ if test "$cxx_verc_fail" = yes ; then
 fi
 
 #
-# Check whether the compiler supports C++11
+# Check whether the compiler supports C++17
 #
-have_cxx11=no
+have_cxx17=no
 cat > $TMPC << EOF
 int main(int argc, char *argv[]) { if (argv == nullptr) return -1; else return 0; }
 EOF
-cc_check -std=c++11 && have_cxx11=yes
-if test "$_use_cxx11" = "yes" ; then
-	_use_cxx11=$have_cxx11
+cc_check -std=c++17 && have_cxx17=yes
+if test "$_use_cxx17" = "yes" ; then
+	_use_cxx17=$have_cxx17
 fi
 
 #
@@ -2288,8 +2288,8 @@ fi
 #
 if test "$have_gcc" = yes ; then
 	if test "$_cxx_major" -ge "3" ; then
-		# Try to use ANSI mode when C++11 is disabled.
-		if test "$_use_cxx11" = "no" ; then
+		# Try to use ANSI mode when C++17 is disabled.
+		if test "$_use_cxx17" = "no" ; then
 			append_var CXXFLAGS "-ansi"
 		fi
 		case $_host_os in
@@ -2318,21 +2318,21 @@ elif test "$have_icc" = yes ; then
 fi;
 
 #
-# Update status about C++11 mode
+# Update status about C++17 mode
 #
-echo_n "Building as C++11... "
-if test "$_use_cxx11" = "yes" ; then
-	append_var CXXFLAGS "-std=c++11"
+echo_n "Building as C++17... "
+if test "$_use_cxx17" = "yes" ; then
+	append_var CXXFLAGS "-std=c++17"
 fi
-echo $_use_cxx11
-define_in_config_if_yes "$_use_cxx11" 'USE_CXX11'
+echo $_use_cxx17
+define_in_config_if_yes "$_use_cxx17" 'USE_CXX17'
 
 #
-# Additional tests for C++11 features that may not be present
+# Additional tests for C++17 features that may not be present
 #
-if test "$_use_cxx11" = "yes" ; then
+if test "$_use_cxx17" = "yes" ; then
 	# Check if initializer list is available
-	echo_n "Checking if C++11 initializer list is available... "
+	echo_n "Checking if C++17 initializer list is available... "
 	cat > $TMPC << EOF
 #include <initializer_list>
 #include <cstddef>
@@ -2348,7 +2348,7 @@ EOF
 		echo yes
 	else
 		echo no
-		define_in_config_if_yes yes 'NO_CXX11_INITIALIZER_LIST'
+		define_in_config_if_yes yes 'NO_CXX17_INITIALIZER_LIST'
 	fi
 fi
 
@@ -2378,8 +2378,9 @@ if test "$_debug_build" != no; then
 			echo_n -- " + Gold"
 		fi
 	fi
-
-	if cc_check_no_clean $debug_mode -fvar-tracking-assignments; then
+	if test "$have_clang" = yes; then
+		echo ""
+	else if cc_check_no_clean $debug_mode -fvar-tracking-assignments; then
 		append_var CXXFLAGS "-fvar-tracking-assignments"
 		echo_n -- " + var tracking"
 	fi
@@ -5645,11 +5646,11 @@ define_in_config_if_yes "$_fribidi" 'USE_FRIBIDI'
 echo "$_fribidi"
 
 #
-# Test C++11 Compatibility
+# Test C++17 Compatibility
 #
-define_in_config_if_yes "$_test_cxx11" 'ENABLE_TEST_CPP_11'
-echo_n "Test C++11 compatibility during compilation... "
-echo "$_test_cxx11"
+define_in_config_if_yes "$_test_cxx17" 'ENABLE_TEST_CPP_11'
+echo_n "Test C++17 compatibility during compilation... "
+echo "$_test_cxx17"
 
 # Default to plain text output for pandoc
 if test -z "$_pandocformat" -o "$_pandocformat" = "default"; then

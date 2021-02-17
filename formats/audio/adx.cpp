@@ -1,4 +1,6 @@
-#include "smt/formats/audio/adx.h"
+#include "formats/audio/adx.h"
+
+namespace Format::Audio {
 
 ADXFile::ADXFile(const char *path) {
 
@@ -34,7 +36,7 @@ void ADXFile::readHeader(Common::SeekableReadStream *stream) {
 	dat.header.highpasscutoff = stream->readUint16BE();
 	dat.header.loopdatastyle = stream->readByte();
 	dat.header.encrypted = stream->readByte();
-	debug("%i",dat.header.loopdatastyle);
+	debug("%i", dat.header.loopdatastyle);
 	if (dat.header.loopdatastyle == 3) {
 
 		stream->seek(4, SEEK_CUR);
@@ -50,5 +52,6 @@ void ADXFile::readHeader(Common::SeekableReadStream *stream) {
 }
 
 void ADXFile::readData(Common::SeekableReadStream *stream) {
-	debug("%i",stream->size());
+	debug("%i", stream->size());
 }
+} // namespace Format::Audio

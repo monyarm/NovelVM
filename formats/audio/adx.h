@@ -10,6 +10,8 @@
 #include "graphics/surface.h"
 #include "graphics/transparent_surface.h"
 
+namespace Format::Audio {
+
 enum class formatEnum : byte {
 	fixed = 2,
 	ADX = 3,
@@ -31,16 +33,16 @@ struct ADXHeader {
 };
 
 struct ADXLoopData {
-    uint32 loopflag;
-    uint32 loopstartsample;
-    uint32 loopstartbyte;
-    uint32 loopendsample;
-    uint32 loopendbyte;
+	uint32 loopflag;
+	uint32 loopstartsample;
+	uint32 loopstartbyte;
+	uint32 loopendsample;
+	uint32 loopendbyte;
 };
 
 struct ADXData {
 	ADXHeader header;
-    ADXLoopData loopdata;
+	ADXLoopData loopdata;
 };
 
 class ADXFile {
@@ -58,5 +60,6 @@ private:
 
 	void readHeader(Common::SeekableReadStream *f);
 };
+} // namespace Format::Audio
 
 #endif
