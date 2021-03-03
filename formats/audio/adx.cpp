@@ -1,6 +1,43 @@
 #include "formats/audio/adx.h"
+#include "video/mpegps_decoder.h"
 
 namespace Format::Audio {
+
+static int nibble_to_int[16] = {0, 1, 2, 3, 4, 5, 6, 7,
+                                -8, -7, -6, -5, -4, -3, -2, -1};
+
+static inline int get_high_nibble_signed(uint8 n) {
+	return nibble_to_int[n >> 4];
+}
+
+static inline int get_low_nibble_signed(uint8 n) {
+	return nibble_to_int[n & 0xf];
+}
+
+static inline int clamp16(int32_t val) {
+	if (val > 32767)
+		return 32767;
+	if (val < -32768)
+		return -32768;
+	return val;
+}
+
+void ADXFile::SetCoefficients(double cutoff, double sample_rate) {
+	// https://wiki.multimedia.cx/index.php/CRI_ADX_ADPCM#Coefficients
+
+	/* temps to keep the calculation simple */
+	double z, a, b, c;
+
+	z = cos(2.0 * M_PI * cutoff / sample_rate);
+
+	a = M_SQRT2 - z;
+	b = M_SQRT2 - 1.0;
+	c = (a - sqrt((a + b) * (a - b))) / b;
+
+	/* compute the coefficients as fixed point values, with 12 fractional bits */
+	coefficient[0] = (int16)floor(c * 8192);
+	coefficient[1] = (int16)floor(c * c * -4096);
+}
 
 ADXFile::ADXFile(const char *path) {
 
@@ -53,5 +90,11 @@ void ADXFile::readHeader(Common::SeekableReadStream *stream) {
 
 void ADXFile::readData(Common::SeekableReadStream *stream) {
 	debug("%i", stream->size());
+	stream->seek(dat.header.dataoffset-2,SEEK_SET);
+	auto cri = stream->readFourCC();
+	debug("%s", cri.c_str());
+	stream->seek(dat.header.dataoffset +4, SEEK_SET);
+
+	
 }
 } // namespace Format::Audio

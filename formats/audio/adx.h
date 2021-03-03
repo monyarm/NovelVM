@@ -12,6 +12,8 @@
 
 namespace Format::Audio {
 
+int16 coefficient[2];
+
 enum class formatEnum : byte {
 	fixed = 2,
 	ADX = 3,
@@ -59,6 +61,8 @@ private:
 	void readData(Common::SeekableReadStream *f);
 
 	void readHeader(Common::SeekableReadStream *f);
+
+	void SetCoefficients(double cutoff, double sample_rate);
 };
 } // namespace Format::Audio
 
