@@ -225,8 +225,8 @@ void PACArchive::ReadEntries(Common::SeekableReadStream &stream) {
 				if (stringBuilder.size() == 252)
 					break;
 			}
-
-			Common::String fileName = Common::String(stringBuilder.data());//, stringBuilder.data() + stringBuilder.size());
+			stringBuilder.push_back(0x00);
+			    Common::String fileName = Common::String(stringBuilder.data()); //, stringBuilder.data() + stringBuilder.size());
 			fileName.trim();
 
 			// set position to length field
@@ -271,6 +271,7 @@ void PACArchive::ReadEntries(Common::SeekableReadStream &stream) {
 				if (b != 0)
 					stringBuilder.push_back((char)b);
 			}
+			stringBuilder.push_back(0x00);
 
 			Common::String fileName = Common::String(stringBuilder.data());//, stringBuilder.data() + stringBuilder.size());
 			fileName.trim();

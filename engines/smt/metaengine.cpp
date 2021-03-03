@@ -5,7 +5,8 @@ class SMTMetaEngine : public AdvancedMetaEngine {
 public:
 	const char *getName() const override
 	{
-		return "Shin Megami Tensei";
+		return "SMT";
+		//return "Shin Megami Tensei";
 	}
     
     Common::Error createInstance(OSystem *syst, Engine **engine, const ADGameDescription *desc) const override;
@@ -20,7 +21,8 @@ Common::Error SMTMetaEngine::createInstance(OSystem *syst, Engine **engine, cons
 
 bool SMTMetaEngine::hasFeature(MetaEngineFeature f) const
 {
-	return false;
+	return (f == kSupportsListSaves) ||
+			(f == kSupportsLoadingDuringStartup);
 }
 
 #if PLUGIN_ENABLED_DYNAMIC(SMT)

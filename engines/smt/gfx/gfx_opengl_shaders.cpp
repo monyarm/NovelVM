@@ -37,6 +37,7 @@
  */
 
 #include "common/rect.h"
+#include "common/system.h"
 #include "common/textconsole.h"
 
 #if defined(USE_GLES2) || defined(USE_OPENGL_SHADERS)
@@ -91,7 +92,7 @@ ShaderRenderer::ShaderRenderer(OSystem *system) :
 		Renderer(system),
 		_prevText(""),
 		_prevTextPosition(0,0),
-		_currentViewport(kOriginalWidth, kOriginalHeight),
+		_currentViewport(g_system->getWidth(), g_system->getHeight()),
 		_boxShader(nullptr),
 		_cubeShader(nullptr),
 		_rect3dShader(nullptr),
@@ -163,27 +164,15 @@ void ShaderRenderer::clear() {
 
 void ShaderRenderer::selectTargetWindow(Window *window, bool is3D, bool scaled) {
 	if (!window) {
-		// No window found ...
-		if (scaled) {
-			// ... in scaled mode draw in the original game screen area
-			Common::Rect vp = viewport();
-			glViewport(vp.left, _system->getHeight() - vp.top - vp.height(), vp.width(), vp.height());
-			_currentViewport = Common::Rect(kOriginalWidth, kOriginalHeight);
-		} else {
 			// ... otherwise, draw on the whole screen
 			glViewport(0, 0, _system->getWidth(), _system->getHeight());
 			_currentViewport = Common::Rect(_system->getWidth(), _system->getHeight());
-		}
 	} else {
 		// Found a window, draw inside it
 		Common::Rect vp = window->getPosition();
 		glViewport(vp.left, _system->getHeight() - vp.top - vp.height(), vp.width(), vp.height());
 
-		if (scaled) {
-			_currentViewport = window->getOriginalPosition();
-		} else {
 			_currentViewport = vp;
-		}
 	}
 }
 

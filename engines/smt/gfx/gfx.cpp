@@ -38,36 +38,35 @@
 namespace SMT {
 
 const float Renderer::cubeVertices[] = {
-	// S     T      X      Y      Z
-	0.0f, 1.0f, -320.0f, -320.0f, -320.0f,
-	1.0f, 1.0f,  320.0f, -320.0f, -320.0f,
-	0.0f, 0.0f, -320.0f,  320.0f, -320.0f,
-	1.0f, 0.0f,  320.0f,  320.0f, -320.0f,
-	0.0f, 1.0f,  320.0f, -320.0f, -320.0f,
-	1.0f, 1.0f, -320.0f, -320.0f, -320.0f,
-	0.0f, 0.0f,  320.0f, -320.0f,  320.0f,
-	1.0f, 0.0f, -320.0f, -320.0f,  320.0f,
-	0.0f, 1.0f,  320.0f, -320.0f,  320.0f,
-	1.0f, 1.0f, -320.0f, -320.0f,  320.0f,
-	0.0f, 0.0f,  320.0f,  320.0f,  320.0f,
-	1.0f, 0.0f, -320.0f,  320.0f,  320.0f,
-	0.0f, 1.0f,  320.0f, -320.0f, -320.0f,
-	1.0f, 1.0f,  320.0f, -320.0f,  320.0f,
-	0.0f, 0.0f,  320.0f,  320.0f, -320.0f,
-	1.0f, 0.0f,  320.0f,  320.0f,  320.0f,
-	0.0f, 1.0f, -320.0f, -320.0f,  320.0f,
-	1.0f, 1.0f, -320.0f, -320.0f, -320.0f,
-	0.0f, 0.0f, -320.0f,  320.0f,  320.0f,
-	1.0f, 0.0f, -320.0f,  320.0f, -320.0f,
-	0.0f, 1.0f,  320.0f,  320.0f,  320.0f,
-	1.0f, 1.0f, -320.0f,  320.0f,  320.0f,
-	0.0f, 0.0f,  320.0f,  320.0f, -320.0f,
-	1.0f, 0.0f, -320.0f,  320.0f, -320.0f
-};
+    // S     T      X      Y      Z
+    0.0f, 1.0f, -320.0f, -320.0f, -320.0f,
+    1.0f, 1.0f, 320.0f, -320.0f, -320.0f,
+    0.0f, 0.0f, -320.0f, 320.0f, -320.0f,
+    1.0f, 0.0f, 320.0f, 320.0f, -320.0f,
+    0.0f, 1.0f, 320.0f, -320.0f, -320.0f,
+    1.0f, 1.0f, -320.0f, -320.0f, -320.0f,
+    0.0f, 0.0f, 320.0f, -320.0f, 320.0f,
+    1.0f, 0.0f, -320.0f, -320.0f, 320.0f,
+    0.0f, 1.0f, 320.0f, -320.0f, 320.0f,
+    1.0f, 1.0f, -320.0f, -320.0f, 320.0f,
+    0.0f, 0.0f, 320.0f, 320.0f, 320.0f,
+    1.0f, 0.0f, -320.0f, 320.0f, 320.0f,
+    0.0f, 1.0f, 320.0f, -320.0f, -320.0f,
+    1.0f, 1.0f, 320.0f, -320.0f, 320.0f,
+    0.0f, 0.0f, 320.0f, 320.0f, -320.0f,
+    1.0f, 0.0f, 320.0f, 320.0f, 320.0f,
+    0.0f, 1.0f, -320.0f, -320.0f, 320.0f,
+    1.0f, 1.0f, -320.0f, -320.0f, -320.0f,
+    0.0f, 0.0f, -320.0f, 320.0f, 320.0f,
+    1.0f, 0.0f, -320.0f, 320.0f, -320.0f,
+    0.0f, 1.0f, 320.0f, 320.0f, 320.0f,
+    1.0f, 1.0f, -320.0f, 320.0f, 320.0f,
+    0.0f, 0.0f, 320.0f, 320.0f, -320.0f,
+    1.0f, 0.0f, -320.0f, 320.0f, -320.0f};
 
 Renderer::Renderer(OSystem *system)
-		: _system(system),
-		  _font(nullptr) {
+    : _system(system),
+      _font(nullptr) {
 
 	// Compute the cube faces Axis Aligned Bounding Boxes
 	for (uint i = 0; i < ARRAYSIZE(_cubeFacesAABB); i++) {
@@ -129,25 +128,14 @@ void Renderer::computeScreenViewport() {
 	int32 screenWidth = _system->getWidth();
 	int32 screenHeight = _system->getHeight();
 
-	if (ConfMan.getBool("widescreen_mod")) {
 		_screenViewport = Common::Rect(screenWidth, screenHeight);
-	} else {
-		// Aspect ratio correction
-		int32 viewportWidth = MIN<int32>(screenWidth, screenHeight * kOriginalWidth / kOriginalHeight);
-		int32 viewportHeight = MIN<int32>(screenHeight, screenWidth * kOriginalHeight / kOriginalWidth);
-		_screenViewport = Common::Rect(viewportWidth, viewportHeight);
-
-		// Pillarboxing
-		_screenViewport.translate((screenWidth - viewportWidth) / 2,
-			(screenHeight - viewportHeight) / 2);
-	}
 }
 
 Math::Matrix4 Renderer::makeProjectionMatrix(float fov) const {
 	static const float nearClipPlane = 1.0;
 	static const float farClipPlane = 10000.0;
 
-	float aspectRatio = kOriginalWidth / (float) kFrameHeight;
+	float aspectRatio = _system->getWidth() / (float)_system->getHeight();
 
 	float xmaxValue = nearClipPlane * tan(fov * M_PI / 360.0);
 	float ymaxValue = xmaxValue / aspectRatio;
@@ -188,26 +176,24 @@ void Renderer::flipVertical(Graphics::Surface *s) {
 	}
 }
 
-Renderer *createRenderer(OSystem *system) {
+Renderer *createRenderer(OSystem *system/*, const char *gameId*/) {
 	Common::String rendererConfig = ConfMan.get("renderer");
 	Graphics::RendererType desiredRendererType = Graphics::parseRendererTypeCode(rendererConfig);
 	Graphics::RendererType matchingRendererType = Graphics::getBestMatchingAvailableRendererType(desiredRendererType);
 
-	bool isAccelerated = matchingRendererType != Graphics::kRendererTypeTinyGL;
+	auto initFunc = (matchingRendererType != Graphics::kRendererTypeTinyGL) ? initGraphics3d : (void (*)(int, int))initGraphics;
 
-	uint width;
-	uint height = Renderer::kOriginalHeight;
-	if (ConfMan.getBool("widescreen_mod")) {
-		width = Renderer::kOriginalWidth * Renderer::kOriginalHeight / Renderer::kFrameHeight;
-	} else {
-		width = Renderer::kOriginalWidth;
-	}
+	// if (strcmp(gameId, "P3P") == 0) {
+	// 	initFunc(480, 272);
 
-	if (isAccelerated) {
-		initGraphics3d(width, height);
-	} else {
-		initGraphics(width, height, nullptr);
-	}
+	// } else if (strcmp(gameId, "P4G") == 0) {
+	// 	//PSVita
+	// 	initFunc(960, 554);
+
+	// } else {
+
+		initFunc(1920, 1080);
+	//}
 
 #if defined(USE_OPENGL_GAME) || defined(USE_OPENGL_SHADERS) || defined(USE_GLES2)
 	bool backendCapableOpenGL = g_system->hasFeature(OSystem::kFeatureOpenGLForGame);
@@ -269,10 +255,9 @@ void Renderer::renderWindowOverlay(Window *window) {
 	renderDrawableOverlay(window, window);
 }
 
-Drawable::Drawable() :
-		_isConstrainedToWindow(true),
-		_is3D(false),
-		_scaled(true) {
+Drawable::Drawable() : _isConstrainedToWindow(true),
+                       _is3D(false),
+                       _scaled(true) {
 }
 
 Common::Point Window::getCenter() const {
@@ -298,17 +283,16 @@ Common::Point Window::scalePoint(const Common::Point &screen) const {
 	scaledPosition.y = CLIP<int16>(scaledPosition.y, 0, viewport.height());
 
 	if (_scaled) {
-		scaledPosition.x *= originalViewport.width() / (float) viewport.width();
-		scaledPosition.y *= originalViewport.height() / (float) viewport.height();
+		scaledPosition.x *= originalViewport.width() / (float)viewport.width();
+		scaledPosition.y *= originalViewport.height() / (float)viewport.height();
 	}
 
 	return scaledPosition;
 }
 
-FrameLimiter::FrameLimiter(OSystem *system, const uint framerate) :
-	_system(system),
-	_speedLimitMs(0),
-	_startFrameTime(0) {
+FrameLimiter::FrameLimiter(OSystem *system, const uint framerate) : _system(system),
+                                                                    _speedLimitMs(0),
+                                                                    _startFrameTime(0) {
 	// The frame limiter is disabled when vsync is enabled.
 	_enabled = !_system->getFeatureState(OSystem::kFeatureVSync) && framerate != 0;
 
@@ -332,9 +316,9 @@ void FrameLimiter::delayBeforeSwap() {
 
 const Graphics::PixelFormat Texture::getRGBAPixelFormat() {
 #ifdef SCUMM_BIG_ENDIAN
-	return Graphics::PixelFormat(4, 8, 8, 8, 8, 24, 16, 8, 0);
-#else
 	return Graphics::PixelFormat(4, 8, 8, 8, 8, 0, 8, 16, 24);
+#else
+	return Graphics::PixelFormat(4, 8, 8, 8, 8, 24, 16, 8, 0);
 #endif
 }
 } // End of namespace SMT

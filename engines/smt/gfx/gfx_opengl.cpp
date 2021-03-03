@@ -21,6 +21,7 @@
  */
 
 #include "common/rect.h"
+#include "common/system.h"
 #include "common/textconsole.h"
 
 #if defined(USE_OPENGL_GAME) && !defined(USE_GLES2)
@@ -110,19 +111,10 @@ void OpenGLRenderer::selectTargetWindow(Window *window, bool is3D, bool scaled) 
 		glLoadIdentity();
 
 		if (!window) {
-			if (scaled) {
-				glOrtho(0.0, kOriginalWidth, kOriginalHeight, 0.0, -1.0, 1.0);
-			} else {
 				glOrtho(0.0, _system->getWidth(), _system->getHeight(), 0.0, -1.0, 1.0);
-			}
 		} else {
-			if (scaled) {
-				Common::Rect originalRect = window->getOriginalPosition();
-				glOrtho(0.0, originalRect.width(), originalRect.height(), 0.0, -1.0, 1.0);
-			} else {
 				Common::Rect vp = window->getPosition();
 				glOrtho(0.0, vp.width(), vp.height(), 0.0, -1.0, 1.0);
-			}
 		}
 
 		glMatrixMode(GL_MODELVIEW);

@@ -22,6 +22,7 @@
 
 #include "common/config-manager.h"
 #include "common/rect.h"
+#include "common/system.h"
 #include "common/textconsole.h"
 
 #include "graphics/colormasks.h"
@@ -63,7 +64,7 @@ void TinyGLRenderer::init() {
 
 	computeScreenViewport();
 
-	_fb = new TinyGL::FrameBuffer(kOriginalWidth, kOriginalHeight, g_system->getScreenFormat());
+	_fb = new TinyGL::FrameBuffer(g_system->getWidth(), g_system->getHeight(), g_system->getScreenFormat());
 	TinyGL::glInit(_fb, 512);
 	tglEnableDirtyRects(ConfMan.getBool("dirtyrects"));
 
@@ -115,19 +116,10 @@ void TinyGLRenderer::selectTargetWindow(Window *window, bool is3D, bool scaled) 
 		tglLoadIdentity();
 
 		if (!window) {
-			if (scaled) {
-				tglOrtho(0.0, kOriginalWidth, kOriginalHeight, 0.0, -1.0, 1.0);
-			} else {
 				tglOrtho(0.0, _system->getWidth(), _system->getHeight(), 0.0, -1.0, 1.0);
-			}
 		} else {
-			if (scaled) {
-				Common::Rect originalRect = window->getOriginalPosition();
-				tglOrtho(0.0, originalRect.width(), originalRect.height(), 0.0, -1.0, 1.0);
-			} else {
 				Common::Rect vp = window->getPosition();
 				tglOrtho(0.0, vp.width(), vp.height(), 0.0, -1.0, 1.0);
-			}
 		}
 
 		tglMatrixMode(TGL_MODELVIEW);
@@ -282,7 +274,7 @@ void TinyGLRenderer::drawTexturedRect3D(const Math::Vector3d &topLeft, const Mat
 
 Graphics::Surface *TinyGLRenderer::getScreenshot() {
 	Graphics::Surface *s = new Graphics::Surface();
-	s->create(kOriginalWidth, kOriginalHeight, Texture::getRGBAPixelFormat());
+	s->create(g_system->getWidth(), g_system->getHeight(), Texture::getRGBAPixelFormat());
 	Graphics::PixelBuffer buf(s->format, (byte *)s->getPixels());
 	_fb->copyToBuffer(buf);
 	return s;

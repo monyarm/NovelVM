@@ -1,4 +1,5 @@
 #include "smt/formats/graphic/tmx.h"
+#include "common/file.h"
 
 TMXFile::TMXFile(const char *path) {
 
