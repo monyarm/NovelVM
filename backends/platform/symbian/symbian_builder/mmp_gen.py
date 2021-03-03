@@ -52,9 +52,9 @@ def processengine(path):
 
    if f[0][2] == 'no' and build == "release":
       return None
-   # print "MACRO   ENABLE_%s  //  LIB:scummvm_%s.lib" %(f[0][1].upper(), f[0][1])
-   buildparam = ["MACRO   ENABLE_%s  //  LIB:scummvm_%s.lib" %(f[0][1].upper(), f[0][1])]
-   libname = ["STATICLIBRARY    scummvm_%s.lib" %f[0][1]]
+   # print "MACRO   ENABLE_%s  //  LIB:novelvm_%s.lib" %(f[0][1].upper(), f[0][1])
+   buildparam = ["MACRO   ENABLE_%s  //  LIB:novelvm_%s.lib" %(f[0][1].upper(), f[0][1])]
+   libname = ["STATICLIBRARY    novelvm_%s.lib" %f[0][1]]
 
    if len(f) == 1:
       return [buildparam, libname]
@@ -203,7 +203,7 @@ def DeleteUsuportedSrcs(src, engine):
    return src
 
 
-guard_macro = "#ifdef SCUMMVM_PT_%s\n#endif // SCUMMVM_PT_%s\n"
+guard_macro = "#ifdef NOVELVM_PT_%s\n#endif // NOVELVM_PT_%s\n"
 def MakeMMP(engine):
    global firstRun, currentEngine
    print "Start processing engine: %s" %engine
@@ -220,21 +220,21 @@ def MakeMMP(engine):
    src = processModule_mk(pth, macrolist)
    src = DeleteUsuportedSrcs(src, engine)
 
-   mmp = """TARGET scummvm_%s.lib
+   mmp = """TARGET novelvm_%s.lib
 TARGETTYPE lib\n
 #include "../S60v3/build_config.mmh"
 
-#define SCUMMVM_PT_1
-#define SCUMMVM_PT_2
-#define SCUMMVM_PT_3
-#define SCUMMVM_PT_4
+#define NOVELVM_PT_1
+#define NOVELVM_PT_2
+#define NOVELVM_PT_3
+#define NOVELVM_PT_4
 #include "macros.mmh"\n
 USERINCLUDE    ..\..\..\..\engines\%s\n
 // *** SOURCE files
 SOURCEPATH   ..\..\..\..\engines\%s\n
 """ %(engine, engine, engine)
 
-   print "TARGET scummvm_%s.lib" %engine
+   print "TARGET novelvm_%s.lib" %engine
    mmp = CheckEngine(mmp, engine)
    if mmp is None:
       return

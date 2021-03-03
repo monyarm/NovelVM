@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=ScummVM
+Name=NovelVM
 Comment=Interpreter for several adventure games
 Comment[pl]=Interpreter graficznych gier przygodowych
 Comment[sv]=Tolk för flera äventyrsspel
@@ -7,8 +7,8 @@ Comment[he]=פרשן למספר משחקי הרפתקאות
 Comment[de]=Interpreter für diverse Abenteuerspiele
 Comment[es]=Intérprete para varias aventuras gráficas
 Comment[ca]=Intèrpret per diverses aventures gràfiques
-Exec=scummvm.sh
-Icon=scummvm
+Exec=novelvm.sh
+Icon=novelvm
 Terminal=false
 Type=Application
 Categories=games;

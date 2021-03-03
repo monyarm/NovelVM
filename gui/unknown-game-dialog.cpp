@@ -139,7 +139,7 @@ Common::String UnknownGameDialog::generateBugtrackerURL() {
 	Common::String engineId = encodeUrlString(_detectedGame.engineId);
 
 	return Common::String::format(
-		"https://www.scummvm.org/unknowngame?"
+		"https://www.novelvm.org/unknowngame?"
 		"engine=%s"
 		"&description=%s",
 		engineId.c_str(),

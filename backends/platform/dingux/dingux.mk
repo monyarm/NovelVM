@@ -1,6 +1,6 @@
-DINGUX_EXE_STRIPPED := scummvm_stripped$(EXEEXT)
+DINGUX_EXE_STRIPPED := novelvm_stripped$(EXEEXT)
 
-bundle_name = dingux-dist/scummvm
+bundle_name = dingux-dist/novelvm
 gcw0_bundle = gcw0-opk
 
 all: $(DINGUX_EXE_STRIPPED)
@@ -15,7 +15,7 @@ dingux-distclean:
 dingux-dist: all
 	$(MKDIR) $(bundle_name)
 	$(MKDIR) $(bundle_name)/saves
-	$(STRIP) $(EXECUTABLE) -o $(bundle_name)/scummvm.elf
+	$(STRIP) $(EXECUTABLE) -o $(bundle_name)/novelvm.elf
 	$(CP) $(DIST_FILES_THEMES) $(bundle_name)/
 ifdef DIST_FILES_ENGINEDATA
 	$(CP) $(DIST_FILES_ENGINEDATA) $(bundle_name)/
@@ -32,9 +32,9 @@ ifdef DYNAMIC_MODULES
 		$(CP) $(PLUGINS) $(bundle_name)/plugins
 		$(STRIP) $(bundle_name)/plugins/*
 endif
-	$(CP) $(srcdir)/backends/platform/dingux/scummvm.gpe $(bundle_name)/
+	$(CP) $(srcdir)/backends/platform/dingux/novelvm.gpe $(bundle_name)/
 	$(CP) $(srcdir)/backends/platform/dingux/README.DINGUX $(bundle_name)/
-	$(CP) $(srcdir)/backends/platform/dingux/scummvm.png $(bundle_name)/
+	$(CP) $(srcdir)/backends/platform/dingux/novelvm.png $(bundle_name)/
 
 # Special target for generationg GCW-Zero OPK bundle
 $(gcw0_bundle): all
@@ -56,12 +56,12 @@ ifdef DYNAMIC_MODULES
 	$(MKDIR) $(gcw0_bundle)/plugins
 	$(CP) $(PLUGINS) $(gcw0_bundle)/plugins/
 endif
-	$(CP) $(EXECUTABLE) $(gcw0_bundle)/scummvm
+	$(CP) $(EXECUTABLE) $(gcw0_bundle)/novelvm
 
-	$(CP) $(srcdir)/dists/gcw0/scummvm.png $(gcw0_bundle)/
+	$(CP) $(srcdir)/dists/gcw0/novelvm.png $(gcw0_bundle)/
 	$(CP) $(srcdir)/dists/gcw0/default.gcw0.desktop $(gcw0_bundle)/
-	$(CP) $(srcdir)/dists/gcw0/scummvmrc $(gcw0_bundle)/
-	$(CP) $(srcdir)/dists/gcw0/scummvm.sh $(gcw0_bundle)/
+	$(CP) $(srcdir)/dists/gcw0/novelvmrc $(gcw0_bundle)/
+	$(CP) $(srcdir)/dists/gcw0/novelvm.sh $(gcw0_bundle)/
 	$(CP) $(srcdir)/backends/platform/dingux/README.GCW0 $(gcw0_bundle)/README.man.txt
 	echo >> $(gcw0_bundle)/README.man.txt
 	echo '[General README]' >> $(gcw0_bundle)/README.man.txt
@@ -73,16 +73,16 @@ endif
 
 gcw0-opk-unstripped: $(gcw0_bundle)
 	$(CP) $(PLUGINS) $(gcw0_bundle)/plugins/
-	$(CP) $(EXECUTABLE) $(gcw0_bundle)/scummvm
-	$(srcdir)/dists/gcw0/opk_make.sh -d $(gcw0_bundle) -o scummvm
+	$(CP) $(EXECUTABLE) $(gcw0_bundle)/novelvm
+	$(srcdir)/dists/gcw0/opk_make.sh -d $(gcw0_bundle) -o novelvm
 
 gcw-opk: $(gcw0_bundle)
 	$(STRIP) $(gcw0_bundle)/plugins/*
-	$(STRIP) $(gcw0_bundle)/scummvm
-	$(srcdir)/dists/gcw0/opk_make.sh -d $(gcw0_bundle) -o scummvm
+	$(STRIP) $(gcw0_bundle)/novelvm
+	$(srcdir)/dists/gcw0/opk_make.sh -d $(gcw0_bundle) -o novelvm
 
 GeneralUser_GS_1.44-FluidSynth.zip:
-	curl -s https://www.scummvm.org/frs/extras/SoundFont/GeneralUser_GS_1.44-FluidSynth.zip -o GeneralUser_GS_1.44-FluidSynth.zip
+	curl -s https://www.novelvm.org/frs/extras/SoundFont/GeneralUser_GS_1.44-FluidSynth.zip -o GeneralUser_GS_1.44-FluidSynth.zip
 
 GeneralUser\ GS\ FluidSynth\ v1.44.sf2: GeneralUser_GS_1.44-FluidSynth.zip
 	unzip -n GeneralUser_GS_1.44-FluidSynth.zip

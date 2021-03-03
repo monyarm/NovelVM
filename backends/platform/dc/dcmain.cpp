@@ -232,7 +232,7 @@ void OSystem_Dreamcast::getTimeAndDate(TimeDate &td) const {
 }
 
 Common::SeekableReadStream *OSystem_Dreamcast::createConfigReadStream() {
-  Common::FSNode file("/scummvm.ini");
+  Common::FSNode file("/novelvm.ini");
   Common::SeekableReadStream *s = file.createReadStream();
   return s? s : new Common::MemoryReadStream((const byte *)"", 0);
 }

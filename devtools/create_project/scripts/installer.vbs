@@ -22,7 +22,7 @@
 '/
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-' This script calls the iscc tool to generate a Inno Setup Windows installer for ScummVM
+' This script calls the iscc tool to generate a Inno Setup Windows installer for NovelVM
 '
 ' It tries to read the Inno Setup installation folder from the registry and then calls the
 ' command line script compiler to create the installer.
@@ -62,7 +62,7 @@ Sub CreateInstaller()
 	' Build command line
 	Dim commandLine : commandLine = """" & innoPath & "\iscc.exe"" /Qp" & _
 	                                " /O""" & targetFolder & """" & _
-	                                " """ & rootFolder & "\dists\win32\scummvm.iss"""
+	                                " """ & rootFolder & "\dists\win32\novelvm.iss"""
 
 	Dim oExec: Set oExec = WshShell.Exec(commandline)
 	If Err.Number <> 0 Then

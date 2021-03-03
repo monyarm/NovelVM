@@ -1,16 +1,16 @@
 # Mission Supernova Translation.
-# Copyright (C) YEAR ScummVM Team
-# This file is distributed under the same license as the ScummVM package.
+# Copyright (C) YEAR NovelVM Team
+# This file is distributed under the same license as the NovelVM package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Mission Supernova 1.0\n"
-"Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
+"Report-Msgid-Bugs-To: novelvm-devel@lists.novelvm.org\n"
 "POT-Creation-Date: 2020-09-02 22:47+0100\n"
 "PO-Revision-Date: 2020-09-02 23:00+0000\n"
-"Last-Translator: Thierry Crozat <criezy@scummvm.org>\n"
-"Language-Team: English (United States) <https://translations.scummvm.org/"
+"Last-Translator: Thierry Crozat <criezy@novelvm.org>\n"
+"Language-Team: English (United States) <https://translations.novelvm.org/"
 "projects/game-translations/episode-1/en_US/>\n"
 "Language: en_US\n"
 "MIME-Version: 1.0\n"
@@ -36,17 +36,17 @@ msgstr "Take"
 
 #. I18N: Open
 #: ../../msn/msn.c:1616
-msgid "™ffne"
+msgid "ï¿½ffne"
 msgstr "Open"
 
 #. I18N: Close
 #: ../../msn/msn.c:1618
-msgid "Schlieáe"
+msgid "Schlieï¿½e"
 msgstr "Close"
 
 #. I18N: Push
 #: ../../msn/msn.c:1620
-msgid "Drcke"
+msgid "Drï¿½cke"
 msgstr "Push"
 
 #. I18N: Pull
@@ -71,7 +71,7 @@ msgstr "Give"
 
 #. I18N: End of conversation
 #: ../../msn/msn.c:2204
-msgid "Gespr„ch beenden"
+msgid "Gesprï¿½ch beenden"
 msgstr "End of conversation"
 
 #. I18N: Go to
@@ -91,17 +91,17 @@ msgstr "Take "
 
 #. I18N: Open
 #: ../../msn/msn.c:2340
-msgid "™ffne "
+msgid "ï¿½ffne "
 msgstr "Open "
 
 #. I18N: Close
 #: ../../msn/msn.c:2342
-msgid "Schlieáe "
+msgid "Schlieï¿½e "
 msgstr "Close "
 
 #. I18N: Push
 #: ../../msn/msn.c:2344
-msgid "Drcke "
+msgid "Drï¿½cke "
 msgstr "Push "
 
 #. I18N: Pull
@@ -144,7 +144,7 @@ msgstr "Save"
 
 #. I18N: Back
 #: ../../msn/msn.c:2886
-msgid "Zurck"
+msgid "Zurï¿½ck"
 msgstr "Back"
 
 #. I18N: Restart
@@ -179,7 +179,7 @@ msgstr "F5    Load / Save"
 
 #. I18N: Skip intro
 #: ../../msn/msn.c:3173
-msgid "ESC   Vorspann berspringen"
+msgid "ESC   Vorspann ï¿½berspringen"
 msgstr "ESC   Skip intro"
 
 #. I18N: Exit program
@@ -207,7 +207,7 @@ msgstr "No"
 
 #. I18N: You already carry this.
 #: ../../msn/msn.c:3341
-msgid "Das tr„gst du doch bei dir."
+msgid "Das trï¿½gst du doch bei dir."
 msgstr "You already carry this."
 
 #. I18N: You're already there.
@@ -237,7 +237,7 @@ msgstr "You can't take that."
 
 #. I18N: This can't be opened
 #: ../../msn/msn.c:3370
-msgid "Das l„át sich nicht ”ffnen."
+msgid "Das lï¿½ï¿½t sich nicht ï¿½ffnen."
 msgstr "This cannot be opened."
 
 #. I18N: This is already opened.
@@ -252,7 +252,7 @@ msgstr "This is locked."
 
 #. I18N: This can't be closed.
 #: ../../msn/msn.c:3393
-msgid "Das l„át sich nicht schlieáen."
+msgid "Das lï¿½ï¿½t sich nicht schlieï¿½en."
 msgstr "This cannot be closed."
 
 #. I18N: This is already closed.
@@ -307,15 +307,15 @@ msgid "Das Abenteuer geht weiter, ...##"
 msgstr "The adventure continues ...##"
 
 #: ../../msn/msn_mod.c:592
-msgid "... wenn Sie sich fr 30,- DM registrieren lassen!##"
+msgid "... wenn Sie sich fï¿½r 30,- DM registrieren lassen!##"
 msgstr "... if you register for 30,- DM!##"
 
 #: ../../msn/msn_mod.c:593
-msgid "(Falls Sie das nicht schon l„ngst getan haben.)##"
+msgid "(Falls Sie das nicht schon lï¿½ngst getan haben.)##"
 msgstr "(If you have not already done so.)##"
 
 #: ../../msn/msn_mod.c:594
-msgid "In^ Teil 2 - Der Doppelg„nger^ erwarten Sie:##"
+msgid "In^ Teil 2 - Der Doppelgï¿½nger^ erwarten Sie:##"
 msgstr "In^ Part 2 - The Doppelganger^ you can expect:##"
 
 #: ../../msn/msn_mod.c:595
@@ -345,7 +345,7 @@ msgstr "There's nothing special about it."
 
 #. I18N: You first have to take it
 #: ../../msn/msn_r0.c:28 ../../msn/msn_r0.c:230
-msgid "Das muát du erst nehmen."
+msgid "Das muï¿½t du erst nehmen."
 msgstr "You first have to take it."
 
 #. I18N: Hello
@@ -385,21 +385,21 @@ msgid "Da war irgendetwas drin,|aber jetzt hast du es|mit runtergeschluckt."
 msgstr "There was something in it, but now you swallowed it."
 
 #: ../../msn/msn_r0.c:202
-msgid "Du hast es doch schon ge”ffnet."
+msgid "Du hast es doch schon geï¿½ffnet."
 msgstr "You've already opened it."
 
 #: ../../msn/msn_r0.c:206
-msgid "In dem Ei ist eine Tablette|in einer Plastikhlle."
+msgid "In dem Ei ist eine Tablette|in einer Plastikhï¿½lle."
 msgstr "The egg contains a pill|in a plastic sleeve."
 
 #: ../../msn/msn_r0.c:214
-msgid "Du iát die Tablette und merkst,|daá sich irgendetwas ver„ndert hat."
+msgid "Du iï¿½t die Tablette und merkst,|daï¿½ sich irgendetwas verï¿½ndert hat."
 msgstr "You swallow the pill and realize|that something has changed."
 
 #: ../../msn/msn_r0.c:224
 msgid ""
 "Komisch! Auf einmal kannst du die Schrift lesen!|Darauf steht:\"Wenn Sie "
-"diese Schrift jetzt|lesen k”nnen, hat die Tablette gewirkt.\""
+"diese Schrift jetzt|lesen kï¿½nnen, hat die Tablette gewirkt.\""
 msgstr ""
 "Funny! Now you can read the inscription!|It says, \"If you can read this "
 "text now,|the pill has worked.\""
@@ -441,11 +441,11 @@ msgid "Neue Alarmzeit (hh:mm) :"
 msgstr "New alarm time (hh:mm):"
 
 #: ../../msn/msn_r0.c:332 ../../msn/msn_r1.c:486 ../../msn/msn_r1.c:595
-msgid "Leitung mit Lsterklemme"
+msgid "Leitung mit Lï¿½sterklemme"
 msgstr "Cable with terminal strip"
 
 #: ../../msn/msn_r0.c:344
-msgid "Kabelrolle mit Lsterklemme"
+msgid "Kabelrolle mit Lï¿½sterklemme"
 msgstr "Cable reel with terminal strip"
 
 #: ../../msn/msn_r0.c:355 ../../msn/msn_r1.c:495 ../../msn/msn_r1.c:604
@@ -466,11 +466,11 @@ msgid "Hier drinnen brauchtst du deinen Anzug nicht."
 msgstr "Inside you do not need your suit."
 
 #: ../../msn/msn_r0.c:395
-msgid "Du muát erst den Helm abnehmen."
+msgid "Du muï¿½t erst den Helm abnehmen."
 msgstr "You must take off your helmet first."
 
 #: ../../msn/msn_r0.c:397
-msgid "Du muát erst den Versorgungsteil abnehmen."
+msgid "Du muï¿½t erst den Versorgungsteil abnehmen."
 msgstr "You must take off your oxygen supply unit first."
 
 #: ../../msn/msn_r0.c:401
@@ -482,7 +482,7 @@ msgid "Du ziehst den Raumanzug an."
 msgstr "You put on your space suit."
 
 #: ../../msn/msn_r0.c:431
-msgid "Den Helm h„ttest du|besser angelassen!"
+msgid "Den Helm hï¿½ttest du|besser angelassen!"
 msgstr "You should have kept your helmet on!"
 
 #: ../../msn/msn_r0.c:433
@@ -494,11 +494,11 @@ msgid "Du ziehst den Helm auf."
 msgstr "You put on your helmet."
 
 #: ../../msn/msn_r0.c:443 ../../msn/msn_r0.c:479
-msgid "Du muát erst den Anzug anziehen."
+msgid "Du muï¿½t erst den Anzug anziehen."
 msgstr "You must wear the suit first."
 
 #: ../../msn/msn_r0.c:467
-msgid "Den Versorgungsteil h„ttest du|besser nicht abgenommen!"
+msgid "Den Versorgungsteil hï¿½ttest du|besser nicht abgenommen!"
 msgstr "You should not have taken off your oxygen supply unit!"
 
 #: ../../msn/msn_r0.c:469
@@ -510,7 +510,7 @@ msgid "Du ziehst den Versorgungsteil an."
 msgstr "You put on your oxygen supply unit."
 
 #: ../../msn/msn_r0.c:489
-msgid "Die Leitung ist hier unntz."
+msgid "Die Leitung ist hier unnï¿½tz."
 msgstr "The cable is useless here."
 
 #: ../../msn/msn_r0.c:492
@@ -527,7 +527,7 @@ msgid ""
 msgstr "Wait a minute, there is a bookmark in it|that says \"Forty-two\"."
 
 #: ../../msn/msn_r0.c:507
-msgid "Du h„ttest besser vorher|den Stecker rausgezogen."
+msgid "Du hï¿½ttest besser vorher|den Stecker rausgezogen."
 msgstr "You should have pulled|the plug before."
 
 #: ../../msn/msn_r0.c:567
@@ -539,7 +539,7 @@ msgid "Keycard"
 msgstr "Keycard"
 
 #: ../../msn/msn_r0.c:803
-msgid "Die Keycard fr deine Schr„nke."
+msgid "Die Keycard fï¿½r deine Schrï¿½nke."
 msgstr "The keycard for your locker."
 
 #: ../../msn/msn_r0.c:805
@@ -547,7 +547,7 @@ msgid "Taschenmesser"
 msgstr "Pocket knife"
 
 #: ../../msn/msn_r0.c:805
-msgid "Es ist nicht mehr das sch„rfste."
+msgid "Es ist nicht mehr das schï¿½rfste."
 msgstr "It is quite blunt."
 
 #: ../../msn/msn_r0.c:807 ../../msn/msn_r3.c:1527
@@ -564,7 +564,7 @@ msgstr "There is a \"Mad Monkeys\" CD in it."
 
 #: ../../msn/msn_r1.c:58
 msgid ""
-"In der Kche warst du schon|oft genug, im Moment hast|du keinen Appetit."
+"In der Kï¿½che warst du schon|oft genug, im Moment hast|du keinen Appetit."
 msgstr ""
 "You have been in the kitchen|often enough and right now|you are not hungry."
 
@@ -580,7 +580,7 @@ msgstr "Destination reached"
 
 #. I18N: Energy depleted
 #: ../../msn/msn_r1.c:110
-msgid "Energie ersch”pft"
+msgid "Energie erschï¿½pft"
 msgstr "Energy depleted"
 
 #. I18N: Artificial coma interrupted
@@ -606,14 +606,14 @@ msgstr "Sleep duration in days:"
 
 #: ../../msn/msn_r1.c:172
 msgid ""
-"Es wrde wenig bringen,|sich in eine Schlafkammer zu legen,|die nicht "
+"Es wï¿½rde wenig bringen,|sich in eine Schlafkammer zu legen,|die nicht "
 "eingeschaltet ist."
 msgstr ""
 "You are not going to achieve anything|by using a stasis pod that is|not "
 "switched on."
 
 #: ../../msn/msn_r1.c:174
-msgid "Dazu muát du erst den Raumanzug ausziehen."
+msgid "Dazu muï¿½t du erst den Raumanzug ausziehen."
 msgstr "To do this you have to take off the space suit first."
 
 #: ../../msn/msn_r1.c:248 ../../msn/msn_s.c:210
@@ -626,15 +626,15 @@ msgstr "Danger"
 
 #: ../../msn/msn_r1.c:289
 msgid ""
-"Du wachst mit brummendem Sch„del auf|und merkst, daá du nur getr„umt hast."
+"Du wachst mit brummendem Schï¿½del auf|und merkst, daï¿½ du nur getrï¿½umt hast."
 msgstr ""
 "You wake up with a buzzing sensation in your head|and realize that it was "
 "only a dream."
 
 #: ../../msn/msn_r1.c:292
 msgid ""
-"Beim Aufprall des Raumschiffs|muát du mit dem Kopf aufgeschlagen|und "
-"bewuátlos geworden sein."
+"Beim Aufprall des Raumschiffs|muï¿½t du mit dem Kopf aufgeschlagen|und "
+"bewuï¿½tlos geworden sein."
 msgstr ""
 "During the space ship impact|you must have hit your head|and lost "
 "consciousness."
@@ -677,18 +677,18 @@ msgstr " days"
 
 #: ../../msn/msn_r1.c:330
 msgid ""
-"Vergiá nicht, du bist nur der|Schiffskoch und hast keine Ahnung,|wie man ein "
+"Vergiï¿½ nicht, du bist nur der|Schiffskoch und hast keine Ahnung,|wie man ein "
 "Raumschiff fliegt."
 msgstr ""
 "Do not forget, you're only the|ship's cook and have no idea|how to fly a "
 "spaceship."
 
 #: ../../msn/msn_r1.c:344
-msgid "Achtung: Triebwerke funktionsunf„hig"
+msgid "Achtung: Triebwerke funktionsunfï¿½hig"
 msgstr "Warning: Engine malfunction"
 
 #: ../../msn/msn_r1.c:357
-msgid "Energievorrat ersch”pft"
+msgid "Energievorrat erschï¿½pft"
 msgstr "Energy supply exhausted"
 
 #: ../../msn/msn_r1.c:358
@@ -708,11 +708,11 @@ msgid "Er zeigt Normaldruck an."
 msgstr "It indicates normal pressure."
 
 #: ../../msn/msn_r1.c:464
-msgid "Ein Stck Schrott."
+msgid "Ein Stï¿½ck Schrott."
 msgstr "Some scrap metal."
 
 #: ../../msn/msn_r1.c:476
-msgid "Du muát erst hingehen."
+msgid "Du muï¿½t erst hingehen."
 msgstr "You must go there first."
 
 #: ../../msn/msn_r1.c:480 ../../msn/msn_r1.c:639 ../../msn/msn_r1.c:728
@@ -736,7 +736,7 @@ msgid "Du wirst aus den Anzeigen nicht schlau."
 msgstr "You cannot make sense of it."
 
 #: ../../msn/msn_r1.c:572
-msgid "Laá lieber die Finger davon!"
+msgid "Laï¿½ lieber die Finger davon!"
 msgstr "You better keep your hands off!"
 
 #: ../../msn/msn_r1.c:591
@@ -744,7 +744,7 @@ msgid "An dem Kabel ist doch gar kein Stecker."
 msgstr "There is no plug on the cable."
 
 #: ../../msn/msn_r1.c:635
-msgid "Du solltest die Luke vielleicht erst ”ffnen."
+msgid "Du solltest die Luke vielleicht erst ï¿½ffnen."
 msgstr "You should open the hatch first."
 
 #: ../../msn/msn_r1.c:668
@@ -752,7 +752,7 @@ msgid "Das Seil ist im Weg."
 msgstr "The cable is in the way."
 
 #: ../../msn/msn_r1.c:685
-msgid "Das geht nicht.|Die Luke ist mindestens|5 Meter ber dem Boden."
+msgid "Das geht nicht.|Die Luke ist mindestens|5 Meter ï¿½ber dem Boden."
 msgstr "That won't work.|The hatch is at least|5 meters above the ground."
 
 #: ../../msn/msn_r1.c:694
@@ -760,7 +760,7 @@ msgid "Keycard des Commanders"
 msgstr "The Commander's keycard"
 
 #: ../../msn/msn_r1.c:766
-msgid "Was ntzt dir der Anschluá|ohne eine Stromquelle?!"
+msgid "Was nï¿½tzt dir der Anschluï¿½|ohne eine Stromquelle?!"
 msgstr "What good would come from connecting it|without a power source?!"
 
 #: ../../msn/msn_r1.c:770
@@ -772,7 +772,7 @@ msgid "Es zeigt volle Spannung an."
 msgstr "It displays full voltage."
 
 #: ../../msn/msn_r1.c:782
-msgid "Du muát die Luke erst ”ffnen."
+msgid "Du muï¿½t die Luke erst ï¿½ffnen."
 msgstr "You must open the hatch first."
 
 #: ../../msn/msn_r1.c:801
@@ -796,7 +796,7 @@ msgid "Die Platte scheint einen Sprung zu haben."
 msgstr "The record seems to be scratched."
 
 #: ../../msn/msn_r1.c:981
-msgid "Schneid doch besser ein|l„ngeres Stck Kabel ab!"
+msgid "Schneid doch besser ein|lï¿½ngeres Stï¿½ck Kabel ab!"
 msgstr "You should cut a longer|piece of cable!"
 
 #: ../../msn/msn_r1.c:1003
@@ -816,7 +816,7 @@ msgid "Wenn du unbedingt aufs Klo|willst, spiel doch Larry 1."
 msgstr "If you absolutely want to go|to the loo, play Larry 1."
 
 #: ../../msn/msn_r1.c:1097
-msgid "Was?! Keiner im Cockpit!|Die sind wohl verrckt!"
+msgid "Was?! Keiner im Cockpit!|Die sind wohl verrï¿½ckt!"
 msgstr "What?! No one in the cockpit!|They're crazy!"
 
 #: ../../msn/msn_r1.c:1105
@@ -825,8 +825,8 @@ msgstr "Funny, there's only|one space suit left."
 
 #: ../../msn/msn_r1.c:1113
 msgid ""
-"Was ist denn das fr ein Chaos?|Und auáerdem fehlt das Notraumschiff!|Jetzt "
-"wird mir einiges klar.|Die anderen sind geflchtet,|und ich habe es verpennt."
+"Was ist denn das fï¿½r ein Chaos?|Und auï¿½erdem fehlt das Notraumschiff!|Jetzt "
+"wird mir einiges klar.|Die anderen sind geflï¿½chtet,|und ich habe es verpennt."
 msgstr ""
 "What is this chaos? And the|escape ship is missing too!|Now I understand. "
 "The others|have escaped and they left|me behind."
@@ -852,7 +852,7 @@ msgid "Knopf"
 msgstr "Button"
 
 #: ../../msn/msn_r1_r.c:23
-msgid "Er geh”rt zu der groáen Luke."
+msgid "Er gehï¿½rt zu der groï¿½en Luke."
 msgstr "It belongs to the large hatch."
 
 #: ../../msn/msn_r1_r.c:24 ../../msn/msn_r1_r.c:37 ../../msn/msn_r1_r.c:130
@@ -874,15 +874,15 @@ msgid "Ausgang"
 msgstr "Exit"
 
 #: ../../msn/msn_r1_r.c:31
-msgid "Sie fhrt ins Cockpit."
+msgid "Sie fï¿½hrt ins Cockpit."
 msgstr "It leads into the cockpit."
 
 #: ../../msn/msn_r1_r.c:32
-msgid "Sie fhrt zur Kche."
+msgid "Sie fï¿½hrt zur Kï¿½che."
 msgstr "It leads to the kitchen."
 
 #: ../../msn/msn_r1_r.c:34
-msgid "Sie fhrt zu den Tiefschlafkammern."
+msgid "Sie fï¿½hrt zu den Tiefschlafkammern."
 msgstr "It leads to the stasis pods."
 
 #: ../../msn/msn_r1_r.c:36 ../../msn/msn_r1_r.c:123 ../../msn/msn_r1_r.c:151
@@ -975,19 +975,19 @@ msgstr "Scrap"
 
 #: ../../msn/msn_r1_r.c:81
 msgid ""
-"Da ist eine Lsterklemme dran, die|noch ganz brauchbar aussieht.|Ich nehme "
+"Da ist eine Lï¿½sterklemme dran, die|noch ganz brauchbar aussieht.|Ich nehme "
 "sie mit."
 msgstr ""
 "There is a terminal strip on it|that looks quite useful.|I will take it with "
 "me."
 
 #: ../../msn/msn_r1_r.c:83
-msgid "Lsterklemme"
+msgid "Lï¿½sterklemme"
 msgstr "Terminal strip"
 
 #: ../../msn/msn_r1_r.c:84
 msgid ""
-"Junge, Junge! Die Explosion hat ein|ganz sch”nes Durcheinander angerichtet."
+"Junge, Junge! Die Explosion hat ein|ganz schï¿½nes Durcheinander angerichtet."
 msgstr "Boy, oh boy! The explosion created|quite a mess."
 
 #: ../../msn/msn_r1_r.c:86
@@ -999,11 +999,11 @@ msgid "Das war einmal der Reaktor."
 msgstr "This was a reactor once."
 
 #: ../../msn/msn_r1_r.c:87
-msgid "Dse"
+msgid "Dï¿½se"
 msgstr "Thruster"
 
 #: ../../msn/msn_r1_r.c:88
-msgid "blauer Krbis"
+msgid "blauer Kï¿½rbis"
 msgstr "blue pumpkin"
 
 #: ../../msn/msn_r1_r.c:88
@@ -1011,15 +1011,15 @@ msgid "Keine Ahnung, was das ist."
 msgstr "No idea what this is."
 
 #: ../../msn/msn_r1_r.c:90
-msgid "Landef„hre"
+msgid "Landefï¿½hre"
 msgstr "Landing module"
 
 #: ../../msn/msn_r1_r.c:90
-msgid "Sie war eigentlich fr Bodenuntersuchungen|auf Arsano 3 gedacht."
+msgid "Sie war eigentlich fï¿½r Bodenuntersuchungen|auf Arsano 3 gedacht."
 msgstr "It was supposed to be used for soil analysis|on Arsano 3."
 
 #: ../../msn/msn_r1_r.c:93 ../../msn/msn_r1_r.c:120
-msgid "Sie fhrt nach drauáen."
+msgid "Sie fï¿½hrt nach drauï¿½en."
 msgstr "It leads outside."
 
 #: ../../msn/msn_r1_r.c:95
@@ -1039,7 +1039,7 @@ msgstr "Socket"
 #: ../../msn/msn_r1_r.c:103
 msgid ""
 "Es ist ein Sicherheitsknopf.|Er kann nur mit einem spitzen|Gegenstand "
-"gedrckt werden."
+"gedrï¿½ckt werden."
 msgstr "It's a safety button.|It can only be pushed|with a pointed object."
 
 #: ../../msn/msn_r1_r.c:106 ../../msn/msn_r2.c:1300
@@ -1052,7 +1052,7 @@ msgstr "Empty cable reel"
 
 #: ../../msn/msn_r1_r.c:117
 msgid ""
-"Hey, das ist die Keycard des Commanders!|Er muá sie bei dem berstrzten|"
+"Hey, das ist die Keycard des Commanders!|Er muï¿½ sie bei dem ï¿½berstï¿½rzten|"
 "Aufbruch verloren haben."
 msgstr ""
 "Hey, that's the commander's keycard!|He must have lost it in the rushed|"
@@ -1073,7 +1073,7 @@ msgid "Leitung"
 msgstr "Cable"
 
 #: ../../msn/msn_r1_r.c:126
-msgid "Spannungmessger„t"
+msgid "Spannungmessgerï¿½t"
 msgstr "Voltmeter"
 
 #: ../../msn/msn_r1_r.c:127
@@ -1081,7 +1081,7 @@ msgid "Klemme"
 msgstr "Clamp"
 
 #: ../../msn/msn_r1_r.c:128
-msgid "Sie fhrt vom Generator zum Spannungmessger„t."
+msgid "Sie fï¿½hrt vom Generator zum Spannungmessgerï¿½t."
 msgstr "It goes from the generator to the voltage meter."
 
 #: ../../msn/msn_r1_r.c:143 ../../msn/msn_r1_r.c:212 ../../msn/msn_r1_r.c:213
@@ -1096,13 +1096,13 @@ msgid "Manche Leute haben schon|einen komischen Geschmack."
 msgstr "Some people have funny tastes."
 
 #: ../../msn/msn_r1_r.c:145
-msgid "Zeichenger„te"
+msgid "Zeichengerï¿½te"
 msgstr "Drawing instruments"
 
 #: ../../msn/msn_r1_r.c:146
 msgid ""
-"Auf dem Zettel sind lauter|unverst„ndliche Skizzen und Berechnungen.|"
-"(Jedenfalls fr dich unverst„ndlich.)"
+"Auf dem Zettel sind lauter|unverstï¿½ndliche Skizzen und Berechnungen.|"
+"(Jedenfalls fï¿½r dich unverstï¿½ndlich.)"
 msgstr ""
 "There are incomprehensible sketches|and calculations on that note.|(At "
 "least, it's incomprehensible to you.)"
@@ -1142,11 +1142,11 @@ msgid "Schachspiel"
 msgstr "Chessboard"
 
 #: ../../msn/msn_r1_r.c:161
-msgid "Es macht wohl Spaá, an|der Decke Schach zu spielen."
+msgid "Es macht wohl Spaï¿½, an|der Decke Schach zu spielen."
 msgstr "I guess it's fun to play|chess on the ceiling."
 
 #: ../../msn/msn_r1_r.c:163
-msgid "Tennisschl„ger"
+msgid "Tennisschlï¿½ger"
 msgstr "Tennis racquets"
 
 #: ../../msn/msn_r1_r.c:163
@@ -1174,7 +1174,7 @@ msgid "Das ist dein Bett. Toll, nicht wahr?"
 msgstr "This is your bed. Great, isn't it?"
 
 #: ../../msn/msn_r1_r.c:183 ../../msn/msn_r1_r.c:186 ../../msn/msn_r1_r.c:195
-msgid "Das ist eins deiner drei F„cher."
+msgid "Das ist eins deiner drei Fï¿½cher."
 msgstr "It's one of your three storage compartments."
 
 #: ../../msn/msn_r1_r.c:185
@@ -1186,7 +1186,7 @@ msgid "Deine Briefmarkensammlung."
 msgstr "Your stamp collection."
 
 #: ../../msn/msn_r1_r.c:188
-msgid "Es ist ungef„hr 10 m lang und 4 cm dick."
+msgid "Es ist ungefï¿½hr 10 m lang und 4 cm dick."
 msgstr "It is about 10 m long and 4 cm thick."
 
 #: ../../msn/msn_r1_r.c:190
@@ -1210,11 +1210,11 @@ msgid "Es sind Standard-Weltraum-Klamotten."
 msgstr "They are standard space gear."
 
 #: ../../msn/msn_r1_r.c:193 ../../msn/msn_r1_r.c:269 ../../msn/msn_r1_r.c:271
-msgid "Unterw„sche"
+msgid "Unterwï¿½sche"
 msgstr "Underwear"
 
 #: ../../msn/msn_r1_r.c:194
-msgid "Strmpfe"
+msgid "Strï¿½mpfe"
 msgstr "Socks"
 
 #: ../../msn/msn_r1_r.c:197 ../../msn/msn_r1_r.c:268
@@ -1270,11 +1270,11 @@ msgid "Die Platte ist von \"Big Boss\"."
 msgstr "A record from \"Big Boss\"."
 
 #: ../../msn/msn_r1_r.c:237
-msgid "Schallplattenst„nder"
+msgid "Schallplattenstï¿½nder"
 msgstr "Record stand"
 
 #: ../../msn/msn_r1_r.c:237
-msgid "Du hast jetzt keine Zeit, in|der Plattensammlung rumzust”bern."
+msgid "Du hast jetzt keine Zeit, in|der Plattensammlung rumzustï¿½bern."
 msgstr "You don't have time to rummage|around the record collection now."
 
 #: ../../msn/msn_r1_r.c:240
@@ -1282,7 +1282,7 @@ msgid "Plattenspieler"
 msgstr "Record player"
 
 #: ../../msn/msn_r1_r.c:240
-msgid "Sieht aus, als k„me|er aus dem Museum."
+msgid "Sieht aus, als kï¿½me|er aus dem Museum."
 msgstr "Looks like something from a museum."
 
 #: ../../msn/msn_r1_r.c:244
@@ -1298,11 +1298,11 @@ msgid "Es ist keine Munition drin."
 msgstr "There is no ammunition in it."
 
 #: ../../msn/msn_r1_r.c:263
-msgid "Bcher"
+msgid "Bï¿½cher"
 msgstr "Books"
 
 #: ../../msn/msn_r1_r.c:263
-msgid "Lauter wissenschaftliche Bcher."
+msgid "Lauter wissenschaftliche Bï¿½cher."
 msgstr "All scientific books."
 
 #: ../../msn/msn_r1_r.c:265
@@ -1314,7 +1314,7 @@ msgid "Da sind mindestens zwanzig Meter drauf."
 msgstr "There is at least 20 meters of cable on it."
 
 #: ../../msn/msn_r1_r.c:269 ../../msn/msn_r1_r.c:271
-msgid "Ich habe keine Lust, in|der Unterw„sche des|Commanders rumzuwhlen."
+msgid "Ich habe keine Lust, in|der Unterwï¿½sche des|Commanders rumzuwï¿½hlen."
 msgstr "I don't feel like digging around|in the commander's underwear."
 
 #: ../../msn/msn_r1_r.c:284
@@ -1376,15 +1376,15 @@ msgid "Schwachsinn! Ich gehe jetzt nach oben!"
 msgstr "Bullshit! I'm going upstairs now!"
 
 #: ../../msn/msn_r2.c:155
-msgid "Sch”nes Wetter heute, nicht wahr?"
+msgid "Schï¿½nes Wetter heute, nicht wahr?"
 msgstr "Nice weather today, isn't it?"
 
 #: ../../msn/msn_r2.c:156
-msgid "Wrden Sie mich bitte durchlassen."
+msgid "Wï¿½rden Sie mich bitte durchlassen."
 msgstr "Would you please let me through?"
 
 #: ../../msn/msn_r2.c:157
-msgid "Hey Alter, laá mich durch!"
+msgid "Hey Alter, laï¿½ mich durch!"
 msgstr "Hey, dude, let me through!"
 
 #: ../../msn/msn_r2.c:164
@@ -1418,17 +1418,17 @@ msgid "Wenn Sie meinen."
 msgstr "If you say so."
 
 #: ../../msn/msn_r2.c:199 ../../msn/msn_r2.c:256
-msgid "In der Toilette gibt es|Schlieáf„cher fr Schuhe."
+msgid "In der Toilette gibt es|Schlieï¿½fï¿½cher fï¿½r Schuhe."
 msgstr "There are shoe lockers|in the restroom."
 
 #: ../../msn/msn_r2.c:204
 msgid ""
-"Wenn Sie das Lokal betreten|wollen, mssen Sie erst|ihre Schuhe ausziehen."
+"Wenn Sie das Lokal betreten|wollen, mï¿½ssen Sie erst|ihre Schuhe ausziehen."
 msgstr ""
 "If you want to enter the restaurant,|you have to take off your shoes first."
 
 #: ../../msn/msn_r2.c:208
-msgid "Wollen Sie, daá ich Sie rauáschmeiáe?"
+msgid "Wollen Sie, daï¿½ ich Sie rauï¿½schmeiï¿½e?"
 msgstr "You want me to kick you out?"
 
 #: ../../msn/msn_r2.c:216 ../../msn/msn_r2.c:274
@@ -1444,12 +1444,12 @@ msgid "Uhwdejkt!"
 msgstr "Uhwdejkt!"
 
 #: ../../msn/msn_r2.c:241
-msgid "Sie mssen erst ihre Schuhe ausziehen, Sie Trottel!"
+msgid "Sie mï¿½ssen erst ihre Schuhe ausziehen, Sie Trottel!"
 msgstr "You have to take off your shoes first, idiot!"
 
 #: ../../msn/msn_r2.c:243
 msgid ""
-"Was f„llt ihnen ein!|Sie k”nnen doch ein Lokal|nicht mit Schuhen betreten!"
+"Was fï¿½llt ihnen ein!|Sie kï¿½nnen doch ein Lokal|nicht mit Schuhen betreten!"
 msgstr ""
 "What are you thinking!|You cannot enter a restaurant|with your shoes on!"
 
@@ -1458,11 +1458,11 @@ msgid "Fragen Sie nicht so doof!"
 msgstr "Quit asking so stupidly!"
 
 #: ../../msn/msn_r2.c:262
-msgid "Das wrde ich an ihrer|Stelle nicht versuchen!"
+msgid "Das wï¿½rde ich an ihrer|Stelle nicht versuchen!"
 msgstr "I would not try that if I were you!"
 
 #: ../../msn/msn_r2.c:300
-msgid "Du ziehst deine Schuhe|aus und legst sie in|eins der Schlieáf„cher."
+msgid "Du ziehst deine Schuhe|aus und legst sie in|eins der Schlieï¿½fï¿½cher."
 msgstr "You remove your shoes|and put them in one|of the lockers."
 
 #: ../../msn/msn_r2.c:307
@@ -1484,8 +1484,8 @@ msgstr "You're now back in a lavatory,|for the first time in seven years!"
 
 #: ../../msn/msn_r2.c:322
 msgid ""
-"In einem der Schlieáf„cher,|die sich auch im Raum befinden,|findest du "
-"einige Mnzen."
+"In einem der Schlieï¿½fï¿½cher,|die sich auch im Raum befinden,|findest du "
+"einige Mï¿½nzen."
 msgstr "You find some coins in one of|the lockers in this room."
 
 #: ../../msn/msn_r2.c:332
@@ -1493,13 +1493,13 @@ msgid "Mach doch zuerst das Fach leer!"
 msgstr "First, empty the drawer!"
 
 #: ../../msn/msn_r2.c:340
-msgid "Mnze"
+msgid "Mï¿½nze"
 msgstr "Coin"
 
 #: ../../msn/msn_r2.c:353
 msgid ""
 "Komisch! Auf einmal kannst du|das Schild lesen! Darauf steht:|\"Zutritt nur "
-"fr Personal\"."
+"fï¿½r Personal\"."
 msgstr "Strange! Suddenly you can|read the sign! It states:|\"Staff only\"."
 
 #: ../../msn/msn_r2.c:361
@@ -1516,12 +1516,12 @@ msgid "Du ziehst den Raumanzug wieder an."
 msgstr "You put the space suit back on."
 
 #: ../../msn/msn_r2.c:382 ../../msn/msn_r3.c:487 ../../msn/msn_r3.c:539
-msgid "Nicht so gewaltt„tig!"
+msgid "Nicht so gewalttï¿½tig!"
 msgstr "Not so rough!"
 
 #: ../../msn/msn_r2.c:603
 msgid ""
-"Du hast das komische Gefhl,|daá drauáen etwas passiert,|und eilst zum "
+"Du hast das komische Gefï¿½hl,|daï¿½ drauï¿½en etwas passiert,|und eilst zum "
 "Restaurant."
 msgstr ""
 "You get the funny feeling|that something is happening outside|and hurry to "
@@ -1532,7 +1532,7 @@ msgid "Da! Die Supernova!"
 msgstr "There! The supernova!"
 
 #: ../../msn/msn_r2.c:630
-msgid "Zwei Minuten sp„ter ..."
+msgid "Zwei Minuten spï¿½ter ..."
 msgstr "Two minutes later ..."
 
 #: ../../msn/msn_r2.c:638
@@ -1552,11 +1552,11 @@ msgid "Und jetzt raus mit Ihnen!"
 msgstr "And now, get out of here!"
 
 #: ../../msn/msn_r2.c:660
-msgid "Zehn Minuten sp„ter ..."
+msgid "Zehn Minuten spï¿½ter ..."
 msgstr "Ten Minutes later ..."
 
 #: ../../msn/msn_r2.c:690
-msgid "K”nnten Sie mir ein Gericht empfehlen?"
+msgid "Kï¿½nnten Sie mir ein Gericht empfehlen?"
 msgstr "Do you have any recommendations?"
 
 #: ../../msn/msn_r2.c:691
@@ -1568,7 +1568,7 @@ msgid "Sie kommen mir irgendwie bekannt vor."
 msgstr "You look kind of familiar to me."
 
 #: ../../msn/msn_r2.c:704
-msgid "Hey, Witzkeks, laá die Brieftasche da liegen!"
+msgid "Hey, Witzkeks, laï¿½ die Brieftasche da liegen!"
 msgstr "Hey, joker, leave the wallet alone!"
 
 #: ../../msn/msn_r2.c:708
@@ -1594,19 +1594,19 @@ msgstr "At least two more hours."
 
 #: ../../msn/msn_r2.c:722
 msgid ""
-"Haben Sie keine Idee, womit wir uns|bis dahin die Zeit vertreiben k”nnen?"
+"Haben Sie keine Idee, womit wir uns|bis dahin die Zeit vertreiben kï¿½nnen?"
 msgstr "Do you have an idea what we could|do to pass the time?"
 
 #: ../../msn/msn_r2.c:723
 msgid ""
-"Hmm ... im Moment f„llt mir nichts ein, aber vielleicht|hat der Spieler des "
+"Hmm ... im Moment fï¿½llt mir nichts ein, aber vielleicht|hat der Spieler des "
 "Adventures ja eine Idee."
 msgstr ""
 "Hmm ... at the moment I'm not sure, but maybe|the Adventure Game Player has "
 "an idea."
 
 #: ../../msn/msn_r2.c:725
-msgid "Nein, Sie mssen sich irren.|Ich kenne Sie jedenfalls nicht."
+msgid "Nein, Sie mï¿½ssen sich irren.|Ich kenne Sie jedenfalls nicht."
 msgstr "No, you must be mistaken.|I don't know you."
 
 #: ../../msn/msn_r2.c:726
@@ -1618,7 +1618,7 @@ msgid "Ja? Komisch."
 msgstr "Yes? Strange."
 
 #: ../../msn/msn_r2.c:728
-msgid "Jetzt weiá ich's. Sie sind Roger W. !"
+msgid "Jetzt weiï¿½ ich's. Sie sind Roger W. !"
 msgstr "Now I know. You are Roger W.!"
 
 #: ../../msn/msn_r2.c:729
@@ -1631,15 +1631,15 @@ msgid ""
 msgstr "I'm deliberately wearing a mask so I don't|get yakked on by everyone."
 
 #: ../../msn/msn_r2.c:731
-msgid "h ... ach so."
+msgid "ï¿½h ... ach so."
 msgstr "Uh... I see."
 
 #: ../../msn/msn_r2.c:732
-msgid "Wann kommt denn das n„chste SQ-Abenteuer raus?"
+msgid "Wann kommt denn das nï¿½chste SQ-Abenteuer raus?"
 msgstr "When does the next SQ adventure come out?"
 
 #: ../../msn/msn_r2.c:733
-msgid "SQ 127 máte in einem Monat erscheinen."
+msgid "SQ 127 mï¿½ï¿½te in einem Monat erscheinen."
 msgstr "SQ 127 should come out in a month."
 
 #: ../../msn/msn_r2.c:734
@@ -1659,33 +1659,33 @@ msgid "Von der Erde."
 msgstr "Earth."
 
 #: ../../msn/msn_r2.c:738
-msgid "Erde? Nie geh”rt."
+msgid "Erde? Nie gehï¿½rt."
 msgstr "Earth? Never heard of it."
 
 #: ../../msn/msn_r2.c:739
 msgid ""
-"Wahrscheinlich irgendein Kaff, wo Neuerungen|erst hundert Jahre sp„ter "
+"Wahrscheinlich irgendein Kaff, wo Neuerungen|erst hundert Jahre spï¿½ter "
 "hingelangen."
 msgstr "Probably some dump where innovations|happen a century late."
 
 #: ../../msn/msn_r2.c:740
-msgid "h ... kann sein."
+msgid "ï¿½h ... kann sein."
 msgstr "Uh ... maybe."
 
 #: ../../msn/msn_r2.c:741
-msgid "Aber eins mssen Sie mir erkl„ren!"
+msgid "Aber eins mï¿½ssen Sie mir erklï¿½ren!"
 msgstr "But you must tell me!"
 
 #: ../../msn/msn_r2.c:742
 msgid ""
-"Wieso sehen Sie mir so verdammt „hnlich, wenn|Sie nicht von Xenon stammen, "
+"Wieso sehen Sie mir so verdammt ï¿½hnlich, wenn|Sie nicht von Xenon stammen, "
 "wie ich?"
 msgstr ""
 "Why do you look so damn similar to me|if you are not from Xenon, like me?"
 
 #: ../../msn/msn_r2.c:743
 msgid ""
-"Keine Ahnung. Bis jetzt dachte ich immer, Sie w„ren ein|von Programmierern "
+"Keine Ahnung. Bis jetzt dachte ich immer, Sie wï¿½ren ein|von Programmierern "
 "auf der Erde erfundenes Computersprite."
 msgstr ""
 "I have no idea. Until now, I've always thought you were|a computer sprite, "
@@ -1696,7 +1696,7 @@ msgid "Was? Lachhaft!"
 msgstr "What? Ridiculous!"
 
 #: ../../msn/msn_r2.c:745
-msgid "Wie erkl„ren Sie sich dann,|daá ich ihnen gegenbersitze?"
+msgid "Wie erklï¿½ren Sie sich dann,|daï¿½ ich ihnen gegenï¿½bersitze?"
 msgstr "Then how do you explain the fact that|I am seated opposite you?"
 
 #: ../../msn/msn_r2.c:746
@@ -1705,7 +1705,7 @@ msgstr "Yes, this is definitely strange."
 
 #: ../../msn/msn_r2.c:747
 msgid ""
-"Halt, jetzt weiá ich es. Sie sind von der Konkurrenz,|von \"Georgefilm Games"
+"Halt, jetzt weiï¿½ ich es. Sie sind von der Konkurrenz,|von \"Georgefilm Games"
 "\" und wollen mich verunsichern."
 msgstr ""
 "Wait, now I understand! You are from the competition,|\"Georgefilm Games\", "
@@ -1732,15 +1732,15 @@ msgid "Schach? Was ist das denn?"
 msgstr "Chess? What is that?"
 
 #: ../../msn/msn_r2.c:763
-msgid "Schach ist ein interessantes Spiel.|Ich werde es Ihnen erkl„ren."
+msgid "Schach ist ein interessantes Spiel.|Ich werde es Ihnen erklï¿½ren."
 msgstr "Chess is an interesting game.|I will explain it to you."
 
 #: ../../msn/msn_r2.c:769
-msgid "Knapp zwei Stunden sp„ter ..."
+msgid "Knapp zwei Stunden spï¿½ter ..."
 msgstr "Almost two hours later ..."
 
 #: ../../msn/msn_r2.c:787
-msgid "Roger W. steht kurz vor dem Schachmatt|und grbelt nach einem Ausweg."
+msgid "Roger W. steht kurz vor dem Schachmatt|und grï¿½belt nach einem Ausweg."
 msgstr "Roger W. is on the brink of checkmate|and trying to find a way out."
 
 #: ../../msn/msn_r2.c:831
@@ -1756,7 +1756,7 @@ msgid "Du tippst auf den Tasten herum,|aber es passiert nichts."
 msgstr "You tap the buttons,|but nothing happens."
 
 #: ../../msn/msn_r2.c:917
-msgid "Ach, Ihnen geh”rt die. Ich habe sie eben im Sand gefunden."
+msgid "Ach, Ihnen gehï¿½rt die. Ich habe sie eben im Sand gefunden."
 msgstr "Oh, it is yours. I just found it in the sand."
 
 #: ../../msn/msn_r2.c:918
@@ -1768,7 +1768,7 @@ msgid "Nein, danke. Ich bleibe lieber hier."
 msgstr "No thanks. I'd rather stay here."
 
 #: ../../msn/msn_r2.c:925
-msgid "Ja, das w„re gut."
+msgid "Ja, das wï¿½re gut."
 msgstr "Yes, that would be good."
 
 #: ../../msn/msn_r2.c:931
@@ -1776,7 +1776,7 @@ msgid "Zur Erde."
 msgstr "To Earth."
 
 #: ../../msn/msn_r2.c:932
-msgid "Zum Pr„sident der Galaxis."
+msgid "Zum Prï¿½sident der Galaxis."
 msgstr "To the President of the Galaxy."
 
 #: ../../msn/msn_r2.c:933
@@ -1792,7 +1792,7 @@ msgid "Ich habe gerade Ihre Brieftasche gefunden!"
 msgstr "I just found your wallet!"
 
 #: ../../msn/msn_r2.c:941
-msgid "Sie lag da drben hinter einem Felsen."
+msgid "Sie lag da drï¿½ben hinter einem Felsen."
 msgstr "It was over there behind a rock."
 
 #: ../../msn/msn_r2.c:942
@@ -1809,7 +1809,7 @@ msgstr "No."
 
 #: ../../msn/msn_r2.c:965
 msgid ""
-"Haben Sie zuf„llig meine Brieftasche gesehen?|Ich muá Sie irgendwo verloren "
+"Haben Sie zufï¿½llig meine Brieftasche gesehen?|Ich muï¿½ Sie irgendwo verloren "
 "haben."
 msgstr "Have you seen my wallet, by chance?|I must have lost it somewhere."
 
@@ -1823,7 +1823,7 @@ msgid "Oh! Vielen Dank."
 msgstr "Oh! Many thanks."
 
 #: ../../msn/msn_r2.c:976
-msgid "Wo ist denn Ihr Raumschiff?|Soll ich Sie ein Stck mitnehmen?"
+msgid "Wo ist denn Ihr Raumschiff?|Soll ich Sie ein Stï¿½ck mitnehmen?"
 msgstr "Where is your spaceship?|Shall I give you a lift?"
 
 #: ../../msn/msn_r2.c:979
@@ -1844,7 +1844,7 @@ msgstr "Huh, you're still alive!"
 
 #: ../../msn/msn_r2.c:1057
 msgid ""
-"Das wrde ich jetzt nicht tun, schlieálich|steht Roger W. neben seinem "
+"Das wï¿½rde ich jetzt nicht tun, schlieï¿½lich|steht Roger W. neben seinem "
 "Schiff."
 msgstr "I wouldn't do that now, because|Roger W. is standing beside his ship."
 
@@ -1891,13 +1891,13 @@ msgstr "You are in the spaceship \"Dexxa\"."
 #: ../../msn/msn_r2.c:1149
 msgid ""
 "Wir kommen vom Planeten Axacuss und|sind aus dem gleichen Grund hier wie "
-"Sie,|n„mlich zur Erforschung der Supernova."
+"Sie,|nï¿½mlich zur Erforschung der Supernova."
 msgstr ""
 "We come from the planet Axacuss|and are here for the same reason as you,|"
 "namely, to observe the supernova."
 
 #: ../../msn/msn_r2.c:1151
-msgid "Sie k”nnen beruhigt sein, wir wollen Ihnen nur helfen."
+msgid "Sie kï¿½nnen beruhigt sein, wir wollen Ihnen nur helfen."
 msgstr "Don't worry, we just want to help you."
 
 #: ../../msn/msn_r2.c:1152
@@ -1910,17 +1910,17 @@ msgstr "It was a reflex."
 
 #: ../../msn/msn_r2.c:1154
 msgid ""
-"Schlieálich ist es fr uns das erste Mal,|daá wir auf eine fremde "
+"Schlieï¿½lich ist es fï¿½r uns das erste Mal,|daï¿½ wir auf eine fremde "
 "Intelligenz treffen."
 msgstr ""
 "After all, this is the first time we have|come across an alien intelligence."
 
 #: ../../msn/msn_r2.c:1155
-msgid "Wie wir festgestellt haben, ist|Ihr Raumschiff v”llig zerst”rt."
+msgid "Wie wir festgestellt haben, ist|Ihr Raumschiff vï¿½llig zerstï¿½rt."
 msgstr "As we've established, your spaceship|is completely destroyed."
 
 #: ../../msn/msn_r2.c:1156
-msgid "Wahrscheinlich k”nnen Sie nicht|mehr auf ihren Heimatplaneten zurck."
+msgid "Wahrscheinlich kï¿½nnen Sie nicht|mehr auf ihren Heimatplaneten zurï¿½ck."
 msgstr "You may not be able to return to your home planet."
 
 #: ../../msn/msn_r2.c:1157
@@ -1932,13 +1932,13 @@ msgid "Sind Sie sich da wirklich sicher?"
 msgstr "Are you really sure about that?"
 
 #: ../../msn/msn_r2.c:1161 ../../msn/msn_r2.c:1170
-msgid "Wenn ich es mir genau berlege,|fliege ich doch lieber mit."
+msgid "Wenn ich es mir genau ï¿½berlege,|fliege ich doch lieber mit."
 msgstr "If I think about it,|I'd rather fly with you."
 
 #: ../../msn/msn_r2.c:1163
 msgid ""
-"Gut, wir nehmen Sie unter der|Bedingung mit, daá wir Sie jetzt|sofort in "
-"Tiefschlaf versetzen drfen."
+"Gut, wir nehmen Sie unter der|Bedingung mit, daï¿½ wir Sie jetzt|sofort in "
+"Tiefschlaf versetzen dï¿½rfen."
 msgstr ""
 "All right, we'll take you with us|on condition that we can put you|into a "
 "deep sleep right now."
@@ -1984,11 +1984,11 @@ msgid "Was? Sie haben in mein Gehirn eingegriffen?"
 msgstr "What? You've interfered with my brain?"
 
 #: ../../msn/msn_r2.c:1180
-msgid "Keine Angst, wir haben sonst nichts ver„ndert."
+msgid "Keine Angst, wir haben sonst nichts verï¿½ndert."
 msgstr "Don't worry, we haven't changed anything else."
 
 #: ../../msn/msn_r2.c:1181
-msgid "Ohne diesen Eingriff w„ren|Sie verloren gewesen."
+msgid "Ohne diesen Eingriff wï¿½ren|Sie verloren gewesen."
 msgstr "Without this intervention,|you would have been lost."
 
 #: ../../msn/msn_r2.c:1186
@@ -2012,7 +2012,7 @@ msgid "Loch"
 msgstr "Opening"
 
 #: ../../msn/msn_r2.c:1215
-msgid "Es scheint eine H”hle zu sein."
+msgid "Es scheint eine Hï¿½hle zu sein."
 msgstr "It seems to be a cave."
 
 #: ../../msn/msn_r2.c:1221
@@ -2020,7 +2020,7 @@ msgid "Hier bist du gerade hergekommen."
 msgstr "You just came from there."
 
 #: ../../msn/msn_r2.c:1229 ../../msn/msn_r2.c:1310 ../../msn/msn_r2.c:1319
-msgid "H”hle"
+msgid "Hï¿½hle"
 msgstr "Cave"
 
 #: ../../msn/msn_r2.c:1230 ../../msn/msn_r2.c:1243 ../../msn/msn_r2.c:1257
@@ -2059,7 +2059,7 @@ msgstr "You can see for yourself what he looks like."
 #: ../../msn/msn_r3.c:1611 ../../msn/msn_r3.c:1621 ../../msn/msn_r3.c:1633
 #: ../../msn/msn_r3.c:1644 ../../msn/msn_r3.c:1656 ../../msn/msn_r3.c:1667
 #: ../../msn/msn_r3.c:1688
-msgid "Tr"
+msgid "Tï¿½r"
 msgstr "Door"
 
 #: ../../msn/msn_r2.c:1245
@@ -2067,7 +2067,7 @@ msgid "Kaugummi"
 msgstr "Chewing gum"
 
 #: ../../msn/msn_r2.c:1246
-msgid "Gummib„rchen"
+msgid "Gummibï¿½rchen"
 msgstr "Gummy bear"
 
 #: ../../msn/msn_r2.c:1247
@@ -2075,7 +2075,7 @@ msgid "Schokokugel"
 msgstr "Chocolate ball"
 
 #: ../../msn/msn_r2.c:1248
-msgid "šberraschungsei"
+msgid "ï¿½berraschungsei"
 msgstr "Surprise egg"
 
 #: ../../msn/msn_r2.c:1249
@@ -2088,7 +2088,7 @@ msgstr "Pill"
 
 #: ../../msn/msn_r2.c:1250
 msgid ""
-"Die Plastikhlle zeigt einen|Mund mit einer Sprechblase. Was|darin steht, "
+"Die Plastikhï¿½lle zeigt einen|Mund mit einer Sprechblase. Was|darin steht, "
 "kannst du nicht lesen."
 msgstr ""
 "The plastic envelope shows|a mouth with a speech bubble.|You can't read what "
@@ -2103,7 +2103,7 @@ msgid "Sieht aus wie ein Kaugummiautomat."
 msgstr "Looks like a gum dispenser."
 
 #: ../../msn/msn_r2.c:1254
-msgid "Die Toiletten sind denen|auf der Erde sehr „hnlich."
+msgid "Die Toiletten sind denen|auf der Erde sehr ï¿½hnlich."
 msgstr "The toilets are very similar|to those on Earth."
 
 #: ../../msn/msn_r2.c:1258 ../../msn/msn_r2.c:1269
@@ -2111,20 +2111,20 @@ msgid "Treppe"
 msgstr "Staircase"
 
 #: ../../msn/msn_r2.c:1260
-msgid "Mnzen"
+msgid "Mï¿½nzen"
 msgstr "Coins"
 
 #: ../../msn/msn_r2.c:1260
-msgid "Es sind seltsame|K”pfe darauf abgebildet."
+msgid "Es sind seltsame|Kï¿½pfe darauf abgebildet."
 msgstr "They have strange|heads on them."
 
 #: ../../msn/msn_r2.c:1262
-msgid "Tablettenhlle"
+msgid "Tablettenhï¿½lle"
 msgstr "Pill envelope"
 
 #: ../../msn/msn_r2.c:1262
 msgid ""
-"Darauf steht:\"Wenn Sie diese|Schrift jetzt lesen k”nnen,|hat die Tablette "
+"Darauf steht:\"Wenn Sie diese|Schrift jetzt lesen kï¿½nnen,|hat die Tablette "
 "gewirkt.\""
 msgstr "It says,\"If you can read|this writing now,|the pill worked.\""
 
@@ -2169,7 +2169,7 @@ msgid "Tasse"
 msgstr "Cup"
 
 #: ../../msn/msn_r2.c:1282
-msgid "Sie enth„lt eine grnliche Flssigkeit."
+msgid "Sie enthï¿½lt eine grï¿½nliche Flï¿½ssigkeit."
 msgstr "It contains a greenish liquid."
 
 #: ../../msn/msn_r2.c:1284
@@ -2205,7 +2205,7 @@ msgid "Der Eingang scheint offen zu sein."
 msgstr "The entrance appears to be open."
 
 #: ../../msn/msn_r3.c:27
-msgid "Du drckst den Knopf,|aber nichts passiert."
+msgid "Du drï¿½ckst den Knopf,|aber nichts passiert."
 msgstr "You push the button,|but nothing happens."
 
 #: ../../msn/msn_r3.c:88
@@ -2213,7 +2213,7 @@ msgid "Bei deinem Fluchtversuch hat|dich der Roboter erschossen."
 msgstr "When you tried to escape,|the robot shot you."
 
 #: ../../msn/msn_r3.c:91
-msgid "Du iát etwas, aber|es schmeckt scheuálich."
+msgid "Du iï¿½t etwas, aber|es schmeckt scheuï¿½lich."
 msgstr "You're eating something,|but it tastes horrible."
 
 #: ../../msn/msn_r3.c:171
@@ -2221,15 +2221,15 @@ msgid "Du wachst auf und findest dich in|einem geschlossenen Raum wieder."
 msgstr "You wake up and find yourself|in a closed room."
 
 #: ../../msn/msn_r3.c:230
-msgid "h ... nein, mein Name ist Mller."
-msgstr "Uh... no, my name is Mller."
+msgid "ï¿½h ... nein, mein Name ist Mï¿½ller."
+msgstr "Uh... no, my name is Mï¿½ller."
 
 #: ../../msn/msn_r3.c:231
 msgid "Oh, ich habe mich im Gang vertan."
 msgstr "Oh, I got lost."
 
 #: ../../msn/msn_r3.c:237
-msgid "Wrden Sie mich bitte zum Fahrstuhl lassen?"
+msgid "Wï¿½rden Sie mich bitte zum Fahrstuhl lassen?"
 msgstr "Will you please let me go to the elevator?"
 
 #: ../../msn/msn_r3.c:238
@@ -2269,11 +2269,11 @@ msgid "Nein!"
 msgstr "No!"
 
 #: ../../msn/msn_r3.c:310
-msgid "Das máte schon ein biáchen mehr sein."
+msgid "Das mï¿½ï¿½te schon ein biï¿½chen mehr sein."
 msgstr "It should be a little more than that."
 
 #: ../../msn/msn_r3.c:324
-msgid "Ok, dann machen Sie daá Sie wegkommen!"
+msgid "Ok, dann machen Sie daï¿½ Sie wegkommen!"
 msgstr "Okay, then get out of here!"
 
 #: ../../msn/msn_r3.c:430
@@ -2282,14 +2282,14 @@ msgstr "The Axacussan caught you."
 
 #: ../../msn/msn_r3.c:547
 msgid ""
-"Diese Tr wrde ich lieber|nicht ”ffnen. Nach dem Schild zu|urteilen, ist "
+"Diese Tï¿½r wï¿½rde ich lieber|nicht ï¿½ffnen. Nach dem Schild zu|urteilen, ist "
 "jemand in dem Raum."
 msgstr ""
 "I'd rather not open that door.|Judging by the sign, there's|someone in that "
 "room."
 
 #: ../../msn/msn_r3.c:642
-msgid "Du stellst dich hinter die S„ule."
+msgid "Du stellst dich hinter die Sï¿½ule."
 msgstr "You stand behind the column."
 
 #: ../../msn/msn_r3.c:656
@@ -2302,8 +2302,8 @@ msgstr "Which combination do you want|to enter?"
 
 #: ../../msn/msn_r3.c:708
 msgid ""
-"Hmm, das haut nicht ganz hin,|aber irgendwie muá die Zahl|mit dem Code "
-"zusammenh„ngen."
+"Hmm, das haut nicht ganz hin,|aber irgendwie muï¿½ die Zahl|mit dem Code "
+"zusammenhï¿½ngen."
 msgstr ""
 "Hmm, that doesn't really work,|but somehow the number|must be related to the "
 "code."
@@ -2325,7 +2325,7 @@ msgid "Sehr geehrter Dr. Hansi,"
 msgstr "Dear Dr. Hansi,"
 
 #: ../../msn/msn_r3.c:751
-msgid "Ich muá Ihren Roboterexperten ein Lob aussprechen. Die"
+msgid "Ich muï¿½ Ihren Roboterexperten ein Lob aussprechen. Die"
 msgstr "I must commend your robot experts. The imitation"
 
 #: ../../msn/msn_r3.c:752
@@ -2333,7 +2333,7 @@ msgid "Imitation von Horst Hummel ist perfekt gelungen, wie ich"
 msgstr "of Horst Hummel was a perfect success, as I found"
 
 #: ../../msn/msn_r3.c:753
-msgid "heute bei der šbertragung des Interviews feststellen"
+msgid "heute bei der ï¿½bertragung des Interviews feststellen"
 msgstr "out today during the broadcast of the interview."
 
 #: ../../msn/msn_r3.c:754
@@ -2341,7 +2341,7 @@ msgid "konnte. Dem Aufschwung Ihrer Firma durch die Werbe-"
 msgstr "Nothing should stand in the way of your company's"
 
 #: ../../msn/msn_r3.c:755
-msgid "kampagne mit dem falschen Horst Hummel drfte ja jetzt"
+msgid "kampagne mit dem falschen Horst Hummel dï¿½rfte ja jetzt"
 msgstr "recovery through the advertising campaign with"
 
 #: ../../msn/msn_r3.c:756
@@ -2429,11 +2429,11 @@ msgid "Vom Klo."
 msgstr "The toilet."
 
 #: ../../msn/msn_r3.c:1070
-msgid "Das werde ich kaum erz„hlen."
+msgid "Das werde ich kaum erzï¿½hlen."
 msgstr "I won't tell you that."
 
 #: ../../msn/msn_r3.c:1079
-msgid "1 Bromanager"
+msgid "1 Bï¿½romanager"
 msgstr "1 Office manager"
 
 #: ../../msn/msn_r3.c:1080
@@ -2449,11 +2449,11 @@ msgid "4 Calculata"
 msgstr "4 Calculata"
 
 #: ../../msn/msn_r3.c:1083
-msgid "Bitte w„hlen"
+msgid "Bitte wï¿½hlen"
 msgstr "Please select an option"
 
 #: ../../msn/msn_r3.c:1091
-msgid "Geben Sie den gewnschten Namen ein:"
+msgid "Geben Sie den gewï¿½nschten Namen ein:"
 msgstr "Enter the desired name:"
 
 #: ../../msn/msn_r3.c:1092
@@ -2465,7 +2465,7 @@ msgid "Name unbekannt"
 msgstr "Name unknown"
 
 #: ../../msn/msn_r3.c:1112
-msgid "Verbindung unm”glich"
+msgid "Verbindung unmï¿½glich"
 msgstr "Connection not possible"
 
 #: ../../msn/msn_r3.c:1116
@@ -2480,11 +2480,11 @@ msgstr "%s speaking."
 
 #: ../../msn/msn_r3.c:1127
 #, c-format
-msgid "Hier ist %s. K”nnen Sie mal gerade kommen?"
+msgid "Hier ist %s. Kï¿½nnen Sie mal gerade kommen?"
 msgstr "This is %s. Can you come over now?"
 
 #: ../../msn/msn_r3.c:1134
-msgid "Huch, Sie h”ren sich aber|nicht gut an. Ich komme sofort."
+msgid "Huch, Sie hï¿½ren sich aber|nicht gut an. Ich komme sofort."
 msgstr "You don't sound good.|I'll be right there."
 
 #: ../../msn/msn_r3.c:1145
@@ -2500,7 +2500,7 @@ msgid "Passwort:"
 msgstr "Password:"
 
 #: ../../msn/msn_r3.c:1215
-msgid "Was war das fr ein Ger„usch?"
+msgid "Was war das fï¿½r ein Gerï¿½usch?"
 msgstr "What was that noise?"
 
 #: ../../msn/msn_r3.c:1217 ../../msn/msn_s.c:312
@@ -2518,7 +2518,7 @@ msgstr "Oops, I made a mistake."
 #: ../../msn/msn_r3.c:1368
 msgid ""
 "Nachdem du zwei Stunden im|Dschungel herumgeirrt bist,|findest du ein "
-"Geb„ude."
+"Gebï¿½ude."
 msgstr ""
 "After you've been wandering around|the jungle for two hours,|you find a "
 "building."
@@ -2528,7 +2528,7 @@ msgid "Tablett"
 msgstr "Tray"
 
 #: ../../msn/msn_r3.c:1481
-msgid "Es ist irgendein Fraá und|etwas zu Trinken darauf."
+msgid "Es ist irgendein Fraï¿½ und|etwas zu Trinken darauf."
 msgstr "There is something resembling food|and a drink on it."
 
 #: ../../msn/msn_r3.c:1483
@@ -2576,7 +2576,7 @@ msgid "Ein kleiner Metalltisch."
 msgstr "A small metal table."
 
 #: ../../msn/msn_r3.c:1524
-msgid "Zellentr"
+msgid "Zellentï¿½r"
 msgstr "Cell door"
 
 #: ../../msn/msn_r3.c:1524
@@ -2588,23 +2588,23 @@ msgid "Laptop"
 msgstr "Laptop"
 
 #: ../../msn/msn_r3.c:1576 ../../msn/msn_r3.c:1577
-msgid "S„ule"
+msgid "Sï¿½ule"
 msgstr "Pillar"
 
 #: ../../msn/msn_r3.c:1580
-msgid "Auf einem Schild an der Tr steht \"Dr. Alab Hansi\"."
+msgid "Auf einem Schild an der Tï¿½r steht \"Dr. Alab Hansi\"."
 msgstr "A sign on the door says \"Dr. Alab Hansi\"."
 
 #: ../../msn/msn_r3.c:1582
-msgid "Auf einem Schild an der Tr steht \"Saval Lun\"."
+msgid "Auf einem Schild an der Tï¿½r steht \"Saval Lun\"."
 msgstr "A sign on the door says \"Saval Lun\"."
 
 #: ../../msn/msn_r3.c:1584
-msgid "Auf einem Schild an der Tr steht \"Prof. Dr. Ugnul Tschabb\"."
+msgid "Auf einem Schild an der Tï¿½r steht \"Prof. Dr. Ugnul Tschabb\"."
 msgstr "A sign on the door says \"Prof. Dr. Ugnul Tschabb\"."
 
 #: ../../msn/msn_r3.c:1586
-msgid "Auf einem Schild an der Tr steht \"Alga Hurz Li\"."
+msgid "Auf einem Schild an der Tï¿½r steht \"Alga Hurz Li\"."
 msgstr "A sign on the door says \"Alga Hurz Li\"."
 
 #: ../../msn/msn_r3.c:1597 ../../msn/msn_r3.c:1613
@@ -2612,7 +2612,7 @@ msgid "Axacussaner"
 msgstr "Axacussan"
 
 #: ../../msn/msn_r3.c:1597
-msgid "Du mátest ihn irgendwie ablenken."
+msgid "Du mï¿½ï¿½test ihn irgendwie ablenken."
 msgstr "You have to distract him somehow."
 
 #: ../../msn/msn_r3.c:1599
@@ -2644,11 +2644,11 @@ msgid "Es sind 500 Xa."
 msgstr "It's 500 Xa."
 
 #: ../../msn/msn_r3.c:1624
-msgid "Schlieáfach"
+msgid "Schlieï¿½fach"
 msgstr "Locker"
 
 #: ../../msn/msn_r3.c:1624
-msgid "Es hat ein elektronisches Zahlenschloá."
+msgid "Es hat ein elektronisches Zahlenschloï¿½."
 msgstr "It has an electronic combination lock."
 
 #: ../../msn/msn_r3.c:1626
@@ -2656,7 +2656,7 @@ msgid "Brief"
 msgstr "Note"
 
 #: ../../msn/msn_r3.c:1635
-msgid "Wrfel"
+msgid "Wï¿½rfel"
 msgstr "Cubes"
 
 #: ../../msn/msn_r3.c:1635
@@ -2692,7 +2692,7 @@ msgid "Stark!"
 msgstr "Strong!"
 
 #: ../../msn/msn_r3.c:1659
-msgid "Sie ist den Pflanzen auf der Erde sehr „hnlich."
+msgid "Sie ist den Pflanzen auf der Erde sehr ï¿½hnlich."
 msgstr "It is very similar to the plants on Earth."
 
 #: ../../msn/msn_r3.c:1668
@@ -2704,7 +2704,7 @@ msgid "Graffiti"
 msgstr "Graffiti"
 
 #: ../../msn/msn_r3.c:1669
-msgid "Seltsamer Broschmuck!"
+msgid "Seltsamer Bï¿½roschmuck!"
 msgstr "Strange office decoration!"
 
 #: ../../msn/msn_r3.c:1670
@@ -2716,7 +2716,7 @@ msgid "Dschungel"
 msgstr "Jungle"
 
 #: ../../msn/msn_r3.c:1680
-msgid "Lauter B„ume."
+msgid "Lauter Bï¿½ume."
 msgstr "Nothing but trees."
 
 #: ../../msn/msn_s.c:84
@@ -2736,7 +2736,7 @@ msgid "Viertausend"
 msgstr "Four thousand"
 
 #: ../../msn/msn_s.c:131
-msgid "Fnftausend"
+msgid "Fï¿½nftausend"
 msgstr "Five thousand"
 
 #: ../../msn/msn_s.c:131
@@ -2793,13 +2793,13 @@ msgstr ""
 
 #: ../../msn/msn_s.c:224
 msgid ""
-"Scheiáe, der Ionenantrieb ist explodiert!|Die Teile sind ber den ganzen|"
+"Scheiï¿½e, der Ionenantrieb ist explodiert!|Die Teile sind ï¿½ber den ganzen|"
 "Maschinenraum verstreut."
 msgstr "Shit, the Ion drive blew up!|The parts are all over the engine room."
 
 #: ../../msn/msn_s.c:225
 msgid ""
-"Ach, du meine Gte!|Gibt es irgendeine M”glichkeit,|den Schaden schnell zu "
+"Ach, du meine Gï¿½te!|Gibt es irgendeine Mï¿½glichkeit,|den Schaden schnell zu "
 "beheben?"
 msgstr "Oh, my God!|Any way to fix the damage quickly?"
 
@@ -2808,7 +2808,7 @@ msgid "Nein, Sir. Es sieht schlecht aus."
 msgstr "No, sir. It looks bad."
 
 #: ../../msn/msn_s.c:230
-msgid "Hmm, die Erde zu alarmieren, wrde zu lange dauern."
+msgid "Hmm, die Erde zu alarmieren, wï¿½rde zu lange dauern."
 msgstr "Hmm, alerting Earth would take too long."
 
 #: ../../msn/msn_s.c:231
@@ -2833,12 +2833,12 @@ msgstr "I repeat, proceed immediately|to the emergency spaceship!"
 
 #: ../../msn/msn_s.c:263
 msgid ""
-"Captain, bereiten Sie alles fr den Start vor!|Wir mssen zurck zur Erde!"
+"Captain, bereiten Sie alles fï¿½r den Start vor!|Wir mï¿½ssen zurï¿½ck zur Erde!"
 msgstr ""
 "Captain, get everything ready for departure!|We have to get back to Earth!"
 
 #: ../../msn/msn_s.c:277
-msgid "Eine Stunde sp„ter ..."
+msgid "Eine Stunde spï¿½ter ..."
 msgstr "An hour later..."
 
 #: ../../msn/msn_s.c:284
@@ -2853,11 +2853,11 @@ msgstr ""
 "The ship will reach its destination in eight years,|but without a crew."
 
 #: ../../msn/msn_s.c:286
-msgid "Das ist das kl„gliche Ende|der Mission Supernova."
+msgid "Das ist das klï¿½gliche Ende|der Mission Supernova."
 msgstr "This is the pitiful end|of the Supernova mission."
 
 #: ../../msn/msn_s.c:287
-msgid "Sie k”nnen jetzt ihren Computer ausschalten."
+msgid "Sie kï¿½nnen jetzt ihren Computer ausschalten."
 msgstr "You can now turn off your computer."
 
 #: ../../msn/msn_s.c:290
@@ -2893,7 +2893,7 @@ msgid "Autsch!"
 msgstr "Ouch!"
 
 #: ../../msn/msn_s.c:315
-msgid "Scheiáetagenbett!"
+msgid "Scheiï¿½etagenbett!"
 msgstr "Shitty bunk bed!"
 
 #: ../../msn/msn_s.c:317

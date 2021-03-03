@@ -2,7 +2,7 @@
 Paths
 ==============
 
-Use the Paths tab to tell ScummVM where to look for files.
+Use the Paths tab to tell NovelVM where to look for files.
 
 **To change settings globally:** 
 
@@ -23,21 +23,21 @@ All settings can also be changed in the :doc:`../advanced_topics/configuration_f
 .. _savepath:
 
 Save Path
-	Sets the path to the folder in which ScummVM stores saved games. For more information on the default location of saved games, see the :ref:`Save and Load games <savelocation>` page, or the guide for the platform you're using. 
+	Sets the path to the folder in which NovelVM stores saved games. For more information on the default location of saved games, see the :ref:`Save and Load games <savelocation>` page, or the guide for the platform you're using. 
 	
 	*savepath* 
 
 .. _themepath:
 
 Theme Path
-	Sets the path to the folder in which ScummVM stores additional themes. 
+	Sets the path to the folder in which NovelVM stores additional themes. 
 
 	*themepath* 
 
 .. _extra:
 
 Extra Path
-	Sets the path to the folder in which ScummVM will look for various extra files. These could include additional datafiles required for certain games, Soundfonts or MT-32 ROMs. 
+	Sets the path to the folder in which NovelVM will look for various extra files. These could include additional datafiles required for certain games, Soundfonts or MT-32 ROMs. 
 
 	*extrapath* 
 

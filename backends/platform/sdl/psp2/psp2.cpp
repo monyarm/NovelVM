@@ -83,8 +83,8 @@ void OSystem_PSP2::init() {
 
 	// Initialize File System Factory
 	sceIoMkdir("ux0:data", 0755);
-	sceIoMkdir("ux0:data/scummvm", 0755);
-	sceIoMkdir("ux0:data/scummvm/saves", 0755);
+	sceIoMkdir("ux0:data/novelvm", 0755);
+	sceIoMkdir("ux0:data/novelvm/saves", 0755);
 
 	DrivesPOSIXFilesystemFactory *fsFactory = new DrivesPOSIXFilesystemFactory();
 	fsFactory->addDrive("ux0:");
@@ -129,7 +129,7 @@ void OSystem_PSP2::initBackend() {
 
 	// Create the savefile manager
 	if (_savefileManager == 0)
-		_savefileManager = new DefaultSaveFileManager("ux0:data/scummvm/saves");
+		_savefileManager = new DefaultSaveFileManager("ux0:data/novelvm/saves");
 
 	// Controller mappings for Vita, various names have been used in various SDL versions
 	SDL_GameControllerAddMapping("50535669746120436f6e74726f6c6c65,PSVita Controller,y:b0,b:b1,a:b2,x:b3,leftshoulder:b4,rightshoulder:b5,dpdown:b6,dpleft:b7,dpup:b8,dpright:b9,back:b10,start:b11,leftx:a0,lefty:a1,rightx:a2,righty:a3,");
@@ -155,10 +155,10 @@ bool OSystem_PSP2::hasFeature(Feature f) {
 	if (f == kFeatureFullscreenMode)
 		return false;
 	return (f == kFeatureKbdMouseSpeed ||
-		f == kFeatureJoystickDeadzone ||
-		f == kFeatureShader ||
-		f == kFeatureTouchpadMode ||
-		OSystem_SDL::hasFeature(f));
+	        f == kFeatureJoystickDeadzone ||
+	        f == kFeatureShader ||
+	        f == kFeatureTouchpadMode ||
+	        OSystem_SDL::hasFeature(f));
 }
 
 void OSystem_PSP2::setFeatureState(Feature f, bool enable) {
@@ -190,11 +190,11 @@ void OSystem_PSP2::logMessage(LogMessageType::Type type, const char *message) {
 }
 
 Common::String OSystem_PSP2::getDefaultConfigFileName() {
-	return "ux0:data/scummvm/scummvm.ini";
+	return "ux0:data/novelvm/novelvm.ini";
 }
 
 Common::String OSystem_PSP2::getDefaultLogFileName() {
-	return "ux0:data/scummvm/scummvm.log";
+	return "ux0:data/novelvm/novelvm.log";
 }
 
 Common::HardwareInputSet *OSystem_PSP2::getHardwareInputSet() {

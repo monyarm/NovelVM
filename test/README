@@ -1,4 +1,4 @@
-This directory contains some unit tests for ScummVM. They are based on
+This directory contains some unit tests for NovelVM. They are based on
 CxxTest <http://cxxtest.com/>, which you can find in the cxxtest
 subdirectory, including its manual.
 

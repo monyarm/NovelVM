@@ -26,8 +26,8 @@
 #include "common/scummsys.h"
 
 //
-// The scummvm main entry point, to be invoked by ports
+// The novelvm main entry point, to be invoked by ports
 //
-extern "C" int scummvm_main(int argc, const char * const argv[]);
+extern "C" int novelvm_main(int argc, const char *const argv[]);
 
 #endif

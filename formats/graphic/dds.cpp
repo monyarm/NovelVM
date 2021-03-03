@@ -124,25 +124,13 @@ void DDSFile::readTexture(Common::SeekableReadStream *f) {
 	_surface.setPixels(data);
 }
 
-// unsigned long PackRGBA(): Helper method that packs RGBA channels into a single 4 byte pixel.
-//
-// unsigned char r:     red channel.
-// unsigned char g:     green channel.
-// unsigned char b:     blue channel.
-// unsigned char a:     alpha channel.
+// Helper method that packs RGBA channels into a single 4 byte pixel.
 
 unsigned long DDSFile::PackRGBA(unsigned char r, unsigned char g, unsigned char b, unsigned char a) {
 	return ((r << 24) | (g << 16) | (b << 8) | a);
 }
 
-// void DecompressBlockDXT1(): Decompresses one block of a DXT1 texture and stores the resulting pixels at the appropriate offset in 'image'.
-//
-// unsigned long x:                     x-coordinate of the first pixel in the block.
-// unsigned long y:                     y-coordinate of the first pixel in the block.
-// unsigned long width:                 width of the texture being decompressed.
-// unsigned long height:                height of the texture being decompressed.
-// const unsigned char *blockStorage:   pointer to the block to decompress.
-// uint32 *image:                pointer to image where the decompressed pixel data should be stored.
+// Decompresses one block of a DXT1 texture and stores the resulting pixels at the appropriate offset in 'image'.
 
 void DDSFile::DecompressBlockDXT1(unsigned long x, unsigned long y, unsigned long width, const unsigned char *blockStorage, uint32 *image) {
 	unsigned short color0 = *reinterpret_cast<const unsigned short *>(blockStorage);
@@ -209,12 +197,7 @@ void DDSFile::DecompressBlockDXT1(unsigned long x, unsigned long y, unsigned lon
 	}
 }
 
-// void BlockDecompressImageDXT1(): Decompresses all the blocks of a DXT1 compressed texture and stores the resulting pixels in 'image'.
-//
-// unsigned long width:                 Texture width.
-// unsigned long height:                Texture height.
-// const unsigned char *blockStorage:   pointer to compressed DXT1 blocks.
-// uint32 *image:                pointer to the image where the decompressed pixels will be stored.
+// Decompresses all the blocks of a DXT1 compressed texture and stores the resulting pixels in 'image'.
 
 void DDSFile::BlockDecompressImageDXT1(unsigned long width, unsigned long height, const unsigned char *blockStorage, uint32 *image) {
 	unsigned long blockCountX = (width + 3) / 4;
@@ -229,14 +212,7 @@ void DDSFile::BlockDecompressImageDXT1(unsigned long width, unsigned long height
 	}
 }
 
-// void DecompressBlockDXT5(): Decompresses one block of a DXT5 texture and stores the resulting pixels at the appropriate offset in 'image'.
-//
-// unsigned long x:                     x-coordinate of the first pixel in the block.
-// unsigned long y:                     y-coordinate of the first pixel in the block.
-// unsigned long width:                 width of the texture being decompressed.
-// unsigned long height:                height of the texture being decompressed.
-// const unsigned char *blockStorage:   pointer to the block to decompress.
-// uint32 *image:                pointer to image where the decompressed pixel data should be stored.
+// Decompresses one block of a DXT5 texture and stores the resulting pixels at the appropriate offset in 'image'.
 
 void DDSFile::DecompressBlockDXT5(unsigned long x, unsigned long y, unsigned long width, const unsigned char *blockStorage, uint32 *image) {
 	unsigned char alpha0 = *reinterpret_cast<const unsigned char *>(blockStorage);
@@ -323,12 +299,7 @@ void DDSFile::DecompressBlockDXT5(unsigned long x, unsigned long y, unsigned lon
 	}
 }
 
-// void BlockDecompressImageDXT5(): Decompresses all the blocks of a DXT5 compressed texture and stores the resulting pixels in 'image'.
-//
-// unsigned long width:                 Texture width.
-// unsigned long height:                Texture height.
-// const unsigned char *blockStorage:   pointer to compressed DXT5 blocks.
-// uint32 *image:                pointer to the image where the decompressed pixels will be stored.
+// Decompresses all the blocks of a DXT5 compressed texture and stores the resulting pixels in 'image'.
 
 void DDSFile::BlockDecompressImageDXT5(unsigned long width, unsigned long height, const unsigned char *blockStorage, uint32 *image) {
 	unsigned long blockCountX = (width + 3) / 4;

@@ -252,10 +252,10 @@ void splashScreen() {
 
 	// Print version information
 	const Graphics::Font *font = FontMan.getFontByUsage(Graphics::FontManager::kConsoleFont);
-	int w = font->getStringWidth(gScummVMVersionDate);
+	int w = font->getStringWidth(gNovelVMVersionDate);
 	int x = g_system->getOverlayWidth() - w - 5; // lx + logo->w - w + 5;
 	int y = g_system->getOverlayHeight() - font->getFontHeight() - 5; //ly + logo->h + 5;
-	font->drawString(&screen, gScummVMVersionDate, x, y, w, screen.format.ARGBToColor(0xff, 0, 0, 0));
+	font->drawString(&screen, gNovelVMVersionDate, x, y, w, screen.format.ARGBToColor(0xff, 0, 0, 0));
 
 	g_system->copyRectToOverlay(screen.getPixels(), screen.pitch, 0, 0, screen.w, screen.h);
 	screen.free();
@@ -459,7 +459,7 @@ void GUIErrorMessageFormat(Common::U32String fmt, ...) {
 void Engine::checkCD() {
 #if defined(WIN32) && !defined(__SYMBIAN32__)
 	// It is a known bug under Windows that games that play CD audio cause
-	// ScummVM to crash if the data files are read from the same CD. Check
+	// NovelVM to crash if the data files are read from the same CD. Check
 	// if this appears to be the case and issue a warning.
 
 	// If we can find a compressed audio track, then it should be ok even
@@ -647,9 +647,9 @@ void Engine::openMainMenuDialog() {
 bool Engine::warnUserAboutUnsupportedGame() {
 	if (ConfMan.getBool("enable_unsupported_game_warning")) {
 		GUI::MessageDialog alert(_("WARNING: The game you are about to start is"
-			" not yet fully supported by ScummVM. As such, it is likely to be"
+			" not yet fully supported by NovelVM. As such, it is likely to be"
 			" unstable, and any saved game you make might not work in future"
-			" versions of ScummVM."), _("Start anyway"), _("Cancel"));
+			" versions of NovelVM."), _("Start anyway"), _("Cancel"));
 		return alert.runModal() == GUI::kMessageOK;
 	}
 	return true;

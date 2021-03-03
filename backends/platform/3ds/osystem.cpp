@@ -107,7 +107,7 @@ OSystem_3DS::OSystem_3DS():
 
 	_fsFactory = fsFactory;
 
-	Posix::assureDirectoryExists("/3ds/scummvm/saves/");
+	Posix::assureDirectoryExists("/3ds/novelvm/saves/");
 }
 
 OSystem_3DS::~OSystem_3DS() {
@@ -137,7 +137,7 @@ void OSystem_3DS::initBackend() {
 	}
 
 	_timerManager = new DefaultTimerManager();
-	_savefileManager = new DefaultSaveFileManager("sdmc:/3ds/scummvm/saves/");
+	_savefileManager = new DefaultSaveFileManager("sdmc:/3ds/novelvm/saves/");
 
 	init3DSGraphics();
 	initAudio();
@@ -154,7 +154,7 @@ void OSystem_3DS::updateConfig() {
 }
 
 Common::String OSystem_3DS::getDefaultConfigFileName() {
-	return "sdmc:/3ds/scummvm/scummvm.ini";
+	return "sdmc:/3ds/novelvm/novelvm.ini";
 }
 
 void OSystem_3DS::addSysArchivesToSearchSet(Common::SearchSet &s, int priority) {

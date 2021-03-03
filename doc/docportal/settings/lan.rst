@@ -4,7 +4,7 @@ LAN
 
 Use the LAN tab to control the Local Area Network (local web server). 
 
-For a comprehensive look at how to use ScummVM's built-in LAN functionality, check out our :doc:`../use_scummvm/LAN` guide. 
+For a comprehensive look at how to use NovelVM's built-in LAN functionality, check out our :doc:`../use_novelvm/LAN` guide. 
 
 From the Launcher, select **Options**, click the **>** scroll arrow until the LAN tab is visible, and then select the **LAN** tab.
 

@@ -32,9 +32,9 @@
 int main(int argc, char *argv[]) {
 
 	// Update support (AmiUpdate):
-	// This will save ScummVM's system application name and add it's binary
+	// This will save NovelVM's system application name and add it's binary
 	// path to a variable in the platforms native ENV(ARC) system.
-	const char *const appname = "ScummVM";
+	const char *const appname = "NovelVM";
 
 	BPTR lock;
 	APTR reqwin;
@@ -71,8 +71,8 @@ int main(int argc, char *argv[]) {
 	PluginManager::instance().addPluginProvider(new SDLPluginProvider());
 #endif
 
-	// Invoke the actual ScummVM main entry point.
-	int res = scummvm_main(argc, argv);
+	// Invoke the actual NovelVM main entry point.
+	int res = novelvm_main(argc, argv);
 
 	// Free OSystem.
 	g_system->destroy();

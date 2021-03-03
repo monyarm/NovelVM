@@ -32,9 +32,9 @@ enum {
 
 struct CommandLine {
 	int argumentCount;
-	char** argumentsValue;
+	char **argumentsValue;
 
-	CommandLine(int argc, char** argv): argumentCount(argc), argumentsValue(argv) {}
+	CommandLine(int argc, char **argv) : argumentCount(argc), argumentsValue(argv) {}
 };
 
 static void mainThreadFunc(void *threadParams) {
@@ -46,7 +46,7 @@ static void mainThreadFunc(void *threadParams) {
 #endif
 
 	CommandLine *commandLine = static_cast<CommandLine *>(threadParams);
-	int res = scummvm_main(commandLine->argumentCount, commandLine->argumentsValue);
+	int res = novelvm_main(commandLine->argumentCount, commandLine->argumentsValue);
 
 	g_system->destroy();
 
@@ -65,7 +65,7 @@ int main(int argc, char *argv[]) {
 
 	romfsInit();
 	osSetSpeedupEnable(true);
-// 	consoleInit(GFX_TOP, NULL);
+	// 	consoleInit(GFX_TOP, NULL);
 	gdbHioDevInit();
 	gdbHioDevRedirectStdStreams(true, true, true);
 
@@ -75,7 +75,7 @@ int main(int argc, char *argv[]) {
 	socInit((u32 *)soc_sharedmem, soc_sharedmem_size);
 #endif
 
-	// Start ScummVM in a separate thread to be able to set the stack size.
+	// Start NovelVM in a separate thread to be able to set the stack size.
 	// The default stack is not large enough.
 	CommandLine commandLine(argc, argv);
 

@@ -251,7 +251,7 @@ int main(int argc, char *argv[]) {
 	assert(g_system);
 
 	// Invoke the actual ScummVM main entry point:
-	int res = scummvm_main(argc, argv);
+	int res = novelvm_main(argc, argv);
 	g_system->destroy();
 	return res;
 }

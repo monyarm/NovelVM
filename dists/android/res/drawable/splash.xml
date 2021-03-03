@@ -4,6 +4,6 @@
 <item>
 	<bitmap
 		android:gravity="center"
-		android:src="@drawable/scummvm_logo"/>
+		android:src="@drawable/novelvm_logo"/>
 </item>
 </layer-list>

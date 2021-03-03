@@ -87,7 +87,7 @@ void PspThread::delayMicros(uint32 us) {
 PspSemaphore::PspSemaphore(int initialValue, int maxValue/*=255*/) {
 	DEBUG_ENTER_FUNC();
 	_handle = 0;
-	_handle = (uint32)sceKernelCreateSema("ScummVM Sema", 0 /* attr */,
+	_handle = (uint32)sceKernelCreateSema("NovelVM Sema", 0 /* attr */,
 								  initialValue, maxValue,
 								  0 /*option*/);
 	if (!_handle)

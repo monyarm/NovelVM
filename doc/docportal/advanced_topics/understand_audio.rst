@@ -8,9 +8,9 @@ This guide expands on the information contained on the :doc:`audio settings <../
 How do the audio settings work together?
 ==========================================
 
-The **Preferred device** in the global settings Audio tab, or the **Music device** in the game-specific settings Audio tab, specifies the device that ScummVM uses to output audio. This device can be an emulated sound device or a software synthesizer, or an actual hardware device such as a soundcard or a hardware MIDI synthesizer. When set to **<default>**, ScummVM will automatically choose the most appropriate option for the played game. 
+The **Preferred device** in the global settings Audio tab, or the **Music device** in the game-specific settings Audio tab, specifies the device that NovelVM uses to output audio. This device can be an emulated sound device or a software synthesizer, or an actual hardware device such as a soundcard or a hardware MIDI synthesizer. When set to **<default>**, NovelVM will automatically choose the most appropriate option for the played game. 
 
-If **Preferred device** or **Music device** is set to **<default>** and ScummVM chooses either an MT-32 or General MIDI device automatically, the settings on the MT-32 or MIDI tabs also apply, and the devices selected on these tabs are the ones that will be used. If **Preferred device** or **Music device** is set to either an MT-32 device or a GM device, ScummVM will use that device and ignore the devices chosen on the MT-32 and MIDI tabs. 
+If **Preferred device** or **Music device** is set to **<default>** and NovelVM chooses either an MT-32 or General MIDI device automatically, the settings on the MT-32 or MIDI tabs also apply, and the devices selected on these tabs are the ones that will be used. If **Preferred device** or **Music device** is set to either an MT-32 device or a GM device, NovelVM will use that device and ignore the devices chosen on the MT-32 and MIDI tabs. 
 
 Not all settings are applicable to all games. For example, changing the General MIDI settings will not have any effect on a game that only has CD audio. 
 
@@ -20,7 +20,7 @@ The evolution of PC audio
 
 For a look at the evolution of PC audio, see `this video on YouTube <https://www.youtube.com/watch?v=a324ykKV-7Y>`_, or `this excellent post <http://www.oldskool.org/sound/pc>`_. 
 
-Many of these old-school audio devices can be emulated by ScummVM:
+Many of these old-school audio devices can be emulated by NovelVM:
 
 - PC Speaker: emulates the built-in PC speaker. This is mostly supported by older games, and was the only option before sound cards became widely used. 
 
@@ -63,7 +63,7 @@ MIDI is a communications protocol for musical information; it can be likened to 
 
 While some older soundcards (and a few modern ones) have their own hardware-based synthesizers, this is relatively rare. Generally, soundcard drivers work with software synthesizers to interpret MIDI and output audio. 
 
-Some games only contain MIDI audio data. In the past this prevented audio for these games from working on platforms that did not support MIDI, or with soundcards that did not provide MIDI drivers. ScummVM can now convert MIDI data to sampled audio using MIDI device emulators. 
+Some games only contain MIDI audio data. In the past this prevented audio for these games from working on platforms that did not support MIDI, or with soundcards that did not provide MIDI drivers. NovelVM can now convert MIDI data to sampled audio using MIDI device emulators. 
 
 
 What is General MIDI?
@@ -77,11 +77,11 @@ General MIDI is a MIDI standard which is implemented by a large number of device
 General MIDI device emulation (FluidSynth)
 *************************************************
 
-If the ScummVM you're using has libfluidsynth support it will be able to play MIDI music by using the FluidSynth emulator if set as the **Preferred device** or **Music device**, or if specified in the MIDI tab when **Preferred device** or **Music device** is set to **<default>** and ScummVM chooses General MIDI output automatically. 
+If the NovelVM you're using has libfluidsynth support it will be able to play MIDI music by using the FluidSynth emulator if set as the **Preferred device** or **Music device**, or if specified in the MIDI tab when **Preferred device** or **Music device** is set to **<default>** and NovelVM chooses General MIDI output automatically. 
 
-You will have to specify a SoundFont in the MIDI tab for ScummVM to use FluidSynth. MIDI is like digital sheet music; it needs a library of sound samples known as a SoundFont to draw from to synthesize music. See the `ScummVM forum <https://forums.scummvm.org/viewtopic.php?t=14541>`_ for an example of a great SoundFont.  
+You will have to specify a SoundFont in the MIDI tab for NovelVM to use FluidSynth. MIDI is like digital sheet music; it needs a library of sound samples known as a SoundFont to draw from to synthesize music. See the `NovelVM forum <https://forums.novelvm.org/viewtopic.php?t=14541>`_ for an example of a great SoundFont.  
 
-The default output volume from FluidSynth can be fairly low, so ScummVM automatically sets the gain to get a stronger signal. Use the :ref:`MIDI gain <gain>` setting to further adjust this. 
+The default output volume from FluidSynth can be fairly low, so NovelVM automatically sets the gain to get a stronger signal. Use the :ref:`MIDI gain <gain>` setting to further adjust this. 
 
 The processor requirements for FluidSynth are quite high; a fast CPU is recommended.
 
@@ -96,20 +96,20 @@ The MT-32 is a `Roland sound module <https://en.wikipedia.org/wiki/Roland_MT-32>
 MT-32 device emulation
 ********************************
 
-Some games which contain MIDI music data have tracks designed specifically for the Roland MT-32. ScummVM can emulate the MT-32 device, however you must provide the original MT-32 ROMs, taken from the MT-32 module, for the emulator to work. These files are:
+Some games which contain MIDI music data have tracks designed specifically for the Roland MT-32. NovelVM can emulate the MT-32 device, however you must provide the original MT-32 ROMs, taken from the MT-32 module, for the emulator to work. These files are:
 
 - MT32_PCM.ROM - IC21 (512KB)
 - MT32_CONTROL.ROM - IC26 (32KB) and IC27 (32KB)
 
-Place these ROMs in the game directory, in your extrapath, or in the directory where your ScummVM executable resides. ScummVM also looks for ``CM32L_PCM.ROM`` and ``CM32L_CONTROL.ROM``—the ROMs from the CM-32L device—and uses these instead of the MT32 ROMs if they are available. 
+Place these ROMs in the game directory, in your extrapath, or in the directory where your NovelVM executable resides. NovelVM also looks for ``CM32L_PCM.ROM`` and ``CM32L_CONTROL.ROM``—the ROMs from the CM-32L device—and uses these instead of the MT32 ROMs if they are available. 
 
 .. note::
 
-    The MT-32 ROMs are copyrighted, and are not provided by ScummVM. These must be taken from your own MT-32 module. 
+    The MT-32 ROMs are copyrighted, and are not provided by NovelVM. These must be taken from your own MT-32 module. 
 
-ScummVM uses the MT-32 emulator if it is set as the **Preferred device** or **Music device**, or if it is specified in the MT-32 tab when **Preferred device** or **Music device** is set to **<default>** and ScummVM chooses MT-32 output automatically. 
+NovelVM uses the MT-32 emulator if it is set as the **Preferred device** or **Music device**, or if it is specified in the MT-32 tab when **Preferred device** or **Music device** is set to **<default>** and NovelVM chooses MT-32 output automatically. 
 
-You don't need to enable **True Roland MT-32** in the MT-32 tab, ScummVM does this automatically. 
+You don't need to enable **True Roland MT-32** in the MT-32 tab, NovelVM does this automatically. 
 
 .. tip::
 
@@ -125,11 +125,11 @@ Built-in MIDI support
 
 All MIDI ports show up in the **Preferred device** or **Music device** dropdown selector. If you have selected a MIDI port, you need to specify what type of MIDI device this is with the options in the :ref:`MT-32 <mt32>` tab. 
 
-- Enable **True Roland MT-32** to tell ScummVM that the MIDI device is an MT-32 (or fully compatible) device. 
-- Enable **Roland GS device** to tell ScummVM to use an MT-32 soundtrack on a GS device. This is not supported by all games.
-- If no options are selected, ScummVM treats the device on the port as a General MIDI device.  
+- Enable **True Roland MT-32** to tell NovelVM that the MIDI device is an MT-32 (or fully compatible) device. 
+- Enable **Roland GS device** to tell NovelVM to use an MT-32 soundtrack on a GS device. This is not supported by all games.
+- If no options are selected, NovelVM treats the device on the port as a General MIDI device.  
 
-If you select an option that does not match the actual device, this might have unintended consequences. For example, if a game only has support for MT-32 and you have a General MIDI device selected as the **Preferred device** or **Music device**, ScummVM will convert the MT-32 MIDI data to GM-compatible MIDI data. While this might work fine for some games, it really depends on how the game has made use of the MT-32. 
+If you select an option that does not match the actual device, this might have unintended consequences. For example, if a game only has support for MT-32 and you have a General MIDI device selected as the **Preferred device** or **Music device**, NovelVM will convert the MT-32 MIDI data to GM-compatible MIDI data. While this might work fine for some games, it really depends on how the game has made use of the MT-32. 
 
 
 
@@ -167,7 +167,7 @@ Here are a couple of helpful articles from the Ubuntu community documentation to
 What is AdLib? 
 ================
 
-AdLib devices do not use MIDI. They instead have a chip that produces sound through FM synthesis. While some games do store their audio data using a MIDI-derived format, this is converted by the game to work with the AdLib chip. ScummVM emulates a few different AdLib configurations, and selects the most appropriate for the game:
+AdLib devices do not use MIDI. They instead have a chip that produces sound through FM synthesis. While some games do store their audio data using a MIDI-derived format, this is converted by the game to work with the AdLib chip. NovelVM emulates a few different AdLib configurations, and selects the most appropriate for the game:
 
 - The original AdLib and SoundBlaster card had one OPL2 chip. 
 - The SoundBlaster Pro 1 had two OPL2 chips
@@ -177,7 +177,7 @@ The AdLib emulator setting offers MAME, DOSBox and Nuked emulation, with MAME be
 
 There is also the option to select the OPL2LPT and OPL3LPT devices, which are external hardware devices with a real OPL chip, connected through the parallel port of a computer. 
 
-AdLib does not require a SoundFont or ROMs, so for many games it might be the easiest to configure. However, if an MT-32 or GS emulator or device is available, ScummVM will prioritize this over AdLib. 
+AdLib does not require a SoundFont or ROMs, so for many games it might be the easiest to configure. However, if an MT-32 or GS emulator or device is available, NovelVM will prioritize this over AdLib. 
 
 Mixed AdLib/MIDI mode
 ------------------------
@@ -190,22 +190,22 @@ Some games contain sound effects that are exclusive to the AdLib soundtrack, or 
 Digital Sound effects
 =======================
 
-Some games have both sampled and synthesized sound effects. ScummVM will usually use the sampled sound effects, even if you select Adlib, MT-32 or GM as your audio device. Some games allow you to choose between sampled and synthesized sound effects by using the **Prefer digital sound effects** option in the Engine tab. 
+Some games have both sampled and synthesized sound effects. NovelVM will usually use the sampled sound effects, even if you select Adlib, MT-32 or GM as your audio device. Some games allow you to choose between sampled and synthesized sound effects by using the **Prefer digital sound effects** option in the Engine tab. 
 
 .. _outputrate:
 
 Sample output rate
 ========================
 
-The output sample rate tells ScummVM how many sound samples to play per channel per second. 
+The output sample rate tells NovelVM how many sound samples to play per channel per second. 
 
 Most of the sounds were originally sampled at either 22050Hz or 11025Hz, so using a higher sample rate in these cases will not improve the quality of the audio.
 
 For games that use CD audio, the sounds were probably sampled at 44100Hz, so that is a better sample rate to choose for these games.
 
-ScummVM generates the samples when using AdLib, FM-Towns, PC Speaker or IBM PCjr emulated sound. 22050Hz will usually be fine for these options, although for Beneath a Steel Sky 44100Hz is recommended.
+NovelVM generates the samples when using AdLib, FM-Towns, PC Speaker or IBM PCjr emulated sound. 22050Hz will usually be fine for these options, although for Beneath a Steel Sky 44100Hz is recommended.
 
-ScummVM has to resample all sounds to the selected output frequency. It is recommended to choose an output frequency that is a multiple of the original frequency. Choosing an in-between number might not be supported by your sound card.
+NovelVM has to resample all sounds to the selected output frequency. It is recommended to choose an output frequency that is a multiple of the original frequency. Choosing an in-between number might not be supported by your sound card.
 
 .. _buffer:
 

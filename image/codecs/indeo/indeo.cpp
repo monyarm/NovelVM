@@ -610,7 +610,7 @@ int IndeoDecoderBase::decodeIndeoFrame() {
 		_ctx._gb->skip(64 - left);
 		if (_ctx._gb->getBitsLeft() > 18 &&
 			_ctx._gb->peekBits(21) == 0xBFFF8) { // syncheader + inter _type
-			error("Indeo decoder: Mode not currently implemented in ScummVM");
+			error("Indeo decoder: Mode not currently implemented in NovelVM");
 		}
 	}
 

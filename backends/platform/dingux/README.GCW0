@@ -1,4 +1,4 @@
-[ScummVM-GCW0 README]
+[NovelVM-GCW0 README]
 
 Controls
 ========
@@ -14,15 +14,15 @@ Controls
 
 Installation from binaries
 ==========================
-Copy over scummvm.opk file to /media/data/apps directory on the device.
+Copy over novelvm.opk file to /media/data/apps directory on the device.
 
 Building from binaries
 ======================
 It's pretty simple if you are running Linux on an x86/amd64 machine:
 1. Download and install the GCW0 toolchain (http://www.gcw-zero.com/develop)
-2. Download ScummVM sources and uncompress them
+2. Download NovelVM sources and uncompress them
 3. Run backends/platform/dingux/build.gcw0.sh script
-4. Copy the resulting file scummvm.opk to your device
+4. Copy the resulting file novelvm.opk to your device
 5. Enjoy
 
 Troubleshooting
@@ -35,6 +35,6 @@ an HDMI connection.
 In case you need to submit a bugreport, you may find the log file at the
 following path:
 
-     /var/tmp/scummvm.log
+     /var/tmp/novelvm.log
 
-The log file is being overwritten at every ScummVM run.
+The log file is being overwritten at every NovelVM run.

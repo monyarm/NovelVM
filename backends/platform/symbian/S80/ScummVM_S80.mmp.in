@@ -2,7 +2,7 @@
  * Copyright (C) 2003-2005 Andreas 'Sprawl' Karlsson - Original EPOC port, ESDL
  * Copyright (C) 2003-2005 Lars 'AnotherGuest' Persson - Original EPOC port, Audio System
  * Copyright (C) 2005 Jurgen 'SumthinWicked' Braam - EPOC/CVS maintainer
- * Copyright (C) 2005-2017 The ScummVM Team
+ * Copyright (C) 2005-2017 The NovelVM Team
  *
  * ScummVM is the legal property of its developers, whose names
  * are too numerous to list here. Please refer to the COPYRIGHT
@@ -25,17 +25,17 @@
  */
 
 //
-// EPOC S80 MMP makefile project for ScummVM
+// EPOC S80 MMP makefile project for NovelVM
 //
 
 // *** Definitions
 
 #if defined(WINS)
-	TARGET          ScummVM.dll
+	TARGET          NovelVM.dll
 #else
-	TARGET          ScummVM.exe
+	TARGET          NovelVM.exe
 #endif
-TARGETPATH      system\apps\ScummVM
+TARGETPATH      system\apps\NovelVM
 TARGETTYPE      EXEDLL
 
 OPTION			MSVC /QIfist /Ob1 /Oy /GF // /QIfist disables use of __ftol2 to avoid linker probs with MS libc: http://msdn.microsoft.com/library/default.asp?url=/library/en-us/vccore/html/vcrefQIfistSuppress_ftol.asp

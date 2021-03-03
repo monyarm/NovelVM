@@ -26,7 +26,7 @@
 
 #include "common/textconsole.h"
 
-#include "icons/scummvm.xpm"
+#include "icons/novelvm.xpm"
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 static const uint32 fullscreenMask = SDL_WINDOW_FULLSCREEN_DESKTOP | SDL_WINDOW_FULLSCREEN;
@@ -34,7 +34,7 @@ static const uint32 fullscreenMask = SDL_WINDOW_FULLSCREEN_DESKTOP | SDL_WINDOW_
 
 SdlWindow::SdlWindow() :
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-	_window(nullptr), _windowCaption("ScummVM"),
+	_window(nullptr), _windowCaption("NovelVM"),
 	_lastFlags(0), _lastX(SDL_WINDOWPOS_UNDEFINED), _lastY(SDL_WINDOWPOS_UNDEFINED),
 #endif
 	_inputGrabState(false), _inputLockState(false)
@@ -68,8 +68,8 @@ void SdlWindow::setupIcon() {
 	unsigned int rgba[256];
 	unsigned int *icon;
 
-	if (sscanf(scummvm_icon[0], "%d %d %d %d", &w, &h, &ncols, &nbytes) != 4) {
-		warning("Wrong format of scummvm_icon[0] (%s)", scummvm_icon[0]);
+	if (sscanf(novelvm_icon[0], "%d %d %d %d", &w, &h, &ncols, &nbytes) != 4) {
+		warning("Wrong format of novelvm_icon[0] (%s)", novelvm_icon[0]);
 
 		return;
 	}
@@ -88,8 +88,8 @@ void SdlWindow::setupIcon() {
 		char color[32];
 		memset(color, 0, sizeof(color));
 		unsigned int col;
-		if (sscanf(scummvm_icon[1 + i], "%c c %s", &code, color) != 2) {
-			warning("Wrong format of scummvm_icon[%d] (%s)", 1 + i, scummvm_icon[1 + i]);
+		if (sscanf(novelvm_icon[1 + i], "%c c %s", &code, color) != 2) {
+			warning("Wrong format of novelvm_icon[%d] (%s)", 1 + i, novelvm_icon[1 + i]);
 		}
 		if (!strcmp(color, "None"))
 			col = 0x00000000;
@@ -103,7 +103,7 @@ void SdlWindow::setupIcon() {
 			}
 			col |= 0xFF000000;
 		} else {
-			warning("Could not load the built-in icon (%d %s - %s) ", code, color, scummvm_icon[1 + i]);
+			warning("Could not load the built-in icon (%d %s - %s) ", code, color, novelvm_icon[1 + i]);
 			free(icon);
 			return;
 		}
@@ -111,7 +111,7 @@ void SdlWindow::setupIcon() {
 		rgba[code] = col;
 	}
 	for (y = 0; y < h; y++) {
-		const char *line = scummvm_icon[1 + ncols + y];
+		const char *line = novelvm_icon[1 + ncols + y];
 		for (x = 0; x < w; x++) {
 			icon[x + w * y] = rgba[(int)line[x]];
 		}
@@ -254,9 +254,9 @@ SDL_Surface *copySDLSurface(SDL_Surface *src) {
 	}
 
 	SDL_Surface *res = SDL_CreateRGBSurfaceFrom(src->pixels,
-	                       src->w, src->h, src->format->BitsPerPixel,
-	                       src->pitch, src->format->Rmask, src->format->Gmask,
-	                       src->format->Bmask, src->format->Amask);
+	                                            src->w, src->h, src->format->BitsPerPixel,
+	                                            src->pitch, src->format->Rmask, src->format->Gmask,
+	                                            src->format->Bmask, src->format->Amask);
 
 	if (locked) {
 		SDL_UnlockSurface(src);
@@ -314,7 +314,7 @@ bool SdlWindow::createOrUpdateWindow(int width, int height, uint32 flags) {
 	if (!_window || oldNonUpdateableFlags != newNonUpdateableFlags) {
 		destroyWindow();
 		_window = SDL_CreateWindow(_windowCaption.c_str(), _lastX,
-								   _lastY, width, height, flags);
+		                           _lastY, width, height, flags);
 		if (_window) {
 			setupIcon();
 		}

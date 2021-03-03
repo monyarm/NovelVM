@@ -93,8 +93,9 @@ int main(int argc, char *argv[]) {
 		}
 	}
 
-	// Invoke the actual ScummVM main entry point:
-	res = scummvm_main(argc, argv);
+
+	// Invoke the actual NovelVM main entry point:
+	res = novelvm_main(argc, argv);
 
 exit:
 	// Free OSystem

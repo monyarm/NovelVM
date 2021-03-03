@@ -26,8 +26,8 @@ int main(void) {
 	g_system = new OSystem_N64();
 	assert(g_system);
 
-	// Invoke the actual ScummVM main entry point:
-	int res = scummvm_main(0, NULL);
+	// Invoke the actual NovelVM main entry point:
+	int res = novelvm_main(0, NULL);
 	g_system->quit();       // TODO: Consider removing / replacing this!
 	return res;
 }

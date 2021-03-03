@@ -1,7 +1,7 @@
 
- ScummVM - ScummVM ported to EPOC/SymbianOS
+ NovelVM - NovelVM ported to EPOC/SymbianOS
 
- Copyright (C) 2008-2021 ScummVM Team
+ Copyright (C) 2008-2021 NovelVM Team
  Copyright (C) 2013-2020 Fedor Strizhniou aka zanac
  Copyright (C) 2003-2013 Lars 'AnotherGuest' Persson
  Copyright (C) 2002-2008 Jurgen 'SumthinWicked' Braam
@@ -10,7 +10,7 @@
 
 Using parts of snprintf.c by
 Mark Martinec <mark.martinec@ijs.si>, April 1999, June 2000
-Copyright © 1999,2000,2001,2002 Mark Martinec. All rights reserved.
+Copyright ï¿½ 1999,2000,2001,2002 Mark Martinec. All rights reserved.
 under these conditions:
 "Terms and conditions ...
 This program is free software; it is dual licensed, the terms of the "Frontier Artistic License" or
@@ -18,7 +18,7 @@ the "GNU General Public License" can be chosen at your discretion.
 The chosen license then applies solely and in its entirety.
 Both licenses come with this Kit."
 
-About ScummVM
+About NovelVM
 --------------
 	The original ports (uptil 0.7.1) were made by Andreas Karlsson and Lars Persson.
 	The main transition to 0.8.0CVS and all relevant changes were done by Jurgen Braam.
@@ -26,8 +26,8 @@ About ScummVM
 
 Release History:
 Release version: 2.2.0
-		* Symbian port now split in five parts, ScummVM 1, ScummVM and so on to keep the exe size down.
-		  For engines layout see ScummVM in OS help menu
+		* Symbian port now split in five parts, NovelVM 1, NovelVM and so on to keep the exe size down.
+		  For engines layout see NovelVM in OS help menu
 Release version: 1.7.0
 		* Nothing significant in the Symbian port, except SDL improvements (new SDL version used)
     
@@ -39,43 +39,43 @@ Release version: 1.6.0
 
 	Release version: 1.4.0
 		* Nothing significant in the Symbian port, except SDL improvements (new SDL version used)
-		* See main readme for general ScummVM improvements, major update
+		* See main readme for general NovelVM improvements, major update
 
 	Release version: 1.3.1
 		* Nothing significant in the Symbian port, except SDL improvements (new SDL version used)
-		* See main readme for general ScummVM improvements, major update
+		* See main readme for general NovelVM improvements, major update
 
 	Release version: 1.3.0
 		* Nothing significant in the Symbian port, except SDL improvements (new SDL version used)
-		* See main readme for general ScummVM improvements, major update
+		* See main readme for general NovelVM improvements, major update
 	Release version: 1.2.1
-	* Symbian port now split in two parts, ScummVM 1 and ScummVM 2 to keep the exe size down.
-	  ScummVM 1 contains the following engines:
+	* Symbian port now split in two parts, NovelVM 1 and NovelVM 2 to keep the exe size down.
+	  NovelVM 1 contains the following engines:
 	    scumm queen groovie saga drascula
 	    touche parallaction cine
 	    cruise made tucker
 
-	  ScummVM 2 contains the following engines:
+	  NovelVM 2 contains the following engines:
 	    agos sky gob
 	    kyra lure agi tinsel
 	    sword1 sword2 draci sci teenagent
 
-	* See main readme for general ScummVM improvements, minor update
+	* See main readme for general NovelVM improvements, minor update
 	Release version: 1.2.0
 	* Nothing significant in the Symbian port, except SDL improvements (new SDL version used)
-	* See main readme for general ScummVM improvements, major update
+	* See main readme for general NovelVM improvements, major update
 
 	Release version: 1.1.0
 	* Nothing significant in the Symbian port, except SDL improvements.
-	* See main readme for general ScummVM improvements, minor update
+	* See main readme for general NovelVM improvements, minor update
 
 	Release version: 1.0.0
 	* Nothing significant in the Symbian port, except SDL improvements.
-	* See main readme for general ScummVM improvements, minor update
+	* See main readme for general NovelVM improvements, minor update
 
 	Release version: 0.13.1
 	* Nothing significant in the Symbian port, except SDL improvements.
-	* See main readme for general ScummVM improvements, minor update
+	* See main readme for general NovelVM improvements, minor update
 
 	Release version: 0.13.1
 	* Nothing significant in the Symbian port, except SDL improvements
@@ -85,27 +85,27 @@ Release version: 1.6.0
 	Release version: 0.12.0
 	* This version is only supported on Symbian OS 9 devices due to compiler constraints for older devices. (That means UIQ3 and S60V3 devices)
 	* Updated to SDL version 1.2.13 (previous version used was 1.2.2)
-	* Information about S60 devices can be found here https://wiki.scummvm.org/index.php/SymbianOS_S60
-	* Information about UIQ devices can be found here https://wiki.scummvm.org/index.php/SymbianOS_UIQ
-	* Best source of general information is the ScummVM forum, https://forums.scummvm.org
+	* Information about S60 devices can be found here https://wiki.novelvm.org/index.php/SymbianOS_S60
+	* Information about UIQ devices can be found here https://wiki.novelvm.org/index.php/SymbianOS_UIQ
+	* Best source of general information is the NovelVM forum, https://forums.novelvm.org
 	* SVN builds (not frequently updated) can be found at http://www.anotherguest.se
 
 
 Games supported
 ---------------
-	The Symbian port of ScummVM supports all games. Some games might not run properly due to screenresolution or memory constraints.
-	Minimum free memory requirement is about 12MB to be able to start and run ScummVM, this is enough for most older games, but newer more resource hungry games, might require more.
+	The Symbian port of NovelVM supports all games. Some games might not run properly due to screenresolution or memory constraints.
+	Minimum free memory requirement is about 12MB to be able to start and run NovelVM, this is enough for most older games, but newer more resource hungry games, might require more.
 
-Building ScummVM
+Building NovelVM
 ---------------------
 
 	Nescessary components
 	---------------------
-	Building ScummVM yourself using the UIQ 2.1/Nokia S60 SDK/Nokia S80 SDK/Nokia S90 SDK framework is not an easy task!
+	Building NovelVM yourself using the UIQ 2.1/Nokia S60 SDK/Nokia S80 SDK/Nokia S90 SDK framework is not an easy task!
 	Lets just say the framework needs quite some time to set up and takes a while
 	to get used to. If you choose to continue you will need the following items:
 
-	- UIQ 3.x SDK (To build for UIQ3 devices)(Build scripts in SDK need tweaking in order to build scummvm since Symbian OS GCCE never builds as large projects as ScummVM before)
+	- UIQ 3.x SDK (To build for UIQ3 devices)(Build scripts in SDK need tweaking in order to build novelvm since Symbian OS GCCE never builds as large projects as NovelVM before)
 	- UIQ 2.1 SDK (To build for UIQ2 devices);
 	  http://www.symbian.com/developer/sdks_uiq.asp
 
@@ -138,7 +138,7 @@ Building ScummVM
 	- flac, the Free Lossless Audio Codec
 	  http://flac.sourceforge.net/
 
-	Compiling ScummVM
+	Compiling NovelVM
 	-----------------
 
 	ECompXL (Only needed for UIQ2):
@@ -167,17 +167,17 @@ Building ScummVM
 	> bldmake bldfiles
 	> abld build
 
-	ScummVM:
-	In <DevRoot>\scummvm\backends\platform\symbian\ go:
+	NovelVM:
+	In <DevRoot>\novelvm\backends\platform\symbian\ go:
 	a) Edit and update the BuildPackageUpload_LocalSettings.pl for the kind of build (SDK installed etc) and variants
 	   you want to build.
       b) Run BuildPackageUpload_AllVersions.pl to build all the targets/variants that you have configured.
 	   A detailed log will be placed in the symbian folder with Build.err.log and Build.out.log but it also depends on
 	   the configuration you select.
 
-	Now you should have yourself a nice ScummVM_xxx.sis installer package in the packages folder for use
+	Now you should have yourself a nice NovelVM_xxx.sis installer package in the packages folder for use
 	on your phone. Please note that for development it will be a lot faster if you
-	transfer the SCUMMVM.APP/Scummvm.EXE file directly to your !:\system\apps\ScummVM\ dir!
+	transfer the NOVELVM.APP/Scummvm.EXE file directly to your !:\system\apps\NovelVM\ dir!
 
 	Platforms can be one of: ARMi, ARM4, THUMB, WINS, WINSCW, GCCE. The SE P900 uses the ARMi platform,
 	which is a combined ARM4/THUMB programming mode. Configurations can be one of:
@@ -191,8 +191,8 @@ Greetz & such
 	- AnotherGuest for having the nerve to start & carry this puppy for so long
 	- Fingolfin for taking the time to go through 1000 patch versions with me
 	- Myself (SumthinWicked), for writing this entire README and adopting all sources together with Fingolfin :)
-	- the entire ScummVM Dev team for making a kicka$$ program
-	- the folks in #scummvm @ irc.freenode.net for their help, confort and support
+	- the entire NovelVM Dev team for making a kicka$$ program
+	- the folks in #novelvm @ irc.freenode.net for their help, confort and support
 	- everybody else who wants to give me 'the look' for not including them here :P
 
 

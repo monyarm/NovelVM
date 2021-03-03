@@ -215,7 +215,7 @@ int main(int argc, char *argv[]) {
 
 			if (len > 2 && (cwd[len - 1] == ':' || cwd[len - 2] == ':')) {
 				printf("chdir to default\n");
-				chdir("/apps/scummvm");
+				chdir("/apps/novelvm");
 			}
 		}
 	}
@@ -227,7 +227,7 @@ int main(int argc, char *argv[]) {
 	PluginManager::instance().addPluginProvider(new WiiPluginProvider());
 #endif
 
-	res = scummvm_main(argc, argv);
+	res = novelvm_main(argc, argv);
 	g_system->quit();
 
 	g_system->destroy();

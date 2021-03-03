@@ -204,15 +204,16 @@ void replaceApplicationMenuItems() {
 		[[NSApp mainMenu] removeItemAtIndex:0];
 	}
 
-	NSMenu *appleMenu = addMenu(Common::U32String("ScummVM"), @"", @selector(setAppleMenu:));
+
+	NSMenu *appleMenu = addMenu(Common::U32String("NovelVM"), @"", @selector(setAppleMenu:));
 	if (appleMenu) {
-		addMenuItem(_("About ScummVM"), nil, @selector(orderFrontStandardAboutPanel:), @"", appleMenu);
+		addMenuItem(_("About NovelVM"), nil, @selector(orderFrontStandardAboutPanel:), @"", appleMenu);
 		[appleMenu addItem:[NSMenuItem separatorItem]];
-		addMenuItem(_("Hide ScummVM"), nil, @selector(hide:), @"h", appleMenu);
-		addMenuItem(_("Hide Others"), nil, @selector(hideOtherApplications:), @"h", appleMenu, (NSEventModifierFlagOption|NSEventModifierFlagCommand));
+		addMenuItem(_("Hide NovelVM"), nil, @selector(hide:), @"h", appleMenu);
+		addMenuItem(_("Hide Others"), nil, @selector(hideOtherApplications:), @"h", appleMenu, (NSEventModifierFlagOption | NSEventModifierFlagCommand));
 		addMenuItem(_("Show All"), nil, @selector(unhideAllApplications:), @"", appleMenu);
 		[appleMenu addItem:[NSMenuItem separatorItem]];
-		addMenuItem(_("Quit ScummVM"), nil, @selector(terminate:), @"q", appleMenu);
+		addMenuItem(_("Quit NovelVM"), nil, @selector(terminate:), @"q", appleMenu);
 	}
 
 	NSMenu *windowMenu = addMenu(_("Window"), @"", @selector(setWindowsMenu:));
@@ -223,12 +224,12 @@ void replaceApplicationMenuItems() {
 	NSMenu *helpMenu = addMenu(_("Help"), @"", @selector(setHelpMenu:));
 	if (helpMenu) {
 		if (!delegate) {
-			delegate = [[ScummVMMenuHandler alloc] init];
+			delegate = [[NovelVMMenuHandler alloc] init];
 		}
 		addMenuItem(_("User Manual"), delegate, @selector(openUserManual), @"", helpMenu);
 		[helpMenu addItem:[NSMenuItem separatorItem]];
 		addMenuItem(_("General Information"), delegate, @selector(openReadme), @"", helpMenu);
-		addMenuItem(_("What's New in ScummVM"), delegate, @selector(openNews), @"", helpMenu);
+		addMenuItem(_("What's New in NovelVM"), delegate, @selector(openNews), @"", helpMenu);
 		[helpMenu addItem:[NSMenuItem separatorItem]];
 		addMenuItem(_("Credits"), delegate, @selector(openCredits), @"", helpMenu);
 		addMenuItem(_("GPL License"), delegate, @selector(openLicenseGPL), @"", helpMenu);

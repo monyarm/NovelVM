@@ -20,9 +20,9 @@
  *
  */
 
-/*! \mainpage %ScummVM Source Reference
+/*! \mainpage %NovelVM Source Reference
  *
- * These pages contains a cross referenced documentation for the %ScummVM source code,
+ * These pages contains a cross referenced documentation for the %NovelVM source code,
  * generated with Doxygen (http://www.doxygen.org) directly from the source.
  * Currently not much is actually properly documented, but at least you can get an overview
  * of almost all the classes, methods and variables, and how they interact.
@@ -167,7 +167,7 @@ static Common::Error runGame(const Plugin *plugin, OSystem &system, const Common
 	// needed because otherwise the g_system->getSupportedFormats might return
 	// bad values.
 	g_system->beginGFXTransaction();
-		g_system->setGraphicsMode(ConfMan.get("gfx_mode").c_str());
+	g_system->setGraphicsMode(ConfMan.get("gfx_mode").c_str());
 	if (g_system->endGFXTransaction() != OSystem::kTransactionSuccess) {
 		warning("Switching graphics mode to '%s' failed", ConfMan.get("gfx_mode").c_str());
 		return Common::kUnknownError;
@@ -328,10 +328,10 @@ static Common::Error runGame(const Plugin *plugin, OSystem &system, const Common
 #ifdef USE_TRANSLATION
 	TransMan.setLanguage(previousLanguage);
 #ifdef USE_TTS
-		Common::TextToSpeechManager *ttsMan;
-		if ((ttsMan = g_system->getTextToSpeechManager()) != nullptr) {
-			ttsMan->setLanguage(ConfMan.get("language"));
-		}
+	Common::TextToSpeechManager *ttsMan;
+	if ((ttsMan = g_system->getTextToSpeechManager()) != nullptr) {
+		ttsMan->setLanguage(ConfMan.get("language"));
+	}
 #endif // USE_TTS
 #endif // USE_TRANSLATION
 
@@ -342,19 +342,19 @@ static Common::Error runGame(const Plugin *plugin, OSystem &system, const Common
 static void setupGraphics(OSystem &system) {
 
 	system.beginGFXTransaction();
-		// Set the user specified graphics mode (if any).
-		system.setGraphicsMode(ConfMan.get("gfx_mode").c_str());
-		system.setStretchMode(ConfMan.get("stretch_mode").c_str());
-		system.setShader(ConfMan.get("shader").c_str());
+	// Set the user specified graphics mode (if any).
+	system.setGraphicsMode(ConfMan.get("gfx_mode").c_str());
+	system.setStretchMode(ConfMan.get("stretch_mode").c_str());
+	system.setShader(ConfMan.get("shader").c_str());
 
-		system.initSize(320, 200);
+	system.initSize(320, 200);
 
-		if (ConfMan.hasKey("aspect_ratio"))
-			system.setFeatureState(OSystem::kFeatureAspectRatioCorrection, ConfMan.getBool("aspect_ratio"));
-		if (ConfMan.hasKey("fullscreen"))
-			system.setFeatureState(OSystem::kFeatureFullscreenMode, ConfMan.getBool("fullscreen"));
-		if (ConfMan.hasKey("filtering"))
-			system.setFeatureState(OSystem::kFeatureFilteringMode, ConfMan.getBool("filtering"));
+	if (ConfMan.hasKey("aspect_ratio"))
+		system.setFeatureState(OSystem::kFeatureAspectRatioCorrection, ConfMan.getBool("aspect_ratio"));
+	if (ConfMan.hasKey("fullscreen"))
+		system.setFeatureState(OSystem::kFeatureFullscreenMode, ConfMan.getBool("fullscreen"));
+	if (ConfMan.hasKey("filtering"))
+		system.setFeatureState(OSystem::kFeatureFilteringMode, ConfMan.getBool("filtering"));
 	system.endGFXTransaction();
 
 	system.applyBackendSettings();
@@ -366,7 +366,7 @@ static void setupGraphics(OSystem &system) {
 	GUI::GuiManager::instance();
 
 	// Set initial window caption
-	system.setWindowCaption(Common::U32String(gScummVMFullVersion));
+	system.setWindowCaption(Common::U32String(gNovelVMFullVersion));
 
 	// Clear the main screen
 	system.fillScreen(0);
@@ -396,7 +396,7 @@ static void setupKeymapper(OSystem &system) {
 	}
 }
 
-extern "C" int scummvm_main(int argc, const char * const argv[]) {
+extern "C" int novelvm_main(int argc, const char *const argv[]) {
 	Common::String specialDebug;
 	Common::String command;
 
@@ -421,7 +421,7 @@ extern "C" int scummvm_main(int argc, const char * const argv[]) {
 	}
 
 	// Update the config file
-	ConfMan.set("versioninfo", gScummVMVersion, Common::ConfigManager::kApplicationDomain);
+	ConfMan.set("versioninfo", gNovelVMVersion, Common::ConfigManager::kApplicationDomain);
 
 	// Load and setup the debuglevel and the debug flags. We do this at the
 	// soonest possible moment to ensure debug output starts early on, if

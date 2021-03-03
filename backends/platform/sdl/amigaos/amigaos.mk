@@ -4,15 +4,15 @@
 #
 # 'mkdir' seems to incorrectly set permissions to path/dirs on AmigaOS.
 # Once a vanilla installation was created, none of the special subdirectories
-# are found/accessible (extras, themes, plugins), instead ScummVM reports
+# are found/accessible (extras, themes, plugins), instead NovelVM reports
 # missing theme files and a valid translation.dat.
 # Switching to AmigaOS' own "makedir" until there is a fix or other solution. 
 #
 amigaosdist: $(EXECUTABLE) $(PLUGINS)
 	makedir ALL FORCE $(AMIGAOSPATH)
 	makedir ALL FORCE $(AMIGAOSPATH)/extras
-	cp ${srcdir}/dists/amigaos/scummvm_drawer.info $(AMIGAOSPATH).info
-	cp ${srcdir}/dists/amigaos/scummvm.info $(AMIGAOSPATH)/$(EXECUTABLE).info
+	cp ${srcdir}/dists/amigaos/novelvm_drawer.info $(AMIGAOSPATH).info
+	cp ${srcdir}/dists/amigaos/novelvm.info $(AMIGAOSPATH)/$(EXECUTABLE).info
 ifdef DIST_FILES_DOCS
 	makedir ALL FORCE $(AMIGAOSPATH)/doc
 	cp -r $(srcdir)/doc/ $(AMIGAOSPATH)

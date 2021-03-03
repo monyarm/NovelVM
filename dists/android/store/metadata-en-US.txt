@@ -2,7 +2,7 @@
 
 *** App name:
 
-ScummVM
+NovelVM
 
 *** Short description:
 
@@ -12,13 +12,13 @@ Runs many old point-and-click adventures and RPGs
 
 NO GAME DATA FILES ARE INCLUDED.
 
-ScummVM provides a way to play many classic graphical point-and-click adventure games and RPGs - such as SCUMM games (like Monkey Island and Day of the Tentacle), Revolution's Beneath A Steel Sky, and many more. NO GAME DATA FILES ARE INCLUDED; you must supply your own.
+NovelVM provides a way to play many classic graphical point-and-click adventure games and RPGs - such as SCUMM games (like Monkey Island and Day of the Tentacle), Revolution's Beneath A Steel Sky, and many more. NO GAME DATA FILES ARE INCLUDED; you must supply your own.
 
-You can find more information, and some free-to-download adventure games, on our website. See also an up-to-date list here: https://wiki.scummvm.org/index.php/Where_to_get_the_games
+You can find more information, and some free-to-download adventure games, on our website. See also an up-to-date list here: https://wiki.novelvm.org/index.php/Where_to_get_the_games
 
-You can find a quick-start guide on our website at http://wiki.scummvm.org/index.php/Android/Guide which provides some more information, explains how to configure some Android-specific options, and where you can find other help.
+You can find a quick-start guide on our website at http://wiki.novelvm.org/index.php/Android/Guide which provides some more information, explains how to configure some Android-specific options, and where you can find other help.
 
-http://forums.scummvm.org/viewforum.php?f=17 is our web forum where you can discuss the Android version.
+http://forums.novelvm.org/viewforum.php?f=17 is our web forum where you can discuss the Android version.
 
 *** Current release:
 2.2.1
@@ -29,7 +29,7 @@ http://forums.scummvm.org/viewforum.php?f=17 is our web forum where you can disc
 - Fixed folder navigation
 - Fluidsynth, Cloud Saves & LAN File Server
 
-For full release notes see https://scummvm.org/frs/scummvm/2.2.0/ReleaseNotes.html
+For full release notes see https://novelvm.org/frs/novelvm/2.2.0/ReleaseNotes.html
 
 *** Beta release name:
 

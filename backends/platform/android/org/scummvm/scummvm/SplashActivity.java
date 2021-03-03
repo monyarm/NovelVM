@@ -1,4 +1,4 @@
-package org.scummvm.scummvm;
+package org.novelvm.novelvm;
 
 import android.Manifest;
 import android.annotation.TargetApi;
@@ -40,7 +40,7 @@ public class SplashActivity extends Activity {
 		) {
 			requestPermissions(MY_PERMISSIONS_STR_LIST, MY_PERMISSION_ALL);
 		} else {
-			startActivity(new Intent(this, ScummVMActivity.class));
+			startActivity(new Intent(this, NovelVMActivity.class));
 			finish();
 		}
 	}
@@ -53,10 +53,10 @@ public class SplashActivity extends Activity {
 			if (grantResults.length > 0) {
 				for (int iterateGrantResult: grantResults) {
 					if (iterateGrantResult == PackageManager.PERMISSION_GRANTED) {
-						Log.i(ScummVM.LOG_TAG, permissions[0] + " permission was granted at Runtime");
+						Log.i(NovelVM.LOG_TAG, permissions[0] + " permission was granted at Runtime");
 						++numOfReqPermsGranted;
 					} else {
-						Log.i(ScummVM.LOG_TAG, permissions[0] + " permission was denied at Runtime");
+						Log.i(NovelVM.LOG_TAG, permissions[0] + " permission was denied at Runtime");
 					}
 				}
 			}
@@ -67,7 +67,7 @@ public class SplashActivity extends Activity {
 					.show();
 			}
 		}
-		startActivity(new Intent(this, ScummVMActivity.class));
+		startActivity(new Intent(this, NovelVMActivity.class));
 		finish();
 	}
 

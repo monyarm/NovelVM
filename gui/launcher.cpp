@@ -129,17 +129,17 @@ void LauncherDialog::build() {
 		_logo->useThemeTransparency(true);
 		_logo->setGfx(g_gui.theme()->getImageSurface(ThemeEngine::kImageLogo));
 
-		new StaticTextWidget(this, "Launcher.Version", Common::U32String(gScummVMVersionDate));
+		new StaticTextWidget(this, "Launcher.Version", Common::U32String(gNovelVMVersionDate));
 	} else
-		new StaticTextWidget(this, "Launcher.Version", Common::U32String(gScummVMFullVersion));
+		new StaticTextWidget(this, "Launcher.Version", Common::U32String(gNovelVMFullVersion));
 #else
-	// Show ScummVM version
-	new StaticTextWidget(this, "Launcher.Version", Common::U32String(gScummVMFullVersion));
+	// Show NovelVM version
+	new StaticTextWidget(this, "Launcher.Version", Common::U32String(gNovelVMFullVersion));
 #endif
 	if (!g_system->hasFeature(OSystem::kFeatureNoQuit))
-		new ButtonWidget(this, "Launcher.QuitButton", _("~Q~uit"), _("Quit ScummVM"), kQuitCmd);
-	new ButtonWidget(this, "Launcher.AboutButton", _("A~b~out..."), _("About ScummVM"), kAboutCmd);
-	new ButtonWidget(this, "Launcher.OptionsButton", _("~O~ptions..."), _("Change global ScummVM options"), kOptionsCmd);
+		new ButtonWidget(this, "Launcher.QuitButton", _("~Q~uit"), _("Quit NovelVM"), kQuitCmd);
+	new ButtonWidget(this, "Launcher.AboutButton", _("A~b~out..."), _("About NovelVM"), kAboutCmd);
+	new ButtonWidget(this, "Launcher.OptionsButton", _("~O~ptions..."), _("Change global NovelVM options"), kOptionsCmd);
 	_startButton =
 		new ButtonWidget(this, "Launcher.StartButton", _("~S~tart"), _("Start selected game"), kStartCmd);
 
@@ -426,7 +426,7 @@ void LauncherDialog::removeGame(int item) {
 
 void LauncherDialog::editGame(int item) {
 	// Set game specific options. Most of these should be "optional", i.e. by
-	// default set nothing and use the global ScummVM settings. E.g. the user
+	// default set nothing and use the global NovelVM settings. E.g. the user
 	// can set here an optional alternate music volume, or for specific games
 	// a different music driver etc.
 	// This is useful because e.g. MonkeyVGA needs AdLib music to have decent
@@ -510,7 +510,7 @@ void LauncherDialog::loadGame(int item) {
 			dialog.runModal();
 		}
 	} else {
-		MessageDialog dialog(_("ScummVM could not find any engine capable of running the selected game!"), _("OK"));
+		MessageDialog dialog(_("NovelVM could not find any engine capable of running the selected game!"), _("OK"));
 		dialog.runModal();
 	}
 }
@@ -556,7 +556,7 @@ bool LauncherDialog::doGameDetection(const Common::String &path) {
 	Common::FSNode dir(path);
 	Common::FSList files;
 	if (!dir.getChildren(files, Common::FSNode::kListAll)) {
-		MessageDialog alert(_("ScummVM couldn't open the specified directory!"));
+		MessageDialog alert(_("NovelVM couldn't open the specified directory!"));
 		alert.runModal();
 		return true;
 	}
@@ -575,7 +575,7 @@ bool LauncherDialog::doGameDetection(const Common::String &path) {
 	int idx;
 	if (candidates.empty()) {
 		// No game was found in the specified directory
-		MessageDialog alert(_("ScummVM could not find any game in the specified directory!"));
+		MessageDialog alert(_("NovelVM could not find any game in the specified directory!"));
 		alert.runModal();
 		idx = -1;
 		return false;
@@ -740,7 +740,7 @@ void LauncherDialog::reflowLayout() {
 		StaticTextWidget *ver = (StaticTextWidget *)findWidget("Launcher.Version");
 		if (ver) {
 			ver->setAlign(g_gui.xmlEval()->getWidgetTextHAlign("Launcher.Version"));
-			ver->setLabel(Common::U32String(gScummVMVersionDate));
+			ver->setLabel(Common::U32String(gNovelVMVersionDate));
 		}
 
 		if (!_logo)
@@ -751,7 +751,7 @@ void LauncherDialog::reflowLayout() {
 		StaticTextWidget *ver = (StaticTextWidget *)findWidget("Launcher.Version");
 		if (ver) {
 			ver->setAlign(g_gui.xmlEval()->getWidgetTextHAlign("Launcher.Version"));
-			ver->setLabel(Common::U32String(gScummVMFullVersion));
+			ver->setLabel(Common::U32String(gNovelVMFullVersion));
 		}
 
 		if (_logo) {

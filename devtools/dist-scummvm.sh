@@ -27,13 +27,13 @@
 
 ### configuration
 
-scummvmrepo='https://github.com/scummvm/scummvm.git'
-toolsrepo='https://github.com/scummvm/scummvm-tools.git'
+novelvmrepo='https://github.com/novelvm/novelvm.git'
+toolsrepo='https://github.com/novelvm/novelvm-tools.git'
 
 ### init
 
 if [ $# -lt 2 ]; then
-  echo "Usage: $0 <scummvm | scummvm-tools> <version-number> [<temporary-directory> [<tag>]]"
+  echo "Usage: $0 <novelvm | novelvm-tools> <version-number> [<temporary-directory> [<tag>]]"
   exit 1
 fi
 
@@ -52,14 +52,14 @@ fullname="$module-$version"
 
 # Check modules
 case $module in
-scummvm)
-    gitrepo=$scummvmrepo
+novelvm)
+    gitrepo=$novelvmrepo
 ;;
-scummvm-tools)
+novelvm-tools)
     gitrepo=$toolsrepo
 ;;
 *)
-    echo "Unknown module $module. Only scummvm or scummvm-tools are supported"
+    echo "Unknown module $module. Only novelvm or novelvm-tools are supported"
     exit 1
 esac
 

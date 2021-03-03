@@ -26,7 +26,7 @@
 //#define PSP_KB_SHELL	/* Need a hack to properly load the keyboard from the PSP shell */
 
 #ifdef PSP_KB_SHELL
-#define PSP_KB_SHELL_PATH 	"ms0:/psp/game5xx/scummvm-solid/"	/* path to kbd.zip */
+#define PSP_KB_SHELL_PATH 	"ms0:/psp/game5xx/novelvm-solid/"	/* path to kbd.zip */
 #endif
 
 

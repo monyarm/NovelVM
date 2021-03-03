@@ -4,15 +4,15 @@
       :caption: The basics
       :hidden:
 
-      use_scummvm/install_computer
-      use_scummvm/the_launcher
-      use_scummvm/game_files
-      use_scummvm/add_play_games
-      use_scummvm/save_load_games
-      use_scummvm/keyboard_shortcuts
-      use_scummvm/how_to_settings
-      use_scummvm/connect_cloud
-      use_scummvm/LAN
+      use_novelvm/install_computer
+      use_novelvm/the_launcher
+      use_novelvm/game_files
+      use_novelvm/add_play_games
+      use_novelvm/save_load_games
+      use_novelvm/keyboard_shortcuts
+      use_novelvm/how_to_settings
+      use_novelvm/connect_cloud
+      use_novelvm/LAN
       
 .. toctree::
       :caption: Platform guides
@@ -73,14 +73,14 @@
 
 
 ====================
-Welcome to ScummVM!
+Welcome to NovelVM!
 ====================
 
-ScummVM allows you to play classic graphic point-and-click adventure games, text adventure games, and RPGs, as long as you already have the game data files. ScummVM replaces the executable files shipped with the games, which means you can now play your favorite games on all your favorite devices.
+NovelVM allows you to play classic graphic point-and-click adventure games, text adventure games, and RPGs, as long as you already have the game data files. NovelVM replaces the executable files shipped with the games, which means you can now play your favorite games on all your favorite devices.
 
-So how did ScummVM get its name? Many of the famous LucasArts adventure games, such as Maniac Mansion and the Monkey Island series, were created using a utility called SCUMM (Script Creation Utility for Maniac Mansion). The 'VM' in ScummVM stands for Virtual Machine. 
+So how did NovelVM get its name? Many of the famous LucasArts adventure games, such as Maniac Mansion and the Monkey Island series, were created using a utility called SCUMM (Script Creation Utility for Maniac Mansion). The 'VM' in NovelVM stands for Virtual Machine. 
 
-While ScummVM was originally designed to run LucasArts' SCUMM games, over time support has been added for many other games: see the full list `here <https://wiki.scummvm.org/index.php?title=Category:Supported_Games>`_. Noteworthy titles include Broken Sword, Myst and Blade Runner, although there are countless other hidden gems to explore. 
+While NovelVM was originally designed to run LucasArts' SCUMM games, over time support has been added for many other games: see the full list `here <https://wiki.novelvm.org/index.php?title=Category:Supported_Games>`_. Noteworthy titles include Broken Sword, Myst and Blade Runner, although there are countless other hidden gems to explore. 
 
 
 
@@ -96,41 +96,41 @@ We have a user manual section covering **THE BASICS**:
 
       Installation
       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-      :doc:`Installing ScummVM on a computer <use_scummvm/install_computer>`
+      :doc:`Installing NovelVM on a computer <use_novelvm/install_computer>`
 
-      :doc:`use_scummvm/the_launcher`
+      :doc:`use_novelvm/the_launcher`
 
       ---
       
       Playing games
       ^^^^^^^^^^^^^^^
-      :doc:`use_scummvm/game_files`
+      :doc:`use_novelvm/game_files`
 
-      :doc:`use_scummvm/add_play_games`
+      :doc:`use_novelvm/add_play_games`
 
-      :doc:`use_scummvm/save_load_games`
+      :doc:`use_novelvm/save_load_games`
 
       ---
    
 
       Controls and settings
       ^^^^^^^^^^^^^^^^^^^^^^^
-      :doc:`use_scummvm/keyboard_shortcuts`
+      :doc:`use_novelvm/keyboard_shortcuts`
 
-      :doc:`use_scummvm/how_to_settings`
+      :doc:`use_novelvm/how_to_settings`
 
       ---
      
       Useful features
       ^^^^^^^^^^^^^^^^
 
-      :doc:`use_scummvm/connect_cloud`
+      :doc:`use_novelvm/connect_cloud`
 
-      :doc:`use_scummvm/LAN`
+      :doc:`use_novelvm/LAN`
 
 .. _platformspecific:
 
-We also have guides on how to get ScummVM running on a wide range of other platforms:
+We also have guides on how to get NovelVM running on a wide range of other platforms:
 
 
 .. panels::
@@ -182,7 +182,7 @@ We also have guides on how to get ScummVM running on a wide range of other platf
 Advanced topics
 ============================
 
-For our more experienced users, ScummVM features a command line interface, as well as the ability to edit settings directly in a configuration file. 
+For our more experienced users, NovelVM features a command line interface, as well as the ability to edit settings directly in a configuration file. 
 
 In this section, we also take a deep dive into understanding the graphics and audio settings. 
 
@@ -210,9 +210,9 @@ In this section, we also take a deep dive into understanding the graphics and au
 Getting help
 =============
 
-ScummVM is still under development. While we do our best to make sure that as many games as possible can be completed with no major bugs, crashes can happen!
+NovelVM is still under development. While we do our best to make sure that as many games as possible can be completed with no major bugs, crashes can happen!
 
-If you are having problems with any aspect of ScummVM, take a look at our help section.
+If you are having problems with any aspect of NovelVM, take a look at our help section.
 
 .. panels::
       :container: text-center mb-4
@@ -230,10 +230,10 @@ What's changed since I was last here?
 We have a **RELEASE NOTES** section on the sidebar; here you can see what's changed in both current and past releases. 
 
 
-The ScummVM Project
+The NovelVM Project
 ===================
 
-ScummVM is an open-source project created, maintained and constantly improved by a team of passionate volunteers from all around the world.  If you enjoy using ScummVM and would like to support the team, you can use the PayPal Donate button below. 
+NovelVM is an open-source project created, maintained and constantly improved by a team of passionate volunteers from all around the world.  If you enjoy using NovelVM and would like to support the team, you can use the PayPal Donate button below. 
 
 .. raw:: html
 
@@ -244,7 +244,7 @@ ScummVM is an open-source project created, maintained and constantly improved by
       </form>
       <br>
 
-Another way to support us is to buy your games from GOG.com using the ScummVM Affiliate link.
+Another way to support us is to buy your games from GOG.com using the NovelVM Affiliate link.
 
 .. raw:: html 
 
@@ -254,7 +254,7 @@ Another way to support us is to buy your games from GOG.com using the ScummVM Af
 
 
 
-If you have software development or technical writing skills, we would love for you to join the ScummVM team! Check out `Developer Central <https://wiki.scummvm.org/index.php?title=Developer_Central>`_ on the ScummVM wiki for more information on contributing to ScummVM. 
+If you have software development or technical writing skills, we would love for you to join the NovelVM team! Check out `Developer Central <https://wiki.novelvm.org/index.php?title=Developer_Central>`_ on the NovelVM wiki for more information on contributing to NovelVM. 
 
 
 

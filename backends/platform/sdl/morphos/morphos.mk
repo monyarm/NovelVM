@@ -2,7 +2,7 @@
 # AmigaOS shell doesn't like indented comments.
 morphosdist: $(EXECUTABLE) $(PLUGINS)
 	mkdir -p $(MORPHOSPATH)extras
-	cp ${srcdir}/dists/amiga/scummvm.info $(MORPHOSPATH)/$(EXECUTABLE).info
+	cp ${srcdir}/dists/amiga/novelvm.info $(MORPHOSPATH)/$(EXECUTABLE).info
 ifdef DIST_FILES_DOCS
 	mkdir -p $(MORPHOSPATH)/doc
 	cp -r $(srcdir)/doc/ $(MORPHOSPATH)

@@ -64,10 +64,10 @@ static const Common::AxisTableEntry switchJoystickAxes[] = {
 };
 
 void OSystem_Switch::init() {
-	
+
 	DrivesPOSIXFilesystemFactory *fsFactory = new DrivesPOSIXFilesystemFactory();
 	fsFactory->addDrive("sdmc:");
-	fsFactory->configureBuffering(DrivePOSIXFilesystemNode::kBufferingModeScummVM, 2048);
+	fsFactory->configureBuffering(DrivePOSIXFilesystemNode::kBufferingModeNovelVM, 2048);
 
 	_fsFactory = fsFactory;
 
@@ -121,7 +121,7 @@ bool OSystem_Switch::hasFeature(Feature f) {
 	if (f == kFeatureFullscreenMode)
 		return false;
 	return (f == kFeatureTouchpadMode ||
-		OSystem_SDL::hasFeature(f));
+	        OSystem_SDL::hasFeature(f));
 }
 
 void OSystem_Switch::setFeatureState(Feature f, bool enable) {
@@ -151,7 +151,7 @@ void OSystem_Switch::logMessage(LogMessageType::Type type, const char *message) 
 }
 
 Common::String OSystem_Switch::getDefaultLogFileName() {
-	return "scummvm.log";
+	return "novelvm.log";
 }
 
 Common::HardwareInputSet *OSystem_Switch::getHardwareInputSet() {

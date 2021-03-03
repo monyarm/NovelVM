@@ -1,9 +1,9 @@
-ScummVM 2.3.0git - OPENPANDORA SPECIFIC README
+NovelVM 2.3.0git - OPENPANDORA SPECIFIC README
 ------------------------------------------------------------------------
 Please refer to the:
 
-ScummVM Forum: <https://forums.scummvm.org/>
-WiKi: <https://wiki.scummvm.org/index.php/OpenPandora>
+NovelVM Forum: <https://forums.novelvm.org/>
+WiKi: <https://wiki.novelvm.org/index.php/OpenPandora>
 
 for the most current information on the port and any updates to this
 documentation.
@@ -14,6 +14,6 @@ control information.
 ------------------------------------------------------------------------
 Credits
 
-Core ScummVM code (c) The ScummVM Team
+Core NovelVM code (c) The NovelVM Team
 OpenPandora backend (c) John Willis
 Detailed (c) information can be found within the source code

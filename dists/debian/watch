@@ -6,12 +6,12 @@ pgpmode=none,\
 repacksuffix=+dfsg,\
 repack,compression=xz,\
 dversionmangle=s/\+dfsg\d*//,\
-"  https://scummvm.org/downloads/ .*/scummvm-([0-9.]+)\.tar\.(?:xz|bz2|gz)
+"  https://novelvm.org/downloads/ .*/novelvm-([0-9.]+)\.tar\.(?:xz|bz2|gz)
 
 opts="\
 pgpmode=none,\
 repacksuffix=+dfsg,\
 repack,compression=xz,\
 dversionmangle=s/\+dfsg\d*//,\
-" https://github.com/scummvm/scummvm/releases \
+" https://github.com/novelvm/novelvm/releases \
  .*/archive/v?\.?(\d[\d\.]+)\.tar\.gz

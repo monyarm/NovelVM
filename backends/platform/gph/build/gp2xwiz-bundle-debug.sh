@@ -4,6 +4,6 @@ echo Quick script to make building a distribution of the GP2X Wiz backend more c
 
 cd ../../../..
 
-echo Building ScummVM for GP2X Wiz.
+echo Building NovelVM for GP2X Wiz.
 
 make gp2xwiz-bundle-debug

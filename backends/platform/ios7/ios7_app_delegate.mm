@@ -27,7 +27,7 @@
 
 @implementation iOS7AppDelegate {
 	UIWindow *_window;
-	iOS7ScummVMViewController *_controller;
+	iOS7NovelVMViewController *_controller;
 	iPhoneView *_view;
 	BOOL _restoreState;
 }
@@ -57,7 +57,7 @@
 	_window = [[UIWindow alloc] initWithFrame:rect];
 	[_window retain];
 
-	_controller = [[iOS7ScummVMViewController alloc] init];
+	_controller = [[iOS7NovelVMViewController alloc] init];
 
 	_view = [[iPhoneView alloc] initWithFrame:rect];
 	_view.multipleTouchEnabled = YES;
@@ -76,9 +76,9 @@
 	iOS7_buildSharedOSystemInstance();
 
 	dispatch_async(dispatch_get_global_queue(0, 0), ^{
-		iOS7_main(iOS7_argc, iOS7_argv);
+	  iOS7_main(iOS7_argc, iOS7_argv);
 	});
-	
+
 	if (_restoreState)
 		[_view restoreApplicationState];
 	else
@@ -121,7 +121,7 @@
 
 + (iOS7AppDelegate *)iOS7AppDelegate {
 	UIApplication *app = [UIApplication sharedApplication];
-	return (iOS7AppDelegate *) app.delegate;
+	return (iOS7AppDelegate *)app.delegate;
 }
 
 + (iPhoneView *)iPhoneView {

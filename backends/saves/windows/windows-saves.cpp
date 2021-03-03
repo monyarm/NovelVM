@@ -41,16 +41,16 @@ WindowsSaveFileManager::WindowsSaveFileManager() {
 
 	// Use the Application Data directory of the user profile.
 	if (SHGetFolderPathFunc(NULL, CSIDL_APPDATA, NULL, SHGFP_TYPE_CURRENT, defaultSavepath) == S_OK) {
-		strcat(defaultSavepath, "\\ScummVM");
+		strcat(defaultSavepath, "\\NovelVM");
 		if (!CreateDirectory(defaultSavepath, NULL)) {
 			if (GetLastError() != ERROR_ALREADY_EXISTS)
-				error("Cannot create ScummVM application data folder");
+				error("Cannot create NovelVM application data folder");
 		}
 
 		strcat(defaultSavepath, "\\Saved games");
 		if (!CreateDirectory(defaultSavepath, NULL)) {
 			if (GetLastError() != ERROR_ALREADY_EXISTS)
-				error("Cannot create ScummVM Saved games folder");
+				error("Cannot create NovelVM Saved games folder");
 		}
 
 		ConfMan.registerDefault("savepath", defaultSavepath);

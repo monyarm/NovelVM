@@ -22,7 +22,7 @@
 
 #include <Cocoa/Cocoa.h>
 
-@interface ScummVMDockTilePlugIn : NSObject <NSDockTilePlugIn> {
+@interface NovelVMDockTilePlugIn : NSObject <NSDockTilePlugIn> {
 	NSMenu *recentGamesMenu;
 }
 @end
@@ -34,7 +34,7 @@
 - (NSMenuItem*)initWithGame:(NSString *)gameId description:(NSString*)desc icon:(NSString*)iconFile;
 @end
 
-@implementation ScummVMDockTilePlugIn
+@implementation NovelVMDockTilePlugIn
 
 - (id)init {
 	self = [super init];
@@ -55,8 +55,8 @@
 
 - (NSMenu*)dockMenu {
 	// Get the list or recent games
-	CFPreferencesAppSynchronize(CFSTR("org.scummvm.scummvm"));
-	NSArray *array = CFPreferencesCopyAppValue(CFSTR("recentGames"), CFSTR("org.scummvm.scummvm"));
+	CFPreferencesAppSynchronize(CFSTR("org.novelvm.novelvm"));
+	NSArray *array = CFPreferencesCopyAppValue(CFSTR("recentGames"), CFSTR("org.novelvm.novelvm"));
 	if (array == nil)
 		return nil;
 
@@ -110,13 +110,13 @@
 - (IBAction) startGame {
 	NSLog(@"Starting Game %@...", game);
 
-	NSString *scummVMPath = [[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:@"org.scummvm.scummvm"];
-	if (scummVMPath == nil) {
-		NSLog(@"Cannot find ScummVM.app!");
+	NSString *novelVMPath = [[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:@"org.novelvm.novelvm"];
+	if (novelVMPath == nil) {
+		NSLog(@"Cannot find NovelVM.app!");
 		return;
 	}
-	// Start ScummVM.app with the game ID as argument
-	NSURL *url = [NSURL fileURLWithPath:scummVMPath];
+	// Start NovelVM.app with the game ID as argument
+	NSURL *url = [NSURL fileURLWithPath:novelVMPath];
 	NSMutableDictionary *args = [[NSMutableDictionary alloc] init];
 	[args setObject:[NSArray arrayWithObject:game] forKey:NSWorkspaceLaunchConfigurationArguments];
 	[[NSWorkspace sharedWorkspace] launchApplicationAtURL:url options:NSWorkspaceLaunchDefault configuration:args error:nil];

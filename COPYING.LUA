@@ -1,6 +1,6 @@
-NOTE: ScummVM uses code from Lua, which is covered by the following license.
+NOTE: NovelVM uses code from Lua, which is covered by the following license.
 This implementation of Lua contains additional code and modifications added
-only for ScummVM project.
+only for NovelVM project.
 Look into the source code file "engines/grim/lua/Changelog" for more info.
 
 /******************************************************************************

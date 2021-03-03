@@ -128,7 +128,7 @@ bool ELFPlugin::loadPlugin() {
 		return false;
 	}
 
-	if (strncmp(gScummVMPluginBuildDate, buildDateFunc(), strlen(gScummVMPluginBuildDate))) {
+	if (strncmp(gNovelVMPluginBuildDate, buildDateFunc(), strlen(gNovelVMPluginBuildDate))) {
 		unloadPlugin();
 		warning("elfloader: plugin '%s' has a different build date", _filename.c_str());
 		return false;

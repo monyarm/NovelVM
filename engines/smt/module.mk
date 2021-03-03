@@ -2,7 +2,6 @@ MODULE := engines/smt
 
 MODULE_OBJS := \
 	smt.o \
-	detection.o \
 	metaengine.o \
 	formats/archive/pac.o \
 	formats/graphic/tmx.o \
@@ -23,3 +22,5 @@ endif
 
 # Include common rules
 include $(srcdir)/rules.mk
+
+DETECT_OBJS += $(MODULE)/detection.o

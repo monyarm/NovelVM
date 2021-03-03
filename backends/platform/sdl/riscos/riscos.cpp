@@ -60,7 +60,7 @@ void OSystem_RISCOS::initBackend() {
 
 	// Create the savefile manager
 	if (_savefileManager == 0) {
-		Common::String savePath = "/<Choices$Write>/ScummVM/Saves";
+		Common::String savePath = "/<Choices$Write>/NovelVM/Saves";
 		if (Riscos::assureDirectoryExists(savePath))
 			_savefileManager = new DefaultSaveFileManager(savePath);
 	}
@@ -118,17 +118,17 @@ void OSystem_RISCOS::logMessage(LogMessageType::Type type, const char *message) 
 }
 
 Common::String OSystem_RISCOS::getDefaultConfigFileName() {
-	return "/<Choices$Write>/ScummVM/scummvmrc";
+	return "/<Choices$Write>/NovelVM/novelvmrc";
 }
 
 Common::String OSystem_RISCOS::getDefaultLogFileName() {
-	Common::String logFile = "/<Choices$Write>/ScummVM/Logs";
+	Common::String logFile = "/<Choices$Write>/NovelVM/Logs";
 
 	if (!Riscos::assureDirectoryExists(logFile)) {
 		return Common::String();
 	}
 
-	return logFile + "/scummvm";
+	return logFile + "/novelvm";
 }
 
 #endif

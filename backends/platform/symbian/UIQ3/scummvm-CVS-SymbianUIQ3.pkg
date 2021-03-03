@@ -21,70 +21,70 @@
 ;
 
 ;;;
-;;; ScummVM .PKG file for .SIS gegeration
+;;; NovelVM .PKG file for .SIS gegeration
 ;;;
 
 
 ; List of localised vendor names - one per language. At least one must be provided (English [EN]).
 ; List must correspond to list of languages specified elsewhere in the .pkg
-%{"ScummVM"}
+%{"NovelVM"}
 ; The non-localised, globally unique vendor name (mandatory)
-:"ScummVM"
+:"NovelVM"
 
 ; UID is the app's UID
-#{"ScummVM UIQ3"},(0xA0000657),1,80,0
+#{"NovelVM UIQ3"},(0xA0000657),1,80,0
 
 ; ProductID for UIQ 3.0
 ; Product/platform version UID, Major, Minor, Build, Product ID
 (0x101F6300), 3, 0, 0, {"UIQ30ProductID"}
 
 ; Application, AIF & Resource file
-"\epoc32\release\gcce\urel\ScummVM.exe"-		"!:\sys\bin\ScummVM.exe"
-"\epoc32\data\z\resource\apps\ScummVM.rsc"-	"!:\resource\apps\ScummVM.rsc"
-"\epoc32\Data\Z\resource\apps\scummvm_loc.rsc"-	"!:\resource\apps\scummvm_loc.rsc"
-"\epoc32\data\Z\resource\APPS\scummvm.MBM"-	"!:\resource\apps\scummvm.MBM"
-"\epoc32\data\z\private\10003a3f\apps\scummvm_reg.rsc"-"!:\private\10003a3f\import\apps\scummvm_reg.rsc"
+"\epoc32\release\gcce\urel\NovelVM.exe"-		"!:\sys\bin\NovelVM.exe"
+"\epoc32\data\z\resource\apps\NovelVM.rsc"-	"!:\resource\apps\NovelVM.rsc"
+"\epoc32\Data\Z\resource\apps\novelvm_loc.rsc"-	"!:\resource\apps\novelvm_loc.rsc"
+"\epoc32\data\Z\resource\APPS\novelvm.MBM"-	"!:\resource\apps\novelvm.MBM"
+"\epoc32\data\z\private\10003a3f\apps\novelvm_reg.rsc"-"!:\private\10003a3f\import\apps\novelvm_reg.rsc"
 
-"..\..\..\..\dists\pred.dic"-"c:\shared\scummvm\pred.dic"
+"..\..\..\..\dists\pred.dic"-"c:\shared\novelvm\pred.dic"
 
 ; Scummvm Documentation
-"..\..\..\..\COPYRIGHT"-"!:\resource\apps\scummvm\COPYRIGHT", FT, TC
-"..\..\..\..\COPYING"-"!:\resource\apps\scummvm\COPYING", FT, TC
-"..\README"-"!:\resource\apps\scummvm\SYMBIAN_README", FT, TC
-"..\..\..\..\AUTHORS"-"!:\resource\apps\scummvm\AUTHORS"
-"..\..\..\..\README"-"!:\resource\apps\scummvm\README"
-"..\..\..\..\NEWS"-"!:\resource\apps\scummvm\NEWS"
+"..\..\..\..\COPYRIGHT"-"!:\resource\apps\novelvm\COPYRIGHT", FT, TC
+"..\..\..\..\COPYING"-"!:\resource\apps\novelvm\COPYING", FT, TC
+"..\README"-"!:\resource\apps\novelvm\SYMBIAN_README", FT, TC
+"..\..\..\..\AUTHORS"-"!:\resource\apps\novelvm\AUTHORS"
+"..\..\..\..\README"-"!:\resource\apps\novelvm\README"
+"..\..\..\..\NEWS"-"!:\resource\apps\novelvm\NEWS"
 
 ; Scummvm help
-"..\help\ScummVM.hlp"-"!:\resource\help\ScummVM.hlp"
+"..\help\NovelVM.hlp"-"!:\resource\help\NovelVM.hlp"
 
 ; Common datafiles needed for some games
-"..\..\..\..\dists\engine-data\drascula.dat"-"c:\shared\scummvm\drascula.dat"
-"..\..\..\..\dists\engine-data\encoding.dat"-"c:\shared\scummvm\encoding.dat"
-"..\..\..\..\dists\engine-data\fonts.dat"-"c:\shared\scummvm\fonts.dat"
-"..\..\..\..\dists\engine-data\hadesch_translations.dat"-"c:\shared\scummvm\hadesch_translations.dat"
-"..\..\..\..\dists\engine-data\hugo.dat"-"c:\shared\scummvm\hugo.dat"
-"..\..\..\..\dists\engine-data\kyra.dat"-"c:\shared\scummvm\kyra.dat"
-"..\..\..\..\dists\engine-data\lure.dat"-"c:\shared\scummvm\lure.dat"
-"..\..\..\..\dists\engine-data\mort.dat"-"c:\shared\scummvm\mort.dat"
-"..\..\..\..\dists\engine-data\neverhood.dat"-"c:\shared\scummvm\neverhood.dat"
-"..\..\..\..\dists\engine-data\queen.tbl"-"c:\shared\scummvm\queen.tbl"
-"..\..\..\..\dists\engine-data\sky.cpt"-"c:\shared\scummvm\sky.cpt"
-"..\..\..\..\dists\engine-data\teenagent.dat"-"c:\shared\scummvm\teenagent.dat"
-"..\..\..\..\dists\engine-data\tony.dat"-"c:\shared\scummvm\tony.dat"
-"..\..\..\..\dists\engine-data\toon.dat"-"c:\shared\scummvm\toon.dat"
-"..\..\..\..\dists\engine-data\wintermute.zip"-"c:\shared\scummvm\wintermute.zip"
-"..\..\..\vkeybd\packs\vkeybd_default.zip"-"c:\shared\scummvm\vkeybd_default.zip"
-"..\..\..\vkeybd\packs\vkeybd_small.zip"-"c:\shared\scummvm\vkeybd_small.zip"
-"..\..\..\..\gui\themes\translations.dat"-"c:\shared\scummvm\translations.dat"
-"..\..\..\..\gui\themes\scummmodern.zip"-"c:\shared\scummvm\scummmodern.zip"
-"..\..\..\..\gui\themes\scummremastered.zip"-"c:\shared\scummvm\scummremastered.zip"
+"..\..\..\..\dists\engine-data\drascula.dat"-"c:\shared\novelvm\drascula.dat"
+"..\..\..\..\dists\engine-data\encoding.dat"-"c:\shared\novelvm\encoding.dat"
+"..\..\..\..\dists\engine-data\fonts.dat"-"c:\shared\novelvm\fonts.dat"
+"..\..\..\..\dists\engine-data\hadesch_translations.dat"-"c:\shared\novelvm\hadesch_translations.dat"
+"..\..\..\..\dists\engine-data\hugo.dat"-"c:\shared\novelvm\hugo.dat"
+"..\..\..\..\dists\engine-data\kyra.dat"-"c:\shared\novelvm\kyra.dat"
+"..\..\..\..\dists\engine-data\lure.dat"-"c:\shared\novelvm\lure.dat"
+"..\..\..\..\dists\engine-data\mort.dat"-"c:\shared\novelvm\mort.dat"
+"..\..\..\..\dists\engine-data\neverhood.dat"-"c:\shared\novelvm\neverhood.dat"
+"..\..\..\..\dists\engine-data\queen.tbl"-"c:\shared\novelvm\queen.tbl"
+"..\..\..\..\dists\engine-data\sky.cpt"-"c:\shared\novelvm\sky.cpt"
+"..\..\..\..\dists\engine-data\teenagent.dat"-"c:\shared\novelvm\teenagent.dat"
+"..\..\..\..\dists\engine-data\tony.dat"-"c:\shared\novelvm\tony.dat"
+"..\..\..\..\dists\engine-data\toon.dat"-"c:\shared\novelvm\toon.dat"
+"..\..\..\..\dists\engine-data\wintermute.zip"-"c:\shared\novelvm\wintermute.zip"
+"..\..\..\vkeybd\packs\vkeybd_default.zip"-"c:\shared\novelvm\vkeybd_default.zip"
+"..\..\..\vkeybd\packs\vkeybd_small.zip"-"c:\shared\novelvm\vkeybd_small.zip"
+"..\..\..\..\gui\themes\translations.dat"-"c:\shared\novelvm\translations.dat"
+"..\..\..\..\gui\themes\scummmodern.zip"-"c:\shared\novelvm\scummmodern.zip"
+"..\..\..\..\gui\themes\scummremastered.zip"-"c:\shared\novelvm\scummremastered.zip"
 
 ; Config/log files: 'empty' will automagically be removed on uninstall
-""-"c:\shared\scummvm\scummvm.ini",FILENULL
-""-"c:\shared\scummvm\scummvm.stdout.txt",FILENULL
-""-"c:\shared\scummvm\scummvm.stderr.txt",FILENULL
-""-"c:\shared\scummvm\sdl.ini",FILENULL
+""-"c:\shared\novelvm\novelvm.ini",FILENULL
+""-"c:\shared\novelvm\novelvm.stdout.txt",FILENULL
+""-"c:\shared\novelvm\novelvm.stderr.txt",FILENULL
+""-"c:\shared\novelvm\sdl.ini",FILENULL
 
-; This install layout will let you upgrade to newer versions wihout loss of scummvm.ini.
+; This install layout will let you upgrade to newer versions wihout loss of novelvm.ini.
 ; It will remove the config file, std***.txt files & dirs on uninstall.

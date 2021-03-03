@@ -6,5 +6,5 @@ echo Quick script to make building all the time less painful.
 
 cd ../../../..
 
-echo Cleaning ScummVM for the OpenPandora.
+echo Cleaning NovelVM for the OpenPandora.
 make clean

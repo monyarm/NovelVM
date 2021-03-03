@@ -1,4 +1,4 @@
-This directory contains various tools which aid the ScummVM developers
+This directory contains various tools which aid the NovelVM developers
 in their work. They are not intended for the general audience, and are
 only sparsely, if at all, documented. Use at your own risk. You have
 been warned :-).
@@ -18,13 +18,13 @@ convbdf
 -------
     Tool which converts BDF fonts (BDF = Bitmap Distribution Format) to
     C++ source. That source, after being slightly tweaked, can be used to
-    replace or add fonts for the ScummVM GUI.
+    replace or add fonts for the NovelVM GUI.
 
     There is also a ttf2bdf tool which allows you to convert TrueType
     fonts to BDF.
 
     Hint from SumthinWicked: If you use ttf2bdf, it'll convert all glyphs
-    to bitmaps, but ScummVM only needs some of them. So you may want to
+    to bitmaps, but NovelVM only needs some of them. So you may want to
     do your conversion like this:
       ttf2bdf -p SIZE -l "32_160" -o FONT.bdf FONT.ttf
     where SIZE is replaced by the desired font height.
@@ -48,7 +48,7 @@ create_drascula (sev)
 create_encodings (phcoder)
 --------------
    Transforms CJK tables from unicode consortium format to the format
-   used by ScummVM
+   used by NovelVM
 
 
 create_hugo (Strangerke)
@@ -106,24 +106,24 @@ create_toon (Strangerke)
 create_translations (criezy)
 -------------------
     Creates the translations.dat file from po files given as arguments.
-    The generated files is used by ScummVM to propose a translated GUI.
+    The generated files is used by NovelVM to propose a translated GUI.
 
 
 credits.pl
 ----------
     This perl script contains credits to the many people who helped with
-    ScummVM, and it is used to create the credits lists that occur in
+    NovelVM, and it is used to create the credits lists that occur in
     various places, including the AUTHORS file, the about dialog, and our
     web site.
 
 
-dist-scummvm.sh
+dist-novelvm.sh
 ---------------
     This shell script is used to create source release archives for
-    ScummVM releases. After tagging a branch for release, you can invoke
+    NovelVM releases. After tagging a branch for release, you can invoke
     it like this:
 
-      ./dist-scummvm.sh scummvm 0.7.1
+      ./dist-novelvm.sh novelvm 0.7.1
 
     Note #1: This creates .zip, .tar.bz2 and .tar.gz archives in /tmp by
     default. To do that it performs a "cvs export" in /tmp first. If you

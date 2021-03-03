@@ -1,4 +1,4 @@
-WII_EXE_STRIPPED := scummvm_stripped$(EXEEXT)
+WII_EXE_STRIPPED := novelvm_stripped$(EXEEXT)
 
 all: $(WII_EXE_STRIPPED)
 
@@ -24,33 +24,33 @@ wiidebug:
 
 # target to create a Wii snapshot
 wiidist: all
-	$(MKDIR) wiidist/scummvm
+	$(MKDIR) wiidist/novelvm
 ifeq ($(GAMECUBE),1)
-	$(DEVKITPPC)/bin/elf2dol $(EXECUTABLE) wiidist/scummvm/scummvm.dol
+	$(DEVKITPPC)/bin/elf2dol $(EXECUTABLE) wiidist/novelvm/novelvm.dol
 else
-	$(STRIP) $(EXECUTABLE) -o wiidist/scummvm/boot.elf
-	$(CP) $(srcdir)/dists/wii/icon.png wiidist/scummvm/
-	sed "s/@REVISION@/$(VER_REV)/;s/@TIMESTAMP@/`date +%Y%m%d%H%M%S`/" < $(srcdir)/dists/wii/meta.xml > wiidist/scummvm/meta.xml
+	$(STRIP) $(EXECUTABLE) -o wiidist/novelvm/boot.elf
+	$(CP) $(srcdir)/dists/wii/icon.png wiidist/novelvm/
+	sed "s/@REVISION@/$(VER_REV)/;s/@TIMESTAMP@/`date +%Y%m%d%H%M%S`/" < $(srcdir)/dists/wii/meta.xml > wiidist/novelvm/meta.xml
 endif
 ifeq ($(DYNAMIC_MODULES),1)
-	$(MKDIR) wiidist/scummvm/plugins
-	for i in $(PLUGINS); do $(STRIP) --strip-debug $$i -o wiidist/scummvm/plugins/`basename $$i`; done
+	$(MKDIR) wiidist/novelvm/plugins
+	for i in $(PLUGINS); do $(STRIP) --strip-debug $$i -o wiidist/novelvm/plugins/`basename $$i`; done
 endif
-	sed 's/$$/\r/' < $(srcdir)/dists/wii/READMII > wiidist/scummvm/READMII.txt
-	for i in $(DIST_FILES_DOCS); do sed 's/$$/\r/' < $$i > wiidist/scummvm/`basename $$i`.txt; done
-	$(CP) $(DIST_FILES_THEMES) wiidist/scummvm/
+	sed 's/$$/\r/' < $(srcdir)/dists/wii/READMII > wiidist/novelvm/READMII.txt
+	for i in $(DIST_FILES_DOCS); do sed 's/$$/\r/' < $$i > wiidist/novelvm/`basename $$i`.txt; done
+	$(CP) $(DIST_FILES_THEMES) wiidist/novelvm/
 ifneq ($(DIST_FILES_ENGINEDATA),)
-	$(CP) $(DIST_FILES_ENGINEDATA) wiidist/scummvm/
+	$(CP) $(DIST_FILES_ENGINEDATA) wiidist/novelvm/
 endif
 ifneq ($(DIST_FILES_NETWORKING),)
-	$(CP) $(DIST_FILES_NETWORKING) wiidist/scummvm/
+	$(CP) $(DIST_FILES_NETWORKING) wiidist/novelvm/
 endif
 ifneq ($(DIST_FILES_VKEYBD),)
-	$(CP) $(DIST_FILES_VKEYBD) wiidist/scummvm/
+	$(CP) $(DIST_FILES_VKEYBD) wiidist/novelvm/
 endif
 
 wiiloaddist: wiidist
-	cd wiidist && zip -9r scummvm.zip scummvm/
-	$(DEVKITPPC)/bin/wiiload wiidist/scummvm.zip
+	cd wiidist && zip -9r novelvm.zip novelvm/
+	$(DEVKITPPC)/bin/wiiload wiidist/novelvm.zip
 
 .PHONY: wiiclean wiiload geckoupload wiigdb wiidebug wiidist wiiloaddist

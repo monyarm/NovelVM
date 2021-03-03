@@ -261,7 +261,7 @@
 // If neither is possible, tough luck. Try to contact the team, maybe we can
 // come up with a solution, though I wouldn't hold my breath on it :-/.
 //
-#define SCUMMVM_USE_PRAGMA_PACK
+#define NOVELVM_USE_PRAGMA_PACK
 
 //
 // Determine the host endianess and whether memory alignment is required.
@@ -275,37 +275,37 @@
 		  defined(__PSP__) || \
 		  defined(__SYMBIAN32__)
 
-		#define SCUMM_LITTLE_ENDIAN
-		#define SCUMM_NEED_ALIGNMENT
+#define SCUMM_LITTLE_ENDIAN
+#define SCUMM_NEED_ALIGNMENT
 
-	#elif defined(_MSC_VER) || defined(__MINGW32__)
+#elif defined(_MSC_VER) || defined(__MINGW32__)
 
-		#define SCUMM_LITTLE_ENDIAN
+#define SCUMM_LITTLE_ENDIAN
 
-	#elif defined(__MORPHOS__) || defined(__amigaos4__) || defined(__N64__) || defined(__WII__)
+#elif defined(__MORPHOS__) || defined(__amigaos4__) || defined(__N64__) || defined(__WII__)
 
-		#define SCUMM_BIG_ENDIAN
-		#define SCUMM_NEED_ALIGNMENT
+#define SCUMM_BIG_ENDIAN
+#define SCUMM_NEED_ALIGNMENT
 
-	#elif defined(SDL_BACKEND)
-		// On SDL based ports, we try to use SDL_BYTEORDER to determine the
-		// endianess. We explicitly do this as the *last* thing we try, so that
-		// platform specific settings have precedence.
-		#include <SDL_endian.h>
+#elif defined(SDL_BACKEND)
+// On SDL based ports, we try to use SDL_BYTEORDER to determine the
+// endianess. We explicitly do this as the *last* thing we try, so that
+// platform specific settings have precedence.
+#include <SDL_endian.h>
 
-		#if SDL_BYTEORDER == SDL_LIL_ENDIAN
-		#define SCUMM_LITTLE_ENDIAN
-		#elif SDL_BYTEORDER == SDL_BIG_ENDIAN
-		#define SCUMM_BIG_ENDIAN
-		#else
-		#error Neither SDL_BIG_ENDIAN nor SDL_LIL_ENDIAN is set.
-		#endif
+#if SDL_BYTEORDER == SDL_LIL_ENDIAN
+#define SCUMM_LITTLE_ENDIAN
+#elif SDL_BYTEORDER == SDL_BIG_ENDIAN
+#define SCUMM_BIG_ENDIAN
+#else
+#error Neither SDL_BIG_ENDIAN nor SDL_LIL_ENDIAN is set.
+#endif
 
-	#else
+#else
 
-		#error No system type defined, host endianess unknown.
+#error No system type defined, host endianess unknown.
 
-	#endif
+#endif
 #endif
 
 //
@@ -314,17 +314,17 @@
 //
 #if defined(DINGUX)
 
-	// Very BAD hack following, used to avoid triggering an assert in uClibc dingux library
-	// "toupper" when pressing keyboard function keys.
-	#undef toupper
-	#define toupper(c) (((c & 0xFF) >= 97) && ((c & 0xFF) <= 122) ? ((c & 0xFF) - 32) : (c & 0xFF))
+// Very BAD hack following, used to avoid triggering an assert in uClibc dingux library
+// "toupper" when pressing keyboard function keys.
+#undef toupper
+#define toupper(c) (((c & 0xFF) >= 97) && ((c & 0xFF) <= 122) ? ((c & 0xFF) - 32) : (c & 0xFF))
 
 #elif defined(__PSP__)
 
-	#include <malloc.h>
-	#include "backends/platform/psp/memory.h"
+#include <malloc.h>
+#include "backends/platform/psp/memory.h"
 
-	/* to make an efficient, inlined memcpy implementation */
+/* to make an efficient, inlined memcpy implementation */
 	#define memcpy(dst, src, size)   psp_memcpy(dst, src, size)
 
 #endif
@@ -428,19 +428,19 @@
 
 //
 // Typedef our system types unless they have already been defined by config.h,
-// or SCUMMVM_DONT_DEFINE_TYPES is set.
+// or NOVELVM_DONT_DEFINE_TYPES is set.
 //
-#if !defined(HAVE_CONFIG_H) && !defined(SCUMMVM_DONT_DEFINE_TYPES)
-	typedef unsigned char byte;
-	typedef unsigned char uint8;
-	typedef signed char int8;
-	typedef unsigned short uint16;
-	typedef signed short int16;
-	typedef unsigned int uint32;
-	typedef signed int int32;
-	typedef unsigned int uint;
-	typedef signed long long int64;
-	typedef unsigned long long uint64;
+#if !defined(HAVE_CONFIG_H) && !defined(NOVELVM_DONT_DEFINE_TYPES)
+typedef unsigned char byte;
+typedef unsigned char uint8;
+typedef signed char int8;
+typedef unsigned short uint16;
+typedef signed short int16;
+typedef unsigned int uint32;
+typedef signed int int32;
+typedef unsigned int uint;
+typedef signed long long int64;
+typedef unsigned long long uint64;
 #endif
 
 //

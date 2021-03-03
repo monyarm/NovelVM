@@ -33,7 +33,7 @@
 void OSystem_SDL_SamsungTV::initBackend() {
 	// Create the savefile manager
 	if (_savefileManager == 0) {
-		_savefileManager = new DefaultSaveFileManager("/mtd_wiselink/scummvm savegames");
+		_savefileManager = new DefaultSaveFileManager("/mtd_wiselink/novelvm savegames");
 	}
 
 	// Create the events manager
@@ -55,7 +55,7 @@ void OSystem_SDL_SamsungTV::fatalError() {
 }
 
 Common::String OSystem_SDL_SamsungTV::getDefaultConfigFileName() {
-	return "/mtd_rwarea/.scummvmrc";
+	return "/mtd_rwarea/.novelvmrc";
 }
 
 Common::String OSystem_SDL_SamsungTV::getDefaultLogFileName() {
@@ -63,7 +63,7 @@ Common::String OSystem_SDL_SamsungTV::getDefaultLogFileName() {
 		return Common::String();
 	}
 
-	return "/mtd_ram/scummvm.log";
+	return "/mtd_ram/novelvm.log";
 }
 
 bool OSystem_SDL_SamsungTV::hasFeature(Feature f) {

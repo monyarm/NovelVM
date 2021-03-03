@@ -3,7 +3,7 @@ export DOXYGEN_OUTPUT_DIRECTORY
 
 doxygen:
 	@echo "Generating reference documentation in $(srcdir)/doc/doxygen/${DOXYGEN_OUTPUT_DIRECTORY}..."
-	@cd $(srcdir)/doc/doxygen ; doxygen scummvm.doxyfile
+	@cd $(srcdir)/doc/doxygen ; doxygen novelvm.doxyfile
 
 clean-doxygen:
 	rm -rf $(srcdir)/doc/doxygen/html

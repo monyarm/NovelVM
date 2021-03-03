@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleDisplayName</key>
-	<string>ScummVM</string>
+	<string>NovelVM</string>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
@@ -21,11 +21,11 @@
 		</dict>
 	</array>
 	<key>CFBundleExecutable</key>
-	<string>scummvm</string>
+	<string>novelvm</string>
 	<key>CFBundleGetInfoString</key>
-	<string>@VERSION@, Copyright 2001-2021 The ScummVM Team</string>
+	<string>@VERSION@, Copyright 2001-2021 The NovelVM Team</string>
 	<key>CFBundleIconFile</key>
-	<string>scummvm.icns</string>
+	<string>novelvm.icns</string>
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
@@ -55,7 +55,7 @@
 		<string>uk</string>
 	</array>
 	<key>CFBundleName</key>
-	<string>ScummVM</string>
+	<string>NovelVM</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -63,19 +63,19 @@
 	<key>CFBundleVersion</key>
 	<string>@VERSION@</string>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright 2001-2021 The ScummVM Team</string>
+	<string>Copyright 2001-2021 The NovelVM Team</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 	<key>SUFeedURL</key>
-	<string>https://www.scummvm.org/appcasts/macosx/release.xml</string>
+	<string>https://www.novelvm.org/appcasts/macosx/release.xml</string>
 	<key>SUPublicEDKey</key>
 	<string>faYfM+DGPgJCrRzpxSHoFD0rzHa6ZnnEXuzz2E7ZRUk=</string>
 	<key>NSDockTilePlugIn</key>
-	<string>scummvm.docktileplugin</string>
+	<string>novelvm.docktileplugin</string>
 	<key>NSRequiresAquaSystemAppearance</key>
 	<false/>
 	<key>NSDocumentsFolderUsageDescription</key>
-	<string>ScummVM saves and loads savegames in the Documents folder by default.</string>
+	<string>NovelVM saves and loads savegames in the Documents folder by default.</string>
 	<key>SUPublicDSAKeyFile</key>
 	<string>dsa_pub.pem</string>
 </dict>

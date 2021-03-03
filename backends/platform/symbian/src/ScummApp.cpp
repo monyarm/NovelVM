@@ -94,7 +94,7 @@ CScummApp::~CScummApp() {
 }
 
 #if defined(UIQ3)
-#include <scummvm.rsg>
+#include <novelvm.rsg>
 /**
  * Returns the resource id to be used to declare the views supported by this UIQ3 app
  * @return TInt, resource id
@@ -114,6 +114,6 @@ TUid CScummApp::AppDllUid() const {
 
 void CScummApp::GetDataFolder(TDes& aDataFolder)
 {
-	aDataFolder = _L("ScummVM");
+	aDataFolder = _L("NovelVM");
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////

@@ -112,20 +112,21 @@ bool OSystem_POSIX::hasFeature(Feature f) {
 	return OSystem_SDL::hasFeature(f);
 }
 
+
 Common::String OSystem_POSIX::getDefaultConfigFileName() {
-	const Common::String baseConfigName = "scummvm.ini";
+	const Common::String baseConfigName = "novelvm.ini";
 
 	Common::String configFile;
 
 	Common::String prefix;
 
-	// Our old configuration file path for POSIX systems was ~/.scummvmrc.
+	// Our old configuration file path for POSIX systems was ~/.novelvmrc.
 	// If that file exists, we still use it.
 	const char *envVar = getenv("HOME");
 	if (envVar && *envVar) {
 		configFile = envVar;
 		configFile += '/';
-		configFile += ".scummvmrc";
+		configFile += ".novelvmrc";
 
 		if (configFile.size() < MAXPATHLEN) {
 			struct stat sb;
@@ -153,8 +154,8 @@ Common::String OSystem_POSIX::getDefaultConfigFileName() {
 		prefix = envVar;
 	}
 
-	if (!prefix.empty() && Posix::assureDirectoryExists("scummvm", prefix.c_str())) {
-		prefix += "/scummvm";
+	if (!prefix.empty() && Posix::assureDirectoryExists("novelvm", prefix.c_str())) {
+		prefix += "/novelvm";
 	}
 
 	if (!prefix.empty() && (prefix.size() + 1 + baseConfigName.size()) < MAXPATHLEN) {
@@ -243,7 +244,7 @@ Common::String OSystem_POSIX::getScreenshotsPath() {
 		return path;
 	}
 
-	// Otherwise, the default screenshots path is the "ScummVM Screenshots"
+	// Otherwise, the default screenshots path is the "NovelVM Screenshots"
 	// directory in the XDG "Pictures" user directory, as defined in the
 	// xdg-user-dirs spec: https://www.freedesktop.org/wiki/Software/xdg-user-dirs/
 	Common::String picturesPath = getXdgUserDir("PICTURES");
@@ -255,7 +256,7 @@ Common::String OSystem_POSIX::getScreenshotsPath() {
 		picturesPath += "/";
 	}
 
-	static const char *SCREENSHOTS_DIR_NAME = "ScummVM Screenshots";
+	static const char *SCREENSHOTS_DIR_NAME = "NovelVM Screenshots";
 	if (!Posix::assureDirectoryExists(SCREENSHOTS_DIR_NAME, picturesPath.c_str())) {
 		return "";
 	}
@@ -297,13 +298,13 @@ Common::String OSystem_POSIX::getDefaultLogFileName() {
 		logFile = ".cache/";
 	}
 
-	logFile += "scummvm/logs";
+	logFile += "novelvm/logs";
 
 	if (!Posix::assureDirectoryExists(logFile, prefix)) {
 		return Common::String();
 	}
 
-	return Common::String::format("%s/%s/scummvm.log", prefix, logFile.c_str());
+	return Common::String::format("%s/%s/novelvm.log", prefix, logFile.c_str());
 }
 
 bool OSystem_POSIX::displayLogFile() {
@@ -311,7 +312,7 @@ bool OSystem_POSIX::displayLogFile() {
 		return false;
 
 	// FIXME: This may not work perfectly when in fullscreen mode.
-	// On my system it drops from fullscreen without ScummVM noticing,
+	// On my system it drops from fullscreen without NovelVM noticing,
 	// so the next Alt-Enter does nothing, going from windowed to windowed.
 	// (wjp, 20110604)
 
@@ -402,10 +403,10 @@ bool OSystem_POSIX::launchBrowser(const Common::String &client, const Common::St
 #ifdef HAS_POSIX_SPAWN
 	pid_t pid;
 	const char *argv[] = {
-		client.c_str(),
-		url.c_str(),
-		NULL,
-		NULL
+	    client.c_str(),
+	    url.c_str(),
+	    NULL,
+	    NULL
 	};
 	if (client == "kfmclient") {
 		argv[2] = argv[1];

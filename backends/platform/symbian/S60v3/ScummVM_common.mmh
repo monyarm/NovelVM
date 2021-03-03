@@ -21,7 +21,7 @@
  *
  */
 
-START BITMAP    ScummVM.mbm
+START BITMAP    NovelVM.mbm
 TARGETPATH              \Resource\Apps
 SOURCEPATH              ..\res
 // Source Color-depth Source-bitmap-list
@@ -39,7 +39,7 @@ CAPABILITY LocalServices ReadUserData
 
 
 // *** Static Libraries
-STATICLIBRARY	scummvm_base.lib
+STATICLIBRARY	novelvm_base.lib
 STATICLIBRARY	liba52.lib
 STATICLIBRARY	libFAAD2.lib
 STATICLIBRARY	libflacdec.lib

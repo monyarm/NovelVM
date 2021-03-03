@@ -5,4 +5,4 @@ if [ -z "$DOXYGEN_OUTPUT_DIRECTORY" ] ; then
 fi
 echo "Generating reference documentation in ${DOXYGEN_OUTPUT_DIRECTORY}..."
 cd ${DOX_DIR}
-doxygen scummvm.doxyfile
+doxygen novelvm.doxyfile

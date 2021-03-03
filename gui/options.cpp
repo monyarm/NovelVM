@@ -2061,10 +2061,10 @@ void GlobalOptionsDialog::addPathsControls(GuiObject *boss, const Common::String
 	_themePathClearButton = addClearButton(boss, prefix + "ThemePathClearButton", kThemePathClearCmd);
 
 	if (!lowres)
-		new ButtonWidget(boss, prefix + "ExtraButton", _("Extra Path:"), _("Specifies path to additional data used by all games or ScummVM"), kChooseExtraDirCmd);
+		new ButtonWidget(boss, prefix + "ExtraButton", _("Extra Path:"), _("Specifies path to additional data used by all games or NovelVM"), kChooseExtraDirCmd);
 	else
-		new ButtonWidget(boss, prefix + "ExtraButton", _c("Extra Path:", "lowres"), _("Specifies path to additional data used by all games or ScummVM"), kChooseExtraDirCmd);
-	_extraPath = new StaticTextWidget(boss, prefix + "ExtraPath", _c("None", "path"), _("Specifies path to additional data used by all games or ScummVM"));
+		new ButtonWidget(boss, prefix + "ExtraButton", _c("Extra Path:", "lowres"), _("Specifies path to additional data used by all games or NovelVM"), kChooseExtraDirCmd);
+	_extraPath = new StaticTextWidget(boss, prefix + "ExtraPath", _c("None", "path"), _("Specifies path to additional data used by all games or NovelVM"));
 
 	_extraPathClearButton = addClearButton(boss, prefix + "ExtraPathClearButton", kExtraPathClearCmd);
 
@@ -2108,17 +2108,17 @@ void GlobalOptionsDialog::addMiscControls(GuiObject *boss, const Common::String 
 
 	if (!g_system->hasFeature(OSystem::kFeatureNoQuit)) {
 		_guiReturnToLauncherAtExit = new CheckboxWidget(boss, prefix + "ReturnToLauncherAtExit",
-			_("Always return to the launcher when leaving a game"),
-			_("Always return to the launcher when leaving a game instead of closing ScummVM.")
-		);
+		                                                _("Always return to the launcher when leaving a game"),
+		                                                _("Always return to the launcher when leaving a game instead of closing NovelVM.")
+														);
 
 		_guiReturnToLauncherAtExit->setState(ConfMan.getBool("gui_return_to_launcher_at_exit", _domain));
 	}
 
 	_guiConfirmExit = new CheckboxWidget(boss, prefix + "ConfirmExit",
-		_("Ask for confirmation on exit"),
-		_("Ask for permission when closing ScummVM or leaving a game.")
-	);
+	                                     _("Ask for confirmation on exit"),
+	                                     _("Ask for permission when closing NovelVM or leaving a game.")
+										 );
 
 	_guiConfirmExit->setState(ConfMan.getBool("confirm_exit", _domain));
 
@@ -2129,7 +2129,7 @@ void GlobalOptionsDialog::addMiscControls(GuiObject *boss, const Common::String 
 	// TODO: joystick setting
 
 #ifdef USE_TRANSLATION
-	_guiLanguagePopUpDesc = new StaticTextWidget(boss, prefix + "GuiLanguagePopupDesc", _("GUI language:"), _("Language of ScummVM GUI"));
+	_guiLanguagePopUpDesc = new StaticTextWidget(boss, prefix + "GuiLanguagePopupDesc", _("GUI language:"), _("Language of NovelVM GUI"));
 	_guiLanguagePopUp = new PopUpWidget(boss, prefix + "GuiLanguagePopup");
 #ifdef USE_DETECTLANG
 	_guiLanguagePopUp->appendEntry(_("<default>"), Common::kTranslationAutodetectId);
@@ -2155,11 +2155,10 @@ void GlobalOptionsDialog::addMiscControls(GuiObject *boss, const Common::String 
 #endif // USE_DETECTLANG
 
 	_guiLanguageUseGameLanguageCheckbox = new CheckboxWidget(boss, prefix + "GuiLanguageUseGameLanguage",
-			_("Switch the ScummVM GUI language to the game language"),
-			_("When starting a game, change the ScummVM GUI language to the game language. "
-			"That way, if a game uses the ScummVM save and load dialogs, they are "
-			"in the same language as the game.")
-	);
+	                                                         _("Switch the NovelVM GUI language to the game language"),
+	                                                         _("When starting a game, change the NovelVM GUI language to the game language. "
+	                                                           "That way, if a game uses the NovelVM save and load dialogs, they are "
+	                                                           "in the same language as the game."));
 
 	if (ConfMan.hasKey("gui_use_game_language")) {
 		_guiLanguageUseGameLanguageCheckbox->setState(ConfMan.getBool("gui_use_game_language", _domain));
@@ -2168,15 +2167,14 @@ void GlobalOptionsDialog::addMiscControls(GuiObject *boss, const Common::String 
 
 	if (g_system->hasFeature(OSystem::kFeatureSystemBrowserDialog)) {
 		_useSystemDialogsCheckbox = new CheckboxWidget(boss, prefix + "UseSystemDialogs",
-			_("Use native system file browser"),
-			_("Use the native system file browser instead of the ScummVM one to select a file or directory.")
-		);
+		                                               _("Use native system file browser"),
+		                                               _("Use the native system file browser instead of the NovelVM one to select a file or directory."));
 
 		_useSystemDialogsCheckbox->setState(ConfMan.getBool("gui_browser_native", _domain));
 	}
 
 #ifdef USE_UPDATES
-	_updatesPopUpDesc = new StaticTextWidget(boss, prefix + "UpdatesPopupDesc", _("Update check:"), _("How often to check ScummVM updates"));
+	_updatesPopUpDesc = new StaticTextWidget(boss, prefix + "UpdatesPopupDesc", _("Update check:"), _("How often to check NovelVM updates"));
 	_updatesPopUp = new PopUpWidget(boss, prefix + "UpdatesPopup");
 
 	const int *vals = Common::UpdateManager::getUpdateIntervals();
@@ -2211,7 +2209,7 @@ void GlobalOptionsDialog::addCloudControls(GuiObject *boss, const Common::String
 	_storageUsernameDesc = new StaticTextWidget(boss, prefix + "StorageUsernameDesc", _("Username:"), _("Username used by this storage"));
 	_storageUsername = new StaticTextWidget(boss, prefix + "StorageUsernameLabel", _("<none>"), Common::U32String(), ThemeEngine::kFontStyleNormal);
 
-	_storageUsedSpaceDesc = new StaticTextWidget(boss, prefix + "StorageUsedSpaceDesc", _("Used space:"), _("Space used by ScummVM's saved games on this storage"));
+	_storageUsedSpaceDesc = new StaticTextWidget(boss, prefix + "StorageUsedSpaceDesc", _("Used space:"), _("Space used by NovelVM's saved games on this storage"));
 	_storageUsedSpace = new StaticTextWidget(boss, prefix + "StorageUsedSpaceLabel", Common::U32String("0 bytes"), Common::U32String(), ThemeEngine::kFontStyleNormal);
 
 	_storageLastSyncDesc = new StaticTextWidget(boss, prefix + "StorageLastSyncDesc", _("Last sync:"), _("When was the last time saved games were synced with this storage"));
@@ -2223,9 +2221,9 @@ void GlobalOptionsDialog::addCloudControls(GuiObject *boss, const Common::String
 	_storageSyncSavesButton = new ButtonWidget(boss, prefix + "SyncSavesButton", _("Sync now"), _("Start saved games sync"), kSyncSavesStorageCmd);
 
 	if (lowres)
-		_storageDownloadHint = new StaticTextWidget(boss, prefix + "StorageDownloadHint", _c("You can download game files from your cloud ScummVM folder:", "lowres"));
+		_storageDownloadHint = new StaticTextWidget(boss, prefix + "StorageDownloadHint", _c("You can download game files from your cloud NovelVM folder:", "lowres"));
 	else
-		_storageDownloadHint = new StaticTextWidget(boss, prefix + "StorageDownloadHint", _("You can download game files from your cloud ScummVM folder:"));
+		_storageDownloadHint = new StaticTextWidget(boss, prefix + "StorageDownloadHint", _("You can download game files from your cloud NovelVM folder:"));
 	_storageDownloadButton = new ButtonWidget(boss, prefix + "DownloadButton", _("Download game files"), _("Open downloads manager dialog"), kDownloadStorageCmd);
 
 	if (lowres)
@@ -2239,7 +2237,7 @@ void GlobalOptionsDialog::addCloudControls(GuiObject *boss, const Common::String
 	else
 		_storageWizardNotConnectedHint = new StaticTextWidget(boss, prefix + "StorageWizardNotConnectedHint", _("This storage is not connected yet! To connect,"));
 	_storageWizardOpenLinkHint = new StaticTextWidget(boss, prefix + "StorageWizardOpenLinkHint", _("1. Open this link:"));
-	_storageWizardLink = new ButtonWidget(boss, prefix + "StorageWizardLink", Common::U32String("https://cloud.scummvm.org/"), _("Open URL"), kOpenUrlStorageCmd);
+	_storageWizardLink = new ButtonWidget(boss, prefix + "StorageWizardLink", Common::U32String("https://cloud.novelvm.org/"), _("Open URL"), kOpenUrlStorageCmd);
 	if (lowres)
 		_storageWizardCodeHint = new StaticTextWidget(boss, prefix + "StorageWizardCodeHint", _c("2. Get the code and enter it here:", "lowres"));
 	else
@@ -2281,7 +2279,6 @@ void GlobalOptionsDialog::addNetworkControls(GuiObject *boss, const Common::Stri
 	}
 
 	reflowNetworkTabLayout();
-
 }
 #endif // USE_SDL_NET
 #endif // USE_CLOUD
@@ -2289,7 +2286,7 @@ void GlobalOptionsDialog::addNetworkControls(GuiObject *boss, const Common::Stri
 #ifdef USE_TTS
 void GlobalOptionsDialog::addAccessibilityControls(GuiObject *boss, const Common::String &prefix) {
 	_ttsCheckbox = new CheckboxWidget(boss, prefix + "TTSCheckbox",
-			_("Use Text to speech"), _("Will read text in gui on mouse over."));
+	                                  _("Use Text to speech"), _("Will read text in gui on mouse over."));
 	if (ConfMan.hasKey("tts_enabled"))
 		_ttsCheckbox->setState(ConfMan.getBool("tts_enabled", _domain));
 	else
@@ -2489,8 +2486,8 @@ void GlobalOptionsDialog::apply() {
 		ttsMan->setLanguage("en");
 #endif // USE_TRANSLATION
 
-		int volume = (ConfMan.getInt("speech_volume", "scummvm") * 100) / 256;
-		if (ConfMan.hasKey("mute", "scummvm") && ConfMan.getBool("mute", "scummvm"))
+		int volume = (ConfMan.getInt("speech_volume", "novelvm") * 100) / 256;
+		if (ConfMan.hasKey("mute", "novelvm") && ConfMan.getBool("mute", "novelvm"))
 			volume = 0;
 		ttsMan->setVolume(volume);
 		ConfMan.setBool("tts_enabled", _ttsCheckbox->getState(), _domain);
@@ -2628,7 +2625,7 @@ void GlobalOptionsDialog::handleCommand(CommandSender *sender, uint32 cmd, uint3
 		}
 		break;
 	}
-	case kChooseThemeCmd:
+	case kChooseThemeCmd: 
 	{
 		ThemeBrowser browser;
 		if (browser.runModal() > 0) {
@@ -2670,7 +2667,7 @@ void GlobalOptionsDialog::handleCommand(CommandSender *sender, uint32 cmd, uint3
 		break;
 	}
 	case kOpenUrlStorageCmd: {
-		Common::String url = "https://cloud.scummvm.org/";
+		Common::String url = "https://cloud.novelvm.org/";
 		switch (_selectedStorageIndex) {
 		case Cloud::kStorageDropboxId:
 			url += "dropbox?refresh_token=true";
@@ -2738,7 +2735,7 @@ void GlobalOptionsDialog::handleCommand(CommandSender *sender, uint32 cmd, uint3
 		if (_storageWizardConnectionStatusHint)
 			_storageWizardConnectionStatusHint->setLabel(_("Connecting..."));
 		CloudMan.connectStorage(
-			_selectedStorageIndex, code,
+		    _selectedStorageIndex, code,
 			new Common::Callback<GlobalOptionsDialog, Networking::ErrorResponse>(this, &GlobalOptionsDialog::storageConnectionCallback)
 		);
 		_connectingStorage = true;

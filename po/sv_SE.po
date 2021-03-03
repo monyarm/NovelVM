@@ -1,17 +1,17 @@
-# Swedish translation for ScummVM.
-# Copyright (C) 2011-2017 The ScummVM Team
-# This file is distributed under the same license as the ScummVM package.
+# Swedish translation for NovelVM.
+# Copyright (C) 2011-2017 The NovelVM Team
+# This file is distributed under the same license as the NovelVM package.
 # Hampus Flink <hampus.flink@gmail.com>, 2011.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: ScummVM 1.5.0svn\n"
-"Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
+"Project-Id-Version: NovelVM 1.5.0svn\n"
+"Report-Msgid-Bugs-To: novelvm-devel@lists.novelvm.org\n"
 "POT-Creation-Date: 2021-02-14 02:27+0000\n"
 "PO-Revision-Date: 2020-10-26 22:27+0000\n"
 "Last-Translator: anonymous <noreply@weblate.org>\n"
-"Language-Team: Swedish <https://translations.scummvm.org/projects/scummvm/"
-"scummvm/sv/>\n"
+"Language-Team: Swedish <https://translations.novelvm.org/projects/novelvm/"
+"novelvm/sv/>\n"
 "Language: sv_SE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -149,8 +149,8 @@ msgid "No"
 msgstr "Nej"
 
 #: gui/downloaddialog.cpp:137 gui/launcher.cpp:559
-msgid "ScummVM couldn't open the specified directory!"
-msgstr "ScummVM kunde inte öppna den valda katalogen!"
+msgid "NovelVM couldn't open the specified directory!"
+msgstr "NovelVM kunde inte öppna den valda katalogen!"
 
 #: gui/downloaddialog.cpp:147
 msgid ""
@@ -677,24 +677,24 @@ msgid "~Q~uit"
 msgstr "~A~vsluta"
 
 #: gui/launcher.cpp:140 backends/platform/sdl/macosx/appmenu_osx.mm:215
-msgid "Quit ScummVM"
-msgstr "Avsluta ScummVM"
+msgid "Quit NovelVM"
+msgstr "Avsluta NovelVM"
 
 #: gui/launcher.cpp:141
 msgid "A~b~out..."
 msgstr "O~m~..."
 
 #: gui/launcher.cpp:141 backends/platform/sdl/macosx/appmenu_osx.mm:209
-msgid "About ScummVM"
-msgstr "Om ScummVM"
+msgid "About NovelVM"
+msgstr "Om NovelVM"
 
 #: gui/launcher.cpp:142
 msgid "~O~ptions..."
 msgstr "~I~nställningar..."
 
 #: gui/launcher.cpp:142
-msgid "Change global ScummVM options"
-msgstr "Redigera globala ScummVM-inställningar"
+msgid "Change global NovelVM options"
+msgstr "Redigera globala NovelVM-inställningar"
 
 #: gui/launcher.cpp:144
 msgid "~S~tart"
@@ -811,13 +811,13 @@ msgid "This game does not support loading games from the launcher."
 msgstr "Det här spelet stöder inte laddning av spardata från launchern."
 
 #: gui/launcher.cpp:513
-msgid "ScummVM could not find any engine capable of running the selected game!"
+msgid "NovelVM could not find any engine capable of running the selected game!"
 msgstr ""
-"ScummVM kunde inte hitta en motor kapabel till att köra det valda spelet!"
+"NovelVM kunde inte hitta en motor kapabel till att köra det valda spelet!"
 
 #: gui/launcher.cpp:578
-msgid "ScummVM could not find any game in the specified directory!"
-msgstr "ScummVM kunde inte hitta några spel i den valda katalogen!"
+msgid "NovelVM could not find any game in the specified directory!"
+msgstr "NovelVM kunde inte hitta några spel i den valda katalogen!"
 
 #: gui/launcher.cpp:593
 msgid "Unknown variant"
@@ -1295,9 +1295,9 @@ msgid "Theme Path:"
 msgstr "Sökv. tema:"
 
 #: gui/options.cpp:2064 gui/options.cpp:2066 gui/options.cpp:2067
-msgid "Specifies path to additional data used by all games or ScummVM"
+msgid "Specifies path to additional data used by all games or NovelVM"
 msgstr ""
-"Bestämmer sökväg till andra data som används av alla spel eller ScummVM"
+"Bestämmer sökväg till andra data som används av alla spel eller NovelVM"
 
 #: gui/options.cpp:2073
 msgid "Plugins Path:"
@@ -1331,7 +1331,7 @@ msgstr ""
 
 #: gui/options.cpp:2112
 msgid ""
-"Always return to the launcher when leaving a game instead of closing ScummVM."
+"Always return to the launcher when leaving a game instead of closing NovelVM."
 msgstr ""
 
 #: gui/options.cpp:2119
@@ -1339,7 +1339,7 @@ msgid "Ask for confirmation on exit"
 msgstr ""
 
 #: gui/options.cpp:2120
-msgid "Ask for permission when closing ScummVM or leaving a game."
+msgid "Ask for permission when closing NovelVM or leaving a game."
 msgstr ""
 
 #: gui/options.cpp:2126
@@ -1351,21 +1351,21 @@ msgid "GUI language:"
 msgstr "GUI-språk:"
 
 #: gui/options.cpp:2132
-msgid "Language of ScummVM GUI"
-msgstr "Språk för ScummVM:s användargränssnitt"
+msgid "Language of NovelVM GUI"
+msgstr "Språk för NovelVM:s användargränssnitt"
 
 #: gui/options.cpp:2158
-msgid "Switch the ScummVM GUI language to the game language"
-msgstr "Ändra ScummVMs gränssnittsspråk till spelets språk"
+msgid "Switch the NovelVM GUI language to the game language"
+msgstr "Ändra NovelVMs gränssnittsspråk till spelets språk"
 
 #: gui/options.cpp:2159
 msgid ""
-"When starting a game, change the ScummVM GUI language to the game language. "
-"That way, if a game uses the ScummVM save and load dialogs, they are in the "
+"When starting a game, change the NovelVM GUI language to the game language. "
+"That way, if a game uses the NovelVM save and load dialogs, they are in the "
 "same language as the game."
 msgstr ""
-"Matcha ScummVM-gränssnittets språk med det pågående spelets språk, så att "
-"spara- och ladda-dialogrutor (i de spel som använder ScummVMs egna) får "
+"Matcha NovelVM-gränssnittets språk med det pågående spelets språk, så att "
+"spara- och ladda-dialogrutor (i de spel som använder NovelVMs egna) får "
 "samma språk som resten av spelet."
 
 #: gui/options.cpp:2171
@@ -1374,10 +1374,10 @@ msgstr "Använd systemets egen filhanterare"
 
 #: gui/options.cpp:2172
 msgid ""
-"Use the native system file browser instead of the ScummVM one to select a "
+"Use the native system file browser instead of the NovelVM one to select a "
 "file or directory."
 msgstr ""
-"Använd systemets eget filgränssnitt i stället för ScummVMs för att välja "
+"Använd systemets eget filgränssnitt i stället för NovelVMs för att välja "
 "filer och kataloger."
 
 #: gui/options.cpp:2179 gui/updates-dialog.cpp:86
@@ -1385,8 +1385,8 @@ msgid "Update check:"
 msgstr "Uppdateringskoll:"
 
 #: gui/options.cpp:2179
-msgid "How often to check ScummVM updates"
-msgstr "Hur ofta ScummVM kollar efter uppdateringar"
+msgid "How often to check NovelVM updates"
+msgstr "Hur ofta NovelVM kollar efter uppdateringar"
 
 #: gui/options.cpp:2190
 msgid "Check now"
@@ -1441,8 +1441,8 @@ msgid "Used space:"
 msgstr "Utnyttjat utrymme:"
 
 #: gui/options.cpp:2214
-msgid "Space used by ScummVM's saved games on this storage"
-msgstr "Utrymme som används av ScummVM:s sparade data på det här lagret"
+msgid "Space used by NovelVM's saved games on this storage"
+msgstr "Utrymme som används av NovelVM:s sparade data på det här lagret"
 
 #: gui/options.cpp:2217
 #, fuzzy
@@ -1481,12 +1481,12 @@ msgstr "Starta synkroniseringen av sparade spel"
 
 #: gui/options.cpp:2226
 msgctxt "lowres"
-msgid "You can download game files from your cloud ScummVM folder:"
-msgstr "Du kan ladda ner spelfiler från din ScummVM-katalog i molnet:"
+msgid "You can download game files from your cloud NovelVM folder:"
+msgstr "Du kan ladda ner spelfiler från din NovelVM-katalog i molnet:"
 
 #: gui/options.cpp:2228
-msgid "You can download game files from your cloud ScummVM folder:"
-msgstr "Du kan ladda ner spelfiler från din ScummVM-katalog i molnet:"
+msgid "You can download game files from your cloud NovelVM folder:"
+msgstr "Du kan ladda ner spelfiler från din NovelVM-katalog i molnet:"
 
 #: gui/options.cpp:2229
 msgid "Download game files"
@@ -1798,8 +1798,8 @@ msgid "Unknown Author"
 msgstr "Okänd skapare"
 
 #: gui/remotebrowser.cpp:129
-msgid "ScummVM could not access the directory!"
-msgstr "ScummVM kunde inte öppna katalogen!"
+msgid "NovelVM could not access the directory!"
+msgstr "NovelVM kunde inte öppna katalogen!"
 
 #: gui/saveload-dialog.cpp:52
 #, fuzzy
@@ -1940,11 +1940,11 @@ msgstr "Det gick inte att kopiera spelinformationen till urklippet!"
 
 #: gui/updates-dialog.cpp:49
 msgid ""
-"ScummVM now supports automatic check for updates\n"
+"NovelVM now supports automatic check for updates\n"
 "which requires access to the Internet. Would you\n"
 "like to enable this feature?"
 msgstr ""
-"ScummVM stöder nu automatisk uppdateringskontroll,\n"
+"NovelVM stöder nu automatisk uppdateringskontroll,\n"
 "vilket kräver en internetanslutning.\n"
 "Vill du aktivera den här funktionen?"
 
@@ -2281,12 +2281,12 @@ msgstr ""
 #: engines/engine.cpp:649
 msgid ""
 "WARNING: The game you are about to start is not yet fully supported by "
-"ScummVM. As such, it is likely to be unstable, and any saved game you make "
-"might not work in future versions of ScummVM."
+"NovelVM. As such, it is likely to be unstable, and any saved game you make "
+"might not work in future versions of NovelVM."
 msgstr ""
 "VARNING: Spelet du är på väg att starta stöds inte ännu till fullo av "
-"ScummVM. Därför är det troligtvis instabilt och om du skapar spardata kan de "
-"möjligtvis vara inkompatibla med framtida versioner av ScummVM."
+"NovelVM. Därför är det troligtvis instabilt och om du skapar spardata kan de "
+"möjligtvis vara inkompatibla med framtida versioner av NovelVM."
 
 #: engines/engine.cpp:652 engines/wintermute/wintermute.cpp:210
 msgid "Start anyway"
@@ -2317,12 +2317,12 @@ msgstr "Det går inte att spara just nu"
 msgid ""
 "The game in '%s' seems to be an unknown game variant.\n"
 "\n"
-"Please report the following data to the ScummVM team at %s along with the "
+"Please report the following data to the NovelVM team at %s along with the "
 "name of the game you tried to add and its version, language, etc.:"
 msgstr ""
 "Spelet i '%s' verkar vara en okänd variant.\n"
 "\n"
-"Rapportera informationen nedan till ScummVM-teamet på %s tillsammans med "
+"Rapportera informationen nedan till NovelVM-teamet på %s tillsammans med "
 "namnet på spelet du försökte lägga till och spelets version, språk, etc.:"
 
 #: engines/game.cpp:175
@@ -2492,7 +2492,7 @@ msgstr "Creative Music System-emulator"
 
 #: audio/softsynth/fluidsynth.cpp:178
 msgid ""
-"FluidSynth requires a 'soundfont' setting. Please specify it in ScummVM GUI "
+"FluidSynth requires a 'soundfont' setting. Please specify it in NovelVM GUI "
 "on MIDI tab. Music is off."
 msgstr ""
 "FluidSynth kräver en soundfont.  Ange en på MIDI-fliken i inställningar. "
@@ -3068,7 +3068,7 @@ msgstr "Kunde inte läsa filen!"
 #: backends/networking/sdl_net/handlers/filesajaxpagehandler.cpp:59
 msgid ""
 "The page is not available without the resources. Make sure file wwwroot.zip "
-"from ScummVM distribution is available in 'themepath'."
+"from NovelVM distribution is available in 'themepath'."
 msgstr ""
 "Sidan är inte tillgänglig utan resursfilerna. Kontrollera att den "
 "medföljande filen wwwroot.zip ligger i 'themepath'."
@@ -3127,8 +3127,8 @@ msgstr "Överkatalog"
 
 #: backends/networking/sdl_net/handlers/filespagehandler.cpp:218
 #, fuzzy
-msgid "ScummVM couldn't list the directory you specified."
-msgstr "ScummVM kunde inte öppna katalogen!"
+msgid "NovelVM couldn't list the directory you specified."
+msgstr "NovelVM kunde inte öppna katalogen!"
 
 #: backends/networking/sdl_net/handlers/filespagehandler.cpp:232
 msgid "Index of"
@@ -3399,8 +3399,8 @@ msgid "Click Mode"
 msgstr "Klickläge"
 
 #: backends/platform/sdl/macosx/appmenu_osx.mm:211
-msgid "Hide ScummVM"
-msgstr "Göm ScummVM"
+msgid "Hide NovelVM"
+msgstr "Göm NovelVM"
 
 #: backends/platform/sdl/macosx/appmenu_osx.mm:212
 msgid "Hide Others"
@@ -3432,7 +3432,7 @@ msgid "General Information"
 msgstr ""
 
 #: backends/platform/sdl/macosx/appmenu_osx.mm:231
-msgid "What's New in ScummVM"
+msgid "What's New in NovelVM"
 msgstr ""
 
 #: backends/platform/sdl/macosx/appmenu_osx.mm:233
@@ -3761,9 +3761,9 @@ msgstr "Använd originalskärmar för spara/ladda"
 #: engines/sherlock/detection.cpp:51 engines/toltecs/detection.cpp:214
 #: engines/ultima/detection.cpp:56 engines/ultima/ultima8/meta_engine.cpp:162
 #: engines/zvision/detection_tables.h:51
-msgid "Use the original save/load screens instead of the ScummVM ones"
+msgid "Use the original save/load screens instead of the NovelVM ones"
 msgstr ""
-"Använd originalskärmarna för ladda och spara istället för ScummVM:s egna"
+"Använd originalskärmarna för ladda och spara istället för NovelVM:s egna"
 
 #: engines/agi/detection.cpp:82
 msgid "Use an alternative palette"
@@ -3997,7 +3997,7 @@ msgstr ""
 #: engines/kyra/detection_tables.h:80
 msgid ""
 "The fan translator does not wish his translation to be incorporated into "
-"ScummVM."
+"NovelVM."
 msgstr ""
 
 #: engines/cge/detection.cpp:48 engines/cge/detection.cpp:54
@@ -4065,7 +4065,7 @@ msgstr "Funktioner kompilerade i:"
 msgid ""
 "Error: The file '%s' hasn't been extracted properly.\n"
 "Please refer to the wiki page\n"
-"https://wiki.scummvm.org/index.php?title=HOWTO-PlayStation_Videos for "
+"https://wiki.novelvm.org/index.php?title=HOWTO-PlayStation_Videos for "
 "details on how to properly extract the DTSPEECH.XA and *.STR files from your "
 "game disc."
 msgstr ""
@@ -4077,7 +4077,7 @@ msgid ""
 "You should only extract STR and XA files using the special method. The rest "
 "should be copied normally from your game CD.\n"
 "\n"
-" See https://wiki.scummvm.org/index.php?title=Datafiles#Blazing_Dragons"
+" See https://wiki.novelvm.org/index.php?title=Datafiles#Blazing_Dragons"
 msgstr ""
 
 #: engines/dragons/metaengine.cpp:140
@@ -4115,7 +4115,7 @@ msgstr " (Spel)"
 
 #: engines/drascula/saveload.cpp:47
 msgid ""
-"ScummVM found that you have old saved games for Drascula that should be "
+"NovelVM found that you have old saved games for Drascula that should be "
 "converted.\n"
 "The old saved game format is no longer supported, so you will not be able to "
 "load your games if you don't convert them.\n"
@@ -4123,7 +4123,7 @@ msgid ""
 "Press OK to convert them now, otherwise you will be asked again the next "
 "time you start the game.\n"
 msgstr ""
-"ScummVM upptäckte att du har gamla spardata för Drascula som borde "
+"NovelVM upptäckte att du har gamla spardata för Drascula som borde "
 "konverteras.\n"
 "Det gamla spardataformatet stöds inte längre, så du kommer inte kunna ladda "
 "dina data om du inte konverterar dem.\n"
@@ -4503,7 +4503,7 @@ msgstr ""
 
 #: engines/grim/detection.cpp:46
 msgid ""
-"Load an user patch. Please note that the ScummVM team doesn't provide "
+"Load an user patch. Please note that the NovelVM team doesn't provide "
 "support for using such patches."
 msgstr ""
 
@@ -4519,8 +4519,8 @@ msgstr ""
 #: engines/grim/grim.cpp:348
 #, c-format
 msgid ""
-"ScummVM found some problems with your game data files.\n"
-"Running ScummVM nevertheless may cause game bugs or even crashes.\n"
+"NovelVM found some problems with your game data files.\n"
+"Running NovelVM nevertheless may cause game bugs or even crashes.\n"
 "Do you still want to run %s?"
 msgstr ""
 
@@ -4579,7 +4579,7 @@ msgstr "videoläget kunde inte ändras"
 #, c-format
 msgid ""
 "The game data file %s may be corrupted.\n"
-"If you are sure it is not please provide the ScummVM team the following "
+"If you are sure it is not please provide the NovelVM team the following "
 "code, along with the file name, the language and a description of your game "
 "version (i.e. dvd-box or jewelcase):\n"
 "%s"
@@ -4590,13 +4590,13 @@ msgstr ""
 msgid ""
 "Could not open the file %s for checking.\n"
 "It may be missing or you may not have the rights to open it.\n"
-"Go to https://wiki.scummvm.org/index.php/Datafiles to see a list of the "
+"Go to https://wiki.novelvm.org/index.php/Datafiles to see a list of the "
 "needed files."
 msgstr ""
 
 #: engines/grim/md5checkdialog.cpp:42
 msgid ""
-"ScummVM will now verify the game data files, to make sure you have the best "
+"NovelVM will now verify the game data files, to make sure you have the best "
 "gaming experience.\n"
 "This may take a while, please wait.\n"
 "Successive runs will not check them again."
@@ -4611,14 +4611,14 @@ msgstr "Funktioner kompilerade i:"
 msgid ""
 "The original patch of Grim Fandango\n"
 "is missing. Please download it from\n"
-"https://scummvm.org/frs/extras/patches/gfupd101.exe\n"
+"https://novelvm.org/frs/extras/patches/gfupd101.exe\n"
 "and put it in the game data files directory"
 msgstr ""
 
 #: engines/grim/resource.cpp:105
 msgid ""
 "The original patch of Escape from Monkey Island is missing. \n"
-"Please download it from https://scummvm.org/frs/extras/patches/\n"
+"Please download it from https://novelvm.org/frs/extras/patches/\n"
 "and put it in the game data files directory.\n"
 "Pay attention to download the correct version according to the game's "
 "language"
@@ -4795,7 +4795,7 @@ msgstr "Funktioner kompilerade i:"
 #: engines/kyra/metaengine.cpp:127
 msgid ""
 "EOB II FM-TOWNS requires support of 16bit color modes which has not been "
-"activated in your ScummVM build"
+"activated in your NovelVM build"
 msgstr ""
 
 #: engines/kyra/metaengine.cpp:133
@@ -4930,14 +4930,14 @@ msgid ""
 "\n"
 "%s %s\n"
 "\n"
-"Do you wish to use this saved game file with ScummVM?\n"
+"Do you wish to use this saved game file with NovelVM?\n"
 "\n"
 msgstr ""
 "Följande originalspardata hittades i sökvägen för ditt spel:\n"
 "\n"
 "%s %s\n"
 "\n"
-"Vill du använda den här spardatan med ScummVM?\n"
+"Vill du använda den här spardatan med NovelVM?\n"
 "\n"
 "\n"
 
@@ -4954,12 +4954,12 @@ msgstr ""
 #, c-format
 msgid ""
 "%d original saved games have been successfully imported into\n"
-"ScummVM. If you want to manually import original saved game later you will\n"
-"need to open the ScummVM debug console and use the command "
+"NovelVM. If you want to manually import original saved game later you will\n"
+"need to open the NovelVM debug console and use the command "
 "'import_savefile'.\n"
 "\n"
 msgstr ""
-"%d originalspardata har importerats till ScummVM.\n"
+"%d originalspardata har importerats till NovelVM.\n"
 "Om du vill importera originalspardata manuellt måste du öppna "
 "debuggkonsolen\n"
 "och använda kommandot 'import_savefile'.\n"
@@ -5300,13 +5300,13 @@ msgid ""
 "At this point, the Riven Demo would\n"
 "ask if you would like to open a web browser\n"
 "to bring you to the Red Orb store to buy\n"
-"the game. ScummVM cannot do that and\n"
+"the game. NovelVM cannot do that and\n"
 "the site no longer exists."
 msgstr ""
 "Här skulle Riven-demon ha\n"
 "frågat om du vill öppna en webbläsare\n"
 "för att gå in på Red Orb-butiken och köpa\n"
-"spelet. Det här går inte i ScummVM, och\n"
+"spelet. Det här går inte i NovelVM, och\n"
 "sidan i fråga finns inte längre."
 
 #: engines/mutationofjb/util.cpp:33
@@ -5334,7 +5334,7 @@ msgid ""
 "patch.\n"
 "Please install the official update corresponding to your game's language.\n"
 "The updates can be downloaded from:\n"
-"https://www.scummvm.org/frs/extras/patches/"
+"https://www.novelvm.org/frs/extras/patches/"
 msgstr ""
 
 #: engines/myst3/myst3.cpp:1575 engines/pegasus/pegasus.cpp:701
@@ -5384,14 +5384,14 @@ msgstr "Sparar speldata..."
 
 #: engines/parallaction/saveload.cpp:269
 msgid ""
-"ScummVM found that you have old saved games for Nippon Safes that should be "
+"NovelVM found that you have old saved games for Nippon Safes that should be "
 "renamed.\n"
 "The old names are no longer supported, so you will not be able to load your "
 "games if you don't convert them.\n"
 "\n"
 "Press OK to convert them now, otherwise you will be asked next time.\n"
 msgstr ""
-"ScummVM upptäckte att du har gamla spardata för Nippon Safes som borde byta "
+"NovelVM upptäckte att du har gamla spardata för Nippon Safes som borde byta "
 "namn.\n"
 "De gamla filnamnen stöds inte längre, så du kommer inte kunna ladda dina "
 "data om du inte konverterar dem.\n"
@@ -5400,17 +5400,17 @@ msgstr ""
 "nästa gång.\n"
 
 #: engines/parallaction/saveload.cpp:316
-msgid "ScummVM successfully converted all your saved games."
-msgstr "ScummVM konverterade alla dina spardata."
+msgid "NovelVM successfully converted all your saved games."
+msgstr "NovelVM konverterade alla dina spardata."
 
 #: engines/parallaction/saveload.cpp:318
 msgid ""
-"ScummVM printed some warnings in your console window and can't guarantee all "
+"NovelVM printed some warnings in your console window and can't guarantee all "
 "your files have been converted.\n"
 "\n"
 "Please report to the team."
 msgstr ""
-"ScummVM skrev ut några varningar i ditt konsolfönster och kan inte garantera "
+"NovelVM skrev ut några varningar i ditt konsolfönster och kan inte garantera "
 "att alla dina filer har konverterats.\n"
 "\n"
 "Var god rapportera till teamet."
@@ -5687,16 +5687,16 @@ msgstr ""
 #: engines/sci/sci.cpp:389
 msgid ""
 "Subtitles are enabled, but subtitling in King's Quest 7 was unfinished and "
-"disabled in the release version of the game. ScummVM allows the subtitles to "
+"disabled in the release version of the game. NovelVM allows the subtitles to "
 "be re-enabled, but because they were removed from the original game, they do "
 "not always render properly or reflect the actual game speech. This is not a "
-"ScummVM bug -- it is a problem with the game's assets."
+"NovelVM bug -- it is a problem with the game's assets."
 msgstr ""
 "Undertexter är aktiverade, men undertexter var en inkomplett funktion i "
 "King's Quest 7 och var avaktiverade i den lanserade versionen av spelet. "
-"ScummVM tillåter återaktivering av undertexterna, men eftersom de togs bort "
+"NovelVM tillåter återaktivering av undertexterna, men eftersom de togs bort "
 "från det ursprungliga spelet kommer de inte alltid att visas ordentligt "
-"eller matcha talet. Det här är inte en bugg i ScummVM -- det är ett problem "
+"eller matcha talet. Det här är inte en bugg i NovelVM -- det är ett problem "
 "med spelfilerna."
 
 #: engines/sci/sci.cpp:413
@@ -5705,7 +5705,7 @@ msgid ""
 "market support for General MIDI for this game in their \"General MIDI Utility"
 "\". Please, apply this patch in order to enjoy MIDI music with this game. "
 "Once you have obtained it, you can unpack all of the included *.PAT files in "
-"your ScummVM extras folder and ScummVM will add the appropriate patch "
+"your NovelVM extras folder and NovelVM will add the appropriate patch "
 "automatically. Alternatively, you can follow the instructions in the READ.ME "
 "file included in the patch and rename the associated *.PAT file to 4.PAT and "
 "place it in the game folder. Without this patch, General MIDI music for this "
@@ -5714,8 +5714,8 @@ msgstr ""
 "Du har valt General MIDI som ljudenhet. Sierra tillhandahåller stöd för "
 "General MIDI för det här spelet via deras \"General MIDI Utility\". Använd "
 "den här patchen för att kunna lyssna på MIDI-musik i det här spelet. När du "
-"har verktyget kan du packa upp alla inkluderade *.PAT-filer i ScummVM:s "
-"\"Extras\"-mapp, så kommer ScummVM att tillämpa patchen automatiskt. "
+"har verktyget kan du packa upp alla inkluderade *.PAT-filer i NovelVM:s "
+"\"Extras\"-mapp, så kommer NovelVM att tillämpa patchen automatiskt. "
 "Alternativt kan du följa instruktionerna i READ.ME-filen som följer med "
 "patchen och döpa om den tillhörande *.PAT-filen till 4.PAT och placera den i "
 "spelets mapp. Utan den här patchen kommer General MIDI-musik att låta "
@@ -5725,13 +5725,13 @@ msgstr ""
 msgid ""
 "Your game is patched with a fan made script patch. Such patches have been "
 "reported to cause issues, as they modify game scripts extensively. The "
-"issues that these patches fix do not occur in ScummVM, so you are advised to "
+"issues that these patches fix do not occur in NovelVM, so you are advised to "
 "remove this patch from your game folder in order to avoid having unexpected "
 "errors and/or issues later on."
 msgstr ""
 "Ditt spel har patchats med en användartillverkad scriptpatch. Sådana patchar "
 "är kända för att orsaka problem, eftersom de modifierar spelets programkod. "
-"Problemen de här patcharna fixar inträffar inte i ScummVM, så det "
+"Problemen de här patcharna fixar inträffar inte i NovelVM, så det "
 "rekommenderas att du tar bort den här patchen från spelmappen för att "
 "undvika oväntade fel eller problem senare."
 
@@ -5758,14 +5758,14 @@ msgstr ""
 
 #: engines/sci/sci.cpp:884
 msgid ""
-"Characters saved inside ScummVM are shown automatically. Character files "
-"saved in the original interpreter need to be put inside ScummVM's saved "
+"Characters saved inside NovelVM are shown automatically. Character files "
+"saved in the original interpreter need to be put inside NovelVM's saved "
 "games directory and a prefix needs to be added depending on which game it "
 "was saved in: 'qfg1-' for Quest for Glory 1, 'qfg2-' for Quest for Glory 2. "
 "Example: 'qfg2-thief.sav'."
 msgstr ""
-"Rollpersoner som sparats inom ScummVM visas automatiskt. Rollpersonsfiler "
-"som sparats i det ursprungliga programmet måste placeras i ScummVM:s katalog "
+"Rollpersoner som sparats inom NovelVM visas automatiskt. Rollpersonsfiler "
+"som sparats i det ursprungliga programmet måste placeras i NovelVM:s katalog "
 "för sparade data och måste förses med ett prefix beroende på vilket spel det "
 "sparades i: 'qfg1-' för Quest for Glory 1, 'qfg2-' för Quest for Glory 2. "
 "Exempel: 'qfg2-thief.sav'."
@@ -6487,11 +6487,11 @@ msgstr ""
 msgid ""
 "Usually, Maniac Mansion would start now. But for that to work, the game "
 "files for Maniac Mansion have to be in the 'Maniac' directory inside the "
-"Tentacle game directory, and the game has to be added to ScummVM."
+"Tentacle game directory, and the game has to be added to NovelVM."
 msgstr ""
 "Vanligtvis hade Maniac Mansion startat nu, men för att det ska fungera måste "
 "Maniac Mansion-filerna placeras i 'Maniac'-katalogen i 'Tentacle'-katalogen. "
-"Spelet måste även läggas till i ScummVM."
+"Spelet måste även läggas till i NovelVM."
 
 #: engines/scumm/players/player_v3m.cpp:129
 msgid ""
@@ -6682,7 +6682,7 @@ msgstr "Kunde inte hitta spelmotorns datafil '%s'."
 #: engines/supernova/supernova.cpp:827
 msgid ""
 "Failed to save temporary game state. Make sure your save game directory is "
-"set in ScummVM and that you can write to it."
+"set in NovelVM and that you can write to it."
 msgstr ""
 
 #: engines/supernova/supernova.cpp:828
@@ -6706,13 +6706,13 @@ msgid "PSX stream cutscene '%s' cannot be played in paletted mode"
 msgstr "PSX-filmscenen '%s' kan inte visas i palettläget"
 
 #: engines/sword1/animation.cpp:553 engines/sword2/animation.cpp:449
-msgid "DXA cutscenes found but ScummVM has been built without zlib"
-msgstr "DXA filmscener hittades men ScummVM har byggts utan stöd för zlib"
+msgid "DXA cutscenes found but NovelVM has been built without zlib"
+msgstr "DXA filmscener hittades men NovelVM har byggts utan stöd för zlib"
 
 #: engines/sword1/animation.cpp:569 engines/sword2/animation.cpp:465
 msgid ""
-"MPEG-2 cutscenes found but ScummVM has been built without MPEG-2 support"
-msgstr "MPEG-2-filmscener hittades men ScummVM har byggts utan stöd för MPEG-2"
+"MPEG-2 cutscenes found but NovelVM has been built without MPEG-2 support"
+msgstr "MPEG-2-filmscener hittades men NovelVM har byggts utan stöd för MPEG-2"
 
 #: engines/sword1/animation.cpp:576 engines/sword2/animation.cpp:474
 #, c-format
@@ -6721,7 +6721,7 @@ msgstr "Filmscenen '%s' hittades ej"
 
 #: engines/sword1/control.cpp:887
 msgid ""
-"ScummVM found that you have old saved games for Broken Sword 1 that should "
+"NovelVM found that you have old saved games for Broken Sword 1 that should "
 "be converted.\n"
 "The old saved game format is no longer supported, so you will not be able to "
 "load your games if you don't convert them.\n"
@@ -6729,7 +6729,7 @@ msgid ""
 "Press OK to convert them now, otherwise you will be asked again the next "
 "time you start the game.\n"
 msgstr ""
-"ScummVM upptäckte att du har gamla spardata för Broken Sword 1 som borde "
+"NovelVM upptäckte att du har gamla spardata för Broken Sword 1 som borde "
 "konverteras.\n"
 "Det gamla spardataformatet stöds inte längre, så du kommer inte kunna ladda "
 "dina data om du inte konverterar dem.\n"
@@ -6760,8 +6760,8 @@ msgstr "Här slutar Broken Sword 1-demon"
 
 #: engines/sword2/animation.cpp:429
 msgid ""
-"PSX cutscenes found but ScummVM has been built without RGB color support"
-msgstr "PSX-filmscener hittades men ScummVM har byggts utan stöd för RGB-färg"
+"PSX cutscenes found but NovelVM has been built without RGB color support"
+msgstr "PSX-filmscener hittades men NovelVM har byggts utan stöd för RGB-färg"
 
 #: engines/sword2/detection.cpp:33
 msgid "Show object labels"
@@ -7238,7 +7238,7 @@ msgstr ""
 
 #: engines/wintermute/wintermute.cpp:209
 msgid ""
-"This game requires 3D capabilities that are out ScummVM scope. As such, it "
+"This game requires 3D capabilities that are out NovelVM scope. As such, it "
 "is likely to be unplayable totally or partially."
 msgstr ""
 
@@ -7933,7 +7933,7 @@ msgstr "Föredragen enhet:"
 #: engines/zvision/zvision.cpp:313
 msgid ""
 "Before playing this game, you'll need to copy the required fonts into "
-"ScummVM's extras directory, or into the game directory. On Windows, you'll "
+"NovelVM's extras directory, or into the game directory. On Windows, you'll "
 "need the following font files from the Windows font directory: Times New "
 "Roman, Century Schoolbook, Garamond, Courier New and Arial. Alternatively, "
 "you can download the Liberation Fonts or the GNU FreeFont package. You'll "
@@ -7942,8 +7942,8 @@ msgid ""
 "respectively."
 msgstr ""
 
-#~ msgid "ScummVM Main Menu"
-#~ msgstr "ScummVM huvudmeny"
+#~ msgid "NovelVM Main Menu"
+#~ msgstr "NovelVM huvudmeny"
 
 #, fuzzy
 #~ msgid "Controls"
@@ -8080,13 +8080,13 @@ msgstr ""
 #~ msgid ""
 #~ "Your game version appears to be unknown. If this is *NOT* a fan-modified\n"
 #~ "version (in particular, not a fan-made translation), please, report the\n"
-#~ "following data to the ScummVM team along with the name of the game you "
+#~ "following data to the NovelVM team along with the name of the game you "
 #~ "tried\n"
 #~ "to add and its version, language, etc.:\n"
 #~ msgstr ""
 #~ "Okänd version av spelet. Om det *INTE* är en spelarmodifierad\n"
 #~ "version (som en spelarskapad översättning) rapportera följande\n"
-#~ "data till ScummVM-teamet tillsammans med namnet på spelet du\n"
+#~ "data till NovelVM-teamet tillsammans med namnet på spelet du\n"
 #~ "försökte lägga till och vilken version och språk det har, osv.\n"
 
 #, fuzzy
@@ -8297,8 +8297,8 @@ msgstr ""
 #~ msgid "Pastes clipboard contents into fields"
 #~ msgstr "Klistrar in innehållet från urklipp i fälten"
 
-#~ msgid "You will be directed to ScummVM's page where"
-#~ msgstr "Du kommer att föras till ScummVM:s sida"
+#~ msgid "You will be directed to NovelVM's page where"
+#~ msgstr "Du kommer att föras till NovelVM:s sida"
 
 #~ msgid "you should allow it to access your storage."
 #~ msgstr "där du borde tillåta åtkomst till ditt lager."
@@ -8334,8 +8334,8 @@ msgstr ""
 #~ msgid "AdLib Emulator"
 #~ msgstr "AdLib-emulator"
 
-#~ msgid "Use the original save/load screens instead of the ScummVM interface"
-#~ msgstr "Använd originalskärmarna för spara/ladda istället för ScummVM:s"
+#~ msgid "Use the original save/load screens instead of the NovelVM interface"
+#~ msgstr "Använd originalskärmarna för spara/ladda istället för NovelVM:s"
 
 #~ msgid "(You can always enable it in the options dialog on the Misc tab)"
 #~ msgstr ""
@@ -8382,32 +8382,32 @@ msgstr ""
 
 #~ msgid ""
 #~ "Unable to find \"sky.cpt\" file!\n"
-#~ "Please download it from www.scummvm.org"
+#~ "Please download it from www.novelvm.org"
 #~ msgstr ""
 #~ "Kunde inte hitta \"sky.cpt\"-filen!\n"
-#~ "Var god ladda hem den från www.scummvm.org"
+#~ "Var god ladda hem den från www.novelvm.org"
 
 #~ msgid ""
 #~ "The \"sky.cpt\" file has an incorrect size.\n"
-#~ "Please (re)download it from www.scummvm.org"
+#~ "Please (re)download it from www.novelvm.org"
 #~ msgstr ""
 #~ "Filen \"sky.cpt\" har inkorrekt filstorlek.\n"
-#~ "Var god ladda hem den igen från www.scummvm.org"
+#~ "Var god ladda hem den igen från www.novelvm.org"
 
 #~ msgid ""
-#~ "You're missing the 'teenagent.dat' file. Get it from the ScummVM website"
+#~ "You're missing the 'teenagent.dat' file. Get it from the NovelVM website"
 #~ msgstr ""
-#~ "Du har inte 'teenagent.dat'-filen. Hämta den från ScummVM:s webbsida"
+#~ "Du har inte 'teenagent.dat'-filen. Hämta den från NovelVM:s webbsida"
 
 #, fuzzy
-#~ msgid "You're missing the 'toon.dat' file. Get it from the ScummVM website"
+#~ msgid "You're missing the 'toon.dat' file. Get it from the NovelVM website"
 #~ msgstr ""
-#~ "Du har inte 'teenagent.dat'-filen. Hämta den från ScummVM:s webbsida"
+#~ "Du har inte 'teenagent.dat'-filen. Hämta den från NovelVM:s webbsida"
 
 #, fuzzy
-#~ msgid "File 'toon.dat' is corrupt. Get it from the ScummVM website"
+#~ msgid "File 'toon.dat' is corrupt. Get it from the NovelVM website"
 #~ msgstr ""
-#~ "Du har inte 'teenagent.dat'-filen. Hämta den från ScummVM:s webbsida"
+#~ "Du har inte 'teenagent.dat'-filen. Hämta den från NovelVM:s webbsida"
 
 #~ msgid "Invalid save file name"
 #~ msgstr "Ogiltigt namn på sparfil"
@@ -8417,25 +8417,25 @@ msgstr ""
 
 #~ msgid ""
 #~ "Files button in-game shows original savegame dialog rather than the "
-#~ "ScummVM menu"
+#~ "NovelVM menu"
 #~ msgstr ""
 #~ "Filknappen i spelet visar originalskärmen för spara/ladda istället för "
-#~ "ScummVM-menyn"
+#~ "NovelVM-menyn"
 
 #~ msgid "The game in '%s' seems to be unknown."
 #~ msgstr "Spelet i '%s' verkar vara okänt."
 
 #~ msgid ""
-#~ "Please, report the following data to the ScummVM team along with name"
+#~ "Please, report the following data to the NovelVM team along with name"
 #~ msgstr ""
-#~ "Var god rapportera följande data till ScummVM-teamet tillsammans med "
+#~ "Var god rapportera följande data till NovelVM-teamet tillsammans med "
 #~ "namnet"
 
 #~ msgid "of the game you tried to add and its version/language/etc.:"
 #~ msgstr "på spelet du försökte lägga till och dess version/språk/etc.:"
 
-#~ msgid "You have to restart ScummVM before your changes will take effect."
-#~ msgstr "Du måste starta om ScummVM för att ändringarna ska få effekt."
+#~ msgid "You have to restart NovelVM before your changes will take effect."
+#~ msgstr "Du måste starta om NovelVM för att ändringarna ska få effekt."
 
 #~ msgid "OpenGL (No filtering)"
 #~ msgstr "OpenGL (ingen filtrering)"
@@ -8450,8 +8450,8 @@ msgstr ""
 #~ msgid "Enable undithering in EGA games"
 #~ msgstr "Aktivera anti-gitter i EGA-spel"
 
-#~ msgid "MPEG-2 cutscenes found but ScummVM has been built without MPEG-2"
-#~ msgstr "MPEG-2-filmscener hittades men ScummVM har byggts utan MPEG-2"
+#~ msgid "MPEG-2 cutscenes found but NovelVM has been built without MPEG-2"
+#~ msgstr "MPEG-2-filmscener hittades men NovelVM har byggts utan MPEG-2"
 
 #~ msgid ""
 #~ "Turns off General MIDI mapping for games with Roland MT-32 soundtrack"

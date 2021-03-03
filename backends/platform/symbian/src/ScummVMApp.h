@@ -30,10 +30,10 @@
 #include <coeview.h>
 #include <eikappui.h>
 
-class CScummVM : public CEikApplication {
+class CNovelVM : public CEikApplication {
 public:
-	CScummVM();
-	~CScummVM();
+	CNovelVM();
+	~CNovelVM();
 
 	CApaDocument *CreateDocumentL();
 	TUid AppDllUid() const;
@@ -42,17 +42,17 @@ public:
 
 #include <eikdoc.h>
 
-class CScummVMDoc : public CEikDocument {
+class CNovelVMDoc : public CEikDocument {
 public:
-	CScummVMDoc(CEikApplication &aApplicaiton);
-	~CScummVMDoc();
+	CNovelVMDoc(CEikApplication &aApplicaiton);
+	~CNovelVMDoc();
 
 	CEikAppUi *CreateAppUiL();
 	void ConstructL();
 };
 
 #include <eikappui.h>
-class CScummVMUi;
+class CNovelVMUi;
 class CScummWatcher : public CActive {
 public:
 	CScummWatcher();
@@ -60,13 +60,13 @@ public:
 
 	void DoCancel();
 	void RunL();
-	CScummVMUi *iAppUi;
+	CNovelVMUi *iAppUi;
 };
 
-class CScummVMUi : public CEikAppUi {
+class CNovelVMUi : public CEikAppUi {
 public:
-	CScummVMUi();
-	~CScummVMUi();
+	CNovelVMUi();
+	~CNovelVMUi();
 
 	void ConstructL();
 	void HandleCommandL(TInt aCommand);

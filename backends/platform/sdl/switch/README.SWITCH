@@ -1,24 +1,24 @@
-ScummVM-Switch README
+NovelVM-Switch README
 ==============================================================================
 
 Installation
 ============
- - The latest daily version of ScummVM for Switch is [here](https://buildbot.scummvm.org/snapshots/master/switch-master-latest.zip) (needs to be unzipped).
- - Copy the scummvm folder to your SD card into the folder /switch/ so that you have a folder `/switch/scummvm` with `scummvm.nro` and other folders inside.
- - Launch ScummVM using your favorite method to launch homebrew on the Switch
+ - The latest daily version of NovelVM for Switch is [here](https://buildbot.novelvm.org/snapshots/master/switch-master-latest.zip) (needs to be unzipped).
+ - Copy the novelvm folder to your SD card into the folder /switch/ so that you have a folder `/switch/novelvm` with `novelvm.nro` and other folders inside.
+ - Launch NovelVM using your favorite method to launch homebrew on the Switch
 
 Notes
 =====
  - This README may be outdated, for more up-to-date instructions and notes see
-   the Switch Port Wiki: https://wiki.scummvm.org/index.php/Nintendo_Switch
+   the Switch Port Wiki: https://wiki.novelvm.org/index.php/Nintendo_Switch
 
 Building the source code
 ========================
-This port of ScummVM to the Switch is based on SDL2. It uses the open source SDK provided by devkitPro.
+This port of NovelVM to the Switch is based on SDL2. It uses the open source SDK provided by devkitPro.
 
-To build ScummVM for Switch:
+To build NovelVM for Switch:
 
- - Obtain the ScummVM source code (https://github.com/scummvm/scummvm)
+ - Obtain the NovelVM source code (https://github.com/novelvm/novelvm)
 
  - Install the development tools for Switch following the official instructions (https://devkitpro.org/wiki/Getting_Started)
 
@@ -49,16 +49,16 @@ make -f Makefile.nx
 make -f Makefile.nx install
 ```
 
- - Create a subdirectory somewhere outside the source folder for your ScummVM build and cd into it
+ - Create a subdirectory somewhere outside the source folder for your NovelVM build and cd into it
 
  - Execute the command
 ```
-../scummvm/configure --host=switch
+../novelvm/configure --host=switch
 ```
 
  - Execute the command
 ```
-make scummvm_switch.zip
+make novelvm_switch.zip
 ```
 
 Port Authors

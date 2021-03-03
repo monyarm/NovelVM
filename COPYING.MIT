@@ -1,5 +1,5 @@
-NOTE: Only certain parts of the ScummVM project are under the MIT license.
-ScummVM uses matrix manipulation code from the glm library. Look into
+NOTE: Only certain parts of the NovelVM project are under the MIT license.
+NovelVM uses matrix manipulation code from the glm library. Look into
 source code files "engines/grim/gfx_base.cpp",
 "engines/grim/gfx_opengl_shaders.cpp" and
 "engines/myst3/gfx_opengl_shaders.cpp" for more info.  The majority of the

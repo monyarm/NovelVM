@@ -18,13 +18,13 @@ INCLUDES= -I./ -I$(srcdir) -I$(ronindir)/include/ -I$(srcdir)/engines
 LIBS	= -L$(ronindir)/lib -lmad -lronin -lz -lm
 # For release builds:
 #LIBS	= -L$(ronindir)/lib -lmad -lronin-noserial -lz -lm
-EXECUTABLE = scummvm.elf
+EXECUTABLE = novelvm.elf
 DEPDIR = .deps
 CXX_UPDATE_DEP_FLAG = -Wp,-MMD,"$(*D)/$(DEPDIR)/$(*F).d",-MQ,"$@",-MP
 PLUGIN_PREFIX =
 PLUGIN_SUFFIX = .plg
-PLUGIN_EXTRA_DEPS = plugin.x plugin.syms scummvm.elf plugin_head.o
-PLUGIN_LDFLAGS = -nostartfiles -Wl,-q,-Tplugin.x,--just-symbols,scummvm.elf,--retain-symbols-file,plugin.syms -L$(ronindir)/lib plugin_head.o
+PLUGIN_EXTRA_DEPS = plugin.x plugin.syms novelvm.elf plugin_head.o
+PLUGIN_LDFLAGS = -nostartfiles -Wl,-q,-Tplugin.x,--just-symbols,novelvm.elf,--retain-symbols-file,plugin.syms -L$(ronindir)/lib plugin_head.o
 MKDIR = mkdir -p
 RM = rm -f
 RM_REC = rm -rf
@@ -75,10 +75,10 @@ BACKEND := dc
 
 include $(srcdir)/Makefile.common
 
-scummvm.bin : scummvm.elf
+novelvm.bin : novelvm.elf
 	sh-elf-objcopy -S -R .stack -O binary $< $@
 
-SCUMMVM.BIN : scummvm.bin
+NOVELVM.BIN : novelvm.bin
 	scramble $< $@
 
 plugin_dist : plugins
@@ -88,7 +88,7 @@ plugin_dist : plugins
 	  ./check_plugin_symbols "$$t"; \
 	done
 
-dist : SCUMMVM.BIN plugin_dist
+dist : NOVELVM.BIN plugin_dist
 
 spotless : distclean
-	$(RM) SCUMMVM.BIN scummvm.bin *.PLG
+	$(RM) NOVELVM.BIN novelvm.bin *.PLG

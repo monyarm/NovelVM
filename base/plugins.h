@@ -48,7 +48,7 @@ enum PluginType {
 	PLUGIN_TYPE_MAX
 };
 
-// TODO: Make the engine API version depend on ScummVM's version
+// TODO: Make the engine API version depend on NovelVM's version
 // because of the backlinking (posibly from the checkout revision)
 #define PLUGIN_TYPE_ENGINE_DETECTION_VERSION 1
 #define PLUGIN_TYPE_ENGINE_VERSION 2
@@ -70,7 +70,7 @@ extern int pluginTypeVersions[PLUGIN_TYPE_MAX];
 
 #ifdef USE_ELF_LOADER
 #define PLUGIN_DYNAMIC_BUILD_DATE \
-	PLUGIN_EXPORT const char *PLUGIN_getBuildDate() { return gScummVMPluginBuildDate; }
+	PLUGIN_EXPORT const char *PLUGIN_getBuildDate() { return gNovelVMPluginBuildDate; }
 #else
 #define PLUGIN_DYNAMIC_BUILD_DATE
 #endif

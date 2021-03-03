@@ -2,30 +2,30 @@
 Nintendo 3DS
 =============================
 
-This page contains all the information you need to get ScummVM up and running on a Nintendo 3DS.
+This page contains all the information you need to get NovelVM up and running on a Nintendo 3DS.
 
 What you'll need
 ===================
 
 - A Nintendo 3DS with a Homebrew Launcher or custom firmware. How to enable homebrew is outside the scope of this documentation. 
 
-Installing ScummVM
+Installing NovelVM
 ======================================
 
-Download the Nintendo 3DS package from the `ScummVM Downloads page <https://www.scummvm.org/downloads/>`_. Extract the archive. 
+Download the Nintendo 3DS package from the `NovelVM Downloads page <https://www.novelvm.org/downloads/>`_. Extract the archive. 
 
-There are two ways to install ScummVM: using the 3DSX format, or the CIA format. 
+There are two ways to install NovelVM: using the 3DSX format, or the CIA format. 
 
 Using the 3DSX format
 ***********************
-Copy the extracted files to your SD card into the ``/3ds/scummvm`` directory. 
+Copy the extracted files to your SD card into the ``/3ds/novelvm`` directory. 
 
-Launch ScummVM using the Homebrew Launcher. 
+Launch NovelVM using the Homebrew Launcher. 
 
 Using the CIA format
 ***********************
 
-Use any CIA installation software to install the ``scummvm.cia`` file.
+Use any CIA installation software to install the ``novelvm.cia`` file.
 
 The CIA format requires a DSP binary dump saved on your SD card as ``/3ds/dspfirm.cdc``. This is not an optional step, because without this you will not have proper audio support. Documenting this process is outside the scope of this documentation.  
 
@@ -34,9 +34,9 @@ Transferring game files
 
 Transfer game folders onto the SD card. The exact location is not important. 
 
-ScummVM for the Nintendo 3DS also has cloud functionality. See :doc:`../use_scummvm/connect_cloud`. 
+NovelVM for the Nintendo 3DS also has cloud functionality. See :doc:`../use_novelvm/connect_cloud`. 
 
-See :doc:`../use_scummvm/game_files` for more information about game file requirements.
+See :doc:`../use_novelvm/game_files` for more information about game file requirements.
 
 
 Controls
@@ -45,7 +45,7 @@ Controls
 Default control mapping
 ****************************
 
-Controls can also be manually configured in the :doc:`Keymaps tab <../settings/keymaps>`. See the :doc:`../use_scummvm/keyboard_shortcuts` page for common keyboard shortcuts. 
+Controls can also be manually configured in the :doc:`Keymaps tab <../settings/keymaps>`. See the :doc:`../use_novelvm/keyboard_shortcuts` page for common keyboard shortcuts. 
 
 .. csv-table::
     :widths: 50 50
@@ -99,12 +99,12 @@ Paths
 Saved games 
 *******************
 
-``sdmc:/3ds/scummvm/saves/``
+``sdmc:/3ds/novelvm/saves/``
 
 Configuration file 
 **************************
 
-``sdmc:/3ds/scummvm/scummvm.ini``
+``sdmc:/3ds/novelvm/novelvm.ini``
 
 
 Settings
@@ -129,7 +129,7 @@ Snap to edges
     The 3DS touch screen has difficulty reaching the very end of the screen. With this option enabled, if you're within a few pixels of the edge the cursor snaps to the edge. 
     
 Use Screen:
-    Sets whether ScummVM uses the **Top**, **Bottom** or **Both** screens.
+    Sets whether NovelVM uses the **Top**, **Bottom** or **Both** screens.
     
 C-Pad Sensitivity
     Sets the sensitivity of the Circle Pad. 

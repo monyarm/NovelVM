@@ -1,16 +1,16 @@
 # Mission Supernova Translation.
-# Copyright (C) YEAR ScummVM Team
-# This file is distributed under the same license as the ScummVM package.
+# Copyright (C) YEAR NovelVM Team
+# This file is distributed under the same license as the NovelVM package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Mission Supernova 1.0\n"
-"Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
+"Report-Msgid-Bugs-To: novelvm-devel@lists.novelvm.org\n"
 "POT-Creation-Date: 2020-09-02 22:47+0100\n"
 "PO-Revision-Date: 2020-09-03 18:29+0000\n"
 "Last-Translator: Walter Agazzi <tag2015@gmail.com>\n"
-"Language-Team: Italian <https://translations.scummvm.org/projects/"
+"Language-Team: Italian <https://translations.novelvm.org/projects/"
 "game-translations/episode-1/it/>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
@@ -36,17 +36,17 @@ msgstr "Prendi"
 
 #. I18N: Open
 #: ../../msn/msn.c:1616
-msgid "™ffne"
+msgid "ï¿½ffne"
 msgstr "Apri"
 
 #. I18N: Close
 #: ../../msn/msn.c:1618
-msgid "Schlieáe"
+msgid "Schlieï¿½e"
 msgstr "Chiudi"
 
 #. I18N: Push
 #: ../../msn/msn.c:1620
-msgid "Drcke"
+msgid "Drï¿½cke"
 msgstr "Premi"
 
 #. I18N: Pull
@@ -71,7 +71,7 @@ msgstr "Dai"
 
 #. I18N: End of conversation
 #: ../../msn/msn.c:2204
-msgid "Gespr„ch beenden"
+msgid "Gesprï¿½ch beenden"
 msgstr "Fine conversazione"
 
 #. I18N: Go to
@@ -91,17 +91,17 @@ msgstr "Prendi "
 
 #. I18N: Open
 #: ../../msn/msn.c:2340
-msgid "™ffne "
+msgid "ï¿½ffne "
 msgstr "Apri "
 
 #. I18N: Close
 #: ../../msn/msn.c:2342
-msgid "Schlieáe "
+msgid "Schlieï¿½e "
 msgstr "Chiudi "
 
 #. I18N: Push
 #: ../../msn/msn.c:2344
-msgid "Drcke "
+msgid "Drï¿½cke "
 msgstr "Premi "
 
 #. I18N: Pull
@@ -144,7 +144,7 @@ msgstr "Salva"
 
 #. I18N: Back
 #: ../../msn/msn.c:2886
-msgid "Zurck"
+msgid "Zurï¿½ck"
 msgstr "Indietro"
 
 #. I18N: Restart
@@ -179,7 +179,7 @@ msgstr "F5    Carica / Salva"
 
 #. I18N: Skip intro
 #: ../../msn/msn.c:3173
-msgid "ESC   Vorspann berspringen"
+msgid "ESC   Vorspann ï¿½berspringen"
 msgstr "ESC   Salta introduzione"
 
 #. I18N: Exit program
@@ -199,7 +199,7 @@ msgstr "Uscire dal gioco?"
 
 #: ../../msn/msn.c:3270
 msgid "Ja"
-msgstr "Si`"
+msgstr "Siï¿½`"
 
 #: ../../msn/msn.c:3271
 msgid "Nein"
@@ -207,7 +207,7 @@ msgstr "No"
 
 #. I18N: You already carry this.
 #: ../../msn/msn.c:3341
-msgid "Das tr„gst du doch bei dir."
+msgid "Das trï¿½gst du doch bei dir."
 msgstr "Lo stai gia` trasportando."
 
 #. I18N: You're already there.
@@ -237,7 +237,7 @@ msgstr "Non puoi prenderlo."
 
 #. I18N: This can't be opened
 #: ../../msn/msn.c:3370
-msgid "Das l„át sich nicht ”ffnen."
+msgid "Das lï¿½ï¿½t sich nicht ï¿½ffnen."
 msgstr "Non si puo` aprire."
 
 #. I18N: This is already opened.
@@ -252,7 +252,7 @@ msgstr "E` chiuso a chiave."
 
 #. I18N: This can't be closed.
 #: ../../msn/msn.c:3393
-msgid "Das l„át sich nicht schlieáen."
+msgid "Das lï¿½ï¿½t sich nicht schlieï¿½en."
 msgstr "Non si puo` chiudere."
 
 #. I18N: This is already closed.
@@ -307,15 +307,15 @@ msgid "Das Abenteuer geht weiter, ...##"
 msgstr "L'avventura continua...##"
 
 #: ../../msn/msn_mod.c:592
-msgid "... wenn Sie sich fr 30,- DM registrieren lassen!##"
+msgid "... wenn Sie sich fï¿½r 30,- DM registrieren lassen!##"
 msgstr "... se effettui la registrazione per 30,- DM!##"
 
 #: ../../msn/msn_mod.c:593
-msgid "(Falls Sie das nicht schon l„ngst getan haben.)##"
+msgid "(Falls Sie das nicht schon lï¿½ngst getan haben.)##"
 msgstr "(se non ti sei gia` registrato.)##"
 
 #: ../../msn/msn_mod.c:594
-msgid "In^ Teil 2 - Der Doppelg„nger^ erwarten Sie:##"
+msgid "In^ Teil 2 - Der Doppelgï¿½nger^ erwarten Sie:##"
 msgstr "In^ Parte II - Il Doppelganger^ ti attendono:##"
 
 #: ../../msn/msn_mod.c:595
@@ -345,7 +345,7 @@ msgstr "Non ha nulla di speciale."
 
 #. I18N: You first have to take it
 #: ../../msn/msn_r0.c:28 ../../msn/msn_r0.c:230
-msgid "Das muát du erst nehmen."
+msgid "Das muï¿½t du erst nehmen."
 msgstr "Devi prima raccoglierlo."
 
 #. I18N: Hello
@@ -385,21 +385,21 @@ msgid "Da war irgendetwas drin,|aber jetzt hast du es|mit runtergeschluckt."
 msgstr "C'era dentro qualcosa,|ma l'hai ingoiato|insieme all'uovo."
 
 #: ../../msn/msn_r0.c:202
-msgid "Du hast es doch schon ge”ffnet."
+msgid "Du hast es doch schon geï¿½ffnet."
 msgstr "L'hai gia` aperto."
 
 #: ../../msn/msn_r0.c:206
-msgid "In dem Ei ist eine Tablette|in einer Plastikhlle."
+msgid "In dem Ei ist eine Tablette|in einer Plastikhï¿½lle."
 msgstr "Nell'uovo c'e` una bustina|contenente una compressa."
 
 #: ../../msn/msn_r0.c:214
-msgid "Du iát die Tablette und merkst,|daá sich irgendetwas ver„ndert hat."
+msgid "Du iï¿½t die Tablette und merkst,|daï¿½ sich irgendetwas verï¿½ndert hat."
 msgstr "Ingoi la compressa, e subito ti accorgi| che qualcosa e` cambiato."
 
 #: ../../msn/msn_r0.c:224
 msgid ""
 "Komisch! Auf einmal kannst du die Schrift lesen!|Darauf steht:\"Wenn Sie "
-"diese Schrift jetzt|lesen k”nnen, hat die Tablette gewirkt.\""
+"diese Schrift jetzt|lesen kï¿½nnen, hat die Tablette gewirkt.\""
 msgstr ""
 "Curioso! Ora sei in grado di leggere la scritta!|Dice: \"Se riesci a leggere "
 "queste parole,|allora la compressa ha funzionato.\""
@@ -441,11 +441,11 @@ msgid "Neue Alarmzeit (hh:mm) :"
 msgstr "Nuovo orario sveglia (hh:mm):"
 
 #: ../../msn/msn_r0.c:332 ../../msn/msn_r1.c:486 ../../msn/msn_r1.c:595
-msgid "Leitung mit Lsterklemme"
+msgid "Leitung mit Lï¿½sterklemme"
 msgstr "Cavo con morsettiera"
 
 #: ../../msn/msn_r0.c:344
-msgid "Kabelrolle mit Lsterklemme"
+msgid "Kabelrolle mit Lï¿½sterklemme"
 msgstr "Bobina di cavo con morsettiera"
 
 #: ../../msn/msn_r0.c:355 ../../msn/msn_r1.c:495 ../../msn/msn_r1.c:604
@@ -466,11 +466,11 @@ msgid "Hier drinnen brauchtst du deinen Anzug nicht."
 msgstr "Qui non hai bisogno della tuta spaziale."
 
 #: ../../msn/msn_r0.c:395
-msgid "Du muát erst den Helm abnehmen."
+msgid "Du muï¿½t erst den Helm abnehmen."
 msgstr "Prima devi toglierti il casco."
 
 #: ../../msn/msn_r0.c:397
-msgid "Du muát erst den Versorgungsteil abnehmen."
+msgid "Du muï¿½t erst den Versorgungsteil abnehmen."
 msgstr "Prima devi scollegare la riserva di ossigeno."
 
 #: ../../msn/msn_r0.c:401
@@ -482,7 +482,7 @@ msgid "Du ziehst den Raumanzug an."
 msgstr "Hai indossato la tuta spaziale."
 
 #: ../../msn/msn_r0.c:431
-msgid "Den Helm h„ttest du|besser angelassen!"
+msgid "Den Helm hï¿½ttest du|besser angelassen!"
 msgstr "Non avresti dovuto togliere il casco!"
 
 #: ../../msn/msn_r0.c:433
@@ -494,11 +494,11 @@ msgid "Du ziehst den Helm auf."
 msgstr "Hai indossato il casco."
 
 #: ../../msn/msn_r0.c:443 ../../msn/msn_r0.c:479
-msgid "Du muát erst den Anzug anziehen."
+msgid "Du muï¿½t erst den Anzug anziehen."
 msgstr "Prima devi indossare la tuta spaziale."
 
 #: ../../msn/msn_r0.c:467
-msgid "Den Versorgungsteil h„ttest du|besser nicht abgenommen!"
+msgid "Den Versorgungsteil hï¿½ttest du|besser nicht abgenommen!"
 msgstr "Non avresti dovuto scollegare la riserva di ossigeno!"
 
 #: ../../msn/msn_r0.c:469
@@ -510,7 +510,7 @@ msgid "Du ziehst den Versorgungsteil an."
 msgstr "Hai collegato la riserva di ossigeno."
 
 #: ../../msn/msn_r0.c:489
-msgid "Die Leitung ist hier unntz."
+msgid "Die Leitung ist hier unnï¿½tz."
 msgstr "Qui il cavo non serve a nulla."
 
 #: ../../msn/msn_r0.c:492
@@ -529,7 +529,7 @@ msgstr ""
 "."
 
 #: ../../msn/msn_r0.c:507
-msgid "Du h„ttest besser vorher|den Stecker rausgezogen."
+msgid "Du hï¿½ttest besser vorher|den Stecker rausgezogen."
 msgstr "Avresti dovuto togliere la spina, prima."
 
 #: ../../msn/msn_r0.c:567
@@ -541,7 +541,7 @@ msgid "Keycard"
 msgstr "Tesserino"
 
 #: ../../msn/msn_r0.c:803
-msgid "Die Keycard fr deine Schr„nke."
+msgid "Die Keycard fï¿½r deine Schrï¿½nke."
 msgstr "Il tesserino per il tuo armadietto."
 
 #: ../../msn/msn_r0.c:805
@@ -549,7 +549,7 @@ msgid "Taschenmesser"
 msgstr "Coltellino tascabile"
 
 #: ../../msn/msn_r0.c:805
-msgid "Es ist nicht mehr das sch„rfste."
+msgid "Es ist nicht mehr das schï¿½rfste."
 msgstr "Non e` molto affilato."
 
 #: ../../msn/msn_r0.c:807 ../../msn/msn_r3.c:1527
@@ -566,7 +566,7 @@ msgstr "C'e` dentro un CD dei \"Mad Monkeys\"."
 
 #: ../../msn/msn_r1.c:58
 msgid ""
-"In der Kche warst du schon|oft genug, im Moment hast|du keinen Appetit."
+"In der Kï¿½che warst du schon|oft genug, im Moment hast|du keinen Appetit."
 msgstr "Ci sei stato fin troppo in cucina,|e al momento non hai appetito."
 
 #. I18N: FORTYTWO
@@ -581,7 +581,7 @@ msgstr "Destinazione raggiunta"
 
 #. I18N: Energy depleted
 #: ../../msn/msn_r1.c:110
-msgid "Energie ersch”pft"
+msgid "Energie erschï¿½pft"
 msgstr "Riserva energetica esaurita"
 
 #. I18N: Artificial coma interrupted
@@ -607,13 +607,13 @@ msgstr "Durata in giorni:"
 
 #: ../../msn/msn_r1.c:172
 msgid ""
-"Es wrde wenig bringen,|sich in eine Schlafkammer zu legen,|die nicht "
+"Es wï¿½rde wenig bringen,|sich in eine Schlafkammer zu legen,|die nicht "
 "eingeschaltet ist."
 msgstr ""
 "Non riuscirai a concludere molto, usando|una capsula che e` ancora spenta."
 
 #: ../../msn/msn_r1.c:174
-msgid "Dazu muát du erst den Raumanzug ausziehen."
+msgid "Dazu muï¿½t du erst den Raumanzug ausziehen."
 msgstr "Per farlo, devi prima togliere la tuta spaziale."
 
 #: ../../msn/msn_r1.c:248 ../../msn/msn_s.c:210
@@ -626,14 +626,14 @@ msgstr "Pericolo"
 
 #: ../../msn/msn_r1.c:289
 msgid ""
-"Du wachst mit brummendem Sch„del auf|und merkst, daá du nur getr„umt hast."
+"Du wachst mit brummendem Schï¿½del auf|und merkst, daï¿½ du nur getrï¿½umt hast."
 msgstr ""
 "Ti svegli con la testa pesante...|e ti rendi conto che e` stato solo un sogno."
 
 #: ../../msn/msn_r1.c:292
 msgid ""
-"Beim Aufprall des Raumschiffs|muát du mit dem Kopf aufgeschlagen|und "
-"bewuátlos geworden sein."
+"Beim Aufprall des Raumschiffs|muï¿½t du mit dem Kopf aufgeschlagen|und "
+"bewuï¿½tlos geworden sein."
 msgstr ""
 "Quando la nave ha impattato,|probabilmente hai picchiato la testa|e perso "
 "conoscenza."
@@ -676,18 +676,18 @@ msgstr " giorni"
 
 #: ../../msn/msn_r1.c:330
 msgid ""
-"Vergiá nicht, du bist nur der|Schiffskoch und hast keine Ahnung,|wie man ein "
+"Vergiï¿½ nicht, du bist nur der|Schiffskoch und hast keine Ahnung,|wie man ein "
 "Raumschiff fliegt."
 msgstr ""
 "Ti sovviene che sei solo il cuoco di bordo...|e non hai idea di come si "
 "piloti un'astronave."
 
 #: ../../msn/msn_r1.c:344
-msgid "Achtung: Triebwerke funktionsunf„hig"
+msgid "Achtung: Triebwerke funktionsunfï¿½hig"
 msgstr "Attenzione: Malfunzionamento motori"
 
 #: ../../msn/msn_r1.c:357
-msgid "Energievorrat ersch”pft"
+msgid "Energievorrat erschï¿½pft"
 msgstr "Riserva energia esaurita"
 
 #: ../../msn/msn_r1.c:358
@@ -707,11 +707,11 @@ msgid "Er zeigt Normaldruck an."
 msgstr "Indica un valore normale di pressione."
 
 #: ../../msn/msn_r1.c:464
-msgid "Ein Stck Schrott."
+msgid "Ein Stï¿½ck Schrott."
 msgstr "Un po' di rottami metallici."
 
 #: ../../msn/msn_r1.c:476
-msgid "Du muát erst hingehen."
+msgid "Du muï¿½t erst hingehen."
 msgstr "Prima devi avvicinarti."
 
 #: ../../msn/msn_r1.c:480 ../../msn/msn_r1.c:639 ../../msn/msn_r1.c:728
@@ -735,7 +735,7 @@ msgid "Du wirst aus den Anzeigen nicht schlau."
 msgstr "Non sei in grado di interpretare questi dati."
 
 #: ../../msn/msn_r1.c:572
-msgid "Laá lieber die Finger davon!"
+msgid "Laï¿½ lieber die Finger davon!"
 msgstr "Meglio non toccare!"
 
 #: ../../msn/msn_r1.c:591
@@ -743,7 +743,7 @@ msgid "An dem Kabel ist doch gar kein Stecker."
 msgstr "Il cavo e` privo di spina."
 
 #: ../../msn/msn_r1.c:635
-msgid "Du solltest die Luke vielleicht erst ”ffnen."
+msgid "Du solltest die Luke vielleicht erst ï¿½ffnen."
 msgstr "Prima dovresti aprire il portello."
 
 #: ../../msn/msn_r1.c:668
@@ -751,7 +751,7 @@ msgid "Das Seil ist im Weg."
 msgstr "La corda e` d'intralcio."
 
 #: ../../msn/msn_r1.c:685
-msgid "Das geht nicht.|Die Luke ist mindestens|5 Meter ber dem Boden."
+msgid "Das geht nicht.|Die Luke ist mindestens|5 Meter ï¿½ber dem Boden."
 msgstr "Non puoi saltare giu`.|Il portello e` a piu` di|cinque metri dal suolo."
 
 #: ../../msn/msn_r1.c:694
@@ -759,7 +759,7 @@ msgid "Keycard des Commanders"
 msgstr "Tesserino del Comandante"
 
 #: ../../msn/msn_r1.c:766
-msgid "Was ntzt dir der Anschluá|ohne eine Stromquelle?!"
+msgid "Was nï¿½tzt dir der Anschluï¿½|ohne eine Stromquelle?!"
 msgstr "E a cosa servirebbe|dato che non c'e` corrente?!"
 
 #: ../../msn/msn_r1.c:770
@@ -771,7 +771,7 @@ msgid "Es zeigt volle Spannung an."
 msgstr "Indica la tensione nominale."
 
 #: ../../msn/msn_r1.c:782
-msgid "Du muát die Luke erst ”ffnen."
+msgid "Du muï¿½t die Luke erst ï¿½ffnen."
 msgstr "Prima devi aprire il portello."
 
 #: ../../msn/msn_r1.c:801
@@ -795,7 +795,7 @@ msgid "Die Platte scheint einen Sprung zu haben."
 msgstr "Il disco deve essere graffiato."
 
 #: ../../msn/msn_r1.c:981
-msgid "Schneid doch besser ein|l„ngeres Stck Kabel ab!"
+msgid "Schneid doch besser ein|lï¿½ngeres Stï¿½ck Kabel ab!"
 msgstr "Ti conviene tagliare un|pezzo piu` lungo!"
 
 #: ../../msn/msn_r1.c:1003
@@ -815,7 +815,7 @@ msgid "Wenn du unbedingt aufs Klo|willst, spiel doch Larry 1."
 msgstr "Sei proprio devi andare al bagno,|gioca a Larry 1."
 
 #: ../../msn/msn_r1.c:1097
-msgid "Was?! Keiner im Cockpit!|Die sind wohl verrckt!"
+msgid "Was?! Keiner im Cockpit!|Die sind wohl verrï¿½ckt!"
 msgstr "COSA?!? Non c'e` nessuno in cabina!|Sono impazziti!"
 
 #: ../../msn/msn_r1.c:1105
@@ -824,8 +824,8 @@ msgstr "Che strano, e` rimasta|una sola tuta spaziale."
 
 #: ../../msn/msn_r1.c:1113
 msgid ""
-"Was ist denn das fr ein Chaos?|Und auáerdem fehlt das Notraumschiff!|Jetzt "
-"wird mir einiges klar.|Die anderen sind geflchtet,|und ich habe es verpennt."
+"Was ist denn das fï¿½r ein Chaos?|Und auï¿½erdem fehlt das Notraumschiff!|Jetzt "
+"wird mir einiges klar.|Die anderen sind geflï¿½chtet,|und ich habe es verpennt."
 msgstr ""
 "Cos'e` tutto questo caos?|E le scialuppe di salvataggio non ci sono piu`!|Ora "
 "capisco... il resto dell'equipaggio|ha abbandonato l'astronave|e mi hanno "
@@ -852,7 +852,7 @@ msgid "Knopf"
 msgstr "Pulsante"
 
 #: ../../msn/msn_r1_r.c:23
-msgid "Er geh”rt zu der groáen Luke."
+msgid "Er gehï¿½rt zu der groï¿½en Luke."
 msgstr "E` parte del portellone piu` grande."
 
 #: ../../msn/msn_r1_r.c:24 ../../msn/msn_r1_r.c:37 ../../msn/msn_r1_r.c:130
@@ -874,15 +874,15 @@ msgid "Ausgang"
 msgstr "Uscita"
 
 #: ../../msn/msn_r1_r.c:31
-msgid "Sie fhrt ins Cockpit."
+msgid "Sie fï¿½hrt ins Cockpit."
 msgstr "Porta alla cabina di pilotaggio."
 
 #: ../../msn/msn_r1_r.c:32
-msgid "Sie fhrt zur Kche."
+msgid "Sie fï¿½hrt zur Kï¿½che."
 msgstr "Porta alla cucina."
 
 #: ../../msn/msn_r1_r.c:34
-msgid "Sie fhrt zu den Tiefschlafkammern."
+msgid "Sie fï¿½hrt zu den Tiefschlafkammern."
 msgstr "Porta alle capsule criogeniche."
 
 #: ../../msn/msn_r1_r.c:36 ../../msn/msn_r1_r.c:123 ../../msn/msn_r1_r.c:151
@@ -975,17 +975,17 @@ msgstr "Rottame"
 
 #: ../../msn/msn_r1_r.c:81
 msgid ""
-"Da ist eine Lsterklemme dran, die|noch ganz brauchbar aussieht.|Ich nehme "
+"Da ist eine Lï¿½sterklemme dran, die|noch ganz brauchbar aussieht.|Ich nehme "
 "sie mit."
 msgstr "C'e` una morsettiera qui, potrebbe essere utile.|La raccogli."
 
 #: ../../msn/msn_r1_r.c:83
-msgid "Lsterklemme"
+msgid "Lï¿½sterklemme"
 msgstr "Morsettiera"
 
 #: ../../msn/msn_r1_r.c:84
 msgid ""
-"Junge, Junge! Die Explosion hat ein|ganz sch”nes Durcheinander angerichtet."
+"Junge, Junge! Die Explosion hat ein|ganz schï¿½nes Durcheinander angerichtet."
 msgstr "Oh caspita!|L'esplosione ha causato un bel macello..."
 
 #: ../../msn/msn_r1_r.c:86
@@ -997,11 +997,11 @@ msgid "Das war einmal der Reaktor."
 msgstr "Questo era un reattore... una volta."
 
 #: ../../msn/msn_r1_r.c:87
-msgid "Dse"
+msgid "Dï¿½se"
 msgstr "Propulsore"
 
 #: ../../msn/msn_r1_r.c:88
-msgid "blauer Krbis"
+msgid "blauer Kï¿½rbis"
 msgstr "Zucca(?) blu"
 
 #: ../../msn/msn_r1_r.c:88
@@ -1009,15 +1009,15 @@ msgid "Keine Ahnung, was das ist."
 msgstr "Non ho idea di cosa sia."
 
 #: ../../msn/msn_r1_r.c:90
-msgid "Landef„hre"
+msgid "Landefï¿½hre"
 msgstr "Modulo di atterraggio"
 
 #: ../../msn/msn_r1_r.c:90
-msgid "Sie war eigentlich fr Bodenuntersuchungen|auf Arsano 3 gedacht."
+msgid "Sie war eigentlich fï¿½r Bodenuntersuchungen|auf Arsano 3 gedacht."
 msgstr "Dovevamo utilizzarlo per l'analisi del terreno|su Arsano 3."
 
 #: ../../msn/msn_r1_r.c:93 ../../msn/msn_r1_r.c:120
-msgid "Sie fhrt nach drauáen."
+msgid "Sie fï¿½hrt nach drauï¿½en."
 msgstr "Porta all'esterno."
 
 #: ../../msn/msn_r1_r.c:95
@@ -1037,7 +1037,7 @@ msgstr "Presa elettrica"
 #: ../../msn/msn_r1_r.c:103
 msgid ""
 "Es ist ein Sicherheitsknopf.|Er kann nur mit einem spitzen|Gegenstand "
-"gedrckt werden."
+"gedrï¿½ckt werden."
 msgstr ""
 "E` un tastino di sicurezza.|Si puo` premere solo usando un oggetto appuntito."
 
@@ -1051,7 +1051,7 @@ msgstr "Bobina vuota"
 
 #: ../../msn/msn_r1_r.c:117
 msgid ""
-"Hey, das ist die Keycard des Commanders!|Er muá sie bei dem berstrzten|"
+"Hey, das ist die Keycard des Commanders!|Er muï¿½ sie bei dem ï¿½berstï¿½rzten|"
 "Aufbruch verloren haben."
 msgstr ""
 "Ehi, e` il tesserino del Comandante!|Deve averlo perso nella concitazione|"
@@ -1072,7 +1072,7 @@ msgid "Leitung"
 msgstr "Cablaggio"
 
 #: ../../msn/msn_r1_r.c:126
-msgid "Spannungmessger„t"
+msgid "Spannungmessgerï¿½t"
 msgstr "Voltmetro"
 
 #: ../../msn/msn_r1_r.c:127
@@ -1080,7 +1080,7 @@ msgid "Klemme"
 msgstr "Morsetto"
 
 #: ../../msn/msn_r1_r.c:128
-msgid "Sie fhrt vom Generator zum Spannungmessger„t."
+msgid "Sie fï¿½hrt vom Generator zum Spannungmessgerï¿½t."
 msgstr "Collega il generatore al misuratore di tensione."
 
 #: ../../msn/msn_r1_r.c:143 ../../msn/msn_r1_r.c:212 ../../msn/msn_r1_r.c:213
@@ -1095,13 +1095,13 @@ msgid "Manche Leute haben schon|einen komischen Geschmack."
 msgstr "Alcune persone hanno gusti \"particolari\"."
 
 #: ../../msn/msn_r1_r.c:145
-msgid "Zeichenger„te"
+msgid "Zeichengerï¿½te"
 msgstr "Accessori per disegno"
 
 #: ../../msn/msn_r1_r.c:146
 msgid ""
-"Auf dem Zettel sind lauter|unverst„ndliche Skizzen und Berechnungen.|"
-"(Jedenfalls fr dich unverst„ndlich.)"
+"Auf dem Zettel sind lauter|unverstï¿½ndliche Skizzen und Berechnungen.|"
+"(Jedenfalls fï¿½r dich unverstï¿½ndlich.)"
 msgstr ""
 "Sul foglio sono scribacchiati calcoli|e schizzi incomprensibili.|(Perlomeno "
 "per te)"
@@ -1141,11 +1141,11 @@ msgid "Schachspiel"
 msgstr "Scacchiera"
 
 #: ../../msn/msn_r1_r.c:161
-msgid "Es macht wohl Spaá, an|der Decke Schach zu spielen."
+msgid "Es macht wohl Spaï¿½, an|der Decke Schach zu spielen."
 msgstr "Giocare a scacchi sul soffitto deve|essere un'esperienza entusiasmante."
 
 #: ../../msn/msn_r1_r.c:163
-msgid "Tennisschl„ger"
+msgid "Tennisschlï¿½ger"
 msgstr "Racchetta da tennis"
 
 #: ../../msn/msn_r1_r.c:163
@@ -1175,7 +1175,7 @@ msgid "Das ist dein Bett. Toll, nicht wahr?"
 msgstr "E` il tuo letto. Che lusso, eh?"
 
 #: ../../msn/msn_r1_r.c:183 ../../msn/msn_r1_r.c:186 ../../msn/msn_r1_r.c:195
-msgid "Das ist eins deiner drei F„cher."
+msgid "Das ist eins deiner drei Fï¿½cher."
 msgstr "Questo e` uno dei tuoi tre scompartimenti."
 
 #: ../../msn/msn_r1_r.c:185
@@ -1187,7 +1187,7 @@ msgid "Deine Briefmarkensammlung."
 msgstr "La tua collezione di francobolli."
 
 #: ../../msn/msn_r1_r.c:188
-msgid "Es ist ungef„hr 10 m lang und 4 cm dick."
+msgid "Es ist ungefï¿½hr 10 m lang und 4 cm dick."
 msgstr "E` lunga circa 10 metri e spessa 4 centimetri."
 
 #: ../../msn/msn_r1_r.c:190
@@ -1211,11 +1211,11 @@ msgid "Es sind Standard-Weltraum-Klamotten."
 msgstr "Comuni vestiti per lo Spazio."
 
 #: ../../msn/msn_r1_r.c:193 ../../msn/msn_r1_r.c:269 ../../msn/msn_r1_r.c:271
-msgid "Unterw„sche"
+msgid "Unterwï¿½sche"
 msgstr "Biancheria"
 
 #: ../../msn/msn_r1_r.c:194
-msgid "Strmpfe"
+msgid "Strï¿½mpfe"
 msgstr "Calzini"
 
 #: ../../msn/msn_r1_r.c:197 ../../msn/msn_r1_r.c:268
@@ -1271,11 +1271,11 @@ msgid "Die Platte ist von \"Big Boss\"."
 msgstr "Un disco dei \"Big Boss\"."
 
 #: ../../msn/msn_r1_r.c:237
-msgid "Schallplattenst„nder"
+msgid "Schallplattenstï¿½nder"
 msgstr "Porta dischi"
 
 #: ../../msn/msn_r1_r.c:237
-msgid "Du hast jetzt keine Zeit, in|der Plattensammlung rumzust”bern."
+msgid "Du hast jetzt keine Zeit, in|der Plattensammlung rumzustï¿½bern."
 msgstr "Adesso non hai proprio tempo|di curiosare nella collezione di dischi."
 
 #: ../../msn/msn_r1_r.c:240
@@ -1283,7 +1283,7 @@ msgid "Plattenspieler"
 msgstr "Giradischi"
 
 #: ../../msn/msn_r1_r.c:240
-msgid "Sieht aus, als k„me|er aus dem Museum."
+msgid "Sieht aus, als kï¿½me|er aus dem Museum."
 msgstr "Potrebbe provenire da un museo..."
 
 #: ../../msn/msn_r1_r.c:244
@@ -1299,11 +1299,11 @@ msgid "Es ist keine Munition drin."
 msgstr "E` senza munizioni."
 
 #: ../../msn/msn_r1_r.c:263
-msgid "Bcher"
+msgid "Bï¿½cher"
 msgstr "Libri"
 
 #: ../../msn/msn_r1_r.c:263
-msgid "Lauter wissenschaftliche Bcher."
+msgid "Lauter wissenschaftliche Bï¿½cher."
 msgstr "Tutti libri scientifici."
 
 #: ../../msn/msn_r1_r.c:265
@@ -1315,7 +1315,7 @@ msgid "Da sind mindestens zwanzig Meter drauf."
 msgstr "Sono almeno 20 metri di cavo."
 
 #: ../../msn/msn_r1_r.c:269 ../../msn/msn_r1_r.c:271
-msgid "Ich habe keine Lust, in|der Unterw„sche des|Commanders rumzuwhlen."
+msgid "Ich habe keine Lust, in|der Unterwï¿½sche des|Commanders rumzuwï¿½hlen."
 msgstr "Non ho tutta questa voglia di ispezionare|le mutande del comandante."
 
 #: ../../msn/msn_r1_r.c:284
@@ -1379,15 +1379,15 @@ msgid "Schwachsinn! Ich gehe jetzt nach oben!"
 msgstr "Col cavolo! Adesso vado di sopra!"
 
 #: ../../msn/msn_r2.c:155
-msgid "Sch”nes Wetter heute, nicht wahr?"
+msgid "Schï¿½nes Wetter heute, nicht wahr?"
 msgstr "Bella giornata oggi, vero?"
 
 #: ../../msn/msn_r2.c:156
-msgid "Wrden Sie mich bitte durchlassen."
+msgid "Wï¿½rden Sie mich bitte durchlassen."
 msgstr "Puo` farmi passare per favore?"
 
 #: ../../msn/msn_r2.c:157
-msgid "Hey Alter, laá mich durch!"
+msgid "Hey Alter, laï¿½ mich durch!"
 msgstr "Ehi tu, fammi passare!"
 
 #: ../../msn/msn_r2.c:164
@@ -1421,16 +1421,16 @@ msgid "Wenn Sie meinen."
 msgstr "Se lo dice lei."
 
 #: ../../msn/msn_r2.c:199 ../../msn/msn_r2.c:256
-msgid "In der Toilette gibt es|Schlieáf„cher fr Schuhe."
+msgid "In der Toilette gibt es|Schlieï¿½fï¿½cher fï¿½r Schuhe."
 msgstr "Ci sono degli stipetti per le scarpe|nella toilette."
 
 #: ../../msn/msn_r2.c:204
 msgid ""
-"Wenn Sie das Lokal betreten|wollen, mssen Sie erst|ihre Schuhe ausziehen."
+"Wenn Sie das Lokal betreten|wollen, mï¿½ssen Sie erst|ihre Schuhe ausziehen."
 msgstr "Se desidera accedere al ristorante,|deve prima togliere le scarpe."
 
 #: ../../msn/msn_r2.c:208
-msgid "Wollen Sie, daá ich Sie rauáschmeiáe?"
+msgid "Wollen Sie, daï¿½ ich Sie rauï¿½schmeiï¿½e?"
 msgstr "Senta, vuole essere buttato fuori?"
 
 #: ../../msn/msn_r2.c:216 ../../msn/msn_r2.c:274
@@ -1446,12 +1446,12 @@ msgid "Uhwdejkt!"
 msgstr "Uhwdejkt!"
 
 #: ../../msn/msn_r2.c:241
-msgid "Sie mssen erst ihre Schuhe ausziehen, Sie Trottel!"
+msgid "Sie mï¿½ssen erst ihre Schuhe ausziehen, Sie Trottel!"
 msgstr "Deve prima togliere le scarpe, idiota!"
 
 #: ../../msn/msn_r2.c:243
 msgid ""
-"Was f„llt ihnen ein!|Sie k”nnen doch ein Lokal|nicht mit Schuhen betreten!"
+"Was fï¿½llt ihnen ein!|Sie kï¿½nnen doch ein Lokal|nicht mit Schuhen betreten!"
 msgstr ""
 "Cosa crede di fare?|Non puo` entrare nel ristorante|indossando le scarpe!"
 
@@ -1460,11 +1460,11 @@ msgid "Fragen Sie nicht so doof!"
 msgstr "Basta domande stupide!"
 
 #: ../../msn/msn_r2.c:262
-msgid "Das wrde ich an ihrer|Stelle nicht versuchen!"
+msgid "Das wï¿½rde ich an ihrer|Stelle nicht versuchen!"
 msgstr "Fossi in lei, non ci proverei!"
 
 #: ../../msn/msn_r2.c:300
-msgid "Du ziehst deine Schuhe|aus und legst sie in|eins der Schlieáf„cher."
+msgid "Du ziehst deine Schuhe|aus und legst sie in|eins der Schlieï¿½fï¿½cher."
 msgstr "Ti togli le scarpe|e le metti in uno|degli stipetti."
 
 #: ../../msn/msn_r2.c:307
@@ -1487,8 +1487,8 @@ msgstr "Wow, sono sette anni|che non vai in bagno!"
 
 #: ../../msn/msn_r2.c:322
 msgid ""
-"In einem der Schlieáf„cher,|die sich auch im Raum befinden,|findest du "
-"einige Mnzen."
+"In einem der Schlieï¿½fï¿½cher,|die sich auch im Raum befinden,|findest du "
+"einige Mï¿½nzen."
 msgstr ""
 "In questo bagno ci sono anche degli stipetti.|In uno trovi qualche moneta!"
 
@@ -1497,13 +1497,13 @@ msgid "Mach doch zuerst das Fach leer!"
 msgstr "Prima, svuota il cassetto!"
 
 #: ../../msn/msn_r2.c:340
-msgid "Mnze"
+msgid "Mï¿½nze"
 msgstr "Moneta"
 
 #: ../../msn/msn_r2.c:353
 msgid ""
 "Komisch! Auf einmal kannst du|das Schild lesen! Darauf steht:|\"Zutritt nur "
-"fr Personal\"."
+"fï¿½r Personal\"."
 msgstr ""
 "Che strano!|Ora riesci a leggere il cartello! Dice:|\"Riservato al "
 "Personale\"."
@@ -1522,12 +1522,12 @@ msgid "Du ziehst den Raumanzug wieder an."
 msgstr "Ti sei rimesso la tuta spaziale."
 
 #: ../../msn/msn_r2.c:382 ../../msn/msn_r3.c:487 ../../msn/msn_r3.c:539
-msgid "Nicht so gewaltt„tig!"
+msgid "Nicht so gewalttï¿½tig!"
 msgstr "Non esageriamo!"
 
 #: ../../msn/msn_r2.c:603
 msgid ""
-"Du hast das komische Gefhl,|daá drauáen etwas passiert,|und eilst zum "
+"Du hast das komische Gefï¿½hl,|daï¿½ drauï¿½en etwas passiert,|und eilst zum "
 "Restaurant."
 msgstr ""
 "Hai il presentimento|che fuori stia accadendo qualcosa,|e accorri al "
@@ -1538,7 +1538,7 @@ msgid "Da! Die Supernova!"
 msgstr "Eccola! La Supernova!"
 
 #: ../../msn/msn_r2.c:630
-msgid "Zwei Minuten sp„ter ..."
+msgid "Zwei Minuten spï¿½ter ..."
 msgstr "Due minuti dopo ..."
 
 #: ../../msn/msn_r2.c:638
@@ -1558,11 +1558,11 @@ msgid "Und jetzt raus mit Ihnen!"
 msgstr "E ora sparisci!"
 
 #: ../../msn/msn_r2.c:660
-msgid "Zehn Minuten sp„ter ..."
+msgid "Zehn Minuten spï¿½ter ..."
 msgstr "Dieci minuti dopo ..."
 
 #: ../../msn/msn_r2.c:690
-msgid "K”nnten Sie mir ein Gericht empfehlen?"
+msgid "Kï¿½nnten Sie mir ein Gericht empfehlen?"
 msgstr "Puoi consigliarmi qualcosa?"
 
 #: ../../msn/msn_r2.c:691
@@ -1574,7 +1574,7 @@ msgid "Sie kommen mir irgendwie bekannt vor."
 msgstr "Hai un non so che di familiare."
 
 #: ../../msn/msn_r2.c:704
-msgid "Hey, Witzkeks, laá die Brieftasche da liegen!"
+msgid "Hey, Witzkeks, laï¿½ die Brieftasche da liegen!"
 msgstr "Ehi simpaticone, lascia stare il mio portafoglio!"
 
 #: ../../msn/msn_r2.c:708
@@ -1600,19 +1600,19 @@ msgstr "Altre due ore come minimo."
 
 #: ../../msn/msn_r2.c:722
 msgid ""
-"Haben Sie keine Idee, womit wir uns|bis dahin die Zeit vertreiben k”nnen?"
+"Haben Sie keine Idee, womit wir uns|bis dahin die Zeit vertreiben kï¿½nnen?"
 msgstr "Hai qualche suggerimento|su come passare il tempo?"
 
 #: ../../msn/msn_r2.c:723
 msgid ""
-"Hmm ... im Moment f„llt mir nichts ein, aber vielleicht|hat der Spieler des "
+"Hmm ... im Moment fï¿½llt mir nichts ein, aber vielleicht|hat der Spieler des "
 "Adventures ja eine Idee."
 msgstr ""
 "Hmm ... al momento non saprei, ma magari|il Giocatore di Avventure ha "
 "qualche idea."
 
 #: ../../msn/msn_r2.c:725
-msgid "Nein, Sie mssen sich irren.|Ich kenne Sie jedenfalls nicht."
+msgid "Nein, Sie mï¿½ssen sich irren.|Ich kenne Sie jedenfalls nicht."
 msgstr "No, ti sbagli.|Io non ti conosco."
 
 #: ../../msn/msn_r2.c:726
@@ -1624,7 +1624,7 @@ msgid "Ja? Komisch."
 msgstr "Davvero? Strano."
 
 #: ../../msn/msn_r2.c:728
-msgid "Jetzt weiá ich's. Sie sind Roger W. !"
+msgid "Jetzt weiï¿½ ich's. Sie sind Roger W. !"
 msgstr "Ora ho capito. Sei Roger W. !"
 
 #: ../../msn/msn_r2.c:729
@@ -1639,15 +1639,15 @@ msgstr ""
 "importunarmi."
 
 #: ../../msn/msn_r2.c:731
-msgid "h ... ach so."
+msgid "ï¿½h ... ach so."
 msgstr "Ah... Capisco."
 
 #: ../../msn/msn_r2.c:732
-msgid "Wann kommt denn das n„chste SQ-Abenteuer raus?"
+msgid "Wann kommt denn das nï¿½chste SQ-Abenteuer raus?"
 msgstr "Quando uscira` il prossimo episodio di SQ?"
 
 #: ../../msn/msn_r2.c:733
-msgid "SQ 127 máte in einem Monat erscheinen."
+msgid "SQ 127 mï¿½ï¿½te in einem Monat erscheinen."
 msgstr "SQ 127 dovrebbe uscire nel giro di un mese."
 
 #: ../../msn/msn_r2.c:734
@@ -1667,34 +1667,34 @@ msgid "Von der Erde."
 msgstr "Dalla Terra."
 
 #: ../../msn/msn_r2.c:738
-msgid "Erde? Nie geh”rt."
+msgid "Erde? Nie gehï¿½rt."
 msgstr "Terra? Mai sentito."
 
 #: ../../msn/msn_r2.c:739
 msgid ""
-"Wahrscheinlich irgendein Kaff, wo Neuerungen|erst hundert Jahre sp„ter "
+"Wahrscheinlich irgendein Kaff, wo Neuerungen|erst hundert Jahre spï¿½ter "
 "hingelangen."
 msgstr ""
 "Sara` un pianeta di trogloditi dove le novita`|arrivano con un secolo di "
 "ritardo."
 
 #: ../../msn/msn_r2.c:740
-msgid "h ... kann sein."
+msgid "ï¿½h ... kann sein."
 msgstr "Ah ... puo` darsi."
 
 #: ../../msn/msn_r2.c:741
-msgid "Aber eins mssen Sie mir erkl„ren!"
+msgid "Aber eins mï¿½ssen Sie mir erklï¿½ren!"
 msgstr "Ma devi spiegarmi una cosa!"
 
 #: ../../msn/msn_r2.c:742
 msgid ""
-"Wieso sehen Sie mir so verdammt „hnlich, wenn|Sie nicht von Xenon stammen, "
+"Wieso sehen Sie mir so verdammt ï¿½hnlich, wenn|Sie nicht von Xenon stammen, "
 "wie ich?"
-msgstr "Come puoi assomigliarmi cosi` tanto|se non provieni da Xenon, come me?"
+msgstr "Come puoi assomigliarmi cosï¿½i` tanto|se non provieni da Xenon, come me?"
 
 #: ../../msn/msn_r2.c:743
 msgid ""
-"Keine Ahnung. Bis jetzt dachte ich immer, Sie w„ren ein|von Programmierern "
+"Keine Ahnung. Bis jetzt dachte ich immer, Sie wï¿½ren ein|von Programmierern "
 "auf der Erde erfundenes Computersprite."
 msgstr ""
 "Non ne ho idea. Prima di incontrarti, ero convinto tu|fossi un personaggio "
@@ -1705,16 +1705,16 @@ msgid "Was? Lachhaft!"
 msgstr "Cosa? Cio` e` ridicolo!"
 
 #: ../../msn/msn_r2.c:745
-msgid "Wie erkl„ren Sie sich dann,|daá ich ihnen gegenbersitze?"
-msgstr "Se e` cosi`, allora come posso|essere seduto di fronte a te?"
+msgid "Wie erklï¿½ren Sie sich dann,|daï¿½ ich ihnen gegenï¿½bersitze?"
+msgstr "Se e` cosi`ï¿½, allora come posso|essere seduto di fronte a te?"
 
 #: ../../msn/msn_r2.c:746
 msgid "Ja, das ist in der Tat seltsam."
-msgstr "Si`, e` decisamente strano."
+msgstr "Sï¿½i`, e` decisamente strano."
 
 #: ../../msn/msn_r2.c:747
 msgid ""
-"Halt, jetzt weiá ich es. Sie sind von der Konkurrenz,|von \"Georgefilm Games"
+"Halt, jetzt weiï¿½ ich es. Sie sind von der Konkurrenz,|von \"Georgefilm Games"
 "\" und wollen mich verunsichern."
 msgstr ""
 "Ah, ho capito! Sei della concorrenza,|la \"Georgefilm Games\", e vuoi farmi "
@@ -1739,16 +1739,16 @@ msgid "Schach? Was ist das denn?"
 msgstr "Scacchi? Cosa sarebbe?"
 
 #: ../../msn/msn_r2.c:763
-msgid "Schach ist ein interessantes Spiel.|Ich werde es Ihnen erkl„ren."
+msgid "Schach ist ein interessantes Spiel.|Ich werde es Ihnen erklï¿½ren."
 msgstr ""
 "Gli scacchi sono un gioco interessantissimo.| Posso spiegarti le regole."
 
 #: ../../msn/msn_r2.c:769
-msgid "Knapp zwei Stunden sp„ter ..."
+msgid "Knapp zwei Stunden spï¿½ter ..."
 msgstr "Un paio di ore dopo ..."
 
 #: ../../msn/msn_r2.c:787
-msgid "Roger W. steht kurz vor dem Schachmatt|und grbelt nach einem Ausweg."
+msgid "Roger W. steht kurz vor dem Schachmatt|und grï¿½belt nach einem Ausweg."
 msgstr ""
 "Roger W. e` a un passo dallo scacco matto|e sta cercando una via d'uscita."
 
@@ -1765,7 +1765,7 @@ msgid "Du tippst auf den Tasten herum,|aber es passiert nichts."
 msgstr "Provi a premere i tasti,|ma non succede nulla."
 
 #: ../../msn/msn_r2.c:917
-msgid "Ach, Ihnen geh”rt die. Ich habe sie eben im Sand gefunden."
+msgid "Ach, Ihnen gehï¿½rt die. Ich habe sie eben im Sand gefunden."
 msgstr "Ah, e` tuo. L'ho appena trovato nella sabbia."
 
 #: ../../msn/msn_r2.c:918
@@ -1777,7 +1777,7 @@ msgid "Nein, danke. Ich bleibe lieber hier."
 msgstr "No, grazie. Preferisco rimanere qui."
 
 #: ../../msn/msn_r2.c:925
-msgid "Ja, das w„re gut."
+msgid "Ja, das wï¿½re gut."
 msgstr "Grazie, sarebbe fantastico."
 
 #: ../../msn/msn_r2.c:931
@@ -1785,7 +1785,7 @@ msgid "Zur Erde."
 msgstr "Sulla Terra."
 
 #: ../../msn/msn_r2.c:932
-msgid "Zum Pr„sident der Galaxis."
+msgid "Zum Prï¿½sident der Galaxis."
 msgstr "Dal Presidente della Galassia."
 
 #: ../../msn/msn_r2.c:933
@@ -1801,7 +1801,7 @@ msgid "Ich habe gerade Ihre Brieftasche gefunden!"
 msgstr "Ho appena trovato il tuo portafoglio!"
 
 #: ../../msn/msn_r2.c:941
-msgid "Sie lag da drben hinter einem Felsen."
+msgid "Sie lag da drï¿½ben hinter einem Felsen."
 msgstr "Era laggiu`, dietro ad una roccia."
 
 #: ../../msn/msn_r2.c:942
@@ -1818,7 +1818,7 @@ msgstr "No."
 
 #: ../../msn/msn_r2.c:965
 msgid ""
-"Haben Sie zuf„llig meine Brieftasche gesehen?|Ich muá Sie irgendwo verloren "
+"Haben Sie zufï¿½llig meine Brieftasche gesehen?|Ich muï¿½ Sie irgendwo verloren "
 "haben."
 msgstr "Hai visto il mio portafoglio, per caso?|Devo averlo perso qui intorno."
 
@@ -1832,7 +1832,7 @@ msgid "Oh! Vielen Dank."
 msgstr "Oh! Grazie mille."
 
 #: ../../msn/msn_r2.c:976
-msgid "Wo ist denn Ihr Raumschiff?|Soll ich Sie ein Stck mitnehmen?"
+msgid "Wo ist denn Ihr Raumschiff?|Soll ich Sie ein Stï¿½ck mitnehmen?"
 msgstr "Dov'e` la tua astronave?|Hai bisogno di un passaggio?"
 
 #: ../../msn/msn_r2.c:979
@@ -1853,7 +1853,7 @@ msgstr "Wow, sei ancora vivo!"
 
 #: ../../msn/msn_r2.c:1057
 msgid ""
-"Das wrde ich jetzt nicht tun, schlieálich|steht Roger W. neben seinem "
+"Das wï¿½rde ich jetzt nicht tun, schlieï¿½lich|steht Roger W. neben seinem "
 "Schiff."
 msgstr ""
 "Eviterei di farlo ora, visto che Roger W.|e` proprio accanto alla sua "
@@ -1902,13 +1902,13 @@ msgstr "Sei sulla nave spaziale \"Dexxa\"."
 #: ../../msn/msn_r2.c:1149
 msgid ""
 "Wir kommen vom Planeten Axacuss und|sind aus dem gleichen Grund hier wie "
-"Sie,|n„mlich zur Erforschung der Supernova."
+"Sie,|nï¿½mlich zur Erforschung der Supernova."
 msgstr ""
 "Veniamo dal pianta Axacuss|e siamo qui per la tua stessa ragione,|cioe` "
 "osservare la supernova."
 
 #: ../../msn/msn_r2.c:1151
-msgid "Sie k”nnen beruhigt sein, wir wollen Ihnen nur helfen."
+msgid "Sie kï¿½nnen beruhigt sein, wir wollen Ihnen nur helfen."
 msgstr "Non temere, vogliamo solo aiutarti."
 
 #: ../../msn/msn_r2.c:1152
@@ -1921,16 +1921,16 @@ msgstr "Solo un riflesso condizionato."
 
 #: ../../msn/msn_r2.c:1154
 msgid ""
-"Schlieálich ist es fr uns das erste Mal,|daá wir auf eine fremde "
+"Schlieï¿½lich ist es fï¿½r uns das erste Mal,|daï¿½ wir auf eine fremde "
 "Intelligenz treffen."
 msgstr "Dopo tutto, era la prima volta|che incontravamo intelligenza aliena."
 
 #: ../../msn/msn_r2.c:1155
-msgid "Wie wir festgestellt haben, ist|Ihr Raumschiff v”llig zerst”rt."
+msgid "Wie wir festgestellt haben, ist|Ihr Raumschiff vï¿½llig zerstï¿½rt."
 msgstr "Secondo i nostri rilevamenti,|la tua nave e` seriamente danneggiata."
 
 #: ../../msn/msn_r2.c:1156
-msgid "Wahrscheinlich k”nnen Sie nicht|mehr auf ihren Heimatplaneten zurck."
+msgid "Wahrscheinlich kï¿½nnen Sie nicht|mehr auf ihren Heimatplaneten zurï¿½ck."
 msgstr "Potresti non essere in grado|di ritornare al tuo pianeta natio."
 
 #: ../../msn/msn_r2.c:1157
@@ -1942,13 +1942,13 @@ msgid "Sind Sie sich da wirklich sicher?"
 msgstr "Ne sei proprio sicuro?"
 
 #: ../../msn/msn_r2.c:1161 ../../msn/msn_r2.c:1170
-msgid "Wenn ich es mir genau berlege,|fliege ich doch lieber mit."
+msgid "Wenn ich es mir genau ï¿½berlege,|fliege ich doch lieber mit."
 msgstr "Ripensandoci,|forse potrei unirmi a voi."
 
 #: ../../msn/msn_r2.c:1163
 msgid ""
-"Gut, wir nehmen Sie unter der|Bedingung mit, daá wir Sie jetzt|sofort in "
-"Tiefschlaf versetzen drfen."
+"Gut, wir nehmen Sie unter der|Bedingung mit, daï¿½ wir Sie jetzt|sofort in "
+"Tiefschlaf versetzen dï¿½rfen."
 msgstr ""
 "Va bene, ti porteremo con noi.|Come unica condizione, devi accettare|di "
 "essere posto in animazione sospesa."
@@ -1996,11 +1996,11 @@ msgid "Was? Sie haben in mein Gehirn eingegriffen?"
 msgstr "Cosa? Avete manipolato il mio cervello?"
 
 #: ../../msn/msn_r2.c:1180
-msgid "Keine Angst, wir haben sonst nichts ver„ndert."
+msgid "Keine Angst, wir haben sonst nichts verï¿½ndert."
 msgstr "Non preoccuparti, non abbiamo alterato nient'altro."
 
 #: ../../msn/msn_r2.c:1181
-msgid "Ohne diesen Eingriff w„ren|Sie verloren gewesen."
+msgid "Ohne diesen Eingriff wï¿½ren|Sie verloren gewesen."
 msgstr "E senza il nostro intervento,|non saresti sopravvissuto."
 
 #: ../../msn/msn_r2.c:1186
@@ -2024,15 +2024,15 @@ msgid "Loch"
 msgstr "Apertura"
 
 #: ../../msn/msn_r2.c:1215
-msgid "Es scheint eine H”hle zu sein."
+msgid "Es scheint eine Hï¿½hle zu sein."
 msgstr "Sembra una caverna."
 
 #: ../../msn/msn_r2.c:1221
 msgid "Hier bist du gerade hergekommen."
-msgstr "Eri li` poco fa."
+msgstr "Eri lï¿½i` poco fa."
 
 #: ../../msn/msn_r2.c:1229 ../../msn/msn_r2.c:1310 ../../msn/msn_r2.c:1319
-msgid "H”hle"
+msgid "Hï¿½hle"
 msgstr "Caverna"
 
 #: ../../msn/msn_r2.c:1230 ../../msn/msn_r2.c:1243 ../../msn/msn_r2.c:1257
@@ -2071,7 +2071,7 @@ msgstr "E` esattamente come lo vedi anche tu."
 #: ../../msn/msn_r3.c:1611 ../../msn/msn_r3.c:1621 ../../msn/msn_r3.c:1633
 #: ../../msn/msn_r3.c:1644 ../../msn/msn_r3.c:1656 ../../msn/msn_r3.c:1667
 #: ../../msn/msn_r3.c:1688
-msgid "Tr"
+msgid "Tï¿½r"
 msgstr "Porta"
 
 #: ../../msn/msn_r2.c:1245
@@ -2079,7 +2079,7 @@ msgid "Kaugummi"
 msgstr "Gomma da masticare"
 
 #: ../../msn/msn_r2.c:1246
-msgid "Gummib„rchen"
+msgid "Gummibï¿½rchen"
 msgstr "Orsetto gommoso"
 
 #: ../../msn/msn_r2.c:1247
@@ -2087,7 +2087,7 @@ msgid "Schokokugel"
 msgstr "Cioccolatino"
 
 #: ../../msn/msn_r2.c:1248
-msgid "šberraschungsei"
+msgid "ï¿½berraschungsei"
 msgstr "Ovetto con sorpresa"
 
 #: ../../msn/msn_r2.c:1249
@@ -2100,7 +2100,7 @@ msgstr "Compressa"
 
 #: ../../msn/msn_r2.c:1250
 msgid ""
-"Die Plastikhlle zeigt einen|Mund mit einer Sprechblase. Was|darin steht, "
+"Die Plastikhï¿½lle zeigt einen|Mund mit einer Sprechblase. Was|darin steht, "
 "kannst du nicht lesen."
 msgstr ""
 "Sulla bustina e` disegnata|una bocca con un fumetto.|Non riesci a leggere "
@@ -2115,7 +2115,7 @@ msgid "Sieht aus wie ein Kaugummiautomat."
 msgstr "Sembra un distributore automatico di dolciumi."
 
 #: ../../msn/msn_r2.c:1254
-msgid "Die Toiletten sind denen|auf der Erde sehr „hnlich."
+msgid "Die Toiletten sind denen|auf der Erde sehr ï¿½hnlich."
 msgstr "Questi bagni assomigliano|molto a quelli terrestri."
 
 #: ../../msn/msn_r2.c:1258 ../../msn/msn_r2.c:1269
@@ -2123,20 +2123,20 @@ msgid "Treppe"
 msgstr "Scala"
 
 #: ../../msn/msn_r2.c:1260
-msgid "Mnzen"
+msgid "Mï¿½nzen"
 msgstr "Monete"
 
 #: ../../msn/msn_r2.c:1260
-msgid "Es sind seltsame|K”pfe darauf abgebildet."
+msgid "Es sind seltsame|Kï¿½pfe darauf abgebildet."
 msgstr "Sono stampigliate con dei volti strambi."
 
 #: ../../msn/msn_r2.c:1262
-msgid "Tablettenhlle"
+msgid "Tablettenhï¿½lle"
 msgstr "Bustina della compressa"
 
 #: ../../msn/msn_r2.c:1262
 msgid ""
-"Darauf steht:\"Wenn Sie diese|Schrift jetzt lesen k”nnen,|hat die Tablette "
+"Darauf steht:\"Wenn Sie diese|Schrift jetzt lesen kï¿½nnen,|hat die Tablette "
 "gewirkt.\""
 msgstr ""
 "Dice: \"Se riesci a leggere queste parole,|la compressa ha funzionato.\""
@@ -2182,7 +2182,7 @@ msgid "Tasse"
 msgstr "Tazza"
 
 #: ../../msn/msn_r2.c:1282
-msgid "Sie enth„lt eine grnliche Flssigkeit."
+msgid "Sie enthï¿½lt eine grï¿½nliche Flï¿½ssigkeit."
 msgstr "Contiene un liquido verdastro."
 
 #: ../../msn/msn_r2.c:1284
@@ -2218,7 +2218,7 @@ msgid "Der Eingang scheint offen zu sein."
 msgstr "Sembra si possa entrare."
 
 #: ../../msn/msn_r3.c:27
-msgid "Du drckst den Knopf,|aber nichts passiert."
+msgid "Du drï¿½ckst den Knopf,|aber nichts passiert."
 msgstr "Hai premuto il pulsante,|ma non e` successo niente."
 
 #: ../../msn/msn_r3.c:88
@@ -2226,7 +2226,7 @@ msgid "Bei deinem Fluchtversuch hat|dich der Roboter erschossen."
 msgstr "Quando hai tentato di fuggire,|il robot ti ha sparato."
 
 #: ../../msn/msn_r3.c:91
-msgid "Du iát etwas, aber|es schmeckt scheuálich."
+msgid "Du iï¿½t etwas, aber|es schmeckt scheuï¿½lich."
 msgstr "E` commestibile,|ma ha un sapore orribile."
 
 #: ../../msn/msn_r3.c:171
@@ -2234,15 +2234,15 @@ msgid "Du wachst auf und findest dich in|einem geschlossenen Raum wieder."
 msgstr "Ti sei svegliato|in una stanza chiusa."
 
 #: ../../msn/msn_r3.c:230
-msgid "h ... nein, mein Name ist Mller."
-msgstr "Eh... no, io mi chiamo Muller."
+msgid "ï¿½h ... nein, mein Name ist Mï¿½ller."
+msgstr "Eh... no, io mi chiamo Mï¿½uller."
 
 #: ../../msn/msn_r3.c:231
 msgid "Oh, ich habe mich im Gang vertan."
 msgstr "Oh... mi sono perso."
 
 #: ../../msn/msn_r3.c:237
-msgid "Wrden Sie mich bitte zum Fahrstuhl lassen?"
+msgid "Wï¿½rden Sie mich bitte zum Fahrstuhl lassen?"
 msgstr "Per favore, posso prendere l'ascensore?"
 
 #: ../../msn/msn_r3.c:238
@@ -2282,11 +2282,11 @@ msgid "Nein!"
 msgstr "No!"
 
 #: ../../msn/msn_r3.c:310
-msgid "Das máte schon ein biáchen mehr sein."
+msgid "Das mï¿½ï¿½te schon ein biï¿½chen mehr sein."
 msgstr "Voglio un po' di piu`."
 
 #: ../../msn/msn_r3.c:324
-msgid "Ok, dann machen Sie daá Sie wegkommen!"
+msgid "Ok, dann machen Sie daï¿½ Sie wegkommen!"
 msgstr "Va bene! E adesso muoviti!"
 
 #: ../../msn/msn_r3.c:430
@@ -2295,14 +2295,14 @@ msgstr "L'Axacussano ti ha scoperto."
 
 #: ../../msn/msn_r3.c:547
 msgid ""
-"Diese Tr wrde ich lieber|nicht ”ffnen. Nach dem Schild zu|urteilen, ist "
+"Diese Tï¿½r wï¿½rde ich lieber|nicht ï¿½ffnen. Nach dem Schild zu|urteilen, ist "
 "jemand in dem Raum."
 msgstr ""
 "Meglio non aprire la porta.|La stanza e` occupata, c'e` persino|una targhetta "
 "con il nome del titolare."
 
 #: ../../msn/msn_r3.c:642
-msgid "Du stellst dich hinter die S„ule."
+msgid "Du stellst dich hinter die Sï¿½ule."
 msgstr "Ti sei nascosto dietro al pilastro."
 
 #: ../../msn/msn_r3.c:656
@@ -2315,8 +2315,8 @@ msgstr "Combinazione da inserire?      | "
 
 #: ../../msn/msn_r3.c:708
 msgid ""
-"Hmm, das haut nicht ganz hin,|aber irgendwie muá die Zahl|mit dem Code "
-"zusammenh„ngen."
+"Hmm, das haut nicht ganz hin,|aber irgendwie muï¿½ die Zahl|mit dem Code "
+"zusammenhï¿½ngen."
 msgstr ""
 "Hmm, non ha funzionato...|ma quel numero deve riferirsi al codice,|in "
 "qualche modo."
@@ -2338,7 +2338,7 @@ msgid "Sehr geehrter Dr. Hansi,"
 msgstr "Gent.mo Dott. Hansi,"
 
 #: ../../msn/msn_r3.c:751
-msgid "Ich muá Ihren Roboterexperten ein Lob aussprechen. Die"
+msgid "Ich muï¿½ Ihren Roboterexperten ein Lob aussprechen. Die"
 msgstr "Devo complimentarmi con i vostri esperti di robotica."
 
 #: ../../msn/msn_r3.c:752
@@ -2346,7 +2346,7 @@ msgid "Imitation von Horst Hummel ist perfekt gelungen, wie ich"
 msgstr "La riproduzione di Horst Hummel e` stata un successo,"
 
 #: ../../msn/msn_r3.c:753
-msgid "heute bei der šbertragung des Interviews feststellen"
+msgid "heute bei der ï¿½bertragung des Interviews feststellen"
 msgstr "e ne ho avuto conferma vedendo la sua intervista in TV."
 
 #: ../../msn/msn_r3.c:754
@@ -2354,7 +2354,7 @@ msgid "konnte. Dem Aufschwung Ihrer Firma durch die Werbe-"
 msgstr "Grazie alla campagna pubblicitaria del falso Hummel"
 
 #: ../../msn/msn_r3.c:755
-msgid "kampagne mit dem falschen Horst Hummel drfte ja jetzt"
+msgid "kampagne mit dem falschen Horst Hummel dï¿½rfte ja jetzt"
 msgstr "la vostra azienda potra` ritornare ai posti di vertice che"
 
 #: ../../msn/msn_r3.c:756
@@ -2442,11 +2442,11 @@ msgid "Vom Klo."
 msgstr "Dal bagno."
 
 #: ../../msn/msn_r3.c:1070
-msgid "Das werde ich kaum erz„hlen."
+msgid "Das werde ich kaum erzï¿½hlen."
 msgstr "Non posso dirvelo."
 
 #: ../../msn/msn_r3.c:1079
-msgid "1 Bromanager"
+msgid "1 Bï¿½romanager"
 msgstr "1 Gestione Ufficio"
 
 #: ../../msn/msn_r3.c:1080
@@ -2462,11 +2462,11 @@ msgid "4 Calculata"
 msgstr "4 Calculata"
 
 #: ../../msn/msn_r3.c:1083
-msgid "Bitte w„hlen"
+msgid "Bitte wï¿½hlen"
 msgstr "Prego selezionare"
 
 #: ../../msn/msn_r3.c:1091
-msgid "Geben Sie den gewnschten Namen ein:"
+msgid "Geben Sie den gewï¿½nschten Namen ein:"
 msgstr "Inserire nome desiderato:"
 
 #: ../../msn/msn_r3.c:1092
@@ -2478,7 +2478,7 @@ msgid "Name unbekannt"
 msgstr "Nome sconosciuto"
 
 #: ../../msn/msn_r3.c:1112
-msgid "Verbindung unm”glich"
+msgid "Verbindung unmï¿½glich"
 msgstr "Collegamento interrotto"
 
 #: ../../msn/msn_r3.c:1116
@@ -2493,11 +2493,11 @@ msgstr "Ufficio di %s. Pronto?"
 
 #: ../../msn/msn_r3.c:1127
 #, c-format
-msgid "Hier ist %s. K”nnen Sie mal gerade kommen?"
+msgid "Hier ist %s. Kï¿½nnen Sie mal gerade kommen?"
 msgstr "Sono %s. Potresti raggiungermi nel mio ufficio?"
 
 #: ../../msn/msn_r3.c:1134
-msgid "Huch, Sie h”ren sich aber|nicht gut an. Ich komme sofort."
+msgid "Huch, Sie hï¿½ren sich aber|nicht gut an. Ich komme sofort."
 msgstr "Uh, hai una voce strana.|Arrivo subito."
 
 #: ../../msn/msn_r3.c:1145
@@ -2513,7 +2513,7 @@ msgid "Passwort:"
 msgstr "Password:"
 
 #: ../../msn/msn_r3.c:1215
-msgid "Was war das fr ein Ger„usch?"
+msgid "Was war das fï¿½r ein Gerï¿½usch?"
 msgstr "Cos'e` stato quel rumore?"
 
 #: ../../msn/msn_r3.c:1217 ../../msn/msn_s.c:312
@@ -2531,7 +2531,7 @@ msgstr "Ops, mio errore."
 #: ../../msn/msn_r3.c:1368
 msgid ""
 "Nachdem du zwei Stunden im|Dschungel herumgeirrt bist,|findest du ein "
-"Geb„ude."
+"Gebï¿½ude."
 msgstr "Dopo due ore a vagabondare per la giungla,|ti imbatti in un edificio."
 
 #: ../../msn/msn_r3.c:1481
@@ -2539,7 +2539,7 @@ msgid "Tablett"
 msgstr "Vassoio"
 
 #: ../../msn/msn_r3.c:1481
-msgid "Es ist irgendein Fraá und|etwas zu Trinken darauf."
+msgid "Es ist irgendein Fraï¿½ und|etwas zu Trinken darauf."
 msgstr "Contiene una sottospecie di cibo,| e qualcosa da bere."
 
 #: ../../msn/msn_r3.c:1483
@@ -2587,7 +2587,7 @@ msgid "Ein kleiner Metalltisch."
 msgstr "Un tavolino in metallo."
 
 #: ../../msn/msn_r3.c:1524
-msgid "Zellentr"
+msgid "Zellentï¿½r"
 msgstr "Porta della cella"
 
 #: ../../msn/msn_r3.c:1524
@@ -2599,23 +2599,23 @@ msgid "Laptop"
 msgstr "Laptop"
 
 #: ../../msn/msn_r3.c:1576 ../../msn/msn_r3.c:1577
-msgid "S„ule"
+msgid "Sï¿½ule"
 msgstr "Pilastro"
 
 #: ../../msn/msn_r3.c:1580
-msgid "Auf einem Schild an der Tr steht \"Dr. Alab Hansi\"."
+msgid "Auf einem Schild an der Tï¿½r steht \"Dr. Alab Hansi\"."
 msgstr "La targhetta sulla porta dice:|\"Dott. Alab Hansi\"."
 
 #: ../../msn/msn_r3.c:1582
-msgid "Auf einem Schild an der Tr steht \"Saval Lun\"."
+msgid "Auf einem Schild an der Tï¿½r steht \"Saval Lun\"."
 msgstr "La targhetta sulla porta dice:|\"Saval Lun\"."
 
 #: ../../msn/msn_r3.c:1584
-msgid "Auf einem Schild an der Tr steht \"Prof. Dr. Ugnul Tschabb\"."
+msgid "Auf einem Schild an der Tï¿½r steht \"Prof. Dr. Ugnul Tschabb\"."
 msgstr "La targhetta sulla porta dice:|\"Dott. Prof. Ugnul Tschabb\"."
 
 #: ../../msn/msn_r3.c:1586
-msgid "Auf einem Schild an der Tr steht \"Alga Hurz Li\"."
+msgid "Auf einem Schild an der Tï¿½r steht \"Alga Hurz Li\"."
 msgstr "La targhetta sulla porta dice:|\"Alga Hurz Li\"."
 
 #: ../../msn/msn_r3.c:1597 ../../msn/msn_r3.c:1613
@@ -2623,7 +2623,7 @@ msgid "Axacussaner"
 msgstr "Axacussano"
 
 #: ../../msn/msn_r3.c:1597
-msgid "Du mátest ihn irgendwie ablenken."
+msgid "Du mï¿½ï¿½test ihn irgendwie ablenken."
 msgstr "Devi riuscire a distrarlo in qualche modo."
 
 #: ../../msn/msn_r3.c:1599
@@ -2655,11 +2655,11 @@ msgid "Es sind 500 Xa."
 msgstr "Sono 500 Xa."
 
 #: ../../msn/msn_r3.c:1624
-msgid "Schlieáfach"
+msgid "Schlieï¿½fach"
 msgstr "Scompartimento"
 
 #: ../../msn/msn_r3.c:1624
-msgid "Es hat ein elektronisches Zahlenschloá."
+msgid "Es hat ein elektronisches Zahlenschloï¿½."
 msgstr "Ha una serratura a combinazione."
 
 #: ../../msn/msn_r3.c:1626
@@ -2667,7 +2667,7 @@ msgid "Brief"
 msgstr "Lettera"
 
 #: ../../msn/msn_r3.c:1635
-msgid "Wrfel"
+msgid "Wï¿½rfel"
 msgstr "Cubi"
 
 #: ../../msn/msn_r3.c:1635
@@ -2703,7 +2703,7 @@ msgid "Stark!"
 msgstr "Forte!"
 
 #: ../../msn/msn_r3.c:1659
-msgid "Sie ist den Pflanzen auf der Erde sehr „hnlich."
+msgid "Sie ist den Pflanzen auf der Erde sehr ï¿½hnlich."
 msgstr "Somiglia molto alle piante terrestri."
 
 #: ../../msn/msn_r3.c:1668
@@ -2715,7 +2715,7 @@ msgid "Graffiti"
 msgstr "Graffiti"
 
 #: ../../msn/msn_r3.c:1669
-msgid "Seltsamer Broschmuck!"
+msgid "Seltsamer Bï¿½roschmuck!"
 msgstr "Strana decorazione per un ufficio!"
 
 #: ../../msn/msn_r3.c:1670
@@ -2727,7 +2727,7 @@ msgid "Dschungel"
 msgstr "Giungla"
 
 #: ../../msn/msn_r3.c:1680
-msgid "Lauter B„ume."
+msgid "Lauter Bï¿½ume."
 msgstr "Nient'altro che alberi."
 
 #: ../../msn/msn_s.c:84
@@ -2747,7 +2747,7 @@ msgid "Viertausend"
 msgstr "Quattromila"
 
 #: ../../msn/msn_s.c:131
-msgid "Fnftausend"
+msgid "Fï¿½nftausend"
 msgstr "Cinquemila"
 
 #: ../../msn/msn_s.c:131
@@ -2804,7 +2804,7 @@ msgstr ""
 
 #: ../../msn/msn_s.c:224
 msgid ""
-"Scheiáe, der Ionenantrieb ist explodiert!|Die Teile sind ber den ganzen|"
+"Scheiï¿½e, der Ionenantrieb ist explodiert!|Die Teile sind ï¿½ber den ganzen|"
 "Maschinenraum verstreut."
 msgstr ""
 "Merda, il propulsore ionico e` esploso!|Ci sono pezzi sparsi per tutta la "
@@ -2812,7 +2812,7 @@ msgstr ""
 
 #: ../../msn/msn_s.c:225
 msgid ""
-"Ach, du meine Gte!|Gibt es irgendeine M”glichkeit,|den Schaden schnell zu "
+"Ach, du meine Gï¿½te!|Gibt es irgendeine Mï¿½glichkeit,|den Schaden schnell zu "
 "beheben?"
 msgstr "Mio Dio!|Siete in grado di ripararlo in qualche modo?"
 
@@ -2821,7 +2821,7 @@ msgid "Nein, Sir. Es sieht schlecht aus."
 msgstr "Negativo, Signore. E` messo male."
 
 #: ../../msn/msn_s.c:230
-msgid "Hmm, die Erde zu alarmieren, wrde zu lange dauern."
+msgid "Hmm, die Erde zu alarmieren, wï¿½rde zu lange dauern."
 msgstr "Hmm, i soccorsi dalla Terra richiederebbero troppo tempo."
 
 #: ../../msn/msn_s.c:231
@@ -2846,13 +2846,13 @@ msgstr "Ripeto:|Dirigersi immediatamente alle scialuppe!"
 
 #: ../../msn/msn_s.c:263
 msgid ""
-"Captain, bereiten Sie alles fr den Start vor!|Wir mssen zurck zur Erde!"
+"Captain, bereiten Sie alles fï¿½r den Start vor!|Wir mï¿½ssen zurï¿½ck zur Erde!"
 msgstr ""
 "Capitano, prepari tutto per abbandonare la nave.|Dobbiamo tornare sulla "
 "Terra!"
 
 #: ../../msn/msn_s.c:277
-msgid "Eine Stunde sp„ter ..."
+msgid "Eine Stunde spï¿½ter ..."
 msgstr "Un'ora dopo..."
 
 #: ../../msn/msn_s.c:284
@@ -2868,11 +2868,11 @@ msgstr ""
 "equipaggio."
 
 #: ../../msn/msn_s.c:286
-msgid "Das ist das kl„gliche Ende|der Mission Supernova."
+msgid "Das ist das klï¿½gliche Ende|der Mission Supernova."
 msgstr "Questa e` la fine ingloriosa|della Missione Supernova."
 
 #: ../../msn/msn_s.c:287
-msgid "Sie k”nnen jetzt ihren Computer ausschalten."
+msgid "Sie kï¿½nnen jetzt ihren Computer ausschalten."
 msgstr "E` ora possibile spegnere il computer."
 
 #: ../../msn/msn_s.c:290
@@ -2910,7 +2910,7 @@ msgid "Autsch!"
 msgstr "Ahia!"
 
 #: ../../msn/msn_s.c:315
-msgid "Scheiáetagenbett!"
+msgid "Scheiï¿½etagenbett!"
 msgstr "Dannato letto a castello!"
 
 #: ../../msn/msn_s.c:317
@@ -2919,7 +2919,7 @@ msgstr "Allora, l'interruttore della luce..."
 
 #: ../../msn/msn_s.c:318
 msgid "Hmm, gar nicht so einfach|bei Schwerelosigkeit."
-msgstr "Hmm, non e` cosi` semplice|in assenza di gravita`."
+msgstr "Hmm, non e` cosi`ï¿½ semplice|in assenza di gravita`."
 
 #: ../../msn/msn_s.c:320
 msgid "Ah, hier ist er."

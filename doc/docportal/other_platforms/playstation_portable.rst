@@ -2,7 +2,7 @@
 PlayStation Portable
 =====================
 
-This page contains all the information you need to get ScummVM up and running on a PSP.
+This page contains all the information you need to get NovelVM up and running on a PSP.
 
 What you'll need
 ===================
@@ -10,25 +10,25 @@ What you'll need
 - A homebrew-enabled PSP. How to enable homebrew is outside the scope of this documentation.
 - A computer to download an extract the install files. 
 
-Installing ScummVM
+Installing NovelVM
 =======================================
 
-The PSP package is available for download ScummVM's `Downloads page <https://www.scummvm.org/downloads>`_.
+The PSP package is available for download NovelVM's `Downloads page <https://www.novelvm.org/downloads>`_.
 
 Download the zip file to a computer, and extract the files. 
 
 Connect the PSP to the computer by USB cable. Go to **Settings > USB Connection** on the PSP. Ensure the **USB Device** option is set to **Memory Stick**.  The computer automatically opens the root folder of the PSP. Alternatively, if you have a Memory Stick adapter, copy the files directly to the Memory Stick. 
 
-Copy the extracted ``scummvm`` folder to your PSP, into the ``/PSP/GAME/`` folder. 
+Copy the extracted ``novelvm`` folder to your PSP, into the ``/PSP/GAME/`` folder. 
 
-Go to **Game > Memory Stick** and choose **ScummVM** to launch ScummVM!
+Go to **Game > Memory Stick** and choose **NovelVM** to launch NovelVM!
 
 Transferring game files
 ==========================
 
 Transfer game files onto the PSP as described in the installation section above. They can be copied to any folder; location doesn't matter. 
 
-See :doc:`../use_scummvm/game_files` for more information about game file requirements.
+See :doc:`../use_novelvm/game_files` for more information about game file requirements.
 
 Controls
 =================
@@ -36,7 +36,7 @@ Controls
 Default control map
 *********************************
 
-These controls can also be manually configured in the :doc:`Keymaps tab <../settings/keymaps>`. See the :doc:`../use_scummvm/keyboard_shortcuts` page for common keyboard shortcuts. 
+These controls can also be manually configured in the :doc:`Keymaps tab <../settings/keymaps>`. See the :doc:`../use_novelvm/keyboard_shortcuts` page for common keyboard shortcuts. 
 
 
 .. |square| raw:: html
@@ -135,15 +135,15 @@ Paths
 Saved games
 ************
 
-``ms0:/scummvm_savegames/``
+``ms0:/novelvm_savegames/``
 
 Configuration file
 ********************
 
-``ms0:/scummvm.ini``
+``ms0:/novelvm.ini``
 
 Known issues
 ==============
 
-- Plugin files are not interchangeable between ScummVM versions.  You must copy all the plugin files found in the ``/PSP/GAME/scummvm/plugin/`` folder for every new version you install. If ScummVM crashes on startup, delete the existing plugin files in the plugin directory and copy the new ones again.
-- If the virtual keyboard does not show up on the screen, ensure the ``kbd.zip`` file is in the ``scummvm`` folder. 
+- Plugin files are not interchangeable between NovelVM versions.  You must copy all the plugin files found in the ``/PSP/GAME/novelvm/plugin/`` folder for every new version you install. If NovelVM crashes on startup, delete the existing plugin files in the plugin directory and copy the new ones again.
+- If the virtual keyboard does not show up on the screen, ensure the ``kbd.zip`` file is in the ``novelvm`` folder. 

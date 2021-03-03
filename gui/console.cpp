@@ -85,7 +85,7 @@ ConsoleDialog::ConsoleDialog(float widthPercent, float heightPercent)
 	_historySize = 0;
 
 	// Display greetings & prompt
-	print(gScummVMFullVersion);
+	print(gNovelVMFullVersion);
 	print("\nConsole is ready\n");
 }
 

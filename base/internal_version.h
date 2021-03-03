@@ -1,23 +1,23 @@
 #if !defined(INCLUDED_FROM_BASE_VERSION_CPP) && !defined(RC_INVOKED)
-#error This file may only be included by base/version.cpp or dists/scummvm.rc
+#error This file may only be included by base/version.cpp or dists/novelvm.rc
 #endif
 
 // Reads revision number from file
 // (this is used when building with Visual Studio)
-#ifdef SCUMMVM_INTERNAL_REVISION
+#ifdef NOVELVM_INTERNAL_REVISION
 #include "internal_revision.h"
 #endif
 
 #ifdef RELEASE_BUILD
-#undef SCUMMVM_REVISION
+#undef NOVELVM_REVISION
 #endif
 
-#ifndef SCUMMVM_REVISION
-#define SCUMMVM_REVISION
+#ifndef NOVELVM_REVISION
+#define NOVELVM_REVISION
 #endif
 
-#define SCUMMVM_VERSION "2.3.0git"
+#define NOVELVM_VERSION "0.0.1git"
 
-#define SCUMMVM_VER_MAJOR 2
-#define SCUMMVM_VER_MINOR 3
-#define SCUMMVM_VER_PATCH 0
+#define NOVELVM_VER_MAJOR 0
+#define NOVELVM_VER_MINOR 0
+#define NOVELVM_VER_PATCH 1

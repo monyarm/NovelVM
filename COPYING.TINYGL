@@ -1,6 +1,6 @@
-NOTE: ScummVM uses code from TinyGL, which is covered by the following license.
+NOTE: NovelVM uses code from TinyGL, which is covered by the following license.
 This implementation of TinyGL contains additional code and modifications
-added only for ScummVM project.
+added only for NovelVM project.
 Look into the source code file "graphics/tinygl/Changelog" for more info.
 
 

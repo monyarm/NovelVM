@@ -17,7 +17,7 @@ make
 
 #Dump all symbols used in this garbage-collected static build into a file
 rm -f ds.syms
-arm-eabi-objdump -t scummvm.elf > ds.syms
+arm-eabi-objdump -t novelvm.elf > ds.syms
 
 make clean
 

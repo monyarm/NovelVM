@@ -14,7 +14,7 @@ export DEFINES=-DNDEBUG
 
 cd ../../../..
 
-echo Building ScummVM/OpenPandora.
+echo Building NovelVM/OpenPandora.
 make
 
 echo Build for OpenPandora complete - Please check build logs.

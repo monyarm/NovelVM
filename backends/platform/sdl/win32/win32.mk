@@ -2,7 +2,7 @@
 # Windows specific
 #
 
-dists/scummvm.o: $(srcdir)/icons/scummvm.ico $(DIST_FILES_THEMES) $(DIST_FILES_NETWORKING) $(DIST_FILES_ENGINEDATA) $(DIST_FILES_SHADERS) config.h $(srcdir)/base/internal_version.h
+dists/novelvm.o: $(srcdir)/icons/novelvm.ico $(DIST_FILES_THEMES) $(DIST_FILES_NETWORKING) $(DIST_FILES_ENGINEDATA) $(DIST_FILES_SHADERS) config.h $(srcdir)/base/internal_version.h
 
 # Special target to create a win32 snapshot binary (for Inno Setup)
 win32dist: all
@@ -52,18 +52,18 @@ endif
 	cp $(srcdir)/doc/se/LasMig $(WIN32PATH)/doc/se/LasMig.txt
 	cp $(WIN32SDLPATH)/SDL2.dll $(WIN32PATH)
 	cp $(srcdir)/dists/win32/graphics/left.bmp $(WIN32PATH)/graphics
-	cp $(srcdir)/dists/win32/graphics/scummvm-install.ico $(WIN32PATH)/graphics
-	cp $(srcdir)/dists/win32/graphics/scummvm-install.bmp $(WIN32PATH)/graphics
+	cp $(srcdir)/dists/win32/graphics/novelvm-install.ico $(WIN32PATH)/graphics
+	cp $(srcdir)/dists/win32/graphics/novelvm-install.bmp $(WIN32PATH)/graphics
 	cp $(srcdir)/dists/win32/migration.bat $(WIN32PATH)
 	cp $(srcdir)/dists/win32/migration.txt $(WIN32PATH)
-	cp $(srcdir)/dists/win32/ScummVM.iss $(WIN32PATH)
+	cp $(srcdir)/dists/win32/NovelVM.iss $(WIN32PATH)
 ifdef USE_SDL_NET
 	cp $(WIN32SDLPATH)/SDL2_net.dll $(WIN32PATH)
-	sed -e '/SDL2_net\.dll/ s/^;//' -i $(WIN32PATH)/ScummVM.iss
+	sed -e '/SDL2_net\.dll/ s/^;//' -i $(WIN32PATH)/NovelVM.iss
 endif
 ifdef USE_SPARKLE
 	cp $(WIN32SPARKLEPATH)/WinSparkle.dll $(WIN32PATH)
-	sed -e '/WinSparkle\.dll/ s/^;//' -i $(WIN32PATH)/ScummVM.iss
+	sed -e '/WinSparkle\.dll/ s/^;//' -i $(WIN32PATH)/NovelVM.iss
 endif
 	unix2dos $(WIN32PATH)/*.txt
 	unix2dos $(WIN32PATH)/doc/*.txt

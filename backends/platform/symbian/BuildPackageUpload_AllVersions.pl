@@ -48,8 +48,8 @@ $initial_path = $ENV{'PATH'}; # so we can start with a fresh PATH for each Build
 
 ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime();
 $date = sprintf("%02d%02d%02d", $year-100, $mon+=1, $mday);
-$file_tpl_pkg = "scummvm-CVS-Symbian%s.pkg";
-$file_tpl_sis = "scummvm-%s-Symbian%s%s.sis";
+$file_tpl_pkg = "novelvm-CVS-Symbian%s.pkg";
+$file_tpl_sis = "novelvm-%s-Symbian%s%s.sis";
 $version_tpl_sis = "$date"; # "CVS$date"
 
 $PackagesQueued = 0;
@@ -167,7 +167,7 @@ foreach $Package (sort @Packages)
 
 print "
 =======================================================================================
-Preparing to Build, Package & Upload $PackagesQueued SymbianOS ScummVM variations
+Preparing to Build, Package & Upload $PackagesQueued SymbianOS NovelVM variations
 =======================================================================================
 
 	Producer     \t$Producer (RedirE:$RedirectSTDERR HaltE:$HaltOnError Skip:$SkipExistingPackages Quiet:$ReallyQuiet)
@@ -198,7 +198,7 @@ unlink($build_log_out);
 unlink($build_log_err);
 
 # init _base.mmp now, so we can start changing it without affecting the CVS version _base.mmp.in!
-my $name = "mmp/scummvm_base.mmp";
+my $name = "mmp/novelvm_base.mmp";
 my $file  = "$build_dir/$name";
 open FILE, "$file.in";	@lines = <FILE>; close FILE;
 my $onestr = join("",@lines);
@@ -335,7 +335,7 @@ print "       SumthinWicked wishes you a ridiculously good and optimally happy d
 ##################################################################################################################
 ##################################################################################################################
 
-# create a set of "MACRO xxx" definitions for use in the scummvm_base.mpp file
+# create a set of "MACRO xxx" definitions for use in the novelvm_base.mpp file
 sub MakeMppMacroDefs
 {
 	my ($features) = @_;
@@ -375,7 +375,7 @@ sub MakeMppMacroDefs
 		my $E = uc($e);
 		if ($EnabledFeatures{$e})
 		{
-			$MacroDefs .= "MACRO		ENABLE_$E		// LIB:scummvm_$e.lib\n";
+			$MacroDefs .= "MACRO		ENABLE_$E		// LIB:novelvm_$e.lib\n";
 			# this one is used: remove it now
 			delete $EnabledFeatures{$e};
 			# this will leave us with a list of unparsed options!
@@ -552,12 +552,12 @@ sub PrepVariation()
 	PrintErrorMessage("Changing to $build_dir failed!") if (!$OK);
 	return 0 if (!$OK);
 
-	# insert $MacroBlock into AUTO_MACRO_MASTER in scummvm_base.mmp
-	PrintMessage("Setting new AUTO_MACROS_MASTER in scummvm_base.mmp for '$Variation'") if (!$ReallyQuiet);
+	# insert $MacroBlock into AUTO_MACRO_MASTER in novelvm_base.mmp
+	PrintMessage("Setting new AUTO_MACROS_MASTER in novelvm_base.mmp for '$Variation'") if (!$ReallyQuiet);
 	my $n = "AUTO_MACROS_MASTER";
 	my $a = "\/\/START_$n\/\/";
 	my $b = "\/\/STOP_$n\/\/";
-	my $name = "scummvm_base.mmp";
+	my $name = "novelvm_base.mmp";
 	my $file = "$build_dir/mmp/$name";
 	my $updated = " Updated @ ".localtime();
 
@@ -610,12 +610,12 @@ sub BuildVariation()
 	# remove some files so we are sure that after .sis package generation we have a fresh copy!
 	my $UnlinkFile = "$output_dir/$Package";
 	if (-e $UnlinkFile) { unlink($UnlinkFile) or PrintErrorMessage("Removing $UnlinkFile"); }
-	$UnlinkFile = $SDK_RootDirs{$SDK}."/epoc32/release/$TargetDir/urel/ScummVM.app";
+	$UnlinkFile = $SDK_RootDirs{$SDK}."/epoc32/release/$TargetDir/urel/NovelVM.app";
 	if (-e $UnlinkFile) { unlink($UnlinkFile) or PrintErrorMessage("Removing $UnlinkFile"); }
-	$UnlinkFile = $SDK_RootDirs{$SDK}."/epoc32/release/$TargetDir/urel/ScummVM.exe";
+	$UnlinkFile = $SDK_RootDirs{$SDK}."/epoc32/release/$TargetDir/urel/NovelVM.exe";
 	if (-e $UnlinkFile) { unlink($UnlinkFile) or PrintErrorMessage("Removing $UnlinkFile"); }
 	# remove all libs here, note they are in another dir!
-	system("del ".$SDK_RootDirs{$SDK}."/epoc32/release/$TargetName/urel/scummvm_*.lib");
+	system("del ".$SDK_RootDirs{$SDK}."/epoc32/release/$TargetName/urel/novelvm_*.lib");
 
 	system("bldmake bldfiles 2> NUL > NUL");
 	PrintErrorMessage("'bldmake bldfiles' exited with value " . ($? >> 8)) if ($? >> 8);

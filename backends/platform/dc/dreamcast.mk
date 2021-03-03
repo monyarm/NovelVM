@@ -2,7 +2,7 @@
 CC := $(CXX)
 ASFLAGS := $(CXXFLAGS)
 
-dist : SCUMMVM.BIN IP.BIN plugin_dist
+dist : NOVELVM.BIN IP.BIN plugin_dist
 
 clean : dcclean
 
@@ -16,10 +16,10 @@ plugin_dist : plugins
           fi;\
 	done
 
-SCUMMVM.BIN : scummvm.bin
+NOVELVM.BIN : novelvm.bin
 	scramble $< $@
 
-scummvm.bin : scummvm.elf
+novelvm.bin : novelvm.elf
 	sh-elf-objcopy -S -R .stack -O binary $< $@
 
 IP.BIN : ip.txt
@@ -35,12 +35,12 @@ ip.txt : $(srcdir)/backends/platform/dc/ip.txt.in
 
 
 dcdist : dist
-	mkdir -p dcdist/scummvm
-	cp scummvm.elf SCUMMVM.BIN IP.BIN *.PLG dcdist/scummvm/
+	mkdir -p dcdist/novelvm
+	cp novelvm.elf NOVELVM.BIN IP.BIN *.PLG dcdist/novelvm/
 
 dcclean :
 	$(RM) backends/platform/dc/plugin_head.o
-	$(RM) scummvm.bin SCUMMVM.BIN ip.txt IP.BIN *.PLG
+	$(RM) novelvm.bin NOVELVM.BIN ip.txt IP.BIN *.PLG
 	$(RM_REC) dcdist
 
 .PHONY: dcclean

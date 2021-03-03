@@ -6,7 +6,7 @@ echo Quick script to make building all the time less painful.
 
 cd ../../../..
 
-echo Building ScummVM for GP2X Caanoo.
+echo Building NovelVM for GP2X Caanoo.
 make
 
 echo Build for GP2X Caanoo - complete - Please check build logs.

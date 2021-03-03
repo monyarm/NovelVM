@@ -59,8 +59,8 @@ void Tooltip::setup(Dialog *parent, Widget *widget, int x, int y) {
 		_x = g_system->getOverlayWidth() - _w - _x + g_gui.getOverlayOffset();
 
 #ifdef USE_TTS
-	if (ConfMan.hasKey("tts_enabled", "scummvm") &&
-			ConfMan.getBool("tts_enabled", "scummvm")) {
+	if (ConfMan.hasKey("tts_enabled", "novelvm") &&
+	    ConfMan.getBool("tts_enabled", "novelvm")) {
 		Common::TextToSpeechManager *ttsMan = g_system->getTextToSpeechManager();
 		if (ttsMan == nullptr)
 			return;
@@ -82,12 +82,12 @@ void Tooltip::drawDialog(DrawLayer layerToDraw) {
 
 	for (Common::U32StringArray::const_iterator i = _wrappedLines.begin(); i != _wrappedLines.end(); ++i, ++num) {
 		g_gui.theme()->drawText(
-			Common::Rect(textX, textY + num * h, textX + _w, textY + (num + 1) * h),
-			*i,
-			ThemeEngine::kStateEnabled,
-			textAlignment,
-			ThemeEngine::kTextInversionNone,
-			0,
+		    Common::Rect(textX, textY + num * h, textX + _w, textY + (num + 1) * h),
+		    *i,
+		    ThemeEngine::kStateEnabled,
+		    textAlignment,
+		    ThemeEngine::kTextInversionNone,
+		    0,
 			false,
 			ThemeEngine::kFontStyleTooltip,
 			ThemeEngine::kFontColorNormal,

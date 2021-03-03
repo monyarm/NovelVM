@@ -1,4 +1,4 @@
-package org.scummvm.scummvm;
+package org.novelvm.novelvm;
 
 import android.os.Build;
 import android.os.Handler;
@@ -19,7 +19,7 @@ import androidx.annotation.NonNull;
 
 import java.lang.ref.WeakReference;
 
-public class ScummVMEventsBase implements
+public class NovelVMEventsBase implements
 		android.view.View.OnKeyListener,
 		android.view.View.OnTouchListener,
 		android.view.GestureDetector.OnGestureListener,
@@ -50,7 +50,7 @@ public class ScummVMEventsBase implements
 	public static final int JE_QUIT = 0x1000;
 
 	final protected Context _context;
-	final protected ScummVM _scummvm;
+	final protected NovelVM _novelvm;
 	final protected GestureDetector _gd;
 	final protected int _longPressTimeout;
 	final protected MouseHelper _mouseHelper;
@@ -58,17 +58,17 @@ public class ScummVMEventsBase implements
 
 	// Custom handler code (to avoid mem leaks, see warning "This Handler Class Should Be Static Or Leaks Might Occur”) based on:
 	// https://stackoverflow.com/a/27826094
-	public static class ScummVMEventHandler extends Handler {
+	public static class NovelVMEventHandler extends Handler {
 
-		private final WeakReference<ScummVMEventsBase> mListenerReference;
+		private final WeakReference<NovelVMEventsBase> mListenerReference;
 
-		public ScummVMEventHandler(ScummVMEventsBase listener) {
+		public NovelVMEventHandler(NovelVMEventsBase listener) {
 			mListenerReference = new WeakReference<>(listener);
 		}
 
 		@Override
 		public synchronized void handleMessage(@NonNull Message msg) {
-			ScummVMEventsBase listener = mListenerReference.get();
+			NovelVMEventsBase listener = mListenerReference.get();
 			if(listener != null) {
 				listener.handleEVHMessage(msg);
 			}
@@ -79,7 +79,7 @@ public class ScummVMEventsBase implements
 		}
 	}
 
-	final private ScummVMEventHandler _skeyHandler = new ScummVMEventHandler(this);
+	final private NovelVMEventHandler _skeyHandler = new NovelVMEventHandler(this);
 
 //	/**
 //	 * An example getter to provide it to some external class
@@ -87,17 +87,17 @@ public class ScummVMEventsBase implements
 //	 * If you only use it internally you might even want it as final member:
 //	 * private final MyHandler mHandler = new MyHandler(this);
 //	 */
-//	public Handler ScummVMEventHandler() {
-//		return new ScummVMEventHandler(this);
+//	public Handler NovelVMEventHandler() {
+//		return new NovelVMEventHandler(this);
 //	}
 
-	public ScummVMEventsBase(Context context, ScummVM scummvm, MouseHelper mouseHelper) {
+	public NovelVMEventsBase(Context context, NovelVM novelvm, MouseHelper mouseHelper) {
 		_context = context;
-		_scummvm = scummvm;
+		_novelvm = novelvm;
 		// Careful, _mouseHelper can be null (if HoverListener is not available for the device API -- old devices, API < 9)
 		_mouseHelper = mouseHelper;
 
-		_multitouchHelper = new MultitouchHelper(_scummvm);
+		_multitouchHelper = new MultitouchHelper(_novelvm);
 
 		_gd = new GestureDetector(context, this);
 		_gd.setOnDoubleTapListener(this);
@@ -108,23 +108,23 @@ public class ScummVMEventsBase implements
 
 	private void handleEVHMessage(final Message msg) {
 		if (msg.what == MSG_SMENU_LONG_PRESS) {
-			// this toggles the android keyboard (see showVirtualKeyboard() in ScummVMActivity.java)
+			// this toggles the android keyboard (see showVirtualKeyboard() in NovelVMActivity.java)
 			// when menu key is long-pressed
 //			InputMethodManager imm = (InputMethodManager)
 //				_context.getSystemService(Context.INPUT_METHOD_SERVICE);
 //
 //			if (imm != null)
 //				imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-			((ScummVMActivity) _context).toggleScreenKeyboard();
+			((NovelVMActivity) _context).toggleScreenKeyboard();
 		} else if (msg.what == MSG_SBACK_LONG_PRESS) {
-			_scummvm.pushEvent(JE_SYS_KEY,
+			_novelvm.pushEvent(JE_SYS_KEY,
 			                   KeyEvent.ACTION_DOWN,
 			                   KeyEvent.KEYCODE_MENU,
 			                   0,
 			                   0,
 			                   0,
 			                   0);
-			_scummvm.pushEvent(JE_SYS_KEY,
+			_novelvm.pushEvent(JE_SYS_KEY,
 			                   KeyEvent.ACTION_UP,
 			                   KeyEvent.KEYCODE_MENU,
 			                   0,
@@ -140,12 +140,12 @@ public class ScummVMEventsBase implements
 	}
 
 	final public void sendQuitEvent() {
-		_scummvm.pushEvent(JE_QUIT, 0, 0, 0, 0, 0, 0);
+		_novelvm.pushEvent(JE_QUIT, 0, 0, 0, 0, 0, 0);
 	}
 
 	public boolean onTrackballEvent(MotionEvent e) {
-		//Log.d(ScummVM.LOG_TAG, "SCUMMV-EVENTS-BASE - onTrackballEvent");
-		_scummvm.pushEvent(JE_BALL, e.getAction(),
+		//Log.d(NovelVM.LOG_TAG, "SCUMMV-EVENTS-BASE - onTrackballEvent");
+		_novelvm.pushEvent(JE_BALL, e.getAction(),
 			(int)(e.getX() * e.getXPrecision() * 100),
 			(int)(e.getY() * e.getYPrecision() * 100),
 			0, 0, 0);
@@ -178,7 +178,7 @@ public class ScummVMEventsBase implements
 //			default:
 //				actionStr = e.toString();
 //		}
-//		Log.d(ScummVM.LOG_TAG, "SCUMMV-EVENTS-BASE - onKEY:::" + keyCode + " Action::" + actionStr); // Called
+//		Log.d(NovelVM.LOG_TAG, "SCUMMV-EVENTS-BASE - onKEY:::" + keyCode + " Action::" + actionStr); // Called
 
 		final int action = e.getAction();
 
@@ -210,13 +210,13 @@ public class ScummVMEventsBase implements
 				}
 			}
 
-			if (ScummVMActivity.keyboardWithoutTextInputShown ) {
+			if (NovelVMActivity.keyboardWithoutTextInputShown ) {
 				if (action == KeyEvent.ACTION_DOWN) {
 					return true;
 				} else if (action == KeyEvent.ACTION_UP) {
 					// Hide keyboard
-					if (((ScummVMActivity) _context).isScreenKeyboardShown()) {
-						((ScummVMActivity) _context).hideScreenKeyboard();
+					if (((NovelVMActivity) _context).isScreenKeyboardShown()) {
+						((NovelVMActivity) _context).hideScreenKeyboard();
 					}
 					return true;
 				}
@@ -268,8 +268,8 @@ public class ScummVMEventsBase implements
 				}
 
 				// It's still necessary to send a key down event to the backend.
-//				Log.d(ScummVM.LOG_TAG, "JE_SYS_KEY");
-				_scummvm.pushEvent(JE_SYS_KEY,
+//				Log.d(NovelVM.LOG_TAG, "JE_SYS_KEY");
+				_novelvm.pushEvent(JE_SYS_KEY,
 				                   KeyEvent.ACTION_DOWN,
 				                   keyCode,
 				                   eventUnicodeChar & KeyCharacterMap.COMBINING_ACCENT_MASK,
@@ -301,7 +301,7 @@ public class ScummVMEventsBase implements
 				}
 
 				for (KeyEvent s : es) {
-					_scummvm.pushEvent(JE_KEY,
+					_novelvm.pushEvent(JE_KEY,
 						s.getAction(),
 						s.getKeyCode(),
 						eventUnicodeChar & KeyCharacterMap.COMBINING_ACCENT_MASK,
@@ -363,11 +363,11 @@ public class ScummVMEventsBase implements
 			break;
 		}
 
-		//_scummvm.displayMessageOnOSD("GetKey: " + keyCode + " unic=" + eventUnicodeChar+ " arg3= " + (eventUnicodeChar& KeyCharacterMap.COMBINING_ACCENT_MASK) + " meta: " + e.getMetaState());
-		//Log.d(ScummVM.LOG_TAG,"GetKey: " + keyCode + " unic=" + eventUnicodeChar+ " arg3= " + (eventUnicodeChar& KeyCharacterMap.COMBINING_ACCENT_MASK) + " meta: " + e.getMetaState());
+		//_novelvm.displayMessageOnOSD("GetKey: " + keyCode + " unic=" + eventUnicodeChar+ " arg3= " + (eventUnicodeChar& KeyCharacterMap.COMBINING_ACCENT_MASK) + " meta: " + e.getMetaState());
+		//Log.d(NovelVM.LOG_TAG,"GetKey: " + keyCode + " unic=" + eventUnicodeChar+ " arg3= " + (eventUnicodeChar& KeyCharacterMap.COMBINING_ACCENT_MASK) + " meta: " + e.getMetaState());
 
 		// look in events.cpp for how this is handled
-		_scummvm.pushEvent(type,
+		_novelvm.pushEvent(type,
 		                   action,
 		                   keyCode,
 		                   eventUnicodeChar & KeyCharacterMap.COMBINING_ACCENT_MASK,
@@ -434,20 +434,20 @@ public class ScummVMEventsBase implements
 //		if (event.getPointerCount() > 1) {
 //			// The coordinates of the current screen contact, relative to
 //			// the responding View or Activity.
-//			Log.d(ScummVM.LOG_TAG,prefixDBGMsg + "Multitouch event (" + event.getPointerCount() + "):: x:" + xPos + " y: " + yPos);
+//			Log.d(NovelVM.LOG_TAG,prefixDBGMsg + "Multitouch event (" + event.getPointerCount() + "):: x:" + xPos + " y: " + yPos);
 //		} else {
 //			// Single touch event
-//			Log.d(ScummVM.LOG_TAG,prefixDBGMsg + "Single touch event:: x: " + xPos + " y: " + yPos);
+//			Log.d(NovelVM.LOG_TAG,prefixDBGMsg + "Single touch event:: x: " + xPos + " y: " + yPos);
 //		}
 
-		if (ScummVMActivity.keyboardWithoutTextInputShown
-		    && ((ScummVMActivity) _context).isScreenKeyboardShown()
-		    && ((ScummVMActivity) _context).getScreenKeyboard().getY() <= event.getY() ) {
-			event.offsetLocation(-((ScummVMActivity) _context).getScreenKeyboard().getX(), -((ScummVMActivity) _context).getScreenKeyboard().getY());
+		if (NovelVMActivity.keyboardWithoutTextInputShown
+		    && ((NovelVMActivity) _context).isScreenKeyboardShown()
+		    && ((NovelVMActivity) _context).getScreenKeyboard().getY() <= event.getY() ) {
+			event.offsetLocation(-((NovelVMActivity) _context).getScreenKeyboard().getX(), -((NovelVMActivity) _context).getScreenKeyboard().getY());
 			// TODO maybe call the onTouchEvent of something else here?
-			((ScummVMActivity) _context).getScreenKeyboard().onTouchEvent(event);
+			((NovelVMActivity) _context).getScreenKeyboard().onTouchEvent(event);
 			// correct the offset for continuing handling the event
-			event.offsetLocation(((ScummVMActivity) _context).getScreenKeyboard().getX(), ((ScummVMActivity) _context).getScreenKeyboard().getY());
+			event.offsetLocation(((NovelVMActivity) _context).getScreenKeyboard().getX(), ((NovelVMActivity) _context).getScreenKeyboard().getY());
 		}
 
 		if (_mouseHelper != null) {
@@ -458,7 +458,7 @@ public class ScummVMEventsBase implements
 			}
 		}
 
-		// Deal with LINT warning "ScummVMEvents#onTouch should call View#performClick when a click is detected"
+		// Deal with LINT warning "NovelVMEvents#onTouch should call View#performClick when a click is detected"
 		switch (action) {
 			case MotionEvent.ACTION_UP:
 				v.performClick();
@@ -480,15 +480,15 @@ public class ScummVMEventsBase implements
 	// OnGestureListener
 	@Override
 	final public boolean onDown(MotionEvent e) {
-//		Log.d(ScummVM.LOG_TAG, "SCUMMV-EVENTS-BASE - onDOWN MotionEvent");
-		_scummvm.pushEvent(JE_DOWN, (int)e.getX(), (int)e.getY(), 0, 0, 0, 0);
+//		Log.d(NovelVM.LOG_TAG, "SCUMMV-EVENTS-BASE - onDOWN MotionEvent");
+		_novelvm.pushEvent(JE_DOWN, (int)e.getX(), (int)e.getY(), 0, 0, 0, 0);
 		return true;
 	}
 
 	@Override
 	final public boolean onFling(MotionEvent e1, MotionEvent e2,
 									float velocityX, float velocityY) {
-		//Log.d(ScummVM.LOG_TAG, String.format(Locale.ROOT, "onFling: %s -> %s (%.3f %.3f)",
+		//Log.d(NovelVM.LOG_TAG, String.format(Locale.ROOT, "onFling: %s -> %s (%.3f %.3f)",
 		//										e1.toString(), e2.toString(),
 		//										velocityX, velocityY));
 
@@ -503,8 +503,8 @@ public class ScummVMEventsBase implements
 	@Override
 	final public boolean onScroll(MotionEvent e1, MotionEvent e2,
 									float distanceX, float distanceY) {
-//		Log.d(ScummVM.LOG_TAG, "onScroll");
-		_scummvm.pushEvent(JE_SCROLL, (int)e1.getX(), (int)e1.getY(),
+//		Log.d(NovelVM.LOG_TAG, "onScroll");
+		_novelvm.pushEvent(JE_SCROLL, (int)e1.getX(), (int)e1.getY(),
 							(int)e2.getX(), (int)e2.getY(), 0, 0);
 
 		return true;
@@ -516,8 +516,8 @@ public class ScummVMEventsBase implements
 
 	@Override
 	final public boolean onSingleTapUp(MotionEvent e) {
-//		Log.d(ScummVM.LOG_TAG, "onSingleTapUp");
-		_scummvm.pushEvent(JE_TAP, (int)e.getX(), (int)e.getY(),
+//		Log.d(NovelVM.LOG_TAG, "onSingleTapUp");
+		_novelvm.pushEvent(JE_TAP, (int)e.getX(), (int)e.getY(),
 							(int)(e.getEventTime() - e.getDownTime()), 0, 0, 0);
 
 		return true;
@@ -526,7 +526,7 @@ public class ScummVMEventsBase implements
 	// OnDoubleTapListener
 	@Override
 	final public boolean onDoubleTap(MotionEvent e) {
-//		Log.d(ScummVM.LOG_TAG, "onDoubleTap");
+//		Log.d(NovelVM.LOG_TAG, "onDoubleTap");
 		return true;
 	}
 
@@ -535,16 +535,16 @@ public class ScummVMEventsBase implements
 
 		//if the second tap hadn't been released and it's being moved
 //		if (e.getAction() == MotionEvent.ACTION_MOVE)  {
-//			Log.d(ScummVM.LOG_TAG, "onDoubleTapEvent Moving X: " + Float.toString(e.getRawX()) + " Y: " + Float.toString(e.getRawY()));
+//			Log.d(NovelVM.LOG_TAG, "onDoubleTapEvent Moving X: " + Float.toString(e.getRawX()) + " Y: " + Float.toString(e.getRawY()));
 //		} else if(e.getAction() == MotionEvent.ACTION_UP) {
 //			//user released the screen
-//			Log.d(ScummVM.LOG_TAG, "onDoubleTapEvent Release");
+//			Log.d(NovelVM.LOG_TAG, "onDoubleTapEvent Release");
 //		} else if(e.getAction() == MotionEvent.ACTION_DOWN) {
-//			Log.d(ScummVM.LOG_TAG, "onDoubleTapEvent DOWN");
+//			Log.d(NovelVM.LOG_TAG, "onDoubleTapEvent DOWN");
 //		} else {
-//			Log.d(ScummVM.LOG_TAG, "onDoubleTapEvent UNKNOWN!!!!");
+//			Log.d(NovelVM.LOG_TAG, "onDoubleTapEvent UNKNOWN!!!!");
 //		}
-		_scummvm.pushEvent(JE_DOUBLE_TAP, (int)e.getX(), (int)e.getY(), e.getAction(), 0, 0, 0);
+		_novelvm.pushEvent(JE_DOUBLE_TAP, (int)e.getX(), (int)e.getY(), e.getAction(), 0, 0, 0);
 		return true;
 	}
 
@@ -552,7 +552,7 @@ public class ScummVMEventsBase implements
 	final public boolean onSingleTapConfirmed(MotionEvent e) {
 		// Note, timing thresholds for double tap detection seem to be hardcoded in the frameworl
 		// as ViewConfiguration.getDoubleTapTimeout()
-//		Log.d(ScummVM.LOG_TAG, "onSingleTapConfirmed - double tap failed");
+//		Log.d(NovelVM.LOG_TAG, "onSingleTapConfirmed - double tap failed");
 		return true;
 	}
 }

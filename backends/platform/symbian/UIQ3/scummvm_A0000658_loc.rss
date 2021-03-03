@@ -2,7 +2,7 @@
  * Copyright (C) 2003-2005 Andreas 'Sprawl' Karlsson - Original EPOC port, ESDL
  * Copyright (C) 2003-2005 Lars 'AnotherGuest' Persson - Original EPOC port, Audio System
  * Copyright (C) 2005 Jurgen 'SumthinWicked' Braam - EPOC/CVS maintainer
- * Copyright (C) 2005-2017 The ScummVM Team
+ * Copyright (C) 2005-2017 The NovelVM Team
  *
  * ScummVM is the legal property of its developers, whose names
  * are too numerous to list here. Please refer to the COPYRIGHT
@@ -35,14 +35,14 @@ RESOURCE LOCALISABLE_APP_INFO
 		CAPTION_AND_ICON_INFO
 			{
 			// The caption text is defined in the rls file
-			caption = "ScummVM 2";
+			caption = "NovelVM 2";
 			// Icons are used to represent applications in the
 			// application launcher and application title bar.
 			// The number_of_icons value identifies how many icons
 			// that exist in the icon_file.
 			number_of_icons = 3;
 			// Using the application icons.
-			icon_file = "\\Resource\\Apps\\ScummVM.mbm";
+			icon_file = "\\Resource\\Apps\\NovelVM.mbm";
 			}
 		};
 

@@ -1,11 +1,11 @@
-ScummVM-PSP 2.3.0git README
+NovelVM-PSP 2.3.0git README
 ==============================================================================
 
 Installation
 ============
  - Copy the relevant game datafiles to your memory stick (location doesn't matter).
- - Install ScummVM like any other homebrew.
- - Run ScummVM and use the launcher to add games and run them.
+ - Install NovelVM like any other homebrew.
+ - Run NovelVM and use the launcher to add games and run them.
  - Press Start to return to the launcher and play another game.
 
 Controls
@@ -52,11 +52,11 @@ There are a few simple rules to follow:
   sure there's no possible conflict between image files and game files.
 - Images must be placed in the game directories. When using the image viewer,
   only the images of the particular game being played will be available for viewing.
-- Don't place any images in the ScummVM directory, or you won't be able to see
+- Don't place any images in the NovelVM directory, or you won't be able to see
   the images in the game directories.
 - There's no guarantee that you'll be able to view your image. This is because
   big images take a lot of memory (more than the size of the image on disk). If there
-  isn't enough memory left to show the image, ScummVM will tell you so. Try to make the
+  isn't enough memory left to show the image, NovelVM will tell you so. Try to make the
   image smaller by either shrinking it or reducing the colors to 256 color palette mode.
 
 Image Viewer Controls:
@@ -86,20 +86,20 @@ Square + Start          - Esc (shows game menu)
 Notes
 =====
 - Notice that you can switch between games! This is much faster than quitting
-  and having to start ScummVM all over again. Go to the global menu and choose 'Return To Launcher'.
+  and having to start NovelVM all over again. Go to the global menu and choose 'Return To Launcher'.
   (Some games may not have the Return To Launcher option available yet.)
 
-- The PSP version of ScummVM uses the Media Engine to accelerate decoding of MP3 files. This means
+- The PSP version of NovelVM uses the Media Engine to accelerate decoding of MP3 files. This means
   that if you have the choice of compressing using Ogg files or MP3 files, choose MP3 -- the game
   will generally run faster.
 
-- Plugin files are NOT interchangeable between ScummVM versions! You must copy ALL the
-  plugin files that come with every version of ScummVM. They sit in the /plugin
+- Plugin files are NOT interchangeable between NovelVM versions! You must copy ALL the
+  plugin files that come with every version of NovelVM. They sit in the /plugin
   subdirectory. If you get a crash upon startup, try deleting all the existing
   plugin files in the plugin directory and copying the new ones over again.
 
 - This README may be outdated, for more up-to-date instructions and notes see
-  the PSP Port Wiki: https://wiki.scummvm.org/index.php/PlayStation_Portable
+  the PSP Port Wiki: https://wiki.novelvm.org/index.php/PlayStation_Portable
 
 Frequently Asked Questions
 ==========================
@@ -108,15 +108,15 @@ Q:  Scummvm crashes upon starting up!
 A:  See the first note above.
 
 Q:  Pressing select doesn't make the virtual keyboard show up on screen!
-A:  You need to make sure that the kbd.zip file is in the same directory as the ScummVM executable.
+A:  You need to make sure that the kbd.zip file is in the same directory as the NovelVM executable.
 
 Q:  What do I need to run the games?
 A:  A PSP that can run homebrew and the necessary datafiles for the game you want to play.
 
 Q:  Can I run game X with this?
 A:  You can find the list of supported games on the compatibility page
-    at https://www.scummvm.org
-    Note that ScummVM is NOT an emulator. The supported games engines have been painstakingly rewritten.
+    at https://www.novelvm.org
+    Note that NovelVM is NOT an emulator. The supported games engines have been painstakingly rewritten.
     It's not easy to add support for a game you want that currently isn't supported.
 
 Q:  My Monkey Island 1 doesn't have any music, what gives?
@@ -126,21 +126,21 @@ A:  If your version of Monkey Island came on a CD then it has the music
 
 Q:  Game X crashes, or feature Y doesn't work. Can you fix this?
 A:  Possibly.
-    Because of the large amount of games ScummVM supports we obviously haven't
+    Because of the large amount of games NovelVM supports we obviously haven't
     played them all start-to-finish on the PSP, so it's possible there
     are bugs or issues that we're not aware of.
     When you encounter such a bug, please use the "Bug Tracker" you find linked
-    on the ScummVM website, and mention all relevant info i.e. that you're
-    using the PSP version, which ScummVM version it is, if the problem exists
+    on the NovelVM website, and mention all relevant info i.e. that you're
+    using the PSP version, which NovelVM version it is, if the problem exists
     in a recent PC version, a detailed description of the problem,
     and if at all possible a nearby savegame. This will make it much easier
     for us to reproduce (and hopefully fix) the problem.
 
 Building the source code
 ========================
-To build ScummVM for PSP you need:
+To build NovelVM for PSP you need:
 
-- ScummVM source code (git clone https://github.com/scummvm/scummvm.git)
+- NovelVM source code (git clone https://github.com/novelvm/novelvm.git)
 
 - PSP toolchain (svn co svn://svn.pspdev.org/psp/trunk/psptoolchain)
 
@@ -159,13 +159,13 @@ To build ScummVM for PSP you need:
 (*) = optional
 
 Once you've installed these libraries (read their README.PSP for instructions),
-create a subdirectory in your ScummVM folder called 'builds/psp'. Then, in this folder, type
+create a subdirectory in your NovelVM folder called 'builds/psp'. Then, in this folder, type
 '../../configure --host=psp --enable-plugins --default-dynamic'. If everything is installed
-correctly, ScummVM will inform you as it finds the right components. Finally type 'make' to build.
+correctly, NovelVM will inform you as it finds the right components. Finally type 'make' to build.
 
 Port Authors
 ============
-Joost Peters   (joostp@scummvm.org)
+Joost Peters   (joostp@novelvm.org)
 Paolo Costabel (paoloc@pacbell.net)
 Thomas Mayer   (tommybear@internode.on.net)
 Yotam Barnoy   (yotambarnoy@gmail.com)

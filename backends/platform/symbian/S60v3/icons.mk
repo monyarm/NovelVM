@@ -5,7 +5,7 @@ ZDIR=$(EPOCROOT)epoc32\data\z
 endif
 
 TARGETDIR=$(ZDIR)\RESOURCE\APPS
-ICONTARGETFILENAME=$(TARGETDIR)\scummvm.mif
+ICONTARGETFILENAME=$(TARGETDIR)\novelvm.mif
 
 do_nothing :
 	@rem do_nothing
@@ -22,7 +22,7 @@ CLEANLIB : do_nothing
 
 RESOURCE :
 	mifconv $(ICONTARGETFILENAME) \
-	/c32 ..\..\..\..\icons\scummvm.svg
+	/c32 ..\..\..\..\icons\novelvm.svg
 
 FREEZE : do_nothing
 

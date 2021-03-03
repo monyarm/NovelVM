@@ -110,7 +110,7 @@ int main(int argc, char **argv) {
 #endif
 
 	// Invoke the actual ScummVM main entry point:
-	int res = scummvm_main(argc, argv);
+	int res = novelvm_main(argc, argv);
 
 	// Free OSystem
 	g_system->destroy();

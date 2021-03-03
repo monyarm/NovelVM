@@ -21,45 +21,45 @@
 ;
 
 ;;;
-;;; ScummVM .PKG file for .SIS gegeration
+;;; NovelVM .PKG file for .SIS gegeration
 ;;;
 
 ; Languages
 ;&EN
 
 ; UID is the app's UID
-#{"ScummVM S90"},(0x101f9b57),0,130,0
+#{"NovelVM S90"},(0x101f9b57),0,130,0
 
 ; Platform type -- disabled: seems to be causing trouble
 ;(0x101FBE04), 0, 0, 0, {"Series90ProductID"}
 
 ; Launcher, Application, AIF & Resource file
-"\epoc32\release\armi\urel\ScummVM.app"-"!:\system\apps\ScummVM\ScummVM.app"
-"\epoc32\release\armi\urel\ScummVM.exe"-"!:\system\apps\ScummVM\ScummVM.exe"
-"\epoc32\data\z\system\apps\ScummVM\ScummVM.aif"-"!:\system\apps\ScummVM\ScummVM.aif"
-"\epoc32\data\z\system\apps\ScummVM\ScummVM.rsc"-"!:\system\apps\ScummVM\ScummVM.rsc"
-"..\..\..\..\dists\pred.dic"-"c:\system\apps\scummvm\pred.dic"
+"\epoc32\release\armi\urel\NovelVM.app"-"!:\system\apps\NovelVM\NovelVM.app"
+"\epoc32\release\armi\urel\NovelVM.exe"-"!:\system\apps\NovelVM\NovelVM.exe"
+"\epoc32\data\z\system\apps\NovelVM\NovelVM.aif"-"!:\system\apps\NovelVM\NovelVM.aif"
+"\epoc32\data\z\system\apps\NovelVM\NovelVM.rsc"-"!:\system\apps\NovelVM\NovelVM.rsc"
+"..\..\..\..\dists\pred.dic"-"c:\system\apps\novelvm\pred.dic"
 
 ; Scummvm Documentation
-"..\..\..\..\COPYRIGHT"-"!:\system\apps\scummvm\COPYRIGHT", FT, TC
-"..\..\..\..\COPYING"-"!:\system\apps\scummvm\COPYING", FT, TC
-"..\README"-"!:\system\apps\scummvm\SYMBIAN_README", FT, TC
-"..\..\..\..\AUTHORS"-"!:\system\apps\scummvm\AUTHORS"
-"..\..\..\..\README"-"!:\system\apps\scummvm\README"
-"..\..\..\..\NEWS"-"!:\system\apps\scummvm\NEWS"
+"..\..\..\..\COPYRIGHT"-"!:\system\apps\novelvm\COPYRIGHT", FT, TC
+"..\..\..\..\COPYING"-"!:\system\apps\novelvm\COPYING", FT, TC
+"..\README"-"!:\system\apps\novelvm\SYMBIAN_README", FT, TC
+"..\..\..\..\AUTHORS"-"!:\system\apps\novelvm\AUTHORS"
+"..\..\..\..\README"-"!:\system\apps\novelvm\README"
+"..\..\..\..\NEWS"-"!:\system\apps\novelvm\NEWS"
 
 ; Common datafiles needed for some games
-"..\..\..\..\dists\engine-data\encoding.dat"-"!:\system\apps\scummvm\encoding.dat"
-"..\..\..\..\dists\engine-data\kyra.dat"-"!:\system\apps\scummvm\kyra.dat"
-"..\..\..\..\dists\engine-data\sky.cpt"-"!:\system\apps\scummvm\sky.cpt"
-"..\..\..\..\dists\engine-data\lure.dat"-"!:\system\apps\scummvm\lure.dat"
-"..\..\..\..\dists\engine-data\drascula.dat"-"!:\system\apps\scummvm\drascula.dat"
+"..\..\..\..\dists\engine-data\encoding.dat"-"!:\system\apps\novelvm\encoding.dat"
+"..\..\..\..\dists\engine-data\kyra.dat"-"!:\system\apps\novelvm\kyra.dat"
+"..\..\..\..\dists\engine-data\sky.cpt"-"!:\system\apps\novelvm\sky.cpt"
+"..\..\..\..\dists\engine-data\lure.dat"-"!:\system\apps\novelvm\lure.dat"
+"..\..\..\..\dists\engine-data\drascula.dat"-"!:\system\apps\novelvm\drascula.dat"
 
 ; Config/log files: 'empty' will automagically be removed on uninstall
-""-"!:\system\apps\ScummVM\scummvm.ini",FILENULL
-""-"!:\system\apps\ScummVM\scummvm.stdout.txt",FILENULL
-""-"!:\system\apps\ScummVM\scummvm.stderr.txt",FILENULL
-""-"!:\system\apps\ScummVM\sdl.ini",FILENULL
+""-"!:\system\apps\NovelVM\novelvm.ini",FILENULL
+""-"!:\system\apps\NovelVM\novelvm.stdout.txt",FILENULL
+""-"!:\system\apps\NovelVM\novelvm.stderr.txt",FILENULL
+""-"!:\system\apps\NovelVM\sdl.ini",FILENULL
 
-; This install layout will let you upgrade to newer versions wihout loss of scummvm.ini.
+; This install layout will let you upgrade to newer versions wihout loss of novelvm.ini.
 ; It will remove the config file, std***.txt files & dirs on uninstall.

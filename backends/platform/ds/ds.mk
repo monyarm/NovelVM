@@ -25,12 +25,12 @@
 #   There are a few game specific hacks which are currently controlled by this,
 #   too; we need to investigate those.
 
-all: scummvm.nds
+all: novelvm.nds
 
 clean: dsclean
 
 dsclean:
-	$(RM) scummvm.nds
+	$(RM) novelvm.nds
 	$(RM_REC) romfs
 
 .PHONY: dsclean
@@ -38,7 +38,7 @@ dsclean:
 # TODO: Add a 'dsdist' target ?
 
 %.nds: %.elf romfs
-	ndstool -c $@ -9 $< -b $(srcdir)/backends/platform/ds/logo.bmp "$(@F);ScummVM $(VERSION);DS Port" -d romfs
+	ndstool -c $@ -9 $< -b $(srcdir)/backends/platform/ds/logo.bmp "$(@F);NovelVM $(VERSION);DS Port" -d romfs
 
 romfs: $(DIST_FILES_THEMES) $(DIST_FILES_ENGINEDATA) $(DIST_FILES_NETWORKING) $(DIST_FILES_VKEYBD) $(PLUGINS)
 	@rm -rf romfs

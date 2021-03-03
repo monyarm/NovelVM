@@ -26,7 +26,7 @@
 #include "common/scummsys.h"
 
 #ifdef USE_ELF_LOADER
-extern const char *gScummVMPluginBuildDate;
+extern const char *gNovelVMPluginBuildDate;
 #endif
 
 #endif

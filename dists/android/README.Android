@@ -1,4 +1,4 @@
-README for the Android port of ScummVM
+README for the Android port of NovelVM
 --------------------------------------
 
 REQUIREMENTS
@@ -33,7 +33,7 @@ CONTROLS
     is moved relative to its current position - like on a touchpad.
 
     The mode can be toggled with the "Touchpad mouse mode" on the Backend tab
-    in ScummVM's own option dialog.
+    in NovelVM's own option dialog.
 
     Tap + movement: Mouse movement
     Tap without movement: Left mouse button click
@@ -54,5 +54,5 @@ CONTROLS
   System keys
 
     Back button: Escape/Skip
-    Menu button: ScummVM menu
+    Menu button: NovelVM menu
     Menu button held for 0.5s: Toggle virtual keyboard

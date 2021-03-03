@@ -4,6 +4,6 @@ echo Quick script to make building a distribution of the GP2X Caanoo backend mor
 
 cd ../../../..
 
-echo Building ScummVM for GP2X Caanoo.
+echo Building NovelVM for GP2X Caanoo.
 
 make caanoo-bundle-debug

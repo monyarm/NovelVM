@@ -28,9 +28,9 @@
 
 typedef unsigned int uint;
 
-// Define SCUMMVM_DONT_DEFINE_TYPES to prevent scummsys.h from trying to
+// Define NOVELVM_DONT_DEFINE_TYPES to prevent scummsys.h from trying to
 // re-define those data types.
-#define SCUMMVM_DONT_DEFINE_TYPES
+#define NOVELVM_DONT_DEFINE_TYPES
 
 // Include required headers
 #include <assert.h>

@@ -5,13 +5,13 @@ buscar en el README original.
 
 Si quieres ver la última información, listas de compatibilidad,
 instrucciones para colaborar económicamente, la última versión, informes
-de progreso, etcétera... visita la página oficial de ScummVM:
-https://www.scummvm.org/
+de progreso, etcétera... visita la página oficial de NovelVM:
+https://www.novelvm.org/
 
 Contenidos:
 -----------
 1.0) Introducción
- * 1.1 Acerca de ScummVM
+ * 1.1 Acerca de NovelVM
  * 1.2 Inicio rápido
 2.0) Contacto
  * 2.1 Informar de fallos
@@ -19,11 +19,11 @@ Contenidos:
 1.0) Introducción:
 ---- -------------
 
-1.1) Acerca de ScummVM:
+1.1) Acerca de NovelVM:
 ---- ------------------
-ScummVM es un programa que permite ejecutar ciertas aventuras gráficas
+NovelVM es un programa que permite ejecutar ciertas aventuras gráficas
 clásicas, siempre y cuando tengas los archivos originales. Lo
-interesante es que ScummVM reemplaza los ejecutables que traen los
+interesante es que NovelVM reemplaza los ejecutables que traen los
 juegos, así que puedes jugarlos en sistemas para los que no fueron
 diseñados.
 
@@ -31,11 +31,11 @@ En sus inicios, fue creado para ejecutar los juegos SCUMM de LucasArts,
 como Maniac Mansion, Monkey Island, Day of the Tentacle o Sam & Max.
 SCUMM son las iniciales de «Script Creation Utility for Maniac Mansion»,
 que fue el primer juego de LucasArts que utilizó este sistema y más
-adelante daría nombre a ScummVM («VM» significa Virtual Machine o
+adelante daría nombre a NovelVM («VM» significa Virtual Machine o
 máquina virtual).
 
 Con el tiempo se ha añadido compatibilidad con otros juegos que no
-utilizan SCUMM, así que ScummVM ahora puede ejecutar muchos de los
+utilizan SCUMM, así que NovelVM ahora puede ejecutar muchos de los
 juegos AGI y SCI de Sierra (como King's Quest 1-7, Space Quest 1-6...),
 Mundodisco 1 y 2, Simon the Sorcerer 1 y 2, Beneath a Steel Sky, Lure of
 the Temptress, Broken Sword I y II, Flight of the Amazon Queen,
@@ -43,7 +43,7 @@ Gobliiins 1-3, la saga The Legend of Kyrandia, muchos de los juegos
 SCUMM infantiles de Humongous Entertainment (como los de Freddi Fish y
 Putt Putt) y muchos más. Puedes encontrar una lista completa con
 información sobre los juegos a los que se da soporte y la calidad de su
-emulación en la página de compatibilidad. ScummVM mejora continuamente,
+emulación en la página de compatibilidad. NovelVM mejora continuamente,
 así que consúltala a menudo.
 
 Estos juegos se pueden ejecutar en ordenadores de sobremesa (con
@@ -51,50 +51,50 @@ Windows, Linux, Mac OS X...), videoconsolas (Dreamcast, Nintendo DS
 y Wii, PSP...) y smartphones (Android, iPhone, Symbian...), entre
 otros sistemas.
 
-ScummVM sigue en pleno desarrollo. Recuerda que, aunque procuramos que
+NovelVM sigue en pleno desarrollo. Recuerda que, aunque procuramos que
 los juegos se puedan completar sin errores graves, es posible que se
 produzcan cuelgues y no ofrecemos garantía. En cualquier caso, algunos
 de los juegos son compatibles desde hace mucho tiempo y deberían
 funcionar correctamente con cualquier versión estable reciente. Puedes
 hacerte una idea de qué tal funciona cada uno consultando la página de
 compatibilidad. Si navegas un poco por Internet, puede que compruebes
-que ScummVM se utiliza de forma comercial para reeditar algunos de los
+que NovelVM se utiliza de forma comercial para reeditar algunos de los
 juegos compatibles en plataformas modernas, lo que demuestra que varias
 compañías están satisfechas con la calidad del programa y lo bien que se
 ejecutan muchos de los títulos.
 
-Si te gusta ScummVM, puedes hacer una donación utilizando el botón de
-PayPal en la página de ScummVM. Esto nos ayudará a la hora de adquirir
+Si te gusta NovelVM, puedes hacer una donación utilizando el botón de
+PayPal en la página de NovelVM. Esto nos ayudará a la hora de adquirir
 herramientas para desarrollar el programa con más facilidad y rapidez.
 Si no puedes donar, ¡puedes ayudarnos programando parches!
 
 1.2) Inicio rápido:
 ---- --------------
-IMPORTANTE: Esta guía da por hecho que estás utilizando ScummVM en
-español. ScummVM utilizará el idioma de tu sistema operativo de forma
+IMPORTANTE: Esta guía da por hecho que estás utilizando NovelVM en
+español. NovelVM utilizará el idioma de tu sistema operativo de forma
 predeterminada. Si prefieres usarlo en inglés, quizás también prefieras
 seguir la guía del archivo README inglés.
 
 Si eres más impaciente, estos son los cinco pasos básicos para hacer
-funcionar ScummVM:
+funcionar NovelVM:
 
-1. Descarga ScummVM desde <https://www.scummvm.org/downloads/> e
+1. Descarga NovelVM desde <https://www.novelvm.org/downloads/> e
 instálalo.
 
 2. Crea una carpeta en tu disco duro y copia en ella los archivos
 originales del juego. Repite este paso con cada juego que quieras
 ejecutar (es mejor separarlos en carpetas diferentes).
 
-3. Ejecuta ScummVM.
+3. Ejecuta NovelVM.
 
-Si ScummVM se ejecuta en inglés en vez de español, sigue los siguientes
+Si NovelVM se ejecuta en inglés en vez de español, sigue los siguientes
 pasos para cambiar el idioma:
 - Haz clic en «Options».
 - Haz clic en la flecha derecha de la barra de pestañas y selecciona la
   pestaña «Misc».
 - Selecciona «Español» en la opción «GUI Language» y luego haz clic en
   «OK».
-- Cierra la ventana emergente, haz clic en «Quit» para cerrar ScummVM y
+- Cierra la ventana emergente, haz clic en «Quit» para cerrar NovelVM y
   vuelve a ejecutar el programa.
 
 Ahora haz clic en «Añadir juego», selecciona el directorio en el que se
@@ -108,7 +108,7 @@ Haz clic en «Aceptar».
 5. Selecciona el juego que quieres ejecutar de la lista y haz clic en
 «Jugar».
 
-ScummVM recuerda los juegos que has añadido, así que si cierras el
+NovelVM recuerda los juegos que has añadido, así que si cierras el
 programa, cuando lo abras la próxima vez la lista seguirá mostrando
 todos los juegos que hayas añadido, por lo tanto, puedes ir directamente
 al paso 5 salvo que quieras añadir más.
@@ -116,17 +116,17 @@ al paso 5 salvo que quieras añadir más.
 Consejo: si quieres añadir varios juegos a la vez, mantén pulsada la
 tecla Mayúsculas antes de hacer clic en «Añadir juego». El botón
 cambiará su nombre a «Añadir varios», y si lo pulsas podrás seleccionar
-un directorio, pero en esta ocasión ScummVM buscará juegos compatibles
+un directorio, pero en esta ocasión NovelVM buscará juegos compatibles
 en todos los subdirectorios.
 
 
 2.0) Contacto:
 ---- ---------
-La forma más fácil de contactar con el equipo de ScummVM es enviando un
+La forma más fácil de contactar con el equipo de NovelVM es enviando un
 informe de fallos (consulta la sección 2.1) o mediante nuestros foros en
-https://forums.scummvm.org . También puedes unirte a la lista de correo
-scummvm-devel y enviar un e-mail o chatear con nosotros por IRC
-(#scummvm en irc.freenode.net). Por favor, no nos pidas que añadamos
+https://forums.novelvm.org . También puedes unirte a la lista de correo
+novelvm-devel y enviar un e-mail o chatear con nosotros por IRC
+(#novelvm en irc.freenode.net). Por favor, no nos pidas que añadamos
 compatibilidad para un juego no compatible; lee primero la sección de
 preguntas frecuentes en nuestra página. Recuerda que el idioma oficial
 del foro, la lista de correo y el chat es el inglés, y no se debe
@@ -143,14 +143,14 @@ en nuestra página web la lista de problemas conocidos (más abajo) y la
 lista de compatibilidad de ese juego concreto para confirmar que no se
 trata de un fallo ya conocido:
 
-  https://www.scummvm.org/compatibility/
+  https://www.novelvm.org/compatibility/
 
 Por favor, no informes de fallos en juegos que no aparezcan como
 completables en la sección de juegos compatibles. Sabemos más que de
 sobra que esos tienen fallos.
 
 Debes incluir la siguiente información:
-    - Versión de ScummVM (POR FAVOR, prueba la última compilación diaria
+    - Versión de NovelVM (POR FAVOR, prueba la última compilación diaria
       o del git).
     - Detalles sobre el fallo e instrucciones sobre cómo reproducirlo.
     - Idioma del juego (inglés, alemán...).

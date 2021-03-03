@@ -3,7 +3,7 @@
 Android
 ===============
 
-This page contains all the information you need to get ScummVM up and running on an Android device. 
+This page contains all the information you need to get NovelVM up and running on an Android device. 
 
 What you'll need
 ================
@@ -12,23 +12,23 @@ What you'll need
 
 .. note::
 
-    ScummVM has been tested to work up to Android 10. Currently there are some file browsing limitations with Android 11. The ScummVM team are working to resolve these.  
+    NovelVM has been tested to work up to Android 10. Currently there are some file browsing limitations with Android 11. The NovelVM team are working to resolve these.  
 
-Installing ScummVM
+Installing NovelVM
 ====================================
 
-There are two ways to install ScummVM on an Android device; install it from the Google Play Store, or manually download and install the APK package from the ScummVM downloads page. 
+There are two ways to install NovelVM on an Android device; install it from the Google Play Store, or manually download and install the APK package from the NovelVM downloads page. 
 
 Installing from the Google Play Store
 ***************************************
 
-The latest supported version of ScummVM is on the Google Play Store; search for ScummVM on the Google Play Store and select **Install**. 
+The latest supported version of NovelVM is on the Google Play Store; search for NovelVM on the Google Play Store and select **Install**. 
 
 
 Manually installing the APK package 
 *************************************
 
-On your device, use a web browser app to navigate to the `ScummVM downloads page <https://www.scummvm.org/downloads>`_. The recommended download section on the page suggests the correct ``.apk`` package, however if it does not, scroll down to select the correct package. 
+On your device, use a web browser app to navigate to the `NovelVM downloads page <https://www.novelvm.org/downloads>`_. The recommended download section on the page suggests the correct ``.apk`` package, however if it does not, scroll down to select the correct package. 
 
 .. tip:: 
 
@@ -46,9 +46,9 @@ Click on the correct package to start the download. After it has downloaded, go 
 Transferring game files 
 ========================================
 
-Transfer all the required game data files to your device, into a folder accessible by the ScummVM app. 
+Transfer all the required game data files to your device, into a folder accessible by the NovelVM app. 
 
-ScummVM has built-in Cloud functionality, which lets you connect your Google Drive, OneDrive, Box or Dropbox account. For more information, see the :doc:`../use_scummvm/connect_cloud` page. ScummVM also has the ability to run a local web server. For more information, see the :doc:`../use_scummvm/LAN` page. 
+NovelVM has built-in Cloud functionality, which lets you connect your Google Drive, OneDrive, Box or Dropbox account. For more information, see the :doc:`../use_novelvm/connect_cloud` page. NovelVM also has the ability to run a local web server. For more information, see the :doc:`../use_novelvm/LAN` page. 
 
 There are a few other options to transfer the game files:
 
@@ -56,7 +56,7 @@ There are a few other options to transfer the game files:
  - USB transfer from a computer. To complete file transfer by USB cable, tap the **Charging this device via USB notification** when the device is connected. Select **Use USB for** and then **File Transfer**. An Android File Transfer window opens.   
  - Download games such as freeware games or those from digital distributors directly to your device.
 
-See :doc:`../use_scummvm/game_files` for more information about game file requirements.
+See :doc:`../use_novelvm/game_files` for more information about game file requirements.
 
 
 
@@ -66,7 +66,7 @@ Controls
 Default control mapping
 ****************************
 
-Controls can also be manually configured in the :doc:`Keymaps tab <../settings/keymaps>`. See the :doc:`../use_scummvm/keyboard_shortcuts` page for common keyboard shortcuts. 
+Controls can also be manually configured in the :doc:`Keymaps tab <../settings/keymaps>`. See the :doc:`../use_novelvm/keyboard_shortcuts` page for common keyboard shortcuts. 
 
 .. csv-table:: 
     :header-rows: 1
@@ -96,7 +96,7 @@ To do a two finger tap, hold one finger down and then tap with a second finger.
 Immersive Sticky fullscreen mode
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-ScummVM for Android uses the Immersive Sticky fullscreen mode, which means that the Android system bar is hidden until the user swipes from an edge with a system bar. Swipe from the edge to reveal the system bars.  They remain semi-transparent and disappear after a few seconds unless you interact with them. Your swipe also registers in the game, so if you need to swipe from an edge with system bars, your game play is not interrupted. 
+NovelVM for Android uses the Immersive Sticky fullscreen mode, which means that the Android system bar is hidden until the user swipes from an edge with a system bar. Swipe from the edge to reveal the system bars.  They remain semi-transparent and disappear after a few seconds unless you interact with them. Your swipe also registers in the game, so if you need to swipe from an edge with system bars, your game play is not interrupted. 
 
 Virtual keyboard
 ^^^^^^^^^^^^^^^^^^^^^
@@ -123,23 +123,23 @@ The configuration file is in the internal app folder, and this path cannot be ch
 Accessing the internal app folder
 ************************************
 
-To access the internal app folder, use ScummVM's built-in LAN functionality:
+To access the internal app folder, use NovelVM's built-in LAN functionality:
 
 1. From the Launcher, select **Options** and then the **LAN** tab. 
 2. Select **/root/Path**.
-3. Use the file browser to **Go up** to the root of the ScummVM internal app folder. 
-4. Select the **ScummVM data (int)** shortcut, and tap **Choose**. 
-5. Run the server to access the ``scummvm.ini``` configuration file. 
+3. Use the file browser to **Go up** to the root of the NovelVM internal app folder. 
+4. Select the **NovelVM data (int)** shortcut, and tap **Choose**. 
+5. Run the server to access the ``novelvm.ini``` configuration file. 
 
-For more information, see the :doc:`../use_scummvm/LAN` page. 
+For more information, see the :doc:`../use_novelvm/LAN` page. 
 
 
 Known issues
 ===============
 
-- On some newer devices, there is an issue if the saved path is outside the app's internal (or external) storage. The ScummVM team is currently working on a fix.
+- On some newer devices, there is an issue if the saved path is outside the app's internal (or external) storage. The NovelVM team is currently working on a fix.
 
-- If ScummVM is uninstalled or downgraded, its internal and external app spaces are fully deleted. If you want to keep saved games use ScummVM's :doc:`cloud <../use_scummvm/connect_cloud>` or LAN functionality to keep those files. Alternatively, change the saved game path to a shared location such as an SD card. 
+- If NovelVM is uninstalled or downgraded, its internal and external app spaces are fully deleted. If you want to keep saved games use NovelVM's :doc:`cloud <../use_novelvm/connect_cloud>` or LAN functionality to keep those files. Alternatively, change the saved game path to a shared location such as an SD card. 
 
 
 

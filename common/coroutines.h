@@ -24,7 +24,7 @@
 #define COMMON_COROUTINES_H
 
 #include "common/scummsys.h"
-#include "common/util.h"    // for SCUMMVM_CURRENT_FUNCTION
+#include "common/util.h"    // for NOVELVM_CURRENT_FUNCTION
 #include "common/list.h"
 #include "common/singleton.h"
 
@@ -131,7 +131,7 @@ public:
  */
 #define CORO_BEGIN_CONTEXT  \
 	struct CoroContextTag : Common::CoroBaseContext { \
- CoroContextTag() : CoroBaseContext(SCUMMVM_CURRENT_FUNCTION) { DUMMY = 0; } \
+ CoroContextTag() : CoroBaseContext(NOVELVM_CURRENT_FUNCTION) { DUMMY = 0; } \
 		int DUMMY
 
 /**

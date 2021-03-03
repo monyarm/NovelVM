@@ -1,11 +1,11 @@
-Source: scummvm
+Source: novelvm
 Section: user/games
 Priority: optional
-Maintainer: Tarek Soliman <tsoliman@scummvm.org>
+Maintainer: Tarek Soliman <tsoliman@novelvm.org>
 Build-Depends: debhelper (>> 4.0.0), libsdl1.2-dev, libmad0-dev, libasound2-dev, libvorbisidec-dev, libmpeg2-4-dev, libflac-dev (>= 1.1.2), libfreetype6-dev, libz-dev, quilt
 
 Standards-Version: 3.6.1.1
-Package: scummvm
+Package: novelvm
 Depends: ${shlibs:Depends}
 Architecture: armel
 Section: user/games
@@ -17,8 +17,8 @@ Description: interpreter that will play graphic adventure games
  Coktel Vision's Gobliiins, Wyrmkeep's Inherit the Earth,
  Westwood's Legend of Kyrandia, and various others.
  This package does not contain any actual games.
-XSBC-Bugtracker: https://bugs.scummvm.org/
-XB-Maemo-Display-Name: ScummVM
+XSBC-Bugtracker: https://bugs.novelvm.org/
+XB-Maemo-Display-Name: NovelVM
 XBS-Maemo-Icon-26:
   iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAMAAACelLz8AAAC/VBMVEUICwcH
   CQUKDAgLDQoMDwsOEAwREAUPEQ0QEg8PFQoRExAUEwoVFAwPGAcTFBIRFg0W

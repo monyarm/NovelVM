@@ -118,7 +118,7 @@ static const Model models[] = {
 };
 
 const Maemo::Model OSystem_SDL_Maemo::detectModel() {
-	Common::String deviceHwId = Common::String(getenv("SCUMMVM_MAEMO_DEVICE"));
+	Common::String deviceHwId = Common::String(getenv("NOVELVM_MAEMO_DEVICE"));
 	const Model *model;
 	for (model = models; model->hwId; ++model) {
 		if (deviceHwId.equals(model->hwId))

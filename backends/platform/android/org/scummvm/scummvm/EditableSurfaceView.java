@@ -1,4 +1,4 @@
-package org.scummvm.scummvm;
+package org.novelvm.novelvm;
 
 import android.content.Context;
 import android.content.Intent;
@@ -299,13 +299,13 @@ public class EditableSurfaceView extends SurfaceView {
 	}
 
 	public void showSystemMouseCursor(boolean show) {
-		//Log.d(ScummVM.LOG_TAG, "captureMouse::showSystemMouseCursor2 " + show);
+		//Log.d(NovelVM.LOG_TAG, "captureMouse::showSystemMouseCursor2 " + show);
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
 			// Android N (Nougat) is Android 7.0
 			//SurfaceView main_surface = findViewById(R.id.main_surface);
 			int type = show ? PointerIcon.TYPE_DEFAULT : PointerIcon.TYPE_NULL;
 			// https://stackoverflow.com/a/55482761
-			//Log.d(ScummVM.LOG_TAG, "captureMouse::showSystemMouseCursor3a");
+			//Log.d(NovelVM.LOG_TAG, "captureMouse::showSystemMouseCursor3a");
 			setPointerIcon(PointerIcon.getSystemIcon(_context, type));
 		} else {
 			/* Currently hiding the system mouse cursor is only
@@ -315,13 +315,13 @@ public class EditableSurfaceView extends SurfaceView {
 				new Intent(show?
 					"tv.ouya.controller.action.SHOW_CURSOR" :
 					"tv.ouya.controller.action.HIDE_CURSOR");
-			//Log.d(ScummVM.LOG_TAG, "captureMouse::showSystemMouseCursor3b");
+			//Log.d(NovelVM.LOG_TAG, "captureMouse::showSystemMouseCursor3b");
 			_context.sendBroadcast(intent);
 		}
 	}
 
 	// This re-inforces the code for hiding the system mouse.
-	// We already had code for this in ScummVMActivity (see showSystemMouseCursor())
+	// We already had code for this in NovelVMActivity (see showSystemMouseCursor())
 	// so this might be redundant
 	//
 	// It applies on devices running Android 7 and above
@@ -344,14 +344,14 @@ public class EditableSurfaceView extends SurfaceView {
 
 	public void captureMouse(final boolean capture) {
 
-		if ((!_mouseIsInCapturedState && ((ScummVMActivity)_context).isKeyboardOverlayShown() && capture)) {
-			//Log.d(ScummVM.LOG_TAG, "captureMouse::returned - keyboard is shown");
+		if ((!_mouseIsInCapturedState && ((NovelVMActivity)_context).isKeyboardOverlayShown() && capture)) {
+			//Log.d(NovelVM.LOG_TAG, "captureMouse::returned - keyboard is shown");
 			return;
 		}
 
 		if ((capture && _mouseIsInCapturedState) ||
 			(!capture && ! _mouseIsInCapturedState)) {
-			//Log.d(ScummVM.LOG_TAG, "captureMouse::returned - nothing to do");
+			//Log.d(NovelVM.LOG_TAG, "captureMouse::returned - nothing to do");
 			return;
 		}
 
@@ -360,9 +360,9 @@ public class EditableSurfaceView extends SurfaceView {
 //			setFocusable(true);
 //			requestFocus();
 			_mouseIsInCapturedState = true;
-			//Log.d(ScummVM.LOG_TAG, "captureMouse::_mouseIsInCapturedState");
+			//Log.d(NovelVM.LOG_TAG, "captureMouse::_mouseIsInCapturedState");
 		} else {
-			//Log.d(ScummVM.LOG_TAG, "captureMouse::no _mouseIsInCapturedState");
+			//Log.d(NovelVM.LOG_TAG, "captureMouse::no _mouseIsInCapturedState");
 			_mouseIsInCapturedState = false;
 		}
 
@@ -373,12 +373,12 @@ public class EditableSurfaceView extends SurfaceView {
 //		if (_allowHideSystemMousePointer) {
 //			// for API 26 and above
 //			if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-//				Log.d(ScummVM.LOG_TAG, "captureMouse::CODES 0");
+//				Log.d(NovelVM.LOG_TAG, "captureMouse::CODES 0");
 //				if (capture) {
 //					postDelayed( new Runnable() {
 //						public void run()
 //						{
-//							Log.v(ScummVM.LOG_TAG, "captureMouse::requestPointerCapture() delayed");
+//							Log.v(NovelVM.LOG_TAG, "captureMouse::requestPointerCapture() delayed");
 ////							if (!hasPointerCapture()) {
 //								requestPointerCapture();
 ////								showSystemMouseCursor(!capture);
@@ -389,7 +389,7 @@ public class EditableSurfaceView extends SurfaceView {
 //					if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
 //						postDelayed(new Runnable() {
 //							public void run() {
-//								Log.v(ScummVM.LOG_TAG, "captureMouse::releasePointerCapture()");
+//								Log.v(NovelVM.LOG_TAG, "captureMouse::releasePointerCapture()");
 ////								if (hasPointerCapture()) {
 //									releasePointerCapture();
 ////									showSystemMouseCursor(!capture);
@@ -399,7 +399,7 @@ public class EditableSurfaceView extends SurfaceView {
 //					}
 //				}
 //			} else {
-//				Log.d(ScummVM.LOG_TAG, "captureMouse::NO CODES 0 showSystemMouseCursor " + !capture);
+//				Log.d(NovelVM.LOG_TAG, "captureMouse::NO CODES 0 showSystemMouseCursor " + !capture);
 //				showSystemMouseCursor(!capture);
 //			}
 //		}

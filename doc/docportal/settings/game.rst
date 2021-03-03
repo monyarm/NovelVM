@@ -3,7 +3,7 @@ Game
 =============
 
 Use the Game tab to display and change information about how the game is
-identified by ScummVM.
+identified by NovelVM.
 
 From the Launcher, highlight a game on the games list, then select **Edit Game**. The **Game** tab is the first tab shown.  
 

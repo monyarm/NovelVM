@@ -1,6 +1,6 @@
 /*
 $VER: RM2AG.rexx 0.25 (09.01.2021) README (.md) to .guide converter.
-Converts the ScummVM markdown README file to a basic hypertext AmigaGuide
+Converts the NovelVM markdown README file to a basic hypertext AmigaGuide
 file and installs it to the given path.
 */
 
@@ -49,7 +49,7 @@ IF ~OPEN(check_readme,readme_md,'R') THEN DO
 	EXIT
 END
 
-IF READCH(check_readme,18) = '# [ScummVM README]' THEN DO
+IF READCH(check_readme,18) = '# [NovelVM README]' THEN DO
 	IF ~CLOSE(check_readme) THEN DO
 		SAY readme_md' closing failed!'
 		EXIT
@@ -60,7 +60,7 @@ ELSE DO
 		SAY readme_md' closing failed!'
 		EXIT
 	END
-	SAY "Not the ScummVM README.md file. Aborting!"
+	SAY "Not the NovelVM README.md file. Aborting!"
 	EXIT
 END
 
@@ -76,12 +76,12 @@ END
 /*
 Prepare AmigaGuide file, add intro and fixed text.
 */
-CALL WRITELN guide_write,'@DATABASE ScummVM README.guide'
-CALL WRITELN guide_write,'@$VER: ScummVM Readme 2.3.0git'
-CALL WRITELN guide_write,'@(C) by The ScummVM team'
-CALL WRITELN guide_write,'@AUTHOR The ScummVM team'
+CALL WRITELN guide_write,'@DATABASE NovelVM README.guide'
+CALL WRITELN guide_write,'@$VER: NovelVM Readme 2.3.0git'
+CALL WRITELN guide_write,'@(C) by The NovelVM team'
+CALL WRITELN guide_write,'@AUTHOR The NovelVM team'
 CALL WRITELN guide_write,'@WORDWRAP'
-CALL WRITELN guide_write,'@NODE "main" "ScummVM README Guide"'
+CALL WRITELN guide_write,'@NODE "main" "NovelVM README Guide"'
 CALL WRITELN guide_write,'@{b}'
 CALL WRITELN guide_write,SUBSTR(READLN(readme_read),4,14)
 CALL WRITELN guide_write,'@{ub}'
@@ -198,8 +198,8 @@ be written after TOC creation finished).
 CALL WRITELN guide_write,'-----'
 CALL WRITELN guide_write,' '
 CALL WRITELN guide_write,'Good Luck and Happy Adventuring!'
-CALL WRITELN guide_write,'The ScummVM team.'
-CALL WRITELN guide_write,'@{"https://www.scummvm.org/" System "URLOpen https://www.scummvm.org/"}'
+CALL WRITELN guide_write,'The NovelVM team.'
+CALL WRITELN guide_write,'@{"https://www.novelvm.org/" System "URLOpen https://www.novelvm.org/"}'
 
 /*
 Creating sub link nodes.

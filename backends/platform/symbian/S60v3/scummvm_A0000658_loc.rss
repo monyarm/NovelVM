@@ -8,14 +8,14 @@ RESOURCE LOCALISABLE_APP_INFO
 		CAPTION_AND_ICON_INFO
 			{
 			// The caption text is defined in the rls file
-			caption = "ScummVM 2";
+			caption = "NovelVM 2";
 			// Icons are used to represent applications in the
 			// application launcher and application title bar.
 			// The number_of_icons value identifies how many icons
 			// that exist in the icon_file.
 			number_of_icons = 1;
 			// Using the application icons.
-			icon_file = "\\Resource\\Apps\\ScummVM.mif";
+			icon_file = "\\Resource\\Apps\\NovelVM.mif";
 			}
 		};
 	}

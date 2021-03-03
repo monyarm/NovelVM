@@ -6,6 +6,6 @@ Peripherals   : E000F10
 Product No    : T0000
 Version       : @VERSION@
 Release Date  : @DATE@
-Boot Filename : SCUMMVM.BIN
-SW Maker Name : The ScummVM Team
-Game Title    : ScummVM
+Boot Filename : NOVELVM.BIN
+SW Maker Name : The NovelVM Team
+Game Title    : NovelVM

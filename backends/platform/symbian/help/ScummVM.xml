@@ -11,9 +11,9 @@
     </directories>
     <files>
         <source>
-            <file>ScummVM.rtf</file>
+            <file>NovelVM.rtf</file>
         </source>
-        <destination>ScummVM.hlp</destination>
+        <destination>NovelVM.hlp</destination>
         <customization>custom.xml</customization>
     </files>
 </cshproj>

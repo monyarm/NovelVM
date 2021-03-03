@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <contentlibrary>
-  <contentpack id="scummvm">
+  <contentpack id="novelvm">
     <category>Game</category>
-    <title language_id="English">ScummVM</title>
-    <startpoint language_id="English">./libscummvm.so</startpoint>
-    <thumbnailpath>scummvm.png</thumbnailpath>
+    <title language_id="English">NovelVM</title>
+    <startpoint language_id="English">./libnovelvm.so</startpoint>
+    <thumbnailpath>novelvm.png</thumbnailpath>
     <totalsize>1</totalsize>
   </contentpack>
 </contentlibrary>

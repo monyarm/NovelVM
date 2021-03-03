@@ -42,7 +42,7 @@ DiscordPresence::~DiscordPresence() {
 }
 
 void DiscordPresence::updateStatus(const Common::String &name, const Common::String &description) {
-	Common::String gameName = name.empty() ? "scummvm" : name;
+	Common::String gameName = name.empty() ? "novelvm" : name;
 	Common::String gameDesc = description.empty() ? _("Launcher").encode() : description;
 
 	DiscordRichPresence presence;
@@ -50,8 +50,8 @@ void DiscordPresence::updateStatus(const Common::String &name, const Common::Str
 	presence.largeImageKey = gameName.c_str();
 	presence.largeImageText = gameDesc.c_str();
 	presence.details = gameDesc.c_str();
-	presence.smallImageKey = "scummvm";
-	presence.smallImageText = "ScummVM";
+	presence.smallImageKey = "novelvm";
+	presence.smallImageText = "NovelVM";
 	presence.startTimestamp = time(0);
 	Discord_UpdatePresence(&presence);
 }

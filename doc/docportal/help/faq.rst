@@ -12,83 +12,83 @@ General
 About
 *******
 
-Is ScummVM an emulator?
+Is NovelVM an emulator?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-No! ScummVM actually replaces the original executable file that shipped with the game. This means that your games can run on platforms they were never designed for! For an in-depth look at how ScummVM works, see the `About ScummVM <https://wiki.scummvm.org/index.php?title=About>`_ wiki page. 
+No! NovelVM actually replaces the original executable file that shipped with the game. This means that your games can run on platforms they were never designed for! For an in-depth look at how NovelVM works, see the `About NovelVM <https://wiki.novelvm.org/index.php?title=About>`_ wiki page. 
 
-Is ScummVM free? 
+Is NovelVM free? 
 ^^^^^^^^^^^^^^^^^^^^
-ScummVM is released under the GPL (General Public License), so it's more than just free. ScummVM source code is available for you to do whatever you want with it, but if you make modifications and redistribute your work, you must make your source code available. 
+NovelVM is released under the GPL (General Public License), so it's more than just free. NovelVM source code is available for you to do whatever you want with it, but if you make modifications and redistribute your work, you must make your source code available. 
 
-The ScummVM team would be delighted if you send them your modifications, so that the changes you've made can be merged into the main source code. See the `Developer Central <https://wiki.scummvm.org/index.php/Developer_Central>`_ wiki page for contributing guidelines. 
+The NovelVM team would be delighted if you send them your modifications, so that the changes you've made can be merged into the main source code. See the `Developer Central <https://wiki.novelvm.org/index.php/Developer_Central>`_ wiki page for contributing guidelines. 
 
-How do I install ScummVM onto my device?
+How do I install NovelVM onto my device?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 See :ref:`firststeps`.
 
 How do I get game files onto my device?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-For general guidance, see the :doc:`../use_scummvm/game_files` page. For platform-specific information, see the relevant page in the **OTHER PLATFORMS** section of the sidebar. 
+For general guidance, see the :doc:`../use_novelvm/game_files` page. For platform-specific information, see the relevant page in the **OTHER PLATFORMS** section of the sidebar. 
 
-ScummVM has cloud and LAN functionality to simplify the file transfer process. For more information, see :doc:`../use_scummvm/connect_cloud` and :doc:`../use_scummvm/LAN`.
+NovelVM has cloud and LAN functionality to simplify the file transfer process. For more information, see :doc:`../use_novelvm/connect_cloud` and :doc:`../use_novelvm/LAN`.
 
-On what platform(s) will ScummVM run?
+On what platform(s) will NovelVM run?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-See our `Platforms <https://wiki.scummvm.org/index.php/Platforms>`_ wiki page for a full list. We have guides available for many of the supported platforms, see the relevant page in the **OTHER PLATFORMS** section of the sidebar. 
+See our `Platforms <https://wiki.novelvm.org/index.php/Platforms>`_ wiki page for a full list. We have guides available for many of the supported platforms, see the relevant page in the **OTHER PLATFORMS** section of the sidebar. 
 
 Games
 ********
 
 Can I only play LucasArts SCUMM games?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Although the ScummVM project started by reverse-engineering just the LucasArts SCUMM games, the project now supports hundreds of games from many different game developers. See the full list of supported games `here <https://wiki.scummvm.org/index.php?title=Category:Supported_Games>`_. There is a caveat; not all supported games are playable on all platforms. Often this is because the game is simply too CPU intensive for the device, or because of some other hardware or software limitation. If a game is not available on a platform, you will not be able to add it to ScummVM. 
+Although the NovelVM project started by reverse-engineering just the LucasArts SCUMM games, the project now supports hundreds of games from many different game developers. See the full list of supported games `here <https://wiki.novelvm.org/index.php?title=Category:Supported_Games>`_. There is a caveat; not all supported games are playable on all platforms. Often this is because the game is simply too CPU intensive for the device, or because of some other hardware or software limitation. If a game is not available on a platform, you will not be able to add it to NovelVM. 
 
 .. _getgames:
 
 Where do I get the games? 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-See the ScummVM `Where to get the games <https://wiki.scummvm.org/index.php/Where_to_get_the_games>`_ wiki page.
+See the NovelVM `Where to get the games <https://wiki.novelvm.org/index.php/Where_to_get_the_games>`_ wiki page.
 
 
 .. _installgames:
 
 How do I install games from my floppy discs/CDs?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Generally speaking, you do not need to install the games. You only need to point ScummVM to the game files contained on these discs. For a complete guide, see :doc:`../use_scummvm/game_files`. 
+Generally speaking, you do not need to install the games. You only need to point NovelVM to the game files contained on these discs. For a complete guide, see :doc:`../use_novelvm/game_files`. 
 
 Do I need the original game discs?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Ideally yes, however we know that a lot of people don't! If you do not have any hard copy games, there are some digital options available, including some games that have been released as freeware. See the ScummVM `Where to get the games <https://wiki.scummvm.org/index.php/Where_to_get_the_games>`_ wiki page. 
+Ideally yes, however we know that a lot of people don't! If you do not have any hard copy games, there are some digital options available, including some games that have been released as freeware. See the NovelVM `Where to get the games <https://wiki.novelvm.org/index.php/Where_to_get_the_games>`_ wiki page. 
 
-How do I know if I can play my game using ScummVM?
+How do I know if I can play my game using NovelVM?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The best place to check is the `Compatibility page <https://www.scummvm.org/compatibility/>`_ on the ScummVM website. You can also have a look at the full list of supported games `here <https://wiki.scummvm.org/index.php?title=Category:Supported_Games>`_.
+The best place to check is the `Compatibility page <https://www.novelvm.org/compatibility/>`_ on the NovelVM website. You can also have a look at the full list of supported games `here <https://wiki.novelvm.org/index.php?title=Category:Supported_Games>`_.
 
-I have saved games from when I played the original game - can I use these with ScummVM?
+I have saved games from when I played the original game - can I use these with NovelVM?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-This is only supported for a select number of games. See the `wiki <https://wiki.scummvm.org/index.php/Category:Supported_Games>`_ page for the game you are playing. 
+This is only supported for a select number of games. See the `wiki <https://wiki.novelvm.org/index.php/Category:Supported_Games>`_ page for the game you are playing. 
 
 How do I launch a game straight from the game folder?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Games must be added to and started from :doc:`the ScummVM Launcher <../use_scummvm/the_launcher>`; they cannot be started directly from the game files. See :doc:`../use_scummvm/add_play_games`. 
+Games must be added to and started from :doc:`the NovelVM Launcher <../use_novelvm/the_launcher>`; they cannot be started directly from the game files. See :doc:`../use_novelvm/add_play_games`. 
 
 What are the in-game keyboard shortcuts?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-A list of default shortcuts can be found on the :doc:`../use_scummvm/keyboard_shortcuts` page. Since version 2.2.0 you can also create custom shortcuts on the :doc:`../settings/keymaps` tab. 
+A list of default shortcuts can be found on the :doc:`../use_novelvm/keyboard_shortcuts` page. Since version 2.2.0 you can also create custom shortcuts on the :doc:`../settings/keymaps` tab. 
 
 Troubleshooting
 ===================
 
-ScummVM
+NovelVM
 ***********
 
-ScummVM crashes, but the console window disappears too quickly to see the error message. 
+NovelVM crashes, but the console window disappears too quickly to see the error message. 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-If you are using a computer, you can run ScummVM from the :doc:`command line <../advanced_topics/command_line>`. By doing this, error messages remain visible even after ScummVM exits. 
+If you are using a computer, you can run NovelVM from the :doc:`command line <../advanced_topics/command_line>`. By doing this, error messages remain visible even after NovelVM exits. 
 
-You can also find error messages in the ScummVM log file. See :ref:`logfile`. 
+You can also find error messages in the NovelVM log file. See :ref:`logfile`. 
 
 I think I found a bug. What do I do?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -100,17 +100,17 @@ Games
 Help! My game won't run! 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-1. Make sure your game is supported. Check the `Compatibility page <https://www.scummvm.org/compatibility/>`_ on the ScummVM website, and the `Platform Overview <https://wiki.scummvm.org/index.php?title=Platforms/Overview>`_ page on the wiki. 
+1. Make sure your game is supported. Check the `Compatibility page <https://www.novelvm.org/compatibility/>`_ on the NovelVM website, and the `Platform Overview <https://wiki.novelvm.org/index.php?title=Platforms/Overview>`_ page on the wiki. 
 
-2. Check that you have all the required datafiles. See the :doc:`../use_scummvm/game_files` page. 
+2. Check that you have all the required datafiles. See the :doc:`../use_novelvm/game_files` page. 
 
-3. Ask for advice on the ScummVM forums or on Discord. See the :doc:`contact` page. 
+3. Ask for advice on the NovelVM forums or on Discord. See the :doc:`contact` page. 
 
 4. If you think the game should run, and it doesn't, report it as a bug. See :doc:`report_bugs`. 
 
-I installed my game but ScummVM can't find it... What do I do?
+I installed my game but NovelVM can't find it... What do I do?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Installing the game does not necessarily provide ScummVM with the files it needs. In most cases you will need to copy the files from the disc into a folder ScummVM can access.  See :doc:`../use_scummvm/game_files`. 
+Installing the game does not necessarily provide NovelVM with the files it needs. In most cases you will need to copy the files from the disc into a folder NovelVM can access.  See :doc:`../use_novelvm/game_files`. 
 
 Why are the subtitles in my non-English game messed up?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -127,22 +127,22 @@ Sometimes it's worth checking the obvious.
 
 1. Are your speakers on? Are your headphones properly connected? 
 2. Try playing an audio clip from another source to see if you have sound in general. 
-3. If you narrow it down to an issue with ScummVM, check the :doc:`audio settings <../settings/audio>`. ScummVM falls back on an audio setting that works, but if for some reason it doesn't, you might need to change the settings yourself. A safe bet is usually to set the **Preferred device** to **<default>** and allow ScummVM to choose for you. 
+3. If you narrow it down to an issue with NovelVM, check the :doc:`audio settings <../settings/audio>`. NovelVM falls back on an audio setting that works, but if for some reason it doesn't, you might need to change the settings yourself. A safe bet is usually to set the **Preferred device** to **<default>** and allow NovelVM to choose for you. 
 
 Help! There's no sound on my iPhone/iPad!
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-ScummVM will not play any sound if your device is in Silent Mode. If this is not the problem, see :ref:`nosound`.
+NovelVM will not play any sound if your device is in Silent Mode. If this is not the problem, see :ref:`nosound`.
 
 I have a "talkie" version of a LucasArts game but I can't hear the voices. What's the problem?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The original games shipped with an uncompressed voice file (``MONSTER.SOU``). If you have compressed this file to an mp3 file (``MONSTER.SO3``), an Ogg Vorbis file (``MONSTER.SOG``), or a FLAC file (``MONSTER.SOF``), make sure that the ScummVM you're using has support for those formats. 
+The original games shipped with an uncompressed voice file (``MONSTER.SOU``). If you have compressed this file to an mp3 file (``MONSTER.SO3``), an Ogg Vorbis file (``MONSTER.SOG``), or a FLAC file (``MONSTER.SOF``), make sure that the NovelVM you're using has support for those formats. 
 
 The audio is really glitchy. What can I do?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 There are a few things you can try:
 
 - Try to increase the :ref:`audio buffer size <buffer>` in the configuration file. 
-- If you are using the :ref:`MT-32 emulator <MT-32>`, your CPU might not have the processing power to keep up. In this case, you might have some success with running an external MT-32 emulator (Munt), as described in `this forum post <https://forums.scummvm.org/viewtopic.php?f=2&t=15251>`_, provided your platform supports it. 
+- If you are using the :ref:`MT-32 emulator <MT-32>`, your CPU might not have the processing power to keep up. In this case, you might have some success with running an external MT-32 emulator (Munt), as described in `this forum post <https://forums.novelvm.org/viewtopic.php?f=2&t=15251>`_, provided your platform supports it. 
 - If you are using :ref:`FluidSynth <FS>`, in particular with a large Soundfont, your CPU might not have the processing power to keep up. Try selecting a different :ref:`Preferred device <device>`.
 - If you are using the :ref:`AdLib <adlib>` emulator, try selecting the least CPU-intensive option; MAME. 
 

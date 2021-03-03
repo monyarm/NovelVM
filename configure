@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# configure -- custom configure script for ScummVM.
+# configure -- custom configure script for NovelVM.
 #
 # ScummVM is the legal property of its developers, whose names
 # are too numerous to list here. Please refer to the COPYRIGHT
@@ -224,8 +224,8 @@ _as="as"
 _dwp=dwp
 _windres=windres
 _stagingpath="staging"
-_win32path="c:/scummvm"
-_amigaospath="Games:ScummVM"
+_win32path="c:/novelvm"
+_amigaospath="Games:NovelVM"
 _morphospath="PROGDIR:"
 _staticlibpath=
 _xcodetoolspath=
@@ -279,21 +279,21 @@ add_feature fribidi "FriBidi" "_fribidi"
 add_feature cxx17 "c++17" "_use_cxx17"
 add_feature test_cxx17 "Test C++17" "_test_cxx17"
 
-# Directories for installing ScummVM.
+# Directories for installing NovelVM.
 # This list is closely based on what GNU autoconf does,
 # although the default value for datadir differs.
 # Like GNU autoconf, we distinguish datadir and datarootdir
 # to make it possible to change e.g. the location of the
 # man pages independently of that of the engine data files,
-# which are placed inside $datadir/scummvm
+# which are placed inside $datadir/novelvm
 prefix=NONE
 exec_prefix=NONE
 bindir='${exec_prefix}/bin'
 libdir='${exec_prefix}/lib'
 datarootdir='${prefix}/share'
-datadir='${datarootdir}/scummvm'
+datadir='${datarootdir}/novelvm'
 mandir='${datarootdir}/man'
-docdir='${datarootdir}/doc/scummvm'
+docdir='${datarootdir}/doc/novelvm'
 #localedir='${datarootdir}/locale'
 
 # For cross compiling
@@ -306,7 +306,7 @@ _host_alias=""
 _port_mk="ports.mk"
 
 # Use temp files in the build directory
-TMPO=./scummvm-conf
+TMPO=./novelvm-conf
 TMPC=${TMPO}.cpp
 TMPLOG=config.log
 
@@ -982,9 +982,9 @@ Fine tuning of the installation directories:
   --libdir=DIR            object code libraries [EPREFIX/lib]
   --datarootdir=DIR       read-only arch.-independent data root [PREFIX/share]
   --datadir=DIR           read-only architecture-independent data
-                          [DATAROOTDIR/scummvm]
+                          [DATAROOTDIR/novelvm]
   --mandir=DIR            man documentation [DATAROOTDIR/man]
-  --docdir=DIR            documentation root [DATAROOTDIR/doc/scummvm]
+  --docdir=DIR            documentation root [DATAROOTDIR/doc/novelvm]
 
 Special configuration feature:
   --host=HOST             cross-compile to target HOST (arm-linux, ...)
@@ -1080,7 +1080,7 @@ Optional Features:
                            WARNING: only specify this manually if you know what
                            you are doing!
   --no-builtin-resources   do not include additional resources (e.g. engine data, fonts)
-                           into the ScummVM binary
+                           into the NovelVM binary
 
 Optional Libraries:
   --with-alsa-prefix=DIR   prefix where alsa is installed (optional)
@@ -1214,7 +1214,7 @@ done # for parm in ...
 #
 # If we're not showing help, greet the user and start the log file
 #
-echo "Running ScummVM configure..."
+echo "Running NovelVM configure..."
 echo "Configure run on" `date` > $TMPLOG
 cat >> $TMPLOG <<EOF
 Invocation command line was:
@@ -1684,7 +1684,7 @@ arm-vfp-riscos)
 	_host_os=riscos
 	_host_cpu=arm
 	_host_alias=arm-unknown-riscos
-	datarootdir='/\<ScummVM\$$Dir\>'
+	datarootdir='/\<NovelVM\$$Dir\>'
 	datadir='${datarootdir}/data'
 	docdir='${datarootdir}/docs'
 	;;
@@ -1692,7 +1692,7 @@ arm-*riscos)
 	_host_os=riscos
 	_host_cpu=arm
 	_host_alias=$_host
-	datarootdir='/\<ScummVM\$$Dir\>'
+	datarootdir='/\<NovelVM\$$Dir\>'
 	datadir='${datarootdir}/data'
 	docdir='${datarootdir}/docs'
 	;;
@@ -1762,13 +1762,13 @@ maemo)
 	# The prefix is always the same on Maemo so we hardcode the default
 	# here. It is still possible to define a custom prefix which is
 	# needed when packaging the app with a user-specific app ID.
-	test "x$prefix" = xNONE && prefix=/opt/scummvm
+	test "x$prefix" = xNONE && prefix=/opt/novelvm
 	# Maemo apps are installed into app-specific directories. The
-	# default directory structure of ScummVM makes no sense here so we
+	# default directory structure of NovelVM makes no sense here so we
 	# hardcode Maemo specific directories here.
 	datarootdir='${prefix}/share'
-	datadir=/opt/scummvm/share
-	docdir='${datarootdir}/doc/scummvm'
+	datadir=/opt/novelvm/share
+	docdir='${datarootdir}/doc/novelvm'
 	;;
 n64)
 	_host_os=n64
@@ -1804,7 +1804,7 @@ ps3)
 	# needed when packaging the app with a user-specific app ID.
 	test "x$prefix" = xNONE && prefix=/dev_hdd0/game/SCUM12000/USRDIR
 	# PS3 apps are installed into app-specific directories. The
-	# default directory structure of ScummVM makes no sense here so we
+	# default directory structure of NovelVM makes no sense here so we
 	# hardcode PS3 specific directories here.
 	datarootdir='${prefix}/data'
 	datadir='${datarootdir}'
@@ -1820,7 +1820,7 @@ psp2)
 	# needed when packaging the app with a user-specific app ID.
 	test "x$prefix" = xNONE && prefix=app0:
 	# PSP2 apps are installed into app-specific directories. The
-	# default directory structure of ScummVM makes no sense here so we
+	# default directory structure of NovelVM makes no sense here so we
 	# hardcode PSP2 specific directories here.
 	datarootdir='${prefix}/data'
 	datadir='${datarootdir}'
@@ -2378,12 +2378,6 @@ if test "$_debug_build" != no; then
 			echo_n -- " + Gold"
 		fi
 	fi
-	if test "$have_clang" = yes; then
-		echo ""
-	else if cc_check_no_clean $debug_mode -fvar-tracking-assignments; then
-		append_var CXXFLAGS "-fvar-tracking-assignments"
-		echo_n -- " + var tracking"
-	fi
 	cc_check_clean
 	echo ""
 fi
@@ -2785,7 +2779,7 @@ case $_host_os in
 		_seq_midi=no
 		;;
 	cygwin*)
-		echo ERROR: Cygwin building is not supported by ScummVM anymore. Consider using MinGW.
+		echo ERROR: Cygwin building is not supported by NovelVM anymore. Consider using MinGW.
 		exit 1
 		;;
 	darwin*)
@@ -3050,7 +3044,7 @@ EOF
 		# append_var DEFINES "-D__USE_MINGW_ANSI_STDIO=0"  # Modern MinGW does not need it
 		append_var LDFLAGS "-static-libgcc -static-libstdc++"
 		append_var LIBS "-lmingw32 -lwinmm -lgdi32"
-		append_var OBJS "dists/scummvm.o"
+		append_var OBJS "dists/novelvm.o"
 		add_line_to_config_mk 'WIN32 = 1'
 		_port_mk="backends/platform/sdl/win32/win32.mk"
 		;;
@@ -3530,7 +3524,7 @@ if test -n "$_host"; then
 			append_var LDFLAGS "-mno-crt0"
 			append_var LDFLAGS "-L$N64SDK/hkz-libn64"
 			append_var LDFLAGS "-L$N64SDK/lib"
-			append_var LDFLAGS "-T n64ld_cpp.x -Xlinker -Map -Xlinker scummvm.map"
+			append_var LDFLAGS "-T n64ld_cpp.x -Xlinker -Map -Xlinker novelvm.map"
 			_backend="n64"
 			_mt32emu=no
 			_build_scalers=no
@@ -4115,10 +4109,10 @@ POST_OBJS_FLAGS := -Wl,-no-whole-archive
 # into dlopen(RTLD_LOCAL).  It *does* look in
 # DT_NEEDED libraries, so the workaround is to add an
 # (otherwise unnecessary) dependency from plugins back
-# to the main libscummvm.so.
+# to the main libnovelvm.so.
 _mak_plugins='
-PLUGIN_EXTRA_DEPS = libscummvm.so
-PLUGIN_LDFLAGS  += $(LDFLAGS) -L. -lscummvm
+PLUGIN_EXTRA_DEPS = libnovelvm.so
+PLUGIN_LDFLAGS  += $(LDFLAGS) -L. -lnovelvm
 PRE_OBJS_FLAGS  := -Wl,-export-dynamic -Wl,-whole-archive
 POST_OBJS_FLAGS := -Wl,-no-whole-archive
 '
@@ -4214,9 +4208,9 @@ POST_OBJS_FLAGS := -Wl,-no-whole-archive
 		_plugin_suffix=".dll"
 _mak_plugins='
 PLUGIN_EXTRA_DEPS	= $(EXECUTABLE)
-PLUGIN_LDFLAGS		:= -Wl,--enable-auto-import -shared ./libscummvm.a
+PLUGIN_LDFLAGS		:= -Wl,--enable-auto-import -shared ./libnovelvm.a
 PRE_OBJS_FLAGS		:= -Wl,--whole-archive
-POST_OBJS_FLAGS		:= -Wl,--export-all-symbols -Wl,--no-whole-archive -Wl,--out-implib,./libscummvm.a
+POST_OBJS_FLAGS		:= -Wl,--export-all-symbols -Wl,--no-whole-archive -Wl,--out-implib,./libnovelvm.a
 '
 		;;
 	psp)
@@ -4971,7 +4965,7 @@ case $_host_os in
 			_osxdockplugin=no
 			cat > $TMPC << EOF
 #include <Cocoa/Cocoa.h>
-@interface ScummVMDockTilePlugIn : NSObject <NSDockTilePlugIn> {
+@interface NovelVMDockTilePlugIn : NSObject <NSDockTilePlugIn> {
 }
 @end
 EOF
@@ -5119,7 +5113,7 @@ if test "$_libunity" = auto ; then
 			cat > $TMPC << EOF
 #include <unity.h>
 int main(void) {
-	unity_launcher_entry_get_for_desktop_id("scummvm.desktop");
+	unity_launcher_entry_get_for_desktop_id("novelvm.desktop");
 	return 0;
 }
 EOF
@@ -5880,11 +5874,11 @@ case $_backend in
 		;;
 	maemo)
 		# The Maemo apps want the plugins in the "lib" directory
-		# without a scummvm sub directory.
+		# without a novelvm sub directory.
 		append_var DEFINES "-DPLUGIN_DIRECTORY=\\\"$libdir\\\""
 		;;
 	*)
-		append_var DEFINES "-DPLUGIN_DIRECTORY=\\\"$libdir/scummvm\\\""
+		append_var DEFINES "-DPLUGIN_DIRECTORY=\\\"$libdir/novelvm\\\""
 		;;
 esac
 
@@ -6187,7 +6181,7 @@ s/#/    /g'
 fi
 
 if test -n "$_engines_built_wip" ; then
-	echo "WARNING: This ScummVM build contains the following UNSTABLE engines:"
+	echo "WARNING: This NovelVM build contains the following UNSTABLE engines:"
 	echo "$_engines_built_wip" | sed 's/@/\
 /g
 s/#/    /g'
@@ -6205,7 +6199,7 @@ cat > config.h << EOF
 $_config_h_data
 
 /* Data types */
-#ifndef SCUMMVM_DONT_DEFINE_TYPES
+#ifndef NOVELVM_DONT_DEFINE_TYPES
 typedef unsigned $type_1_byte byte;
 typedef unsigned int uint;
 typedef unsigned $type_1_byte uint8;

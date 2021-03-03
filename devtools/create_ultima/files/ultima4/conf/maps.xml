@@ -408,6 +408,6 @@
     <map id="55" type="combat" fname="camp.dng" width="11" height="11" levels="1"
      borderbehavior="fixed" nolineofsight="true" music="8" tileset="base" tilemap="base"/>
 
-	<!-- Custom maps introduced under ScummVM-->
-	<xi:include xmlns:xi="http://www.w3.org/2003/XInclude" href="scummvm_map.xml"/>
+	<!-- Custom maps introduced under NovelVM-->
+	<xi:include xmlns:xi="http://www.w3.org/2003/XInclude" href="novelvm_map.xml"/>
 </maps>

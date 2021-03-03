@@ -7,7 +7,7 @@ What you'll need
 
 - Bullet points listing all prerequisites. 
 
-Install ScummVM
+Install NovelVM
 ===============================
 
 Detailed download and install instructions. 
@@ -17,14 +17,14 @@ Transferring game files
 
 Detailed instructions for getting game files onto the device. 
 
-"See :doc:`../use_scummvm/game_files` for more information about game file requirements."
+"See :doc:`../use_novelvm/game_files` for more information about game file requirements."
 
 Controls
 =================
 
 "Controls can also be manually configured in the :doc:`Keymaps tab <../settings/keymaps>`."
 
-"See the :doc:`../using_scummvm/keyboard_shortcuts` page for common keyboard shortcuts." 
+"See the :doc:`../using_novelvm/keyboard_shortcuts` page for common keyboard shortcuts." 
 
 Default control mapping
 *************************

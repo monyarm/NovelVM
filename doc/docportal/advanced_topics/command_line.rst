@@ -3,18 +3,18 @@
 Command line interface
 =======================
 
-Launching ScummVM from the command line lets you pass a number of options, some of which override the applicable global or game-specific settings. It also lets you launch straight into a game without going to the Launcher first. 
+Launching NovelVM from the command line lets you pass a number of options, some of which override the applicable global or game-specific settings. It also lets you launch straight into a game without going to the Launcher first. 
 
-Some options, such as ``--help`` or ``--list-audio-devices``, allow you to view information about ScummVM directly on the command line without starting the Launcher or starting a game. 
+Some options, such as ``--help`` or ``--list-audio-devices``, allow you to view information about NovelVM directly on the command line without starting the Launcher or starting a game. 
 
 Usage
 =========
 
 .. code-block::
 
-    scummvm [option] [game]
+    novelvm [option] [game]
 
-To launch ScummVM, enter the path to ScummVM. Optionally, follow this with any of the options documented below, and/or the path to the game you wish to start. If a game has already been added to the games list in the Launcher, you can pass the game id instead of the path to the game. 
+To launch NovelVM, enter the path to NovelVM. Optionally, follow this with any of the options documented below, and/or the path to the game you wish to start. If a game has already been added to the games list in the Launcher, you can pass the game id instead of the path to the game. 
 
 
 .. tabbed:: Windows
@@ -22,7 +22,7 @@ To launch ScummVM, enter the path to ScummVM. Optionally, follow this with any o
     .. panels::
         :column: col-lg-12
 
-        The following examples assume that the path to ScummVM is ``C:\Program Files\ScummVM\scummvm.exe``. 
+        The following examples assume that the path to NovelVM is ``C:\Program Files\NovelVM\novelvm.exe``. 
 
         ^^^^
 
@@ -30,7 +30,7 @@ To launch ScummVM, enter the path to ScummVM. Optionally, follow this with any o
 
         .. code-block:: 
 
-            C:\Program Files\ScummVM\scummvm.exe -f monkey
+            C:\Program Files\NovelVM\novelvm.exe -f monkey
         
     
 
@@ -38,18 +38,18 @@ To launch ScummVM, enter the path to ScummVM. Optionally, follow this with any o
 
         .. code-block::
 
-            C:\Program Files\ScummVM\scummvm.exe -f -n -pD:``resource``ft
+            C:\Program Files\NovelVM\novelvm.exe -f -n -pD:``resource``ft
 
 .. tabbed:: macOS
     
     .. panels::
         :column: col-lg-12
 
-        The following examples assume the path to the ScummVM app is ``Applications/ScummVM.app``. 
+        The following examples assume the path to the NovelVM app is ``Applications/NovelVM.app``. 
         
-        If you are unsure of the path to the app, drag the ScummVM app icon into the Terminal window. This prints the path to the ScummVM app. 
+        If you are unsure of the path to the app, drag the NovelVM app icon into the Terminal window. This prints the path to the NovelVM app. 
         
-        To run ScummVM from the command line, add ``/Contents/MacOS/scummvm`` to that path. 
+        To run NovelVM from the command line, add ``/Contents/MacOS/novelvm`` to that path. 
 
         ^^^^
 
@@ -57,21 +57,21 @@ To launch ScummVM, enter the path to ScummVM. Optionally, follow this with any o
 
         .. code::
 
-            /Applications/ScummVM.app/Contents/MacOS/scummvm -f monkey 
+            /Applications/NovelVM.app/Contents/MacOS/novelvm -f monkey 
 
 
         To run Full Throttle, fullscreen (``-f``) and with subtitles enabled (``-n``), specifying the path to the game on a CD (``-p``): 
 
         .. code::
 
-            /Applications/ScummVM.app/Contents/MacOS/scummvm -f -n -p/cdrom/resource/ft
+            /Applications/NovelVM.app/Contents/MacOS/novelvm -f -n -p/cdrom/resource/ft
 
 .. tabbed:: Linux
     
     .. panels::
         :column: col-lg-12
 
-        The following examples assume the path to ScummVM is ``/usr/games/scummvm``.
+        The following examples assume the path to NovelVM is ``/usr/games/novelvm``.
         
         ^^^^^^
 
@@ -79,18 +79,18 @@ To launch ScummVM, enter the path to ScummVM. Optionally, follow this with any o
         
         .. code::
 
-            /usr/games/scummvm -f monkey 
+            /usr/games/novelvm -f monkey 
 
 
         To run Full Throttle, fullscreen (``-f``) and with subtitles enabled (``-n``), specifying the path to the game on a CD (``-p``):
 
         .. code::
 
-            /usr/games/scummvm -f -n -p/cdrom/resource/ft
+            /usr/games/novelvm -f -n -p/cdrom/resource/ft
 
         .. tip:: 
 
-            If ScummVM is on PATH, there is no need to enter the full path to ScummVM. Similarly, if a game is already added to the Launcher, there is no need to specify the path to the game.
+            If NovelVM is on PATH, there is no need to enter the full path to NovelVM. Similarly, if a game is already added to the Launcher, there is no need to specify the path to the game.
 
         
 Options
@@ -113,7 +113,7 @@ Short options are listed where they are available.
         ``--alt-intro``, ,":ref:`Uses alternative intro for CD versions <altintro>`"
         ``--aspect-ratio``,,":ref:`Enables aspect ratio correction <ratio>`"
         ``--auto-detect``,,"Displays a list of games from the current or specified directory and starts the first game. Use ``--path=PATH`` before ``--auto-detect`` to specify a directory."
-        ``--boot-param=NUM``,``-b``,"Pass number to the boot script (`boot param <https://wiki.scummvm.org/index.php/Boot_Params>`_)."
+        ``--boot-param=NUM``,``-b``,"Pass number to the boot script (`boot param <https://wiki.novelvm.org/index.php/Boot_Params>`_)."
         ``--cdrom=DRIVE``,,"Sets the CD drive to play CD audio from. This can be a drive, path, or numeric index (default: 0)"
         ``--config=FILE``,``-c``,"Uses alternate configuration file"
         ``--console``,,"Enables the console window (default: enabled). Win32 and Symbian32 only." 
@@ -163,7 +163,7 @@ Short options are listed where they are available.
         ``--talkspeed=NUM``,,":ref:`Sets talk speed for games <talkspeed>` (default: 60)"
         ``--tempo=NUM``,,"Sets music tempo (in percent, 50-200) for SCUMM games (default: 100)"
         ``--themepath=PATH``,,":ref:`Specifies path to where GUI themes are stored <themepath>`"
-        ``--version``,``-v``,"Displays ScummVM version information and exits"
+        ``--version``,``-v``,"Displays NovelVM version information and exits"
 
 
 

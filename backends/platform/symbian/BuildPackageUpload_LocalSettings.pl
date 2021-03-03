@@ -305,19 +305,19 @@
 	# empty string also removes the trailing '_'. Some 051101 examples:
 
 	# $VariationSets{'UIQ2'}{''} would produce:
-	#   scummvm-051101-SymbianUIQ2.sis
+	#   novelvm-051101-SymbianUIQ2.sis
 
 	# $VariationSets{'S60v2'}{'agos'} would produce:
-	#   scummvm-051101-SymbianS60v2_agos.sis
+	#   novelvm-051101-SymbianS60v2_agos.sis
 
 	# $VariationSets{'ALL'}{'queen'} with all $SDK_RootDirs defined would produce:
-	#   scummvm-051101-SymbianUIQ2_queen.sis
-	#   scummvm-051101-SymbianUIQ3_queen.sis
-	#   scummvm-051101-SymbianS60v1_queen.sis
-	#   scummvm-051101-SymbianS60v2_queen.sis
-	#   scummvm-051101-SymbianS60v3_queen.sis
-	#   scummvm-051101-SymbianS80_queen.sis
-	#   scummvm-051101-SymbianS90_queen.sis
+	#   novelvm-051101-SymbianUIQ2_queen.sis
+	#   novelvm-051101-SymbianUIQ3_queen.sis
+	#   novelvm-051101-SymbianS60v1_queen.sis
+	#   novelvm-051101-SymbianS60v2_queen.sis
+	#   novelvm-051101-SymbianS60v3_queen.sis
+	#   novelvm-051101-SymbianS80_queen.sis
+	#   novelvm-051101-SymbianS90_queen.sis
 
 	# NOTE: empty $VariationSets{''} string instead of 'ALL' = easy way to disable pkg!
 

@@ -4,7 +4,7 @@ ENTRY(_start)
 
 PHDRS
 {
-	/* ScummVM's elf loader only allows a single segment, at the moment. */
+	/* NovelVM's elf loader only allows a single segment, at the moment. */
 	plugin PT_LOAD FLAGS(7) /* Read | Write | Execute */;
 }
 

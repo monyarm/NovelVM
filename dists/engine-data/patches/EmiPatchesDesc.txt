@@ -3,7 +3,7 @@ List of fixed bugs in EMI scripts:
 +Others modifications:
 	-Differently from Grim Fandango, global preferences (such as volume, subtitles, ...)
 	in EMI are saved in a text file (at least in Windows reatil version and demo).
-	Patches to _options.lua modifies this behaviour and hooks directly into ScummVM
+	Patches to _options.lua modifies this behaviour and hooks directly into NovelVM
 	configuration manager through GetResidualVMPreference and SetResidualVMPreference
 	opcodes. For simplicity, these patches patches only load the file residualvm-prefs.lua,
 	(they add a 'dofile("residualvm-prefs.lua")' at the end of _options.lua) see it for

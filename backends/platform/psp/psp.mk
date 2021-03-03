@@ -1,7 +1,7 @@
-PSP_EXE_STRIPPED := scummvm_stripped$(EXEEXT)
+PSP_EXE_STRIPPED := novelvm_stripped$(EXEEXT)
 PSP_EBOOT = EBOOT.PBP
 PSP_EBOOT_SFO = param.sfo
-PSP_EBOOT_TITLE = ScummVM-PSP
+PSP_EBOOT_TITLE = NovelVM-PSP
 DATE = $(shell date +%Y%m%d)
 DIST_EXECUTABLES=$(PSP_EBOOT) $(PLUGINS)
 DIST_FILES_PLATFORM=$(srcdir)/backends/platform/psp/README.PSP

@@ -111,13 +111,13 @@ template<typename T, size_t N> inline void ARRAYCLEAR(T (&array) [N], const T &v
  * Evaluate the name of the current function on compilers supporting this.
  */
 #if defined(__GNUC__)
-# define SCUMMVM_CURRENT_FUNCTION __PRETTY_FUNCTION__
+# define NOVELVM_CURRENT_FUNCTION __PRETTY_FUNCTION__
 #elif defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901)
-#  define SCUMMVM_CURRENT_FUNCTION	__func__
+#  define NOVELVM_CURRENT_FUNCTION	__func__
 #elif defined(_MSC_VER)
-#  define SCUMMVM_CURRENT_FUNCTION __FUNCTION__
+#  define NOVELVM_CURRENT_FUNCTION __FUNCTION__
 #else
-#  define SCUMMVM_CURRENT_FUNCTION "<unknown>"
+#  define NOVELVM_CURRENT_FUNCTION "<unknown>"
 #endif
 
 /** @} */

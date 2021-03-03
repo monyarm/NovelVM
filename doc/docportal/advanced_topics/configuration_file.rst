@@ -5,7 +5,7 @@ Configuration file
 
 The configuration file provides a way to edit both global and game-specific settings. It is a text file containing configuration keys and parameters. 
 
-Settings are also accessible directly from the Launcher. See :doc:`../use_scummvm/how_to_settings`. 
+Settings are also accessible directly from the Launcher. See :doc:`../use_novelvm/how_to_settings`. 
 
 Location
 ==========
@@ -21,7 +21,7 @@ The configuration file saves to different default locations, depending on the pl
 		95/98/ME
 		^^^^^^^^^^ 
 	
-		``C:\WINDOWS\scummvm.ini``
+		``C:\WINDOWS\novelvm.ini``
 		
 	
 		---
@@ -30,32 +30,32 @@ The configuration file saves to different default locations, depending on the pl
 		Windows NT4 
 		^^^^^^^^^^^^
 
-		``C:\WINDOWS\Profiles\username\Application Data\ScummVM\scummvm.ini``
+		``C:\WINDOWS\Profiles\username\Application Data\NovelVM\novelvm.ini``
 
 		---
 		:column: col-lg-12 mb-2
 
 		Windows 2000/XP
 		^^^^^^^^^^^^^^^^^
-		``\Documents and Settings\username\Application Data\ScummVM\scummvm.ini``
+		``\Documents and Settings\username\Application Data\NovelVM\novelvm.ini``
 
 		---
 		:column: col-lg-12 mb-2
 
 		Window Vista/7/8/10
 		^^^^^^^^^^^^^^^^^^^^^^
-		``%APPDATA%\ScummVM\scummvm.ini``
+		``%APPDATA%\NovelVM\novelvm.ini``
 
 .. tabbed:: macOS
 
 	.. panels::
 		:column: col-lg-12 mb-2
 
-		``~/Library/Preferences/ScummVM Preferences``
+		``~/Library/Preferences/NovelVM Preferences``
 
 		.. note::
 
-			If an earlier version of ScummVM was installed on your system, the configuration file remains in the previous default location of ``~/.scummvmrc``.
+			If an earlier version of NovelVM was installed on your system, the configuration file remains in the previous default location of ``~/.novelvmrc``.
 		
 		.. tip::
 			
@@ -67,9 +67,9 @@ The configuration file saves to different default locations, depending on the pl
 	.. panels::
 		:column: col-lg-12 mb-2
 
-		ScummVM follows the XDG Base Directory Specification, so by default the configuration file is found at ``~/.config/scummvm/scummvm.ini``, but its location might vary depending on the value of the ``XDG_CONFIG_HOME`` environment variable.
+		NovelVM follows the XDG Base Directory Specification, so by default the configuration file is found at ``~/.config/novelvm/novelvm.ini``, but its location might vary depending on the value of the ``XDG_CONFIG_HOME`` environment variable.
 		
-		If ScummVM was installed using Snap, the configuration file is found at ``~/snap/scummvm/current/.config/scummvm/scummvm.ini``
+		If NovelVM was installed using Snap, the configuration file is found at ``~/snap/novelvm/current/.config/novelvm/novelvm.ini``
 
 		.. note::
 			
@@ -81,7 +81,7 @@ The configuration file saves to different default locations, depending on the pl
 Using the configuration file
 ==================================
 
-Global settings are listed under the ``[scummvm]`` heading. Global :doc:`keymaps settings <../settings/keymaps>` are listed under the ``[keymapper]`` heading. Game-specific settings, including keymaps, are listed under the heading for that game, for example ``[queen]`` for Flight of the Amazon Queen. Use the configuration keys to change settings. 
+Global settings are listed under the ``[novelvm]`` heading. Global :doc:`keymaps settings <../settings/keymaps>` are listed under the ``[keymapper]`` heading. Game-specific settings, including keymaps, are listed under the heading for that game, for example ``[queen]`` for Flight of the Amazon Queen. Use the configuration keys to change settings. 
 
 
 Example of a configuration file
@@ -89,7 +89,7 @@ Example of a configuration file
 
 .. code::
 
-    [scummvm]
+    [novelvm]
     gfx_mode=supereagle
     fullscreen=true
     savepath=C:\saves\
@@ -135,7 +135,7 @@ There are many recognized configuration keys. In the table below, each key is ei
   	:header-rows: 1 
 
 		Key,Type,Default,Description/Options
-		alsa_port,integer,,Specifies which ALSA port ScummVM uses when using the ALSA music driver (Linux).
+		alsa_port,integer,,Specifies which ALSA port NovelVM uses when using the ALSA music driver (Linux).
 		":ref:`alt_intro <altintro>`",boolean,false,
 		":ref:`altamigapalette <altamiga>`",boolean,false,
 		":ref:`apple2gs_speedmenu <2gs>`",boolean,false,
@@ -153,12 +153,12 @@ There are many recognized configuration keys. In the table below, each key is ei
 		":ref:`autosave_period <autosave>`", integer, 300, 
 		auto_savenames,boolean,false, Automatically generates names for saved games
 		":ref:`bilinear_filtering <bilinear>`",boolean,false,
-		`boot_param <https://wiki.scummvm.org/index.php/Boot_Params>`_,integer,none,
+		`boot_param <https://wiki.novelvm.org/index.php/Boot_Params>`_,integer,none,
 		":ref:`bright_palette <bright>`",boolean,true,
-		cdrom,integer,0, "Sets which CD drive to play CD audio from (as a numeric index). If a negative number is set, ScummVM does not access the CD drive."
+		cdrom,integer,0, "Sets which CD drive to play CD audio from (as a numeric index). If a negative number is set, NovelVM does not access the CD drive."
 		":ref:`color <color>`",boolean,,
 		":ref:`commandpromptwindow <cmd>`",boolean,false,
-		confirm_exit,boolean,false, ScummVM requests confirmation before quitting (SDL backend only)
+		confirm_exit,boolean,false, NovelVM requests confirmation before quitting (SDL backend only)
 		console,boolean,true, Enables the console window for Win32/Symbian32. 
 		controller_map_db,string,"``gamecontrollerdb.txt`` is loaded from the specified extrapath", "Specifies the custom controller mapping file to load to complete the default database (SDL backend only)." 
 		copy_protection,boolean,false, Enables copy protection
@@ -233,7 +233,7 @@ There are many recognized configuration keys. In the table below, each key is ei
 	- timidity"
 		":ref:`GraphicsDithering <gdither>`",boolean,true,
 		":ref:`gui_browser_native <guibrowser>`", boolean, true
-		gui_browser_show_hidden,boolean,false, Shows hidden files/folders in the ScummVM file browser.
+		gui_browser_show_hidden,boolean,false, Shows hidden files/folders in the NovelVM file browser.
 		gui_list_max_scan_entries,integer,-1, "Specifies the threshold for scanning directories in the Launcher. If the number of game entires exceeds the specified number, then scanning is skipped." 
 		gui_saveload_chooser,string,grid,"- list
 	- grid"
@@ -244,7 +244,7 @@ There are many recognized configuration keys. In the table below, each key is ei
 		":ref:`herculesfont <herc>`",boolean,false,
 		":ref:`hpbargraphs <hp>`",boolean,true,
 		":ref:`hypercheat <hyper>`",boolean,false,
-		iconpath,string,, "Specifies the path to icons to use as overlay for the ScummVM icon in the Windows taskbar or the macOS Dock when running a game. The icon files should be named after the :ref:`gameid <gameid>`, and be an ICO file on Windows, or a PNG file on macOS." 
+		iconpath,string,, "Specifies the path to icons to use as overlay for the NovelVM icon in the Windows taskbar or the macOS Dock when running a game. The icon files should be named after the :ref:`gameid <gameid>`, and be an ICO file on Windows, or a PNG file on macOS." 
 		":ref:`improved <improved>`",boolean,true,
 		":ref:`InvObjectsAnimated <objanimated>`",boolean,true,
 		":ref:`joystick_deadzone <deadzone>`",integer, 3
@@ -309,7 +309,7 @@ There are many recognized configuration keys. In the table below, each key is ei
 	- mt32
 	- timidity "
 		":ref:`multi_midi <multi>`",boolean,,
-		":ref:`music_driver [scummvm] <device>`",string,auto,"	
+		":ref:`music_driver [novelvm] <device>`",string,auto,"	
 	- null
 	- auto
 
@@ -331,7 +331,7 @@ There are many recognized configuration keys. In the table below, each key is ei
 	- timidity
 	"
 		"music_driver [game]",string, auto, "
-	The same options as ``music_driver in [scummvm]`` plus:
+	The same options as ``music_driver in [novelvm]`` plus:
 
 	- towns
 	- C64
@@ -415,8 +415,8 @@ There are many recognized configuration keys. In the table below, each key is ei
 		":ref:`transparentdialogboxes <transparentdialog>`",boolean,false,
 		":ref:`tts_enabled <ttsenabled>`",boolean,false,
 		":ref:`tts_narrator <ttsnarrator>`",boolean,false,
-		use_cdaudio,boolean,true, "If true, ScummVM uses audio from the game CD."
-		versioninfo,string,,Shows the ScummVM version that created the configuration file. 
+		use_cdaudio,boolean,true, "If true, NovelVM uses audio from the game CD."
+		versioninfo,string,,Shows the NovelVM version that created the configuration file. 
 		":ref:`window_style <style>`",boolean,true,
 		":ref:`windows_cursors <wincursors>`",boolean,false,
 		

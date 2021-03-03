@@ -2,34 +2,34 @@
 Nintendo DS
 =============================
 
-This page contains all the information you need to get ScummVM up and running on a Nintendo DS.
+This page contains all the information you need to get NovelVM up and running on a Nintendo DS.
 
 What you'll need
 ===================
 
 - A homebrew-enabled Nintendo DSi or an unofficial card reader. How to enable homebrew is outside the scope of this documentation.
 
-Installing ScummVM
+Installing NovelVM
 ======================================
 
-Download the Nintendo DS package from the `ScummVM Downloads page <https://www.scummvm.org/downloads/>`_. Extract the archive and copy the extracted ``scummvm.nds`` file onto the SD card. The exact location is not important.
+Download the Nintendo DS package from the `NovelVM Downloads page <https://www.novelvm.org/downloads/>`_. Extract the archive and copy the extracted ``novelvm.nds`` file onto the SD card. The exact location is not important.
 
 Transferring game files
 ========================
 
 Transfer game folders onto the SD card. The exact location is not important.
 
-See :doc:`../use_scummvm/game_files` for more information about game file requirements.
+See :doc:`../use_novelvm/game_files` for more information about game file requirements.
 
 Controls
 =============
 
-Controls can also be manually configured in the :doc:`Keymaps tab <../settings/keymaps>`. See the :doc:`../use_scummvm/keyboard_shortcuts` page for common keyboard shortcuts.
+Controls can also be manually configured in the :doc:`Keymaps tab <../settings/keymaps>`. See the :doc:`../use_novelvm/keyboard_shortcuts` page for common keyboard shortcuts.
 
 Paths
 =======
 
-Saved games and the configuration file are found in the ScummVM installation directory.
+Saved games and the configuration file are found in the NovelVM installation directory.
 
 Settings
 ==========

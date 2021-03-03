@@ -4,15 +4,15 @@
 .*.swo
 *.o
 *.dwo
-scummvm.dwp
+novelvm.dwp
 lib*.a
 .deps
 
 /config.log
-/scummvm
-/libscummvm.so
-/scummvm-static
-/ScummVMDockTilePlugin*
+/novelvm
+/libnovelvm.so
+/novelvm-static
+/NovelVMDockTilePlugin*
 /config.h
 /config.mk
 /.gdb_history
@@ -22,11 +22,11 @@ lib*.a
 /*.dSYM
 /MT32_CONTROL.ROM
 /MT32_PCM.ROM
-/ScummVM.app
-/scummvm.docktileplugin
-/\!ScummVM
+/NovelVM.app
+/novelvm.docktileplugin
+/\!NovelVM
 /*,e1f
-/scummvm-ps3.pkg
+/novelvm-ps3.pkg
 /*.ipk
 /map.txt
 *.elf
@@ -37,7 +37,7 @@ lib*.a
 /.settings
 /.autotools
 /Icon.*
-/scummvm-conf.cpp
+/novelvm-conf.cpp
 /tmp_*.cpp
 /*.apk
 /CMakeLists.txt
@@ -65,18 +65,18 @@ lib*.a
 /backends/platform/dc/tools
 /backends/platform/dc/plugins
 /backends/platform/dc/engines
-/backends/platform/dc/scummvm.elf
-/backends/platform/dc/scummvm.bin
-/backends/platform/dc/SCUMMVM.BIN
+/backends/platform/dc/novelvm.elf
+/backends/platform/dc/novelvm.bin
+/backends/platform/dc/NOVELVM.BIN
 /backends/platform/dc/*.PLG
 
 /backends/platform/ds/arm9/data/*.h
 
-/backends/platform/maemo/scummvm
+/backends/platform/maemo/novelvm
 
 /backends/platform/symbian/mmp/*.mmp
-/backends/platform/symbian/*/ScummVM_*.mmp
-!/backends/platform/symbian/*/ScummVM_*_App.mmp
+/backends/platform/symbian/*/NovelVM_*.mmp
+!/backends/platform/symbian/*/NovelVM_*_App.mmp
 /backends/platform/symbian/*/BLD.INF
 
 /dists/rpl.exe
@@ -84,7 +84,7 @@ lib*.a
 /dists/codeblocks/*.cbp
 /dists/codeblocks/*.depend
 /dists/codeblocks/*.layout
-/dists/codeblocks/scummvm*
+/dists/codeblocks/novelvm*
 
 /doc/doxygen/html
 /doc/doxygen/doxygen_warnings.txt
@@ -93,10 +93,10 @@ lib*.a
 xcuserdata
 project.xcworkspace
 /dists/iphone/build
-/dists/iphone/scummvm.xcodeproj
+/dists/iphone/novelvm.xcodeproj
 /dists/iphone/create_project
 /dists/macosx/build
-/dists/macosx/scummvm.xcodeproj
+/dists/macosx/novelvm.xcodeproj
 /dists/macosx/create_project
 
 /dists/msvc/[Dd]ebug*/
@@ -214,10 +214,10 @@ compile_commands.json
 /messages.mo
 
 #Ignore Qt Creator project files
-ScummVM.config
-ScummVM.creator
-ScummVM.files
-ScummVM.includes
+NovelVM.config
+NovelVM.creator
+NovelVM.files
+NovelVM.includes
 
 #Ignore Komodo IDE/Edit project files
 *.komodoproject
@@ -250,13 +250,13 @@ psp2pkg/
 
 #Ignore Switch files
 switch_release/
-scummvm.elf
-scummvm.nro
-scummvm_switch.zip
+novelvm.elf
+novelvm.nro
+novelvm_switch.zip
 
 #Ignore gmon.out created by gprof
 gmon.out
-/scummvm_libs_2015
+/novelvm_libs_2015
 
 #Ignore Eclipse related files (such as a Java plugin for Visual Studio Code)
 .settings

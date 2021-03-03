@@ -1,4 +1,4 @@
-PSP2_EXE_STRIPPED := scummvm_stripped$(EXEEXT)
+PSP2_EXE_STRIPPED := novelvm_stripped$(EXEEXT)
 
 $(PSP2_EXE_STRIPPED): $(EXECUTABLE)
 	$(STRIP) --strip-debug $< -o $@

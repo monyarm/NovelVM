@@ -10,7 +10,7 @@ PATH_BUILD = ./android_project
 PATH_BUILD_GRADLE = $(PATH_BUILD)/build.gradle
 PATH_BUILD_ASSETS = $(PATH_BUILD)/assets
 PATH_BUILD_LIB = $(PATH_BUILD)/lib/$(ABI)
-PATH_BUILD_LIBSCUMMVM = $(PATH_BUILD)/lib/$(ABI)/libscummvm.so
+PATH_BUILD_LIBNOVELVM = $(PATH_BUILD)/lib/$(ABI)/libnovelvm.so
 
 APK_MAIN = ResidualVM-debug.apk
 APK_MAIN_RELEASE = ResidualVM-release-unsigned.apk
@@ -37,15 +37,15 @@ ifneq ($(DIST_FILES_SHADERS),)
 	$(INSTALL) -c -m 644 $(DIST_FILES_SHADERS) $(PATH_BUILD_ASSETS)/shaders
 endif
 
-$(PATH_BUILD_LIBSCUMMVM): libscummvm.so | $(PATH_BUILD)
+$(PATH_BUILD_LIBNOVELVM): libnovelvm.so | $(PATH_BUILD)
 	$(INSTALL) -d  $(PATH_BUILD_LIB)
-	$(INSTALL) -c -m 644 libscummvm.so $(PATH_BUILD_LIBSCUMMVM)
+	$(INSTALL) -c -m 644 libnovelvm.so $(PATH_BUILD_LIBNOVELVM)
 
-$(APK_MAIN): $(PATH_BUILD_GRADLE) $(PATH_BUILD_ASSETS) $(PATH_BUILD_LIBSCUMMVM) | $(PATH_BUILD)
+$(APK_MAIN): $(PATH_BUILD_GRADLE) $(PATH_BUILD_ASSETS) $(PATH_BUILD_LIBNOVELVM) | $(PATH_BUILD)
 	(cd $(PATH_BUILD); ./gradlew assembleDebug)
 	$(CP) $(PATH_BUILD)/build/outputs/apk/debug/ResidualVM-debug.apk $@
 
-$(APK_MAIN_RELEASE): $(PATH_BUILD_GRADLE) $(PATH_BUILD_ASSETS) $(PATH_BUILD_LIBSCUMMVM) | $(PATH_BUILD)
+$(APK_MAIN_RELEASE): $(PATH_BUILD_GRADLE) $(PATH_BUILD_ASSETS) $(PATH_BUILD_LIBNOVELVM) | $(PATH_BUILD)
 	(cd $(PATH_BUILD); ./gradlew build)
 	$(CP) $(PATH_BUILD)/build/outputs/apk/release/ResidualVM-release-unsigned.apk $@
 

@@ -46,8 +46,8 @@ extern "C" int Game_Main(char *path, char *) {
 	PluginManager::instance().addPluginProvider(new SDLPluginProvider());
 #endif
 
-	// Invoke the actual ScummVM main entry point:
-	int res = scummvm_main(0, 0);
+	// Invoke the actual NovelVM main entry point:
+	int res = novelvm_main(0, 0);
 
 	// Free OSystem
 	g_system->destroy();

@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 #
-# This script is a hack to update the ScummVM version in all (?) files that
+# This script is a hack to update the NovelVM version in all (?) files that
 # contain it. Obviously, it should be used before a release.
 
 use strict;
@@ -32,21 +32,21 @@ print "Setting version to '$VERSION'\n";
 # List of the files in which we need to perform substitution.
 my @subs_files = qw(
 	base/internal_version.h
-	dists/redhat/scummvm.spec
-	dists/redhat/scummvm-tools.spec
-	dists/slackware/scummvm.SlackBuild
+	dists/redhat/novelvm.spec
+	dists/redhat/novelvm-tools.spec
+	dists/slackware/novelvm.SlackBuild
 	dists/macosx/Info.plist
 	dists/macosx/dockplugin/Info.plist
 	dists/iphone/Info.plist
 	dists/ios7/Info.plist
-	dists/irix/scummvm.spec
+	dists/irix/novelvm.spec
 	dists/wii/meta.xml 
 	dists/openpandora/PXML.xml
 	dists/openpandora/README-OPENPANDORA
 	dists/openpandora/README-PND.txt
 	dists/openpandora/index.html
 	dists/gph/README-GPH
-	dists/gph/scummvm.ini
+	dists/gph/novelvm.ini
 	dists/riscos/!Boot,feb
 	dists/amiga/RM2AG.rexx
 	backends/platform/psp/README.PSP

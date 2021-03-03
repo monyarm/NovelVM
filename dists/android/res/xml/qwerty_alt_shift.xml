@@ -1,56 +1,56 @@
 <?xml version="1.0"?>
-<!-- When creating new keyboard layout, add it to TextInputKeyboardList array in ScummVMActivity.java -->
-<CustomKeyboard xmlns:scummvm="http://schemas.android.com/apk/res-auto"
-	scummvm:keyWidth="10%p"
-	scummvm:horizontalGap="0px"
-	scummvm:verticalGap="0px"
-	scummvm:keyHeight="10%p">
+<!-- When creating new keyboard layout, add it to TextInputKeyboardList array in NovelVMActivity.java -->
+<CustomKeyboard xmlns:novelvm="http://schemas.android.com/apk/res-auto"
+	novelvm:keyWidth="10%p"
+	novelvm:horizontalGap="0px"
+	novelvm:verticalGap="0px"
+	novelvm:keyHeight="10%p">
 	<CustomRow>
-		<CustomKey scummvm:codes="100008" scummvm:keyLabel="!"     scummvm:isRepeatable="true" scummvm:keyEdgeFlags="left"/>
-		<CustomKey scummvm:codes="100009" scummvm:keyLabel="\@"    scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="100010" scummvm:keyLabel="#"     scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="100011" scummvm:keyLabel="$"     scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="100012" scummvm:keyLabel="%"     scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="100013" scummvm:keyLabel="^"     scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="100014" scummvm:keyLabel="&amp;" scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="100015" scummvm:keyLabel="*"     scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="100016" scummvm:keyLabel="("     scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="100007" scummvm:keyLabel=")"     scummvm:isRepeatable="true" scummvm:keyEdgeFlags="right"/>
+		<CustomKey novelvm:codes="100008" novelvm:keyLabel="!"     novelvm:isRepeatable="true" novelvm:keyEdgeFlags="left"/>
+		<CustomKey novelvm:codes="100009" novelvm:keyLabel="\@"    novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="100010" novelvm:keyLabel="#"     novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="100011" novelvm:keyLabel="$"     novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="100012" novelvm:keyLabel="%"     novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="100013" novelvm:keyLabel="^"     novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="100014" novelvm:keyLabel="&amp;" novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="100015" novelvm:keyLabel="*"     novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="100016" novelvm:keyLabel="("     novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="100007" novelvm:keyLabel=")"     novelvm:isRepeatable="true" novelvm:keyEdgeFlags="right"/>
 	</CustomRow>
 	<CustomRow>
-		<CustomKey scummvm:codes="111"     scummvm:keyLabel="Esc"    scummvm:isRepeatable="true" scummvm:keyEdgeFlags="left"/>
-		<CustomKey scummvm:codes="100068"  scummvm:keyLabel="~"      scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="100069"  scummvm:keyLabel="_"      scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="100070"  scummvm:keyLabel="+"      scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="100073"  scummvm:keyLabel="|"      scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="100075"  scummvm:keyLabel="&quot;" scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="131"     scummvm:keyLabel="F1"     scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="132"     scummvm:keyLabel="F2"     scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="133"     scummvm:keyLabel="F3"     scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="134"     scummvm:keyLabel="F4"     scummvm:isRepeatable="true" scummvm:keyEdgeFlags="right"/>
+		<CustomKey novelvm:codes="111"     novelvm:keyLabel="Esc"    novelvm:isRepeatable="true" novelvm:keyEdgeFlags="left"/>
+		<CustomKey novelvm:codes="100068"  novelvm:keyLabel="~"      novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="100069"  novelvm:keyLabel="_"      novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="100070"  novelvm:keyLabel="+"      novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="100073"  novelvm:keyLabel="|"      novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="100075"  novelvm:keyLabel="&quot;" novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="131"     novelvm:keyLabel="F1"     novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="132"     novelvm:keyLabel="F2"     novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="133"     novelvm:keyLabel="F3"     novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="134"     novelvm:keyLabel="F4"     novelvm:isRepeatable="true" novelvm:keyEdgeFlags="right"/>
 	</CustomRow>
 	<CustomRow>
-		<CustomKey scummvm:codes="-1"  scummvm:keyLabel="123…"     scummvm:keyEdgeFlags="left"/>
-		<CustomKey scummvm:codes="143" scummvm:keyLabel="NumLk"    scummvm:isSticky="true"/>
-		<CustomKey scummvm:codes="120" scummvm:keyLabel="Print"    scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="116" scummvm:keyLabel="ScrollLk" scummvm:isSticky="true"/>
-		<CustomKey scummvm:codes="121" scummvm:keyLabel="Pause"    scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="158" scummvm:keyLabel="Kp ."     scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="135" scummvm:keyLabel="F5"       scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="136" scummvm:keyLabel="F6"       scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="137" scummvm:keyLabel="F7"       scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="138" scummvm:keyLabel="F8"       scummvm:isRepeatable="true" scummvm:keyEdgeFlags="right"/>
+		<CustomKey novelvm:codes="-1"  novelvm:keyLabel="123…"     novelvm:keyEdgeFlags="left"/>
+		<CustomKey novelvm:codes="143" novelvm:keyLabel="NumLk"    novelvm:isSticky="true"/>
+		<CustomKey novelvm:codes="120" novelvm:keyLabel="Print"    novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="116" novelvm:keyLabel="ScrollLk" novelvm:isSticky="true"/>
+		<CustomKey novelvm:codes="121" novelvm:keyLabel="Pause"    novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="158" novelvm:keyLabel="Kp ."     novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="135" novelvm:keyLabel="F5"       novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="136" novelvm:keyLabel="F6"       novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="137" novelvm:keyLabel="F7"       novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="138" novelvm:keyLabel="F8"       novelvm:isRepeatable="true" novelvm:keyEdgeFlags="right"/>
 	</CustomRow>
 	<CustomRow rowEdgeFlags="bottom">
-		<CustomKey scummvm:codes="-6"  scummvm:keyLabel="abc…" scummvm:keyEdgeFlags="left"/>
-		<CustomKey scummvm:codes="154" scummvm:keyLabel="Kp /" scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="155" scummvm:keyLabel="Kp *" scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="156" scummvm:keyLabel="Kp -" scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="157" scummvm:keyLabel="Kp +" scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="160" scummvm:keyLabel="Kp ↵" scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="139" scummvm:keyLabel="F9"   scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="140" scummvm:keyLabel="F10"  scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="141" scummvm:keyLabel="F11"  scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="142" scummvm:keyLabel="F12"  scummvm:isRepeatable="true" scummvm:keyEdgeFlags="right" />
+		<CustomKey novelvm:codes="-6"  novelvm:keyLabel="abc…" novelvm:keyEdgeFlags="left"/>
+		<CustomKey novelvm:codes="154" novelvm:keyLabel="Kp /" novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="155" novelvm:keyLabel="Kp *" novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="156" novelvm:keyLabel="Kp -" novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="157" novelvm:keyLabel="Kp +" novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="160" novelvm:keyLabel="Kp ↵" novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="139" novelvm:keyLabel="F9"   novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="140" novelvm:keyLabel="F10"  novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="141" novelvm:keyLabel="F11"  novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="142" novelvm:keyLabel="F12"  novelvm:isRepeatable="true" novelvm:keyEdgeFlags="right" />
 	</CustomRow>
 </CustomKeyboard>

@@ -129,7 +129,7 @@ To switch between stretch modes, press :kbd:`Ctrl+Alt+s`.
 Render mode
 -------------
 
-For most games this setting will have no effect. For some of the older games that could be played on different systems and graphics cards, this control lets you decide which system you want ScummVM to reproduce. 
+For most games this setting will have no effect. For some of the older games that could be played on different systems and graphics cards, this control lets you decide which system you want NovelVM to reproduce. 
 
 Below are some of the common render modes, to illustrate how the render mode setting works. 
 
@@ -160,7 +160,7 @@ Below are some of the common render modes, to illustrate how the render mode set
 Filter graphics
 ----------------
 
-When enabled, ScummVM uses bilinear interpolation instead of nearest neighbor for the :ref:`aspect ratio <aspect>` and :ref:`stretch mode <stretch>`. It does not affect the graphics mode scaling unless OpenGL is selected, in which case it determines how the OpenGL scaling is done. 
+When enabled, NovelVM uses bilinear interpolation instead of nearest neighbor for the :ref:`aspect ratio <aspect>` and :ref:`stretch mode <stretch>`. It does not affect the graphics mode scaling unless OpenGL is selected, in which case it determines how the OpenGL scaling is done. 
 
 Nearest neighbor is a simple way to scale an image; each pixel becomes multiple pixels of the same color. While this preserves the sharper details in a pixel art image, it also creates "jagged" edges as the image is scaled up. Bilinear interpolation finds the average color between pixel color values and fills in missing pixel, which results in a "smoothed" image. 
 

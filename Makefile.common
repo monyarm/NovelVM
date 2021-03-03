@@ -3,7 +3,7 @@
 #
 
 ######################################################################
-# The default build target: just build the scummvm executable
+# The default build target: just build the novelvm executable
 ######################################################################
 
 all: $(EXECUTABLE) plugins
@@ -95,7 +95,7 @@ DEPFILES =
 
 # Make base/version.o depend on all other object files. This way if anything is
 # changed, it causes version.cpp to be recompiled. This in turn ensures that
-# the build date in gScummVMBuildDate is correct.
+# the build date in gNovelVMBuildDate is correct.
 base/version.o: $(filter-out base/libbase.a,$(OBJS))
 
 ifdef USE_ELF_LOADER
@@ -122,7 +122,7 @@ endif
 endif
 endif
 
-# The build rule for the ScummVM executable
+# The build rule for the NovelVM executable
 $(EXECUTABLE): $(DETECT_OBJS) $(OBJS)
 	+$(QUIET_LINK)$(LD) $(LDFLAGS) $(PRE_OBJS_FLAGS) $+ $(POST_OBJS_FLAGS) $(LIBS) -o $@
 
@@ -228,7 +228,7 @@ endif
 ######################################################################
 
 # AmigaOS grep command has a problem with "./" in pathnames, so use cat piped into grep instead.
-VERSION = $(shell cat "${srcdir}/base/internal_version.h" | grep SCUMMVM_VERSION | cut -d\" -f2)
+VERSION = $(shell cat "${srcdir}/base/internal_version.h" | grep NOVELVM_VERSION | cut -d\" -f2)
 VER_MAJOR = $(shell echo $(VERSION) | cut -d. -f 1)
 VER_MINOR = $(shell echo $(VERSION) | cut -d. -f 2)
 VER_PATCH = $(shell echo $(VERSION) | cut -d. -f 3 | cut -c1)
@@ -258,13 +258,13 @@ VER_DIRTY := $(shell cd $(srcdir); git update-index --refresh --unmerged 1>/dev/
 VER_REV := $(shell cd $(srcdir); git describe --long --match desc/\* | cut -d '-' -f 2-)$(VER_DIRTY)
 endif
 else
-GITROOT := git://github.com/scummvm/scummvm.git
+GITROOT := git://github.com/novelvm/novelvm.git
 endif
 
 # Define the Subversion revision if available, either autodetected or
 # specified by the user, but only for base/version.cpp.
 ifneq ($(origin VER_REV), undefined)
-VERFLAGS += -DSCUMMVM_REVISION=\"$(VER_REV)\"
+VERFLAGS += -DNOVELVM_REVISION=\"$(VER_REV)\"
 endif
 
 ######################################################################
@@ -281,7 +281,7 @@ else
 DISTVERSION = $(VERSION)
 endif
 
-DISTNAME := scummvm-$(DISTVERSION)
+DISTNAME := novelvm-$(DISTVERSION)
 DISTDIR := dist
 VERFILE := $(DISTDIR)/$(DISTNAME)/base/internal_version.h
 
@@ -304,7 +304,7 @@ $(VERFILE): $(srcdir)/base/internal_version.h
 ifneq ($(origin VER_REV), undefined)
 	@# Use the current SVN revision as a default for the snapshot sources
 	@svn cat $(SVNROOT)/base/internal_version.h | sed -e \
-		"s/^#define SCUMMVM_REVISION$$/#define SCUMMVM_REVISION \"$(VER_REV)\"/g" \
+		"s/^#define NOVELVM_REVISION$$/#define NOVELVM_REVISION \"$(VER_REV)\"/g" \
 		> $(VERFILE)
 endif
 

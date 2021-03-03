@@ -19,7 +19,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="ScummVM" translatesAutoresizingMaskIntoConstraints="NO" id="Ril-gi-m8R">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="NovelVM" translatesAutoresizingMaskIntoConstraints="NO" id="Ril-gi-m8R">
                                 <rect key="frame" x="53.5" y="405.5" width="307" height="85"/>
                             </imageView>
                         </subviews>
@@ -36,6 +36,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="ScummVM" width="307" height="85"/>
+        <image name="NovelVM" width="307" height="85"/>
     </resources>
 </document>

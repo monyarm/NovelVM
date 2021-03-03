@@ -23,7 +23,7 @@ endif
 	cp $(srcdir)/dists/ps3/ICON0.PNG ps3pkg/
 	cp $(srcdir)/dists/ps3/PIC1.PNG ps3pkg/
 	sfo.py -f $(srcdir)/dists/ps3/sfo.xml ps3pkg/PARAM.SFO
-	pkg.py --contentid UP0001-SCUM12000_00-0000000000000000 ps3pkg/ scummvm-ps3.pkg
+	pkg.py --contentid UP0001-SCUM12000_00-0000000000000000 ps3pkg/ novelvm-ps3.pkg
 
 ps3run: $(EXECUTABLE)
 	$(STRIP) $(EXECUTABLE)

@@ -20,50 +20,50 @@
  *
  */
 
-#include "ScummVMapp.h"
-#include <scummvm.rsg>
+#include "NovelVMapp.h"
+#include <novelvm.rsg>
 #include <apgcli.h>
 #include <eikdll.h>
 #include <apgtask.h>
 
 EXPORT_C CApaApplication *NewApplication() {
-	return (new CScummVM);
+	return (new CNovelVM);
 }
 
-CScummVM::CScummVM() {
+CNovelVM::CNovelVM() {
 }
 
-CScummVM::~CScummVM() {
+CNovelVM::~CNovelVM() {
 }
 
-CApaDocument *CScummVM::CreateDocumentL() {
-	return new (ELeave)CScummVMDoc(*this);
+CApaDocument *CNovelVM::CreateDocumentL() {
+	return new (ELeave)CNovelVMDoc(*this);
 }
 
-TUid CScummVM::AppDllUid() const {
+TUid CNovelVM::AppDllUid() const {
 	return TUid::Uid(0x101f9b57);
 }
 
-CScummVMDoc::CScummVMDoc(CEikApplication &aApp) : CEikDocument(aApp) {
+CNovelVMDoc::CNovelVMDoc(CEikApplication &aApp) : CEikDocument(aApp) {
 }
 
-CScummVMDoc::~CScummVMDoc() {
+CNovelVMDoc::~CNovelVMDoc() {
 }
 
-CEikAppUi *CScummVMDoc::CreateAppUiL() {
-	return new (ELeave)CScummVMUi;
+CEikAppUi *CNovelVMDoc::CreateAppUiL() {
+	return new (ELeave)CNovelVMUi;
 }
 
-void CScummVMUi::HandleForegroundEventL(TBool aForeground) {
+void CNovelVMUi::HandleForegroundEventL(TBool aForeground) {
 	if (aForeground) {
 		BringUpEmulatorL();
 	}
 }
 
-CScummVMUi::CScummVMUi() {
+CNovelVMUi::CNovelVMUi() {
 }
 
-CScummVMUi::~CScummVMUi() {
+CNovelVMUi::~CNovelVMUi() {
 	if (iWatcher) {
 		iThreadWatch.LogonCancel(iWatcher->iStatus);
 		iWatcher->Cancel();
@@ -74,7 +74,7 @@ CScummVMUi::~CScummVMUi() {
 	iThreadWatch.Close();
 }
 
-void CScummVMUi::ConstructL() {
+void CNovelVMUi::ConstructL() {
 	BaseConstructL();
 	TBuf<128> startFile;
 	startFile = iEikonEnv->EikAppUi()->Application()->AppFullName();
@@ -83,9 +83,9 @@ void CScummVMUi::ConstructL() {
 
 	startFile = parser.DriveAndPath();
 #ifndef __WINS__
-	startFile.Append( _L("ScummVM.exe"));
+	startFile.Append( _L("NovelVM.exe"));
 #else
-	startFile.Append( _L("ScummVM.dll"));
+	startFile.Append( _L("NovelVM.dll"));
 #endif
 	CApaCommandLine *cmdLine = CApaCommandLine::NewLC(startFile);
 	RApaLsSession lsSession;
@@ -136,7 +136,7 @@ void CScummWatcher::RunL() {
 	iAppUi->HandleCommandL(EEikCmdExit);
 }
 
-void CScummVMUi::BringUpEmulatorL() {
+void CNovelVMUi::BringUpEmulatorL() {
 	RThread thread;
 
 	if (thread.Open(iThreadId) == KErrNone) {
@@ -150,7 +150,7 @@ void CScummVMUi::BringUpEmulatorL() {
 	}
 }
 
-void CScummVMUi::HandleCommandL(TInt aCommand) {
+void CNovelVMUi::HandleCommandL(TInt aCommand) {
 	switch (aCommand) {
 	case EEikCmdExit:
 		{

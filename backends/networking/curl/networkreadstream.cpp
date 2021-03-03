@@ -88,7 +88,7 @@ void NetworkReadStream::initCurl(const char *url, curl_slist *headersList) {
 	curl_easy_setopt(_easy, CURLOPT_VERBOSE, 0L);
 	curl_easy_setopt(_easy, CURLOPT_FOLLOWLOCATION, 1L); //probably it's OK to have it always on
 	curl_easy_setopt(_easy, CURLOPT_HTTPHEADER, headersList);
-	curl_easy_setopt(_easy, CURLOPT_USERAGENT, gScummVMFullVersion);
+	curl_easy_setopt(_easy, CURLOPT_USERAGENT, gNovelVMFullVersion);
 	curl_easy_setopt(_easy, CURLOPT_NOPROGRESS, 0L);
 	curl_easy_setopt(_easy, CURLOPT_PROGRESSFUNCTION, curlProgressCallbackOlder);
 	curl_easy_setopt(_easy, CURLOPT_PROGRESSDATA, this);
@@ -128,7 +128,7 @@ bool NetworkReadStream::reuseCurl(const char *url, curl_slist *headersList) {
 
 	curl_easy_setopt(_easy, CURLOPT_URL, url);
 	curl_easy_setopt(_easy, CURLOPT_HTTPHEADER, headersList);
-	curl_easy_setopt(_easy, CURLOPT_USERAGENT, gScummVMFullVersion); // in case headersList rewrites it
+	curl_easy_setopt(_easy, CURLOPT_USERAGENT, gNovelVMFullVersion); // in case headersList rewrites it
 
 	return true;
 }

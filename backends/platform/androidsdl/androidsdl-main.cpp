@@ -27,8 +27,8 @@
 
 int main(int argc, char *argv[]) {
 
-	// Copy over config file from previous version of ScummVM if applicable
-	system("ls $DATADIR/.config/scummvm/scummvm.ini || (mkdir -p $DATADIR/.config/scummvm && cp $APPDIR/scummvmrc $DATADIR/.config/scummvm/scummvm.ini )");
+	// Copy over config file from previous version of NovelVM if applicable
+	system("ls $DATADIR/.config/novelvm/novelvm.ini || (mkdir -p $DATADIR/.config/novelvm && cp $APPDIR/novelvmrc $DATADIR/.config/novelvm/novelvm.ini )");
 
 	// Create our OSystem instance
 	g_system = new OSystem_ANDROIDSDL();
@@ -37,8 +37,8 @@ int main(int argc, char *argv[]) {
 	// Pre initialize the backend
 	g_system->init();
 
-	// Invoke the actual ScummVM main entry point:
-	int res = scummvm_main(argc, argv);
+	// Invoke the actual NovelVM main entry point:
+	int res = novelvm_main(argc, argv);
 
 	// Free OSystem
 	g_system->destroy();

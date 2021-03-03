@@ -22,15 +22,14 @@
 
 #include "backends/platform/ios7/ios7_scummvm_view_controller.h"
 
-
-@implementation iOS7ScummVMViewController
+@implementation iOS7NovelVMViewController
 
 - (BOOL)prefersStatusBarHidden {
-    return YES;
+	return YES;
 }
 
 - (BOOL)prefersHomeIndicatorAutoHidden {
-    return YES;
+	return YES;
 }
 
 @end

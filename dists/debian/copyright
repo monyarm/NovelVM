@@ -1,8 +1,8 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: ScummVM
-Source: https://www.scummvm.org/
+Upstream-Name: NovelVM
+Source: https://www.novelvm.org/
 Comment:
- ScummVM was debianized by Bastien Nocera <hadess@hadess.net> the 5th Apr 2002.
+ NovelVM was debianized by Bastien Nocera <hadess@hadess.net> the 5th Apr 2002.
  It was adopted by Tore Anderson <tore@linpro.no> the 4th Oct 2002,
  then adopted by David Weinehall <tao@debian.org> the 30th Jan 2006,
  then adopted by the Debian Games Team by Moritz Muehlenhoff <jmm@debian.org>
@@ -14,8 +14,8 @@ Files-Excluded:
 
 Files: *
 Copyright:
-    2001-2016 The ScummVM Project
-              The ScummVM Team
+    2001-2016 The NovelVM Project
+              The NovelVM Team
     2002-2011 The DOSBox Team
     1994-1998 Revolution Software Ltd.
     2001-2004 Andrea Mazzoleni
@@ -28,8 +28,8 @@ Copyright:
               and others listed in COPYRIGHT file
 License: GPL-2+
 Comment:
- See list of copyright holders in "/usr/share/doc/scummvm/COPYRIGHT".
- See list of upstream authors in "/usr/share/doc/scummvm/AUTHORS".
+ See list of copyright holders in "/usr/share/doc/novelvm/COPYRIGHT".
+ See list of upstream authors in "/usr/share/doc/novelvm/AUTHORS".
 
 Files: audio/softsynth/mt32/*
 Copyright: 2003-2006,2008-2009,2011-2014 Dean Beeler
@@ -93,13 +93,13 @@ License: BSD-3-clause~dm
 Files:
     engines/pegasus/interaction.cpp
 Copyright:
-    2001-2016 The ScummVM Team
+    2001-2016 The NovelVM Team
     1995-1997 Presto Studios, Inc.
 License: GPL-2+
 
 Files: engines/sword25/util/lua_*
 Copyright:
-    2001-2016 The ScummVM Team
+    2001-2016 The NovelVM Team
     2004 Ben Sunshine-Hill
 License: GPL-2+
 Comment:
@@ -173,7 +173,7 @@ Files:
     engines/wage/world.cpp
     engines/wage/world.h
 Copyright:
-    2001-2016 The ScummVM Project
+    2001-2016 The NovelVM Project
     2009      Alexei Svitkine, Eugene Sandulenko
 License: GPL-2+ and Expat
 
@@ -181,7 +181,7 @@ Files:
     graphics/nine_patch.cpp
     graphics/nine_patch.h
 Copyright:
-    2001-2016 The ScummVM Project
+    2001-2016 The NovelVM Project
     2011      Matthew Leverton
 License: GPL-2+ and Expat
 
@@ -244,7 +244,7 @@ License: MIT-Adobe-DEC
  is" without express or implied warranty.
 
 Files: graphics/yuv_to_rgb.cpp
-Copyright: 2001-2012 The ScummVM Project
+Copyright: 2001-2012 The NovelVM Project
 License: GPL-2+
 Comment: portions copyright as below
  The YUV to RGB conversion code is derived from SDL's YUV overlay code, which

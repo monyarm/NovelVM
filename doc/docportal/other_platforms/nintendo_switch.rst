@@ -2,31 +2,31 @@
 Nintendo Switch
 =============================
 
-This page contains all the information you need to get ScummVM up and running on a Nintendo Switch.
+This page contains all the information you need to get NovelVM up and running on a Nintendo Switch.
 
 What you'll need
 ===================
 
 - A homebrew-enabled Nintendo Switch console. How to enable homebrew is outside the scope of this documentation.
 
-Installing ScummVM
+Installing NovelVM
 =======================================
 
-The Nintendo Switch package is available for download on the ScummVM `Downloads page <https://www.scummvm.org/downloads>`_.
+The Nintendo Switch package is available for download on the NovelVM `Downloads page <https://www.novelvm.org/downloads>`_.
 
 Download the zip file to a computer, and extract the files. 
 
-Copy the extracted ``scummvm`` folder to your Nintendo Switch microSD card, into the ``/switch/`` folder. 
+Copy the extracted ``novelvm`` folder to your Nintendo Switch microSD card, into the ``/switch/`` folder. 
 
 
 Transferring game files
 =======================
 
-Copy the folders containing game files into the ``/switch/scummvm/`` folder on the microSD card. 
+Copy the folders containing game files into the ``/switch/novelvm/`` folder on the microSD card. 
 
-ScummVM on the Nintendo switch supports :doc:`cloud functionality <../use_scummvm/connect_cloud>`. 
+NovelVM on the Nintendo switch supports :doc:`cloud functionality <../use_novelvm/connect_cloud>`. 
 
-See :doc:`../use_scummvm/game_files` for more information about game file requirements.
+See :doc:`../use_novelvm/game_files` for more information about game file requirements.
 
 Controls
 =================
@@ -34,7 +34,7 @@ Controls
 Default control map
 *********************************
 
-These controls can also be manually configured in the :doc:`Keymaps tab <../settings/keymaps>`. See the :doc:`../use_scummvm/keyboard_shortcuts` page for common keyboard shortcuts. 
+These controls can also be manually configured in the :doc:`Keymaps tab <../settings/keymaps>`. See the :doc:`../use_novelvm/keyboard_shortcuts` page for common keyboard shortcuts. 
 
 .. |plus| raw:: html
 
@@ -88,7 +88,7 @@ These controls can also be manually configured in the :doc:`Keymaps tab <../sett
 
 Keyboard and mouse support
 ****************************
-Physical USB mice and keyboards work on the Switch and are supported by ScummVM. All keyboards work but not all mice work. A mouse compatibility list is available on this `Google Sheet <https://docs.google.com/spreadsheets/d/1Drbo5-QuSX901MwtOytSMuqRGxeIkq2HELM806I9dj0/edit#gid=0>`_.
+Physical USB mice and keyboards work on the Switch and are supported by NovelVM. All keyboards work but not all mice work. A mouse compatibility list is available on this `Google Sheet <https://docs.google.com/spreadsheets/d/1Drbo5-QuSX901MwtOytSMuqRGxeIkq2HELM806I9dj0/edit#gid=0>`_.
 
 Touch support
 ****************
@@ -121,11 +121,11 @@ Paths
 
 Saved games 
 *******************
-``/switch/scummvm/saves`` 
+``/switch/novelvm/saves`` 
 
 Configuration file 
 **************************
-``/switch/scummvm/scummvm.ini``
+``/switch/novelvm/novelvm.ini``
 
 
 Settings

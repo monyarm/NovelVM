@@ -1,10 +1,10 @@
-ScummVM 2.3.0git - OPENPANDORA README - HOW TO INSTALL
+NovelVM 2.3.0git - OPENPANDORA README - HOW TO INSTALL
 ------------------------------------------------------------------------
 
 Please refer to the:
 
-ScummVM Forum: <https://forums.scummvm.org/>
-WiKi: <https://wiki.scummvm.org/index.php/OpenPandora>
+NovelVM Forum: <https://forums.novelvm.org/>
+WiKi: <https://wiki.novelvm.org/index.php/OpenPandora>
 
 for the most current information on the port and any updates to this
 documentation.
@@ -12,7 +12,7 @@ documentation.
 ------------------------------------------------------------------------
 Installing:
 
-This archive contains ScummVM in a PND format ready to be copied to the
+This archive contains NovelVM in a PND format ready to be copied to the
 OpenPandora and used.
 
 To install just copy the .pnd file from this archive to your device.
@@ -33,6 +33,6 @@ card.
 ------------------------------------------------------------------------
 Credits
 
-Core ScummVM code (c) The ScummVM Team
+Core NovelVM code (c) The NovelVM Team
 OpenPandora backend (c) John Willis
 Detailed (c) information can be found within the source code

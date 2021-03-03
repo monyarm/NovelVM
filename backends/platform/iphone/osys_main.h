@@ -38,9 +38,9 @@
 #define WAVE_BUFFER_SIZE 2048
 #define AUDIO_SAMPLE_RATE 44100
 
-#define SCUMMVM_ROOT_PATH "/var/mobile/Library/ScummVM"
-#define SCUMMVM_SAVE_PATH SCUMMVM_ROOT_PATH "/Savegames"
-#define SCUMMVM_PREFS_PATH SCUMMVM_ROOT_PATH "/Preferences"
+#define NOVELVM_ROOT_PATH "/var/mobile/Library/NovelVM"
+#define NOVELVM_SAVE_PATH NOVELVM_ROOT_PATH "/Savegames"
+#define NOVELVM_PREFS_PATH NOVELVM_ROOT_PATH "/Preferences"
 
 typedef void (*SoundProc)(void *param, byte *buf, int len);
 typedef int (*TimerProc)(int interval);

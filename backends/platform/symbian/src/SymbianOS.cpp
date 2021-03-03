@@ -56,7 +56,7 @@
 #include "backends/events/symbiansdl/symbiansdl-events.h"
 #endif
 
-#define DEFAULT_CONFIG_FILE "scummvm.ini"
+#define DEFAULT_CONFIG_FILE "novelvm.ini"
 #define DEFAULT_SAVE_PATH "Savegames"
 
 ////////// extern "C" ///////////////////////////////////////////////////

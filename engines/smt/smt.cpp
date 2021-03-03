@@ -71,8 +71,8 @@ Common::Error SMTEngine::run() {
 
 	//_pmsf.ReadFile("p3opmv_p3p.pmsf");
 
-	Format::Graphic::DDSFile _dds("test/DXT5.dds");
-	//ADXFile _adx("test/TEST.ADX");
+	//Format::Graphic::DDSFile _dds("test/DXT5.dds");
+	//ADXFile _adx("test/THEME.ADX");
 
 	Common::ArchiveMemberList list;
 	SearchMan.listMembers(list);
@@ -84,20 +84,12 @@ Common::Error SMTEngine::run() {
 	list = Common::ArchiveMemberList();
 	Common::File f;
 
-	/* 
-	if (!f.open("bgm01.wav", *_archives["STREAM.PAK"].get()))
-	{
-		error("can't read archive");
-	} */
-
 	//CVMArchive _data("DATA.CVM");
-	PACArchive _data("test/test.pac");
+	PACArchive _data("test/OP_TITLE.BIN");
 	//Common::DumpFile df;
-	//df.open("dumps/i_bust_02_61.tmx");
-	auto _dfile = _data.createReadStreamForMember("i_bust_02_61.tmx");
 	//df.writeStream(_dfile);
 
-	TMXFile _tmx(_dfile);
+	TMXFile _tmx("test/I_TITLE01.TMX");
 	//TMXFile _tmx("test/PSMT8.tmx");
 
 	_data.listMembers(list);
@@ -137,17 +129,17 @@ Common::Error SMTEngine::run() {
 	Graphics::TransparentSurface *surfacetmx = _tmx.getSurface();
 	Common::Rect tmxRect = Common::Rect(surfacetmx->w, surfacetmx->h);
 
-	Graphics::TransparentSurface *surfacedds = _dds.getSurface();
-	Common::Rect ddsRect = Common::Rect(0 - surfacedds->w, 0, surfacedds->w, surfacedds->h);
+	//Graphics::TransparentSurface *surfacedds = _dds.getSurface();
+	//Common::Rect ddsRect = Common::Rect(0 - surfacedds->w, 0, surfacedds->w, surfacedds->h);
 	auto texturetmx = _gfx->createTexture(surfacetmx);
-	auto texturedds = _gfx->createTexture(surfacedds);
+	//auto texturedds = _gfx->createTexture(surfacedds);
 
 	debug("%i %i", _gfx->viewport().width(), _gfx->viewport().height());
 	while (!shouldQuit()) {
 		_gfx->clear();
 
 		_gfx->drawTexturedRect2D(_gfx->viewport(), tmxRect, texturetmx, -.5, false);
-		_gfx->drawTexturedRect2D(_gfx->viewport(), ddsRect, texturedds, -.5, false);
+		//_gfx->drawTexturedRect2D(_gfx->viewport(), ddsRect, texturedds, -.5, false);
 		_gfx->flipBuffer();
 
 		g_system->updateScreen();

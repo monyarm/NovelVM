@@ -20,6 +20,6 @@
  *
  */
 
-#if defined(SCUMMVM_USE_PRAGMA_PACK)
-  #pragma pack()
+#if defined(NOVELVM_USE_PRAGMA_PACK)
+#pragma pack()
 #endif

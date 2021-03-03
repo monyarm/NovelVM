@@ -89,7 +89,7 @@ void OSystem_IPHONE::initBackend() {
 #ifdef IPHONE_SANDBOXED
 	_savefileManager = new DefaultSaveFileManager(iPhone_getDocumentsDir());
 #else
-	_savefileManager = new DefaultSaveFileManager(SCUMMVM_SAVE_PATH);
+	_savefileManager = new DefaultSaveFileManager(NOVELVM_SAVE_PATH);
 #endif
 
 	_timerManager = new DefaultTimerManager();
@@ -225,7 +225,7 @@ Common::String OSystem_IPHONE::getDefaultConfigFileName() {
 	path += "/Preferences";
 	return path;
 #else
-	return SCUMMVM_PREFS_PATH;
+	return NOVELVM_PREFS_PATH;
 #endif
 }
 
@@ -276,8 +276,8 @@ void iphone_main(int argc, char *argv[]) {
 #ifdef IPHONE_SANDBOXED
 	chdir(iPhone_getDocumentsDir());
 #else
-	system("mkdir " SCUMMVM_ROOT_PATH);
-	system("mkdir " SCUMMVM_SAVE_PATH);
+	system("mkdir " NOVELVM_ROOT_PATH);
+	system("mkdir " NOVELVM_SAVE_PATH);
 
 	chdir("/var/mobile/");
 #endif
@@ -286,6 +286,6 @@ void iphone_main(int argc, char *argv[]) {
 	assert(g_system);
 
 	// Invoke the actual ScummVM main entry point:
-	scummvm_main(argc, argv);
+	novelvm_main(argc, argv);
 	g_system->quit();       // TODO: Consider removing / replacing this!
 }

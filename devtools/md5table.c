@@ -68,8 +68,8 @@ typedef struct {
 	const char *infoSource;
 } Entry;
 
-/* Map MD5 table platform names to ScummVM constant names.
- * Note: Currently not many constants are defined within ScummVM. However, more
+/* Map MD5 table platform names to NovelVM constant names.
+ * Note: Currently not many constants are defined within NovelVM. However, more
  * will probably be added eventually (see also commented out constants in
  * common/util.h).
  */
@@ -193,7 +193,7 @@ void showhelp(const char *exename)
 {
 	printf("\nUsage: %s <params>\n", exename);
 	printf("\nParams:\n");
-	printf(" --c++   output C++ code for inclusion in ScummVM (default)\n");
+	printf(" --c++   output C++ code for inclusion in NovelVM (default)\n");
 	printf(" --php   output PHP code for the web site\n");
 	printf(" --txt   output TXT file (should be identical to input file)\n");
 	exit(2);

@@ -79,8 +79,8 @@ void OSystem_GPH::initBackend() {
 	// The GPH devices have a serial console on the breakout board
 	// but most users do not use this so we output all our STDOUT
 	// and STDERR to files for debug purposes.
-	Common::String STDOUT_FILE = workDirName + "/scummvm.stdout.txt";
-	Common::String STDERR_FILE = workDirName + "/scummvm.stderr.txt";
+	Common::String STDOUT_FILE = workDirName + "/novelvm.stdout.txt";
+	Common::String STDERR_FILE = workDirName + "/novelvm.stderr.txt";
 
 	// Flush the output in case anything is queued
 	fclose(stdout);

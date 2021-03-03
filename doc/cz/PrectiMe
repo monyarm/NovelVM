@@ -1,14 +1,14 @@
-PŘEČTIMĚ ScummVM
+PŘEČTIMĚ NovelVM
 ------------------------------------------------------------------------
 
 Pro více informací, seznamy kompatibility, podrobnosti o dotacích, nejnovější verze,
-novinky o vývoji a další, prosím navštivte domovskou stránku ScummVM na: <https://www.scummvm.org/>
+novinky o vývoji a další, prosím navštivte domovskou stránku NovelVM na: <https://www.novelvm.org/>
 
 
 Obsah:
 ------
 1.0) Úvod
- * 1.1 O ScummVM
+ * 1.1 O NovelVM
  * 1.2 Rychlý návod
  * 1.3 Nejčastější otázky
 2.0) Kontakt
@@ -45,7 +45,7 @@ Obsah:
  * 3.25 Poznámky ke hrám Commodore64
  * 3.26 Poznámky ke hrám Macintosh
 4.0) Podporované platformy
-5.0) Spuštění ScummVM
+5.0) Spuštění NovelVM
  * 5.1 Možnosti příkazového řádku
  * 5.2 Volby jazyka
  * 5.3 Grafické filtry
@@ -89,33 +89,33 @@ Obsah:
 1.0) Úvod:
 ---- -----
 
-1.1) O ScummVM:
+1.1) O NovelVM:
 ---- ----------
-ScummVM je program, který Vám umožňuje spouštět určité klasické grafické point-and-click adventury, za předpokladu, že již máte jejich datové soubory. A teď ta chytrá část: ScummVM jenom nahrazuje spouštěče, které jsou dodávány se hrou, což Vám umožňuje hrát hry v systémech, pro které nikdy nebyly navrženy!
+NovelVM je program, který Vám umožňuje spouštět určité klasické grafické point-and-click adventury, za předpokladu, že již máte jejich datové soubory. A teď ta chytrá část: NovelVM jenom nahrazuje spouštěče, které jsou dodávány se hrou, což Vám umožňuje hrát hry v systémech, pro které nikdy nebyly navrženy!
 
-Původně byl navržen pro spouštění her SCUMM od LucasArts SCUMM, jako např. Maniac Mansion, Monkey Island, Day of the Tentacle nebo Sam and Max. SCUMM znamená 'Nástroj pro Vytváření Skriptu pro Maniac Mansion', což byla první hra, pro kterou LucasArts tento systém navrhl. A mnohem později dal své jméno ScummVM ('VM' znamená Virtuální Stroj).
+Původně byl navržen pro spouštění her SCUMM od LucasArts SCUMM, jako např. Maniac Mansion, Monkey Island, Day of the Tentacle nebo Sam and Max. SCUMM znamená 'Nástroj pro Vytváření Skriptu pro Maniac Mansion', což byla první hra, pro kterou LucasArts tento systém navrhl. A mnohem později dal své jméno NovelVM ('VM' znamená Virtuální Stroj).
 
 Postupem času byla přidána podpora pro spoustu her mimo SCUMM a
-ScummVM nyní také podporuje mnoho AGI a SCI her od Sierra (např. King's Quest 1-6, Space Quest 1-5, ...), Discworld 1 a 2, Simon the Sorcerer 1 and 2, Beneath A Steel Sky, Lure of the Temptress, Broken Sword I a II, Flight of the Amazon Queen, Gobliiins 1-3, série The Legend of Kyrandia, mnoho ze SCUMM her pro děti od Humongous Entertainment (včetně her Freddi Fish a Putt Putt) a mnoho dalších. Na stránce kompatibility můžete najít úplný seznam s podrobnostmi, které adventury jsou podporovány a jak dobře. ScummVM je neustále zlepšován a proto navštěvujte naše stránky často.
+NovelVM nyní také podporuje mnoho AGI a SCI her od Sierra (např. King's Quest 1-6, Space Quest 1-5, ...), Discworld 1 a 2, Simon the Sorcerer 1 and 2, Beneath A Steel Sky, Lure of the Temptress, Broken Sword I a II, Flight of the Amazon Queen, Gobliiins 1-3, série The Legend of Kyrandia, mnoho ze SCUMM her pro děti od Humongous Entertainment (včetně her Freddi Fish a Putt Putt) a mnoho dalších. Na stránce kompatibility můžete najít úplný seznam s podrobnostmi, které adventury jsou podporovány a jak dobře. NovelVM je neustále zlepšován a proto navštěvujte naše stránky často.
 
 Mezi systémy, na kterých můžete tyto hrát, jsou běžné stolní počítače (mající Windows, Linux, Mac OS X, ...), herní konzole
 (Dreamcast, Nintendo DS a Wii, PSP, ...), chytré telefony (Android, iPhone, Symbian ...) a další.
 
-V současnosti je ScummVM stále velkou částí ve vývoji. Nezapomeňte, že i když se snažíme zajistit, aby mnoho her bylo možno dokončit pouze s pár vážnými chybami, pády programu mohou nastat a my neposkytujeme žádné záruky. Přes to všechno, některé hry byly podporovány po dlouhou dobu
-A měly by fungovat v pořádku se všemi novějšími stabilními verzemi. Jak dobře bude hra ve ScummVM fungovat můžete zjistit prohlédnutím stránky kompatibility.
-Vlastně, pokud budete trošičku hledat, můžete zjistit, že ScummVM je používán i komerčně pro znovu vydání některých podporovaných her na moderních platformách. To ukazuje, že i několik společností je spokojeno s kvalitou softwaru a jako moc dobře může některé hry spouštět.
+V současnosti je NovelVM stále velkou částí ve vývoji. Nezapomeňte, že i když se snažíme zajistit, aby mnoho her bylo možno dokončit pouze s pár vážnými chybami, pády programu mohou nastat a my neposkytujeme žádné záruky. Přes to všechno, některé hry byly podporovány po dlouhou dobu
+A měly by fungovat v pořádku se všemi novějšími stabilními verzemi. Jak dobře bude hra ve NovelVM fungovat můžete zjistit prohlédnutím stránky kompatibility.
+Vlastně, pokud budete trošičku hledat, můžete zjistit, že NovelVM je používán i komerčně pro znovu vydání některých podporovaných her na moderních platformách. To ukazuje, že i několik společností je spokojeno s kvalitou softwaru a jako moc dobře může některé hry spouštět.
 
-Pokud máte ScummVM rádi, můžete ho podpořit dotací pomocí tlačítka PayPal na stránce ScummVM. To nám pomůže zakoupit nástroje potřebné ke snadnějšímu a rychlejšímu vývoji ScummVM. Pokud nemůžete podpořit dotací, pomozte a přispějte záplatou!
+Pokud máte NovelVM rádi, můžete ho podpořit dotací pomocí tlačítka PayPal na stránce NovelVM. To nám pomůže zakoupit nástroje potřebné ke snadnějšímu a rychlejšímu vývoji NovelVM. Pokud nemůžete podpořit dotací, pomozte a přispějte záplatou!
 
 1.2) Rychlý návod:
 ---- -------------
-Pro ty netrpělivé z Vás je tu návod, jak ScummVM spustit v několika krocích.
+Pro ty netrpělivé z Vás je tu návod, jak NovelVM spustit v několika krocích.
 
-1. Stáhněte si ScummVM z <https://www.scummvm.org/downloads/> a nainstalujte ho.
+1. Stáhněte si NovelVM z <https://www.novelvm.org/downloads/> a nainstalujte ho.
 
 2. Na Vašem pevném disku vytvořte složku a zkopírujte datové soubory z původního média do této složky. Zopakujte pro všechny hry, které chcete hrát
 
-3. Spusťte ScummVM, zvolte 'Přidat hru', zvolte adresář s datovými soubory hry (nesnažte se volit datové soubory samotné!) a stiskněte
+3. Spusťte NovelVM, zvolte 'Přidat hru', zvolte adresář s datovými soubory hry (nesnažte se volit datové soubory samotné!) a stiskněte
 'Zvolit'.
 
 4. Mělo by se objevit dialogové okno umožňující Vám pozměnit různá nastavení, pokud tak chcete (i když by mělo být v pořádku všechno nechat ve výchozím nastavení). Dialogové okno potvrďte.
@@ -124,29 +124,29 @@ Pro ty netrpělivé z Vás je tu návod, jak ScummVM spustit v několika kroc�
 
 V budoucnu byste měli být schopni přeskočit na krok 5, pokud nechcete přidat další hry.
 
-Rada: Pokud chcete přidat více her najednou, zkuste stisknout a držet klávesu shift předtím, než kliknete na 'Přidat hru' – tlačítko se změní na 'Hromadné Přidání' a pokud ho stiskněte, jste znovu požádáni o zvolení složky, ale tentokrát ScummVM prohledá všechny podsložky pro podporované hry.
+Rada: Pokud chcete přidat více her najednou, zkuste stisknout a držet klávesu shift předtím, než kliknete na 'Přidat hru' – tlačítko se změní na 'Hromadné Přidání' a pokud ho stiskněte, jste znovu požádáni o zvolení složky, ale tentokrát NovelVM prohledá všechny podsložky pro podporované hry.
 
 
 1.3) Nejčastější otázky
 ---- ------------------
-Na <https://www.scummvm.org/faq/> jsme pro Vás připravili seznam nejčastějších otázek a jejich odpovědí.
+Na <https://www.novelvm.org/faq/> jsme pro Vás připravili seznam nejčastějších otázek a jejich odpovědí.
 
 
 2.0) Kontakt:
 ---- --------
-Nejjednodušším způsobem, jak kontaktovat tým ScummVM je předložením hlášení o chybě (viz oddíl 2.1) nebo použitím našich fór na <https://forums.scummvm.org>.
-Můžete se také připojit a odesílat a e-maily na korespondenční seznam scummvm-devel, nebo si s námi popovídejte na IRC (#scummvm na irc.freenode.net) Nežádejte nás, prosím, o podporu nefungující hry – nejdříve si přečtěte nejčastější otázky na naší stránce
+Nejjednodušším způsobem, jak kontaktovat tým NovelVM je předložením hlášení o chybě (viz oddíl 2.1) nebo použitím našich fór na <https://forums.novelvm.org>.
+Můžete se také připojit a odesílat a e-maily na korespondenční seznam novelvm-devel, nebo si s námi popovídejte na IRC (#novelvm na irc.freenode.net) Nežádejte nás, prosím, o podporu nefungující hry – nejdříve si přečtěte nejčastější otázky na naší stránce
 
 2.1) Hlášení chyb:
 ---- -------------
 Abyste mohli nahlásit chybu, nejdříve si, prosíme, vytvořte si účet na SourceForge a klikněte na odkaz "Bug Tracker" na naší stránce. Ujistěte se, prosím, že se chyba dá znovu zjistit a stále se objevuje v nejnovější verzi git/denního sestavení. Také na naší stránce zkontrolujte seznam známých problémů (níže) a seznam kompatibility pro tuto hru, abyste se ujistili, že problém již není znám:
 
-  <https://www.scummvm.org/compatibility/>
+  <https://www.novelvm.org/compatibility/>
 
 Prosíme, nenahlašujte chyby ve hrách, které nejsou v seznamu v sekci 'Supported Games' nebo seznamu kompatibility uvedeny jako dokončitelné. My –víme-, že tyto hry mají chyby.
 
 Zahrňte, prosím, následující informace:
-    - Verzi ScummVM (PROSÍME, vyzkoušejte nejnovější sestavení git/Daily)
+    - Verzi NovelVM (PROSÍME, vyzkoušejte nejnovější sestavení git/Daily)
     - Podrobnosti o chybě, včetně postupu na její znovu opakování
     - Jazyk hry (angličtina, němčina, ...)
     - Verze hry (s řečí, z diskety, ...)
@@ -162,7 +162,7 @@ Nakonec prosíme, abyste každou chybu nahlašovali samostatně; neohlašujte n�
 V tuto chvíli je o následujících hrách známo, že fungují a měly by být hratelné až dokonce.
 Podrobnější seznam kompatibility podporovaných her můžete nalézt na adrese:
 
- <https://www.scummvm.org/compatibility/>)
+ <https://www.novelvm.org/compatibility/>)
 
 
 Hry od LucasArts (SCUMM):
@@ -428,7 +428,7 @@ Hry Living Books:
      The Berenstain Bears in the Dark            [beardark]
      The New Kid on the Block                    [newkid]
 
-Následující hry jsou odvozeny od jádra SCUMM, ale ScummVM je nepodporuje (zatím):
+Následující hry jsou odvozeny od jádra SCUMM, ale NovelVM je nepodporuje (zatím):
 
      Moonbase Commander
 
@@ -437,12 +437,12 @@ Nezapomeňte, prosím, že jádra mohou obsahovat chyby a nezavedené funkce, kt
 
 3.1) Ochrana proti kopírování:
 ---- -------------------------
-Tým ScummVM nepodporuje pirátství. Nicméně existují případy, kdy herní společnosti (jako LucasArts) sami ve svých hrách poskytují 'cracknuté'
-spouštěče – v těchto případech datové soubory obsahují skripty pro ochranu proti kopírování, ale převaděč je obejde (toto může podobně provádět nelegálně cracknutá verze, s tím rozdílem, že zde toto provedl výrobce hry. Neexistuje žádný způsob, jak můžeme rozlišit legitimní a pirátské datové soubory, takže v hrách, o kterých víme, že byla někdy prodávána cracknutá verze původního převaděče bude ScummVM muset vždy ochranu přeskočit.
+Tým NovelVM nepodporuje pirátství. Nicméně existují případy, kdy herní společnosti (jako LucasArts) sami ve svých hrách poskytují 'cracknuté'
+spouštěče – v těchto případech datové soubory obsahují skripty pro ochranu proti kopírování, ale převaděč je obejde (toto může podobně provádět nelegálně cracknutá verze, s tím rozdílem, že zde toto provedl výrobce hry. Neexistuje žádný způsob, jak můžeme rozlišit legitimní a pirátské datové soubory, takže v hrách, o kterých víme, že byla někdy prodávána cracknutá verze původního převaděče bude NovelVM muset vždy ochranu přeskočit.
 
-V některých případech ScummVM přesto zobrazí obrazovku ochrany proti kopírování. Zkuste zadat jakoukoli odpověď. Je tu možnost, že toto bude fungovat.
+V některých případech NovelVM přesto zobrazí obrazovku ochrany proti kopírování. Zkuste zadat jakoukoli odpověď. Je tu možnost, že toto bude fungovat.
 
-ScummVM přeskakuje ochranu v následujících hrách:
+NovelVM přeskakuje ochranu v následujících hrách:
 
   * Beneath a Steel Sky
       -- potlačeno s laskavým svolením Revolution Software.
@@ -468,14 +468,14 @@ ScummVM přeskakuje ochranu v následujících hrách:
 ---- --------------
 Pro přehledný seznam požadovaných datových souborů u podporovaných her navštivte:
 
-<https://wiki.scummvm.org/index.php/Datafiles>
+<https://wiki.novelvm.org/index.php/Datafiles>
 
 
 3.3) Poznámky ke hrám Multi-CD:
 ---- --------------------------
-Obecně ScummVM moc dobře nefunguje s hrami na Multi-CD. To je proto, že  ScummVM předpokládá, že všechno o hře může být nalezeno v jedné složce.  I když ScummVM má schopnost požádat uživatele, aby vyměnil CD, původní spouštěč souboru většinou nainstaluje malé množství souborů na pevný disk. Pokud tyto soubory nelze najít na všech CD, ScummVM bude mít potíže.
+Obecně NovelVM moc dobře nefunguje s hrami na Multi-CD. To je proto, že  NovelVM předpokládá, že všechno o hře může být nalezeno v jedné složce.  I když NovelVM má schopnost požádat uživatele, aby vyměnil CD, původní spouštěč souboru většinou nainstaluje malé množství souborů na pevný disk. Pokud tyto soubory nelze najít na všech CD, NovelVM bude mít potíže.
 
-Naštěstí může ScummVM hry bez problémů spouštět přímo z pevného disku, pokud vytvoříte složku se správnou kombinací souborů. Většinou, když se soubor objeví na více, než jednom CD můžete vybrat jeden z nich.
+Naštěstí může NovelVM hry bez problémů spouštět přímo z pevného disku, pokud vytvoříte složku se správnou kombinací souborů. Většinou, když se soubor objeví na více, než jednom CD můžete vybrat jeden z nich.
 
 
 3.4) Známé Problémy:
@@ -542,15 +542,15 @@ Toto vydání má následující známé problémy. Není třeba je ohlašovat, 
 
 3.5) Poznámky k Beneath a Steel Sky:
 ---- -------------------------------
-Od ScummVM 0.8.0 potřebujete dodatečný soubor 'SKY.CPT', abyste mohli Beneath a Steel Sky spustit.
+Od NovelVM 0.8.0 potřebujete dodatečný soubor 'SKY.CPT', abyste mohli Beneath a Steel Sky spustit.
 
-Tento soubor je dostupný na stránce 'Downloads' domovské stránky ScummVM.
-Můžete ho umístit buď do složky obsahující ostatní datové soubory (SKY.DNR, SKY.DSK), na Vaši dodatečnou cestu, nebo do složky. Kde se nachází spouštěcí soubor ScummVM.
+Tento soubor je dostupný na stránce 'Downloads' domovské stránky NovelVM.
+Můžete ho umístit buď do složky obsahující ostatní datové soubory (SKY.DNR, SKY.DSK), na Vaši dodatečnou cestu, nebo do složky. Kde se nachází spouštěcí soubor NovelVM.
 
 
 3.6) Poznámky ke hrám Broken Sword:
 ---- ------------------------------
-Pokyny pro hry Broken Sword jsou pro verze od Sold-Out Software, kde každá hra je na dvou CD, protože tyto verze byly nejdostupnější v době, kdy je ScummVM začal podporovat. Doufáme, že jsou dostatečně obecné pro použití i v jiných vydáních her.
+Pokyny pro hry Broken Sword jsou pro verze od Sold-Out Software, kde každá hra je na dvou CD, protože tyto verze byly nejdostupnější v době, kdy je NovelVM začal podporovat. Doufáme, že jsou dostatečně obecné pro použití i v jiných vydáních her.
 
 
 3.6.1) Broken Sword:
@@ -563,7 +563,7 @@ Dále verze pro Windows a Macintosh vyžadují podsložku music se všemi soubor
 3.6.2) Broken Sword II:
 ------ ----------------
 Pro tuto hru budete potřebovat všechny soubory ze seskupení složek na obou CD. (Abych pravdu řekl, pár z nich nemusí být nezbytně nutné, ale ty, o kterých nemám jistotu, jsou velmi malé.)
-Je také třeba přejmenovat soubory speech.clu a music.clu na speech1.clu, speech2.clu, music1.clu a music2.clu, aby ScummVM mohl zjistit, které jsou z CD 1 a které z CD 2. Všechny ostatní soubory, které jsou umístěny v seskupení složek, jsou stejné. Použijte kterékoli soubory chcete.
+Je také třeba přejmenovat soubory speech.clu a music.clu na speech1.clu, speech2.clu, music1.clu a music2.clu, aby NovelVM mohl zjistit, které jsou z CD 1 a které z CD 2. Všechny ostatní soubory, které jsou umístěny v seskupení složek, jsou stejné. Použijte kterékoli soubory chcete.
 
 Kromě toho budete potřebovat soubory cd.inf a, případně, startup.inf ze složky sword2 na CD 1.
 
@@ -574,15 +574,15 @@ Videa pro hry Broken Sword mají v sobě trochu historie (viz další oddíl, p
 
 Ve verzích pro PlayStation, můžete původní videa vypsat z disku. Každý soubor, který má příponu "STR", byste měli vypsat jako *čist* sektory z disku (všech 2352 bajtů na sektor). Můžete také míst toho použít přeformátovaná videa, která jsou zmíněna níže, ale to nebude fungovat pro všechny videa v Broken Sword II. Pro více informací si prohlédněte:
 
-  <https://wiki.scummvm.org/index.php/HOWTO-PlayStation_Videos>
+  <https://wiki.novelvm.org/index.php/HOWTO-PlayStation_Videos>
 
 Některá vydání hry, a také verze pro PlayStation, Smacker videa nemají. Revolution Software nám laskavě dovolilo poskytovat přeformátovaná videa ke stažení na naší stránce:
 
-  <https://www.scummvm.org/downloads/>
+  <https://www.novelvm.org/downloads/>
 
-Tato videa jsou poskytována ve formátu DXA se zvukem ve formátu FLAC. Jejich kvalita se rovná originálu díky použití bezztrátové komprese. Zobrazení těchto videí vyžaduje, aby verze ScummVM byla sestavena s podporou FLAC i zlib.
+Tato videa jsou poskytována ve formátu DXA se zvukem ve formátu FLAC. Jejich kvalita se rovná originálu díky použití bezztrátové komprese. Zobrazení těchto videí vyžaduje, aby verze NovelVM byla sestavena s podporou FLAC i zlib.
 
-Pro systémy, které jsou příliš pomalé, aby zvládli dekódovat formát FLAC byl zvuk videí také poskytnut odděleně ve formátu OGG Vorbis audio. Toto vyžaduje, aby verze ScummVM byla sestavena s podporou libVorbis a zlib.
+Pro systémy, které jsou příliš pomalé, aby zvládli dekódovat formát FLAC byl zvuk videí také poskytnut odděleně ve formátu OGG Vorbis audio. Toto vyžaduje, aby verze NovelVM byla sestavena s podporou libVorbis a zlib.
 
 Pro Broken Sword také poskytujeme přídavek pro titulky. Jednoduše ho rozbalte a následujte pokyny v souboru readme.txt. Balíček v současnosti nefunguje ve videích na PlayStation. (Broken Sword II již titulky má; není třeba další práce pro jejich přidání.)
 
@@ -591,21 +591,21 @@ Pro Broken Sword také poskytujeme přídavek pro titulky. Jednoduše ho rozbalt
 ------ ------------------------------------------
 Původní vydání her Broken Sword používalo formát Smacker™ od RAD Game Tools. Protože společnost RAD nebyla ochotna nám otevřít starší zastaralé verze tohoto formátu a požádala, abychom neprováděli jeho zpětnou analýzu, museli jsme nalézt jiné řešení.
 
-V Broken Sword II bylo možné přehrát řeč, aniž by se muselo přehrávat video. To zůstalo jako nouzové řešení až do ScummVM 1.0.0, ale pro všechny stabilní verze to nikdy nebylo jediné řešení.
+V Broken Sword II bylo možné přehrát řeč, aniž by se muselo přehrávat video. To zůstalo jako nouzové řešení až do NovelVM 1.0.0, ale pro všechny stabilní verze to nikdy nebylo jediné řešení.
 
-Ve ScummVM 0.6.0 jsme používali MPEG, což zajistilo rozumný kompromis mezi velikostí a kvalitou. Ve ScummVM 0.10.0 bylo toto nahrazeno DXA
+Ve NovelVM 0.6.0 jsme používali MPEG, což zajistilo rozumný kompromis mezi velikostí a kvalitou. Ve NovelVM 0.10.0 bylo toto nahrazeno DXA
 (původně přidáno pro "The Feeble Files" od AdventureSoft). To nám dalo možnost zajistit videa ve stejné kvalitě jako původní, za cenu větší velikosti.
 
-Nakonec na začátku roku 2006 byl formát Smacker zpětně analyzován pro projekt FFmpeg. Díky jejich tvrdé práci ScummVM 1.0.0 nyní podporuje původní videa. Zároveň byla ukončena podpora MPEG. Z technického hlediska je toto dobře, protože přehrávání videí MPEG bylo velmi složité a stejně nevypadaly tak dobře jako verze ve formátu DXA a Smacker.
+Nakonec na začátku roku 2006 byl formát Smacker zpětně analyzován pro projekt FFmpeg. Díky jejich tvrdé práci NovelVM 1.0.0 nyní podporuje původní videa. Zároveň byla ukončena podpora MPEG. Z technického hlediska je toto dobře, protože přehrávání videí MPEG bylo velmi složité a stejně nevypadaly tak dobře jako verze ve formátu DXA a Smacker.
 
 
 3.7) Poznámky k Day of the Tentacle:
 ---- -------------------------------
 
-Na jednom místě ve hře narazíte na počítač umožňující si zahrát původní Maniac Mansion jako bonus. ScummVM toto podporuje, ale je třeba  upozornit na pár věcí:
+Na jednom místě ve hře narazíte na počítač umožňující si zahrát původní Maniac Mansion jako bonus. NovelVM toto podporuje, ale je třeba  upozornit na pár věcí:
 
-ScummVM prohledá váš soubor s nastavením hledajíc hru nacházející se v podsložce 'Maniac' ve složce hry Day of the Tentacle. Pokud jste zkopírovali datové soubory z CD verze, tato struktura by již měla být
-vytvořena, navíc ale budete muset hru přidat také do ScummVM.
+NovelVM prohledá váš soubor s nastavením hledajíc hru nacházející se v podsložce 'Maniac' ve složce hry Day of the Tentacle. Pokud jste zkopírovali datové soubory z CD verze, tato struktura by již měla být
+vytvořena, navíc ale budete muset hru přidat také do NovelVM.
 
 Pro návrat do Day of the Tentacle, stiskněte F5 a zvolte "Návrat do spouštěče".
 
@@ -637,7 +637,7 @@ Všechny herní soubory a návody můžou být staženy z:
 3.10) Poznámky k Flight of the Amazon Queen:
 ----- --------------------------------------
 Abyste mohli použít tu verzi, která není volně šiřitelná (z původního CD), musíte mít soubor 'queen.tbl' (dostupný ze stránky 'Downloads' naší domovské stránky) a umístit ho buď do složky obsahující soubor hry 'queen.1',
-na Vaši dodatečnou cestu, nebo do složky. Kde se nachází spouštěcí soubor ScummVM.
+na Vaši dodatečnou cestu, nebo do složky. Kde se nachází spouštěcí soubor NovelVM.
 
 Také můžete použít nástroj 'compress_queen' z balíčku nástrojů pro 'znovu sestavení' Vašeho datového souboru FOTAQ pro zahrnutí tabulky pro tuto konkrétní verzi, čímž odstraníte závislost na soubor 'queen.tbl' při spuštění. Tento nástroj Vám také umožňuje komprimovat řeč a zvukové efekty do formátu MP3, OGG nebo FLAC.
 
@@ -651,7 +651,7 @@ CD verze série Gobliiins obsahuje jednu velkou zvukovou stopu, kterou je třeba
 ----- ------------------------------------------------
 Abyste mohli spustit verzi pro Mac OS X od Wyrmkeep musíte data zkopírovat z CD na Váš pevný disk. Pokud používáte PC, pak se podívejte na:
 
-  <https://wiki.scummvm.org/index.php/HOWTO-Mac_Games>
+  <https://wiki.novelvm.org/index.php/HOWTO-Mac_Games>
 
 I když se v tomto článku píše hlavně o hrách SCUMM, je zde také zmíněn nástroj "HFSExplorer", který potřebujete k extrakci souborů. Nezapomeňte, že data řeči "Inherit the Earth Voices" musíte umístit do stejného adresáře, kde jsou uložena data hry:
 
@@ -667,7 +667,7 @@ Je třeba přejmenovat obraz disku 1 na maniac1.dsk
 Je třeba přejmenovat obraz disku 2 na maniac2.dsk
 
 NES:
-Podporované verze jsou Britská angličtina (E), Francouzština (F), Němčina (G), Italština (I), Švédština (SW) a Americká angličtina (U). ScummVM pro spuštění vyžaduje pouze část PRG a ne celý ROM.
+Podporované verze jsou Britská angličtina (E), Francouzština (F), Němčina (G), Italština (I), Švédština (SW) a Americká angličtina (U). NovelVM pro spuštění vyžaduje pouze část PRG a ne celý ROM.
 
 Abyste mohli hru spustit, musíte vyjmout prvních 16 bajtů z ROM, s kterým pracujete. Jakýkoli hex editor bude fungovat, pokud můžete kopírovat/vkládat. Poté. Co ROM otevřete pomocí hex editoru, zkopírujte všechno z druhého řádku (17. bajt) na konec. Poté, co toto provedete, vložte ho do nového hex souboru. Pojmenujte ho "Maniac Mansion (XX).prg" kde XX znamená verzi, se kterou pracujete (E, F, G, I, SW, nebo U). Konečná velikost by měla být přesně 262144 bajtů.
 
@@ -677,16 +677,16 @@ Nejběžnější chyby, které zabraňují spuštění hry:
 
   * Špatný soubor
   * ROM byl extrahován pomocí nástrojů z verze 0.7.0
-  * Snažíte se do ScummVM vkládat CELÝ ROM a ne jenom PRG část.
+  * Snažíte se do NovelVM vkládat CELÝ ROM a ne jenom PRG část.
 
 Je také možno extrahovat oddělené soubory LFL z PRG části. Pro toto použijte nástroj 'extract_mm_nes' z balíčku nástrojů.
 
 
 3.14) Poznámky k Mickey's Space Adventure:
 ----- ------------------------------------
-Abyste mohli Mickey's Space Adventure hrát ve ScummVM, potřebujete spolu s datovými soubory hry také původní spouštěč (mickey.exe).
+Abyste mohli Mickey's Space Adventure hrát ve NovelVM, potřebujete spolu s datovými soubory hry také původní spouštěč (mickey.exe).
 
-Pro tuto hru ve ScummVM, existuje rozšířená podpora myši, i když v původní hře takováto podpora nebyla. Položky menu mohou být vybrány pomocí myši a je také možné se myší přesunout do jiných míst. Když se kurzor myši nachází na okraji obrazovky, zčervená, pokud je možné jít v tomto směru. Hráč pak může jednoduše kliknout na okraje herní obrazovky pro změnu místa, podobně jako mnoho adventur, což je jednodušší a přímočařejší než pohyb pomocí menu.
+Pro tuto hru ve NovelVM, existuje rozšířená podpora myši, i když v původní hře takováto podpora nebyla. Položky menu mohou být vybrány pomocí myši a je také možné se myší přesunout do jiných míst. Když se kurzor myši nachází na okraji obrazovky, zčervená, pokud je možné jít v tomto směru. Hráč pak může jednoduše kliknout na okraje herní obrazovky pro změnu místa, podobně jako mnoho adventur, což je jednodušší a přímočařejší než pohyb pomocí menu.
 
 
 3.15) Nippon Safes Inc. Amiga notes:
@@ -715,14 +715,14 @@ Amiga/Macintosh:
 Musíte nainstalovat malý balíček videí, které chybí v obou těchto verzích této hry. Jmenuje se "The Feeble Files - Omni TV and epilogue cutscenes for the Amiga and Macintosh versions"
 a lze ho získat zde:
 
-  <https://www.scummvm.org/games/#feeble>
+  <https://www.novelvm.org/games/#feeble>
 
 Windows:
 Pokud máte verzi pro Windows, je třeba si uvědomit pár věcí.
 
-Mnoho souborů, které hra vyžaduje, je uloženo v souboru InstallShield s názvem data1.cab, který ScummVM nemůže rozbalit. Budete muset použít původní instalátor, nebo i5comp pro rozbalení obsahu tohoto souboru. Nástroj pro dekomprimaci i5comp může být nalezen při hledání na internetu.
+Mnoho souborů, které hra vyžaduje, je uloženo v souboru InstallShield s názvem data1.cab, který NovelVM nemůže rozbalit. Budete muset použít původní instalátor, nebo i5comp pro rozbalení obsahu tohoto souboru. Nástroj pro dekomprimaci i5comp může být nalezen při hledání na internetu.
 
-Abyste mohli použít soubory s řečí ve ScummVM, musí být přejmenovány následovně:
+Abyste mohli použít soubory s řečí ve NovelVM, musí být přejmenovány následovně:
 Přejmenovat voices.wav na CD1 na voices1.wav
 Přejmenovat voices.wav na CD2 na voices2.wav
 Přejmenovat voices.wav na CD3 na voices3.wav
@@ -730,30 +730,30 @@ Přejmenovat voices.wav na CD4 na voices4.wav
 
 3.19) Poznámky k The Legend of Kyrandia:
 ----- ----------------------------------
-Abyste mohli spustit The Legend of Kyrandia ve ScummVM potřebujete soubor 'kyra.dat'.
-Soubor by měl být vždycky součástí oficiálních balíčků ScummVM. V případě, že ScummVM
-nahlásí, že soubor chybí, můžete ho najít na stránce ScummVM v sekci 'Downloads'.
-Nezapomeňte, že současná verze ScummVM pro Windows by měla soubor obsahovat ve spouštěči a tudíž ho
-musíte mít pouze, když ScummVM soubor nemůže nalézt.
+Abyste mohli spustit The Legend of Kyrandia ve NovelVM potřebujete soubor 'kyra.dat'.
+Soubor by měl být vždycky součástí oficiálních balíčků NovelVM. V případě, že NovelVM
+nahlásí, že soubor chybí, můžete ho najít na stránce NovelVM v sekci 'Downloads'.
+Nezapomeňte, že současná verze NovelVM pro Windows by měla soubor obsahovat ve spouštěči a tudíž ho
+musíte mít pouze, když NovelVM soubor nemůže nalézt.
 
 
 3.20) Poznámky k Troll's Tale:
 ----- ------------------------
-Původní hra vycházela na zaváděcím disku PC, proto je nutné vypsat obsah tohoto disku jako obraz disku a přejmenovat ho na "troll.img", abyste tuho hru mohli hrát ve ScummVM.
+Původní hra vycházela na zaváděcím disku PC, proto je nutné vypsat obsah tohoto disku jako obraz disku a přejmenovat ho na "troll.img", abyste tuho hru mohli hrát ve NovelVM.
 
 
 3.21) Winnie the Pooh notes:
 ----- ----------------------
-Je možné importovat uložené hry z původní hry do ScummVM.
+Je možné importovat uložené hry z původní hry do NovelVM.
 
-Pro tuto hru ve ScummVM, existuje rozšířená podpora myši, i když v původní hře takováto podpora nebyla. Položky menu mohou být vybrány pomocí myši a je také možné se myší přesunout do jiných míst. Když se kurzor myši nachází na okraji obrazovky, zčervená, pokud je možné jít v tomto směru. Hráč pak může jednoduše kliknout na okraje herní obrazovky pro změnu místa, podobně jako mnoho adventur, což je jednodušší a přímočařejší než pohyb pomocí menu.
+Pro tuto hru ve NovelVM, existuje rozšířená podpora myši, i když v původní hře takováto podpora nebyla. Položky menu mohou být vybrány pomocí myši a je také možné se myší přesunout do jiných míst. Když se kurzor myši nachází na okraji obrazovky, zčervená, pokud je možné jít v tomto směru. Hráč pak může jednoduše kliknout na okraje herní obrazovky pro změnu místa, podobně jako mnoho adventur, což je jednodušší a přímočařejší než pohyb pomocí menu.
 
 
 3.22) Poznámky k Předvídavému Vstupnímu Dialogu her Sierra AGI:
 ----- ---------------------------------------------------------
-Předvídavý Vstupní Dialog je pomůcka ScummVM pro spouštění her používající jádro AGI (který je znám, že vyžaduje vstup z příkazové řádky) na zařízeních s omezenou podporou klávesnice. V těchto situacích, kdy zadávání pomocí emulované klávesnice je dosti únavné, můžou být příkazy rychle a snadno zadány pomocí Předvídavého Vstupního Dialogu.
+Předvídavý Vstupní Dialog je pomůcka NovelVM pro spouštění her používající jádro AGI (který je znám, že vyžaduje vstup z příkazové řádky) na zařízeních s omezenou podporou klávesnice. V těchto situacích, kdy zadávání pomocí emulované klávesnice je dosti únavné, můžou být příkazy rychle a snadno zadány pomocí Předvídavého Vstupního Dialogu.
 
-Abyste zapnuli předvídavý vstup v hrách AGI, potřebujete zkopírovat soubor pred.dic do dodatečné složky ScummVM nebo do složky hry, kterou chcete hrát. Tento slovník byl vytvořen analýzou všech známých her AGI a obsahuje maximální sadu běžných slov.
+Abyste zapnuli předvídavý vstup v hrách AGI, potřebujete zkopírovat soubor pred.dic do dodatečné složky NovelVM nebo do složky hry, kterou chcete hrát. Tento slovník byl vytvořen analýzou všech známých her AGI a obsahuje maximální sadu běžných slov.
 
 Pokud je slovník zjištěn, je Předvídavý Vstupní Dialog zobrazen buď při kliknutí na oblast příkazového řádku (kdykoliv je požadován vstup klávesnice, i v rámečcích dialogových oken), nebo v některých verzích pro jiné systémy stisknutím určené klávesové zkratky.
 
@@ -766,16 +766,16 @@ Druhou vstupní metodou (123) je číselný vstup: Každou klávesu, kterou stis
 
 Třetí vstupní metodou (Abc) je vstupní režim Alfa/opakovaného stisknutí tlačítka. Tento režim je určen pro zadávání textu bez pomoci od slovníku předvídavého režimu (Pre). Text je zadáván po jednotlivých písmenech. Pro každé písmeno nejdříve stiskněte číslo sady, které obsahuje písmeno, které chcete, pak použijte tlačítko další (#) pro procházení písmeny a opakujte s dalším číslem. Například, pro zadání slova 'look' musíte stisknout následující: 5##6##6##5#
 
-Dialogové okno je plně použitelné pomocí myši, ale v některých verzích ScummVM pro jiné platformy, je použití dialogu pohodlnější pomocí číselné klávesnice. Některá tlačítka dialogu mohou být také používána pomocí šipkových kláves a enter.
+Dialogové okno je plně použitelné pomocí myši, ale v některých verzích NovelVM pro jiné platformy, je použití dialogu pohodlnější pomocí číselné klávesnice. Některá tlačítka dialogu mohou být také používána pomocí šipkových kláves a enter.
 
 
 3.23) Titulky a hlasy souběžně v hrách Sierra SCI:
 ----- --------------------------------------------
 Určité CD verze her Sierra SCI mají textová i hlasová data.
 Některé z nich mají volbu pro přepínání mezi nimi, ale existují případy
-kde není možnost povolit oba najednou. Ve ScummVM je možné si užít tento
+kde není možnost povolit oba najednou. Ve NovelVM je možné si užít tento
 kombinovaný režim, kde jsou zvuk i text zobrazeny současně. Tento režim
-může být povolen v nastavení zvuku ScummVM, ale každá hra se chová jinak
+může být povolen v nastavení zvuku NovelVM, ale každá hra se chová jinak
 vzhledem k povolení textu a hlasu.
 
 Hry na CD, kde zvuk i titulky lze zobrazit současně:
@@ -788,31 +788,31 @@ Hry na CD, kde zvuk i titulky lze zobrazit současně:
 
 EcoQuest 1 CD:
     Hlas i text lze zapnout pomocí volby "Mode" v okně nastavení,
-    nebo přes nastavení zvuku ScummVM.
+    nebo přes nastavení zvuku NovelVM.
 
 Freddy Pharkas CD:
     Ve hře neexistuje možnost pro povolení hlasu a textu. Pro tuto funkci
-    je třeba použít nastavení zvuku ve ScummVM. Některé mluvené dialogy
+    je třeba použít nastavení zvuku ve NovelVM. Některé mluvené dialogy
     chybí v textech hry.
 
 King's Quest 6 CD
     Hlas i text lze zapnout pomocí volby "Mode" v okně nastavení (kde je ve
-    ScummVM přidána dodatečná volba "Dual"), nebo pomocí nastavení
-    zvuku ve ScummVM.
+    NovelVM přidána dodatečná volba "Dual"), nebo pomocí nastavení
+    zvuku ve NovelVM.
 
 Laura Bow 2 CD
     Hlas i text lze zapnout pomocí volby "Mode" v okně nastavení (kde je ve
-    ScummVM přidána dodatečná volba "Dual"), nebo pomocí nastavení
-    zvuku ve ScummVM.
+    NovelVM přidána dodatečná volba "Dual"), nebo pomocí nastavení
+    zvuku ve NovelVM.
 
 Leisure Suit Larry 6 CD
     Ve hře lze povolit buď hlas, nebo hlas a text. Neexistuje možnost pro
-    povolení textu. Pouze nastavení zvuku ve ScummVM lze použít pro
+    povolení textu. Pouze nastavení zvuku ve NovelVM lze použít pro
     zobrazení jen titulků.
 
 Space Quest 4 CD:
     Hlas a text lze povolit pomocí tlačítka "Display Mode" v
-    nastavení hry, nebo pomocí nastavení zvuku ve ScummVM.
+    nastavení hry, nebo pomocí nastavení zvuku ve NovelVM.
 
 
 3.24) Poznámky ke hrám Zork:
@@ -825,9 +825,9 @@ Všechny verze
 
 Stáhněte si balíček písem Liberation(tm)
 <https://releases.pagure.org/liberation-fonts/liberation-fonts-ttf-2.00.1.tar.gz>
-a rozbalte všechny soubory ttf do vaší dodatečné složky ScummVM.
+a rozbalte všechny soubory ttf do vaší dodatečné složky NovelVM.
 Nebo si stáhněte balíček GNU FreeFont TTF
-<https://ftp.gnu.org/gnu/freefont/freefont-ttf.zip> a umístěte všechny soubory ttf z adresáře sfd do dodatečné složky ScummVM, i když je třeba říci, že v současné době
+<https://ftp.gnu.org/gnu/freefont/freefont-ttf.zip> a umístěte všechny soubory ttf z adresáře sfd do dodatečné složky NovelVM, i když je třeba říci, že v současné době
 mají některá tato písma potíže při vykreslování.
 Stáhněte si opravu pro titulky
 <https://www.thezorklibrary.com/installguides/znpatch.zip> a rozbalte adresář addon přímo do kořenového adresáře hry
@@ -864,9 +864,9 @@ Všechny verze
 
 Stáhněte si balíček písem Liberation(tm)
 <https://releases.pagure.org/liberation-fonts/liberation-fonts-ttf-2.00.1.tar.gz>
-a rozbalte všechny soubory ttf do vaší dodatečné složky ScummVM.
+a rozbalte všechny soubory ttf do vaší dodatečné složky NovelVM.
 Nebo si stáhněte balíček GNU FreeFont TTF
-<https://ftp.gnu.org/gnu/freefont/freefont-ttf.zip> a umístěte všechny soubory ttf z adresáře sfd do dodatečné složky ScummVM, i když je třeba říci, že v současné době
+<https://ftp.gnu.org/gnu/freefont/freefont-ttf.zip> a umístěte všechny soubory ttf z adresáře sfd do dodatečné složky NovelVM, i když je třeba říci, že v současné době
 mají některá tato písma potíže při vykreslování.
 
 Verze z GoG
@@ -910,28 +910,28 @@ Zkopírujte adresář zassetse do kořenového adresáře hry
 3.25) Poznámky ke hrám Commodore64:
 ----- -----------------------------
 Jak Maniac Mansion tak Zak McKracken mohou být spuštěny, ale Maniac Mansion není ještě hratelný. Jednoduše pojmenujte disky D64 jako
-"maniac1.d64" a "maniac2.d64" nebo "zak1.d64" a "zak2.d64", pak by měl ScummVM automaticky hru zjistit, pokud ho odkážete na správnou složku.
+"maniac1.d64" a "maniac2.d64" nebo "zak1.d64" a "zak2.d64", pak by měl NovelVM automaticky hru zjistit, pokud ho odkážete na správnou složku.
 
-Nebo můžete použít 'extract_mm_c64' z balíčku nástrojů pro extrahování datových souborů. Pak ale ScummVM hru řádně automaticky nezjistí ScummVM, a musíte se ujistit, že platforma je nastavena na Commodore64. Doporučujeme použít mnohem jednodušší postup popsaný v předchozím odstavci.
+Nebo můžete použít 'extract_mm_c64' z balíčku nástrojů pro extrahování datových souborů. Pak ale NovelVM hru řádně automaticky nezjistí NovelVM, a musíte se ujistit, že platforma je nastavena na Commodore64. Doporučujeme použít mnohem jednodušší postup popsaný v předchozím odstavci.
 
 
 3.26) Poznámky ke hrám Macintosh:
 ----- ---------------------------
-Všechny adventury LucasArts založené na SCUMM, kromě COMI, také existují ve verzích pro in Macintosh. ScummVM může většinu (všechny?) použít, nicméně, v některých případech je nutná dodatečná práce. Nejdříve, pokud pro toto nepoužíváte Macintosh, přístup k datům na CD/disketě může být obtížný. Důvodem je to, že Mac používá zvláštní formát disku nazvaný HFS, který ostatní systémy většinou nepodporují. Nicméně existuje, několik nástrojů, které jsou zadarmo a umožňují číst takovéto svazky HFS. Například "HFSExplorer" pro Windows a "hfsutils" pro Linux a ostatní Unixové operační systémy.
+Všechny adventury LucasArts založené na SCUMM, kromě COMI, také existují ve verzích pro in Macintosh. NovelVM může většinu (všechny?) použít, nicméně, v některých případech je nutná dodatečná práce. Nejdříve, pokud pro toto nepoužíváte Macintosh, přístup k datům na CD/disketě může být obtížný. Důvodem je to, že Mac používá zvláštní formát disku nazvaný HFS, který ostatní systémy většinou nepodporují. Nicméně existuje, několik nástrojů, které jsou zadarmo a umožňují číst takovéto svazky HFS. Například "HFSExplorer" pro Windows a "hfsutils" pro Linux a ostatní Unixové operační systémy.
 
-Většina novějších her na Macintosh je dodávána pouze s jedním datovým souborem (v některých případech byl tento soubor učiněn neviditelným, takže možná budete potřebovat dodatečné nástroje, abyste ho mohli zkopírovat). ScummVM je schopen takovýto soubor použít přímo; jednoduše odkažte ScummVM na složku obsahující tento soubor a mělo by to fungovat (tak jako s každou podporovanou hrou).
+Většina novějších her na Macintosh je dodávána pouze s jedním datovým souborem (v některých případech byl tento soubor učiněn neviditelným, takže možná budete potřebovat dodatečné nástroje, abyste ho mohli zkopírovat). NovelVM je schopen takovýto soubor použít přímo; jednoduše odkažte NovelVM na složku obsahující tento soubor a mělo by to fungovat (tak jako s každou podporovanou hrou).
 
 V balíčku nástrojů také poskytujeme nástroj nazvaný 'extract_scumm_mac', který extrahuje data z těchto datových souborů, ale toto není ani potřeba, ani doporučeno.
 
 Pro další informace o kopírování herních souborů Macintosh na Váš pevný disk si prohlédněte:
 
-  <https://wiki.scummvm.org/index.php/HOWTO-Mac_Games>
+  <https://wiki.novelvm.org/index.php/HOWTO-Mac_Games>
 
 
 4.0) Podporované Platformy:
 ---- ----------------------
-ScummVM byl vytvořen tak, aby mohl fungovat na mnoha platformách a operačních systémech.
-Odkazy na tyto verze můžou být nalezeny buď na stránkách ScummVM nebo vyhledáváním na internetu. Mnoho díků našim programátorům za jejich úsilí. Pokud máte verzi ScummVM pro jinou platformu/systém a chcete ho odevzdat do hlavního úložiště, neváhejte nás kontaktovat!
+NovelVM byl vytvořen tak, aby mohl fungovat na mnoha platformách a operačních systémech.
+Odkazy na tyto verze můžou být nalezeny buď na stránkách NovelVM nebo vyhledáváním na internetu. Mnoho díků našim programátorům za jejich úsilí. Pokud máte verzi NovelVM pro jinou platformu/systém a chcete ho odevzdat do hlavního úložiště, neváhejte nás kontaktovat!
 
 Podporované platformy zahrnují (mimo jiné):
 
@@ -957,7 +957,7 @@ Podporované platformy zahrnují (mimo jiné):
 
 Verze pro Dreamcast nepodporuje The Curse of Monkey Island, ani The Dig. Verze pro Nintendo DS nepodporuje Full Throttle, The Dig, nebo The Curse of Monkey Island.
 Pro další omezení v závislosti na platformě se, prosím, podívejte na naší  Wiki:
-  <https://wiki.scummvm.org/index.php/Platforms>
+  <https://wiki.novelvm.org/index.php/Platforms>
 
 Ve verzi pro Macintosh je stisknutí pravého tlačítka myši emulováno pomocí Cmd-kliknutí (to je, že stisknete tlačítko myši při držení klávesy
 Command/Apple/Vrtule).
@@ -965,25 +965,25 @@ Command/Apple/Vrtule).
 Také existují neoficiální verze pro různé platformy, včetně PlayStation 3, Xbox, a Xbox 360. Nezapomeňte, že my jsme tyto verze nevytvořili, takže je nemůžeme ani schválit ani podporovat. Používejte na vlastní riziko!
 
 
-5.0) Spuštění ScummVM:
+5.0) Spuštění NovelVM:
 ---- -----------------
-Všimněte si prosím, že ScummVM bude uložené hry standardně ukládat do složky z které je spuštěn, takže byste se měli vyhnout jeho spouštění z více umístění. Další informace, včetně jak určit složku pro uložené hry pro zamezení tohoto problému, najdete v oddílu 6.0.
+Všimněte si prosím, že NovelVM bude uložené hry standardně ukládat do složky z které je spuštěn, takže byste se měli vyhnout jeho spouštění z více umístění. Další informace, včetně jak určit složku pro uložené hry pro zamezení tohoto problému, najdete v oddílu 6.0.
 
-ScummVM může být také spuštěn přímo pomocí spouštěcího souboru. V tomto případě bude aktivován zabudovaný spouštěč. Odsuď můžete přidat hry
+NovelVM může být také spuštěn přímo pomocí spouštěcího souboru. V tomto případě bude aktivován zabudovaný spouštěč. Odsuď můžete přidat hry
 (klikněte na 'Přidat hru'), nebo spustit ty, co už jsou nastaveny.
 Hry mohou být také přidány ve velkém množství. Stisknutím shift + 'Přidat
-Hru' (Všimněte si, že se tlačítko změní na 'Hromadné Přidání'), můžete zvolit složku, v které začít, a ScummVM se poté pokusí zjistit hry ve všech podsložkách této složky.
+Hru' (Všimněte si, že se tlačítko změní na 'Hromadné Přidání'), můžete zvolit složku, v které začít, a NovelVM se poté pokusí zjistit hry ve všech podsložkách této složky.
 
-ScummVM může také hru spustit přímo pomocí argumentů příkazové řádky -- viz další část.
+NovelVM může také hru spustit přímo pomocí argumentů příkazové řádky -- viz další část.
 
 
 5.1) Možnosti příkazového řádku:
 ---- ---------------------------
 
-  Použití: scummvm [MOŽNOSTI]... [HRA]
+  Použití: novelvm [MOŽNOSTI]... [HRA]
 
   [HRA]                    Krátké jméno hry pro načtení. Například              'monkey'pro Monkey Island. To může být buď id hry, nebo uživatelem určený cíl.
-  -v, --version            Zobrazí informace o verzi ScummVM a ukončí se
+  -v, --version            Zobrazí informace o verzi NovelVM a ukončí se
   -h, --help               Zobrazí stručnou nápovědu a ukončí se
   -z, --list-games         Zobrazí seznam podporovaných her a ukončí se
   -t, --list-targets       Zobrazí seznam nastavených cílů a ukončí se
@@ -1027,7 +1027,7 @@ ScummVM může také hru spustit přímo pomocí argumentů příkazové řádky
                            atari, macintosh)
 
   --alt-intro              Použije alternativní intro pro CD verze Beneath a Steel Sky a Flight of the Amazon Queen
-  --copy-protection        Povolí ochranu proti kopírování v hrách, když ji ScummVM standardně zakazuje.
+  --copy-protection        Povolí ochranu proti kopírování v hrách, když ji NovelVM standardně zakazuje.
   --talkspeed=ČÍSLO        Nastaví zdržení mluvení v hrách SCUMM, nebo rychlost mluvení v jiných hrách (výchozí: 60)
   --demo-mode              Spustí režim dema v Maniac Mansion (Klasická verze)
   --tempo=NUM              Nastaví rychlost hudby (v procentech, 50-200) pro hry SCUMM (výchozí: 100)
@@ -1041,21 +1041,21 @@ Krátké jméno hry ('cíl hry'), který vidíte na konci příkazového řádku
 Příklady:
  * Win32:
   Spuštění Monkey Island, celá obrazovka, z pevného disku:
-   C:\Games\LucasArts\scummvm.exe -f -pC:\Games\LucasArts\monkey\ monkey
+   C:\Games\LucasArts\novelvm.exe -f -pC:\Games\LucasArts\monkey\ monkey
   Spuštění Full Throttle z CD, celá obrazovka a se zapnutými titulky:
-   C:\Games\LucasArts\scummvm.exe -f -n -pD:\resource\ ft
+   C:\Games\LucasArts\novelvm.exe -f -n -pD:\resource\ ft
 
  * Unix:
   Spuštění Monkey Island, celá obrazovka, z pevného disku:
 
-   /path/to/scummvm -f -p/games/LucasArts/monkey/ monkey
+   /path/to/novelvm -f -p/games/LucasArts/monkey/ monkey
   Spuštění Full Throttle z CD, celá obrazovka a se zapnutými titulky:
-   /path/to/scummvm -f -n -p/cdrom/resource/ ft
+   /path/to/novelvm -f -n -p/cdrom/resource/ ft
 
 
 5.2) Volby jazyka:
 ---- -------------
-ScummVM obsahuje volby jazyka pro Maniac Mansion, Zak McKracken,
+NovelVM obsahuje volby jazyka pro Maniac Mansion, Zak McKracken,
 The Dig, The Curse of Monkey Island, Beneath a Steel Sky a
 Broken Sword.
 
@@ -1109,7 +1109,7 @@ Broken Sword
 
 5.3) Grafické filtry:
 ---- ----------------
-ScummVM nabízí několik filtrů vyhlazujících hrany jako pokus o zlepšení obrazové kvality. Jsou to stejné filtry, které používá i mnoho jiných emulátorů, jako MAME. Tyto filtry vezmou původní grafiku hry a zvětší ji o určitou pevnou hodnotu (většinou 2x nebo 3x) než ji Vám zobrazí. Takže například, pokud hra původně pracovala v rozlišení 320x200 (typické pro většinu her SCUMM), pak použitím filtru s faktorem zvětšení 2x, ve skutečnosti dostanete rozlišení 640x400. Podobně s filtrem 3x dostanete 960x600.
+NovelVM nabízí několik filtrů vyhlazujících hrany jako pokus o zlepšení obrazové kvality. Jsou to stejné filtry, které používá i mnoho jiných emulátorů, jako MAME. Tyto filtry vezmou původní grafiku hry a zvětší ji o určitou pevnou hodnotu (většinou 2x nebo 3x) než ji Vám zobrazí. Takže například, pokud hra původně pracovala v rozlišení 320x200 (typické pro většinu her SCUMM), pak použitím filtru s faktorem zvětšení 2x, ve skutečnosti dostanete rozlišení 640x400. Podobně s filtrem 3x dostanete 960x600.
 
 Jsou to:
     1x         - Bez filtrování, bez zvětšení. Nejrychlejší.
@@ -1125,13 +1125,13 @@ Jsou to:
     tv2x       - Filtr prokládání, snaží se emulovat TV. Zvětšení 2x.
     dotmatrix  - Efekt bodové matice. Zvětšení 2x.
 
-Abyste filtr vybrali, zvolte ho ve spouštěči, nebo předejte scummvm jeho jméno pomocí možnosti '-g', například:
+Abyste filtr vybrali, zvolte ho ve spouštěči, nebo předejte novelvm jeho jméno pomocí možnosti '-g', například:
 
-    scummvm -gadvmame2x monkey2
+    novelvm -gadvmame2x monkey2
 
 Poznámka #1: Ne všechny jádra podporují všechny (nebo dokonce žádné) z filtrů vypsaných výše; některé mohou podporovat i další. Filtry vypsané výše jsou ty podporované standardním jádrem SDL.
 
-Poznámka #2: Filtry mohou být velmi pomalé, když je ScummVM sestaven v nastavení pro ladění bez optimalizací. Použití jakékoliv formy vyhlazení hran/lineárního filtrování bude mít vždycky dopad na rychlost.
+Poznámka #2: Filtry mohou být velmi pomalé, když je NovelVM sestaven v nastavení pro ladění bez optimalizací. Použití jakékoliv formy vyhlazení hran/lineárního filtrování bude mít vždycky dopad na rychlost.
 
 Poznámka #3: Verze FM-TOWNS hry Zak McKracken má původní rozlišení 320x240, což znamená, že filtry v této hře budou zvětšovat na 640x480
 nebo 960x720. Obdobně hry, které mají původní rozlišení 640x480 (jako
@@ -1142,7 +1142,7 @@ Curse of Monkey Island nebo Broken Sword) budou zvětšeny na 1280x960 a
 5.4) Globální menu:
 ---- --------------
 Globální Menu je obecné menu, které je dostupné všem jádrům her stisknutím Ctrl-F5. Z tohoto menu jsou dostupné následující tlačítka: Pokračovat, Volby, O programu, Návrat do Spouštěče, a Ukončit. Výběrem
-'Volby' bude zobrazeno dialogové okno, kde můžou být upravena základní nastavení zvuku, jako hladiny hlasitosti. Výběrem 'Návrat do Spouštěče' současnou hru ukončí a uživatele navrátí do spouštěče ScummVM, kde může být vybrána další hra ke hraní.
+'Volby' bude zobrazeno dialogové okno, kde můžou být upravena základní nastavení zvuku, jako hladiny hlasitosti. Výběrem 'Návrat do Spouštěče' současnou hru ukončí a uživatele navrátí do spouštěče NovelVM, kde může být vybrána další hra ke hraní.
 
 Poznámka: Návrat do Spouštěče není podporován všemi jádry a tlačítko nebude v Globálním Menu funkční, pokud není podporováno.
 
@@ -1179,7 +1179,7 @@ Jádra, která v současnosti podporují návrat do spouštěče, jsou:
 
 5.5) Klávesové zkratky:
 ---- ------------------
-ScummVM podporuje různé zkratky ve hře. Liší se mezi různými hrami SCUMM a jinými hrami.
+NovelVM podporuje různé zkratky ve hře. Liší se mezi různými hrami SCUMM a jinými hrami.
 
   Společné:
     Ctrl-F5                - Zobrazí Globální Menu
@@ -1210,7 +1210,7 @@ ScummVM podporuje různé zkratky ve hře. Liší se mezi různými hrami SCUMM 
     [ a ]                  - Hlasitost hudby, zvýšit/snížit
     - a +                  - Rychlost textu, pomalejší/rychlejší
     F5                     - Zobrazí rámeček pro uložení/načtení
-    Alt-F5                 - Zobrazí původní rámeček pro uložení/načtení, pokud hra nějaký má. Zde můžete hru načíst i uložit, nicméně pro tento účel není určen a v některých hrách může způsobit pád ScummVM.
+    Alt-F5                 - Zobrazí původní rámeček pro uložení/načtení, pokud hra nějaký má. Zde můžete hru načíst i uložit, nicméně pro tento účel není určen a v některých hrách může způsobit pád NovelVM.
     i                      - Zobrazí IQ body (Indiana Jones and the Last Crusade a Indiana Jones and the Fate of Atlantis)
     Mezerník               - Pozastavení
     Tečka (.)              - V některých hrách přeskočí současný řádek textu
@@ -1349,38 +1349,38 @@ Uložené hry jsou na některých platformách standardně umístěny do součas
 
 Platformy, které v současnosti mají jiné výchozí složky jsou:
     Mac OS X:
-    $HOME/Documents/ScummVM Savegames/
+    $HOME/Documents/NovelVM Savegames/
 
     Jiné unixy:
     Řídíme se specifikacemi základního adresáře XDG. To znamená, že nastavení lze nalézt v:
-    $XDG_DATA_HOME/scummvm/saves/
+    $XDG_DATA_HOME/novelvm/saves/
 
     Pokud XDG_DATA_HOME není nastaven nebo je prázdný, bude, podle pravidel specifikace, použito '~/.local/share' jako hodnota pro XDG_DATA_HOME.
 
-    Pokud byla ve vašem systému nainstalována dřívější verze ScummVM, bude ponecháno původní výchozí umístění '~/.scummvm'.
-	Program toto zjistí nalezením složky '~/.scummvm'´ v cestě.
+    Pokud byla ve vašem systému nainstalována dřívější verze NovelVM, bude ponecháno původní výchozí umístění '~/.novelvm'.
+	Program toto zjistí nalezením složky '~/.novelvm'´ v cestě.
 
      Windows Vista/7:
-    \Users\užjméno\AppData\Roaming\ScummVM\Saved games\
+    \Users\užjméno\AppData\Roaming\NovelVM\Saved games\
 
     Windows 2000/XP:
-    \Documents and Settings\užjméno\Application Data\ScummVM\Saved games\
+    \Documents and Settings\užjméno\Application Data\NovelVM\Saved games\
 
     Windows NT4:
-    <windir>\Profiles\užjméno\Application Data\ScummVM\Saved games\
+    <windir>\Profiles\užjméno\Application Data\NovelVM\Saved games\
 
 Uložené hry jsou ve Windows NT4/2000/XP/Vista/7 ukládány ve skryté složce,
-do které můžete vstoupit spuštěním "%APPDATA%\ScummVM\Saved Games\" nebo
+do které můžete vstoupit spuštěním "%APPDATA%\NovelVM\Saved Games\" nebo
 povolením zobrazení skrytých složek v Průzkumníku Windows.
 
 Poznámka pro uživatele Windows NT4/2000/XP/Vista/7: Výchozí umístění uložených her
-bylo ve ScummVM 1.5.0 změněno. Dávkový soubor přesunu může být použit pro zkopírování
+bylo ve NovelVM 1.5.0 změněno. Dávkový soubor přesunu může být použit pro zkopírování
 uložených her ze starého výchozího umístění do nového.
 
 6.1) 6.1 Automatické ukládání:
 ---- -------------------------
 V některých hrách, (a to "Beneath a Steel Sky", "Flight of the Amazon
-Queen", všechny hry AGI, a všechny hry SCUMM), bude ScummVM standardně automaticky ukládat současný stav každých pět minut (upravitelné pomocí nastavení "autoukládání"). Pro jádra AGI a SCUMM, je bude ukládat do pozice 0. V jádru SCUMM může být tento uložený stav znovu načten pomocí Ctrl-0 nebo menu F5.
+Queen", všechny hry AGI, a všechny hry SCUMM), bude NovelVM standardně automaticky ukládat současný stav každých pět minut (upravitelné pomocí nastavení "autoukládání"). Pro jádra AGI a SCUMM, je bude ukládat do pozice 0. V jádru SCUMM může být tento uložený stav znovu načten pomocí Ctrl-0 nebo menu F5.
 
 
 6.2) Převod uložených her:
@@ -1408,7 +1408,7 @@ Použití uložených her z původních verzí není podporováno všemi jádry
   The Feeble Files
     - Přejmenuje soubor uložené hry na 'feeble.xxx'
 
-Kde 'xxx' je číslo pozice uložené hry (tj. 001) ve ScummVM
+Kde 'xxx' je číslo pozice uložené hry (tj. 001) ve NovelVM
 
 
 6.3) Zobrazení/Načtení uložených her z příkazového řádku:
@@ -1485,7 +1485,7 @@ Kde 'xxx' je číslo pozice uložené hry (tj. 001) ve ScummVM
 
 7.0) Hudba a Zvuk:
 ---- -------------
-Ve většině operačních systémů a pro většinu her bude ScummVM standardně používat MT-32 nebo emulaci AdLib pro přehrávání hudby. MIDI nemusí být
+Ve většině operačních systémů a pro většinu her bude NovelVM standardně používat MT-32 nebo emulaci AdLib pro přehrávání hudby. MIDI nemusí být
 Dostupné ve všech operačních systémech, nebo potřebuje ruční nastavení. Pokud chcete MIDI použít, máte několik různých voleb pro výstup, v závislosti na Vašem operačním systému a nastavení.
 
     null       - Prázdný výstup. Nepřehrávat žádnou hudbu.
@@ -1503,22 +1503,22 @@ Dostupné ve všech operačních systémech, nebo potřebuje ruční nastavení.
     timidity   - Připojení k MIDI serveru TiMidity++. Viz níže.
     windows    - Windows MIDI. Použije zabudovaný sekvencer, pro Windows
 
-Abyste vybrali ovladač zvuku, zvolte ho ve spouštěči, nebo předejte jeho jméno ScummVM pomocí možnosti '-e', například:
+Abyste vybrali ovladač zvuku, zvolte ho ve spouštěči, nebo předejte jeho jméno NovelVM pomocí možnosti '-e', například:
 
-    scummvm -eadlib monkey2
+    novelvm -eadlib monkey2
 
 
 7.1) Přehrávání zvuku pomocí emulace AdLib:
 ---- --------------------------------------
-Standardně bude karta AdLib emulována a ScummVM hudbu přehrává jako vzorkované vlny. To je výchozí režim pro většinu her a nabízí nejlepší kompatibilitu mezi stroji a hrami.
+Standardně bude karta AdLib emulována a NovelVM hudbu přehrává jako vzorkované vlny. To je výchozí režim pro většinu her a nabízí nejlepší kompatibilitu mezi stroji a hrami.
 
 
 7.2) Přehrávání zvuku pomocí emulace FluidSynth MIDI:
 ---- ------------------------------------------------
-Pokud byl ScummVM sestaven s podporou libfluidsynth bude schopen přehrávat hudbu MIDI pomocí ovladače FluidSynth. Budete muset ale určit, který SoundFont použít.
+Pokud byl NovelVM sestaven s podporou libfluidsynth bude schopen přehrávat hudbu MIDI pomocí ovladače FluidSynth. Budete muset ale určit, který SoundFont použít.
 
 Protože výchozí hlasitost výstupu od FluidSynth může být velmi nízká,
-ScummVM standardně nastaví zvýšení, aby dostal silnější signál. To může být dále upraveno použitím možnosti příkazového řádku --midi-gain, nebo nastavením "midi_gain" v konfiguračním souboru.
+NovelVM standardně nastaví zvýšení, aby dostal silnější signál. To může být dále upraveno použitím možnosti příkazového řádku --midi-gain, nebo nastavením "midi_gain" v konfiguračním souboru.
 
 Nastavení může nabývat hodnoty od 0 po 1000 a výchozí je 100. (Toto odpovídá nastavení zvýšení FluidSynth's 0.0 až 10.0, což je pravděpodobně měřeno v decibelech.)
 
@@ -1527,12 +1527,12 @@ POZNÁMKA: Požadavky na procesor pro FluidSynth můžou být v některých př
 
 7.3) Přehrávání zvuku pomocí emulace MT-32:
 ---- --------------------------------------
-Některé hry, které obsahují hudební data MIDI, také mají vylepšené stopy určené pro zvukový modul MT-32. ScummVM může toto zařízení nyní emulovat, nicméně aby toto zařízení fungovalo, musíte mít původní ROMy MT-32:
+Některé hry, které obsahují hudební data MIDI, také mají vylepšené stopy určené pro zvukový modul MT-32. NovelVM může toto zařízení nyní emulovat, nicméně aby toto zařízení fungovalo, musíte mít původní ROMy MT-32:
 
 MT32_PCM.ROM     - IC21 (512KB)
 MT32_CONTROL.ROM - IC26 (32KB) a IC27 (32KB), prokládané podle bajtu
 
-Tyto ROMy umístěte do herního adresáře, ve Vaší dodatečné cestě, nebo v adresáři, kde je umístěn spouštěč ScummVM.
+Tyto ROMy umístěte do herního adresáře, ve Vaší dodatečné cestě, nebo v adresáři, kde je umístěn spouštěč NovelVM.
 
 S tímto ovladačem nemusíte zadávat --native-mt32, protože je automaticky zapnut.
 
@@ -1542,7 +1542,7 @@ CPU je velmi doporučeno.
 
 7.4) Přehrávání zvuku pomocí emulace MIDI:
 ---- -------------------------------------
-Některé hry (jako Sam & Max) obsahují pouze hudební data MIDI. Toto bránilo, aby hudba v těchto hrách fungovala na platformách, které MIDI nepodporují, nebo na zvukových kartách, které neposkytují ovladače MIDI (např. mnoho zvukových karet nebude v Linuxu MIDI přehrávat). ScummVM nyní může MIDI emulovat pomocí vzorkovaných vln a AdLib, emulaci MIDI FluidSynth nebo emulace MT-32 pomocí možností -eadlib, -efluidsynth nebo -emt32 v tomto pořadí. Nicméně pokud máte možnost použít přirozené MIDI, doporučujeme použít jeden z režimů MIDI níže pro nejlepší zvuk.
+Některé hry (jako Sam & Max) obsahují pouze hudební data MIDI. Toto bránilo, aby hudba v těchto hrách fungovala na platformách, které MIDI nepodporují, nebo na zvukových kartách, které neposkytují ovladače MIDI (např. mnoho zvukových karet nebude v Linuxu MIDI přehrávat). NovelVM nyní může MIDI emulovat pomocí vzorkovaných vln a AdLib, emulaci MIDI FluidSynth nebo emulace MT-32 pomocí možností -eadlib, -efluidsynth nebo -emt32 v tomto pořadí. Nicméně pokud máte možnost použít přirozené MIDI, doporučujeme použít jeden z režimů MIDI níže pro nejlepší zvuk.
 
 
 7.5) Přehrávání zvuku pomocí emulace Přirozeného MIDI:
@@ -1552,27 +1552,27 @@ Použijte vhodnou možnosti příkazového řádku -e<režim> ze seznamu výše 
 
 7.5.1) Použití možností MIDI k přizpůsobení výstupu přirozené MIDI:
 ------ ------------------------------------------------------------
-ScummVM podporuje různé režimy MIDI v závislosti na schopnostech Vašeho zařízení MIDI.
+NovelVM podporuje různé režimy MIDI v závislosti na schopnostech Vašeho zařízení MIDI.
 
-Pokud je zadáno --native-mt32, ScummVM se k Vašemu zařízení bude chovat jako ke skutečné MT-32. Protože mapování instrumentů a výhradní systémové příkazy MT-32 se liší od zařízení General MIDI, tuto možnost byste měli povolit, pouze když používáte skutečné Roland MT-32, LAPC-I,CM-64, CM-32L, CM-500, nebo zařízení GS s mapou MT-32.
+Pokud je zadáno --native-mt32, NovelVM se k Vašemu zařízení bude chovat jako ke skutečné MT-32. Protože mapování instrumentů a výhradní systémové příkazy MT-32 se liší od zařízení General MIDI, tuto možnost byste měli povolit, pouze když používáte skutečné Roland MT-32, LAPC-I,CM-64, CM-32L, CM-500, nebo zařízení GS s mapou MT-32.
 
-Pokud je zadáno --enable-gs, ScummVM zavede Vaše zařízení kompatibilní s GS pomocí nastavení, která napodobují nastavení dozvuku MT-32, (nedostatek) chóru, citlivost ohýbaní tónu, atd. Pokud je toto společně použito s --native-mt32, ScummVM vybere mapu kompatibilní s MT-32 a bicí soupravu na Vašem zařízení GS. Toto nastavení funguje lépe než standardní emulace GM nebo GS ve hrách, které nemají vlastní mapování instrumentů (Loom a Monkey1). Obě nastavení byste měli použít pouze tehdy, pokud máte zařízení GS, které má mapu MT-32, jako SC-55, SC-88, SC-88 Pro, SC-8820, SC-8850, atd. Nezapomeňte, že --enable-gs je automaticky zakázáno v DOTT a Samnmax, protože samostatně používají General MIDI.
+Pokud je zadáno --enable-gs, NovelVM zavede Vaše zařízení kompatibilní s GS pomocí nastavení, která napodobují nastavení dozvuku MT-32, (nedostatek) chóru, citlivost ohýbaní tónu, atd. Pokud je toto společně použito s --native-mt32, NovelVM vybere mapu kompatibilní s MT-32 a bicí soupravu na Vašem zařízení GS. Toto nastavení funguje lépe než standardní emulace GM nebo GS ve hrách, které nemají vlastní mapování instrumentů (Loom a Monkey1). Obě nastavení byste měli použít pouze tehdy, pokud máte zařízení GS, které má mapu MT-32, jako SC-55, SC-88, SC-88 Pro, SC-8820, SC-8850, atd. Nezapomeňte, že --enable-gs je automaticky zakázáno v DOTT a Samnmax, protože samostatně používají General MIDI.
 
-Pokud není ani jedna z možností výše povolena, ScummVM Vaše zařízení zavede v režimu General MIDI a použije emulaci GM v hrách se zvukovým doprovodem MT-32.
+Pokud není ani jedna z možností výše povolena, NovelVM Vaše zařízení zavede v režimu General MIDI a použije emulaci GM v hrách se zvukovým doprovodem MT-32.
 
 Některé hry obsahují zvukové efekty pouze v AdLib. Pro tyto hry, byste měli zadat --multi-midi, abyste zkombinovali hudbu MIDI se zvukovými efekty AdLib.
 
 
 7.6) Přehrávání zvuku pomocí Sekvenceru MIDI:                [POUZE UNIX]
 ---- ----------------------------------------
-Pokud Váš ovladač podporuje sekvencer, můžete nastavit proměnnou prostředí "SCUMMVM_MIDI" na Vašem zařízení sekvenceru – například na /dev/sequencer
+Pokud Váš ovladač podporuje sekvencer, můžete nastavit proměnnou prostředí "NOVELVM_MIDI" na Vašem zařízení sekvenceru – například na /dev/sequencer
 
-Pokud máte problém se zvukem v tomto nastavení, možná budete muset nastavit proměnnou prostředí "SCUMMVM_MIDIPORT" na 1 nebo 2. Toto vybere port, který bude použit ve zvoleném sekvenceru. Pak spusťte scummvm s parametrem -eseq. To by mělo fungovat pro několik karet a může nabízet lepší výkon a kvalitu, než emulace AdLib. Nicméně pro systémy, kde podpora sekvenceru nefunguje, můžete vždycky přejít na emulaci AdLib.
+Pokud máte problém se zvukem v tomto nastavení, možná budete muset nastavit proměnnou prostředí "NOVELVM_MIDIPORT" na 1 nebo 2. Toto vybere port, který bude použit ve zvoleném sekvenceru. Pak spusťte novelvm s parametrem -eseq. To by mělo fungovat pro několik karet a může nabízet lepší výkon a kvalitu, než emulace AdLib. Nicméně pro systémy, kde podpora sekvenceru nefunguje, můžete vždycky přejít na emulaci AdLib.
 
 
 7.6.1) Přehrávání zvuku pomocí Sekvenceru ALSA:              [POUZE UNIX]
 ------ ----------------------------------------
-Pokud Máte nainstalován ovladač ALSA s podporou sekvenceru, pak můžete nastavit proměnnou prostředí "SCUMMVM_PORT" nebo proměnnou souboru s nastavením "alsa_port" pro určení portu Vašeho sekvenceru. Pokud ani jedno není nastaveno, jsou standardně vyzkoušeny oba porty "65:0" a "17:0".
+Pokud Máte nainstalován ovladač ALSA s podporou sekvenceru, pak můžete nastavit proměnnou prostředí "NOVELVM_PORT" nebo proměnnou souboru s nastavením "alsa_port" pro určení portu Vašeho sekvenceru. Pokud ani jedno není nastaveno, jsou standardně vyzkoušeny oba porty "65:0" a "17:0".
 
 Zde je krátký návod, jak sekvencer použít s Vaší zvukovou kartou. Ve všech případech, pro získání seznamu všech portů sekvenceru, zkuste příkaz "aconnect -o -l". To by mělo mít výstup podobný tomuto:
 
@@ -1620,7 +1620,7 @@ Jakmile je TiMidity nebo FluidSynth spuštěn, použijte příkaz 'aconnect -o -
 
 7.6.2) Přehrávání zvuku pomocí Sekvenceru IRIX dmedia:       [POUZE UNIX]
 ------ -----------------------------------------------
-Pokud používáte IRIX a ovladač dmedia s podporou sekvenceru, můžete nastavit proměnnou prostředí "SCUMMVM_MIDIPORT" nebo proměnnou souboru s nastavením "dmedia_port" pro určení portu Vašeho sekvenceru. Standardně je použit první port.
+Pokud používáte IRIX a ovladač dmedia s podporou sekvenceru, můžete nastavit proměnnou prostředí "NOVELVM_MIDIPORT" nebo proměnnou souboru s nastavením "dmedia_port" pro určení portu Vašeho sekvenceru. Standardně je použit první port.
 
 Abyste získali seznam nastavených rozhraní midi ve Vašem systému, spusťte příkaz "startmidi" bez parametrů. Vzorový výstup:
 
@@ -1628,11 +1628,11 @@ Abyste získali seznam nastavených rozhraní midi ve Vašem systému, spusťte 
           Serial Port 2
           Software Synth
 
-V tomto případě můžete ScummVM nastavit, aby použil "Software Synth" místo standardního "Serial Port 2" přidáním řádku
+V tomto případě můžete NovelVM nastavit, aby použil "Software Synth" místo standardního "Serial Port 2" přidáním řádku
 
    dmedia_port=Software Synth
 
-do Vašeho souboru s nastavením v části [scummvm], nebo nastavením SCUMMVM_PORT=Software Synth ve Vašem prostředí.
+do Vašeho souboru s nastavením v části [novelvm], nebo nastavením NOVELVM_PORT=Software Synth ve Vašem prostředí.
 
 
 7.7) Použití MIDI serveru TiMidity++:
@@ -1643,8 +1643,8 @@ Nejdříve musíte spustit daemona:
 
   timidity -ir 7777
 
-Nyní můžete spustit ScummVM a zkusit vybrat TiMidity jako výstup pro hudbu. Standardně se připojí k localhost:7777, ale hostitele/port můžete změnit pomocí proměnné prostředí "TIMIDITY_HOST". Můžete také určit
-"číslo zařízení" použitím proměnné "SCUMMVM_MIDIPORT".
+Nyní můžete spustit NovelVM a zkusit vybrat TiMidity jako výstup pro hudbu. Standardně se připojí k localhost:7777, ale hostitele/port můžete změnit pomocí proměnné prostředí "TIMIDITY_HOST". Můžete také určit
+"číslo zařízení" použitím proměnné "NOVELVM_MIDIPORT".
 
 
 7.8) Použití komprimovaných zvukových souborů
@@ -1653,14 +1653,14 @@ Nyní můžete spustit ScummVM a zkusit vybrat TiMidity jako výstup pro hudbu. 
 7.8.0) Použití souborů MP3 pro CD audio:
 ------ ---------------------------------
 Použijte LAME nebo jiný kodér MP3 pro vyjmutí stop cd audio do souborů.
-Soubory pojmenujte track1.mp3 track2.mp3 atd. ScummVM musí být sestaven s podporou MAD pro použití této možnosti. Soubory budete muset z CD vyjmout ve formátu WAV, pak je převést do formátu MP3 v konstantní přenosové rychlosti. To může být provedeno pomocí následujícího příkazového řádku:
+Soubory pojmenujte track1.mp3 track2.mp3 atd. NovelVM musí být sestaven s podporou MAD pro použití této možnosti. Soubory budete muset z CD vyjmout ve formátu WAV, pak je převést do formátu MP3 v konstantní přenosové rychlosti. To může být provedeno pomocí následujícího příkazového řádku:
 
   lame -t -q 0 -b 96 track1.wav track1.mp3
 
 
 7.8.1) Použití souborů Ogg Vorbis pro CD audio:
 ------ ----------------------------------------
-Použijte oggenc nebo jiný kodér vorbis k převedení zvukových stop do souborů. Pojmenujte je track1.ogg track2.ogg atd. ScummVM musí být sestaven s podporou vorbis pro použití této možnosti. Soubory budete muset z CD vyjmout ve formátu WAV, pak je převést do formátu vorbis. To může být provedeno pomocí následujícího příkazového řádku pro oggenc, kde hodnota po q určuje požadovanou kvalitu od 0 do 10:
+Použijte oggenc nebo jiný kodér vorbis k převedení zvukových stop do souborů. Pojmenujte je track1.ogg track2.ogg atd. NovelVM musí být sestaven s podporou vorbis pro použití této možnosti. Soubory budete muset z CD vyjmout ve formátu WAV, pak je převést do formátu vorbis. To může být provedeno pomocí následujícího příkazového řádku pro oggenc, kde hodnota po q určuje požadovanou kvalitu od 0 do 10:
 
   oggenc -q 5 track1.wav
 
@@ -1668,7 +1668,7 @@ Použijte oggenc nebo jiný kodér vorbis k převedení zvukových stop do soub
 7.8.2) Použití souborů Flac pro CD audio:
 ------ ----------------------------------
 Použijte flac nebo jiný kodér flac k převedení zvukových stop do souborů.
-Pojmenujte je track1.flac track2.flac atd. Pokud Váš souborový systém podporuje přípony pouze se třemi písmeny, pojmenujte je track1.fla track2.fla atd. ScummVM musí být sestaven s podporou flac pro použití této možnosti. Soubory budete muset z CD vyjmout ve formátu WAV, pak je převést do formátu flac. To může být provedeno pomocí následujícího příkazového řádku pro flac:
+Pojmenujte je track1.flac track2.flac atd. Pokud Váš souborový systém podporuje přípony pouze se třemi písmeny, pojmenujte je track1.fla track2.fla atd. NovelVM musí být sestaven s podporou flac pro použití této možnosti. Soubory budete muset z CD vyjmout ve formátu WAV, pak je převést do formátu flac. To může být provedeno pomocí následujícího příkazového řádku pro flac:
 
   flac --best track1.wav
 
@@ -1678,7 +1678,7 @@ Nezapomeňte, že kvalita bude vždy stejná, různé možnosti kodéru ovlivňu
 7.8.3) Komprimování MONSTER.SOU pomocí MP3:
 ------ ------------------------------------
 Potřebujete LAME a náš nástroj 'compress_scumm_sou' z balíčku
-scummvm-tools, abyste toto mohli provést a ScummVM musí být sestaven s podporou MAD.
+novelvm-tools, abyste toto mohli provést a NovelVM musí být sestaven s podporou MAD.
 
   compress_scumm_sou monster.sou
 
@@ -1687,7 +1687,7 @@ Nakonec dostanete mnohem menší soubor monster.so3, tento soubor zkopírujte do
 
 7.8.4) Komprimování MONSTER.SOU pomocí Ogg Vorbis:
 ------ -------------------------------------------
-Tak jako výše, ale ScummVM musí být sestaven s podporou OGG. Spusťte:
+Tak jako výše, ale NovelVM musí být sestaven s podporou OGG. Spusťte:
 
   compress_scumm_sou --vorbis monster.sou
 
@@ -1696,7 +1696,7 @@ To by mělo vytvořit menší soubor monster.sog file, který byste měli zkopí
 
 7.8.5) Komprimování MONSTER.SOU pomocí Flac:
 ------ -------------------------------------
-Tak jako výše, ale ScummVM musí být sestaven s podporou Flac. Spusťte:
+Tak jako výše, ale NovelVM musí být sestaven s podporou Flac. Spusťte:
 
   compress_scumm_sou --flac monster.sou
 
@@ -1705,7 +1705,7 @@ To by mělo vytvořit menší soubor monster.sof, který byste měli zkopírovat
 
 7.8.6) Komprimování hudby/zvuku/hlasu v hrách AGOS:
 ------ --------------------------------------------
-Pro tento úkol použijte náš nástroj 'compress_agos' z balíčku scummvm-tools. Můžete volit mezi několika cílovými formáty, ale nezapomeňte, že je můžete použít pouze tehdy, když ScummVM byl sestaven se zapnutou podporou konkrétního dekodéru.
+Pro tento úkol použijte náš nástroj 'compress_agos' z balíčku novelvm-tools. Můžete volit mezi několika cílovými formáty, ale nezapomeňte, že je můžete použít pouze tehdy, když NovelVM byl sestaven se zapnutou podporou konkrétního dekodéru.
 
   compress_agos effects     (Pro CD verzi Simon 1 od Acorn)
   compress_agos simon       (Pro CD verzi Simon 1 od Acorn)
@@ -1736,7 +1736,7 @@ Nakonec dostanete mnohem menší soubor *.mp3, *.ogg nebo *.fla, zkopírujte ho 
 
 7.8.7) Komprimování řeči/hudby v Broken Sword:
 ------ ---------------------------------------
-Nástroj 'compress_sword1' z balíčku scummvm-tools může převést hudbu a řeč do MP3, Ogg Vorbis a také Flac. Nejsnadnějším způsobem, jak soubory převést, je prosté zkopírování spouštěče do Vaší složky BS1 (spolu s kodérem lame) a pak ho odsud spustit. Tak bude všechno automaticky převedeno na MP3. Poté, můžete ručně odstranit soubory SPEECH?.CLU a hudební soubory wave.
+Nástroj 'compress_sword1' z balíčku novelvm-tools může převést hudbu a řeč do MP3, Ogg Vorbis a také Flac. Nejsnadnějším způsobem, jak soubory převést, je prosté zkopírování spouštěče do Vaší složky BS1 (spolu s kodérem lame) a pak ho odsud spustit. Tak bude všechno automaticky převedeno na MP3. Poté, můžete ručně odstranit soubory SPEECH?.CLU a hudební soubory wave.
 
 Spuštěním "compress_sword1 --vorbis" soubory zkomprimuje pomocí Ogg Vorbis místo MP3.
 
@@ -1748,7 +1748,7 @@ Použijte "compress_sword1 --help", abyste dostali úplný seznam možností.
 
 7.8.8) Komprimování řeči/hudby v Broken Sword II:
 ------ ------------------------------------------
-Pro tento úkol použijte náš nástroj 'compress_sword2'. Můžete volit mezi několika cílovými formáty, ale nezapomeňte, že je můžete použít pouze tehdy, když ScummVM byl sestaven se zapnutou podporou konkrétního dekodéru.
+Pro tento úkol použijte náš nástroj 'compress_sword2'. Můžete volit mezi několika cílovými formáty, ale nezapomeňte, že je můžete použít pouze tehdy, když NovelVM byl sestaven se zapnutou podporou konkrétního dekodéru.
 
   compress_sword2 speech1.clu
   compress_sword2 music1.clu
@@ -1766,16 +1766,16 @@ Nezapomeňte, prosím, že compress_sword2 bude fungovat pouze se čtyřmi soubo
 
 7.9) Výstupní vzorkovací kmitočet:
 ---- -----------------------------
-Výstupní vzorkovací kmitočet říká ScummVM, kolik vzorků zvuku má hrát v kanálu za sekundu. Je toho hodně, co by se dalo říct o tomto tématu, ale většina toho je zde nepodstatné. Krátká verze je, že většině her stačí 22050 Hz, ale v některých případech je lepší 44100 Hz. Na extrémně pomalých systémech byste raději měli použít 11025 Hz, ale je nepravděpodobně, že byste se s tímto museli zabývat.
+Výstupní vzorkovací kmitočet říká NovelVM, kolik vzorků zvuku má hrát v kanálu za sekundu. Je toho hodně, co by se dalo říct o tomto tématu, ale většina toho je zde nepodstatné. Krátká verze je, že většině her stačí 22050 Hz, ale v některých případech je lepší 44100 Hz. Na extrémně pomalých systémech byste raději měli použít 11025 Hz, ale je nepravděpodobně, že byste se s tímto museli zabývat.
 
-Abychom to rozvedli, většina zvuků, které ScummVM musí přehrát, byla vzorkována buď na 22050 Hz, nebo 11025 Hz. Použitím vyššího kmitočtu jako kouzlem nezvýší kvalitu těchto zvuků. Proto je 22050 Hz v pořádku.
+Abychom to rozvedli, většina zvuků, které NovelVM musí přehrát, byla vzorkována buď na 22050 Hz, nebo 11025 Hz. Použitím vyššího kmitočtu jako kouzlem nezvýší kvalitu těchto zvuků. Proto je 22050 Hz v pořádku.
 
 Některé hry používají CD audio. Pokud pro toto používáte komprimované soubory, jsou pravděpodobně vzorkovaný na kmitočtu 44100 Hz, takže pro tyto hry je toto pravděpodobně lepší volba kmitočtu.
 
 Při použití ovladačů hudby AdLib, FM Towns, PC Speaker nebo IBM PCjr je
-ScummVM zodpovědný za vytváření vzorků. Většinou bude 22050 Hz stačit, ale existuje alespoň jedna stopa hudby AdLib Beneath a Steel Sky, která zní lépe při 44100 Hz.
+NovelVM zodpovědný za vytváření vzorků. Většinou bude 22050 Hz stačit, ale existuje alespoň jedna stopa hudby AdLib Beneath a Steel Sky, která zní lépe při 44100 Hz.
 
-Použití kmitočtů mezi není doporučeno. Za prvé Vaše zvuková karta ho nemusí podporovat. Teoreticky by se ScummVM měl vrátit k rozumnému kmitočtu, ale nespoléhejte na to. Důležitější je ale to, že ScummVM musí převzorkovat všechny zvuky na jejich výstupní kmitočet. To je mnohem snadnější k provedení, když výstupní kmitočet je násobkem původního.
+Použití kmitočtů mezi není doporučeno. Za prvé Vaše zvuková karta ho nemusí podporovat. Teoreticky by se NovelVM měl vrátit k rozumnému kmitočtu, ale nespoléhejte na to. Důležitější je ale to, že NovelVM musí převzorkovat všechny zvuky na jejich výstupní kmitočet. To je mnohem snadnější k provedení, když výstupní kmitočet je násobkem původního.
 
 
 8.0) Soubor s nastavením:
@@ -1783,37 +1783,37 @@ Použití kmitočtů mezi není doporučeno. Za prvé Vaše zvuková karta ho ne
 Standardně je soubor s nastavením uložen a načítán:
 
     Windows Vista/7:
-    \Users\jméno uživatele\AppData\Roaming\ScummVM\scummvm.ini,
+    \Users\jméno uživatele\AppData\Roaming\NovelVM\novelvm.ini,
 
     Windows 2000/XP:
-    \Documents and Settings\jméno už\Application Data\ScummVM\scummvm.ini
+    \Documents and Settings\jméno už\Application Data\NovelVM\novelvm.ini
 
     Windows NT4:
-    <složkawin>\Profiles\jméno už\Application Data\ScummVM\scummvm.ini,
+    <složkawin>\Profiles\jméno už\Application Data\NovelVM\novelvm.ini,
 
     Windows 95/98/ME:
-    <složkawin>\scummvm.ini,
+    <složkawin>\novelvm.ini,
 
-    Pokud ve Windows nainstalována dřívější verze ScummVM bude ponecháno dřívější umístění '<složkawin>\scummvm.ini'.
+    Pokud ve Windows nainstalována dřívější verze NovelVM bude ponecháno dřívější umístění '<složkawin>\novelvm.ini'.
 
     Unix:
     Řídíme se specifikacemi základního adresáře XDG. To znamená, že naše nastavení lze nalézt v:
-    $XDG_CONFIG_HOME/scummvm/scummvm.ini
+    $XDG_CONFIG_HOME/novelvm/novelvm.ini
 
     Pokud XDG_CONFIG_HOME není nastaven nebo je prázdný, bude, podle pravidel specifikace, použito '~/.config' jako hodnota pro XDG_CONFIG_HOME.
 
-    Pokud byla ve vašem systému nainstalována dřívější verze ScummVM, bude ponecháno původní výchozí umístění '~/.scummvmrc'.
+    Pokud byla ve vašem systému nainstalována dřívější verze NovelVM, bude ponecháno původní výchozí umístění '~/.novelvmrc'.
 
     Mac OS X:
-    ~/Library/Preferences/ScummVM Preferences
+    ~/Library/Preferences/NovelVM Preferences
     (zde ~ označuje Vaši domovskou složku)
 
     Další:
-    scummvm.ini v současné složce
+    novelvm.ini v současné složce
 
 Vzorový soubor s nastavením vypadá takto:
 
-    [scummvm]
+    [novelvm]
     gfx_mode=supereagle
     fullscreen=true
     savepath=C:\saves\
@@ -1856,7 +1856,7 @@ Jsou rozpoznávána následující klíčová slova:
     autosave_period    číslo    Vteřiny mezi autoukládáním (výchozí: 300)
     save_slot          číslo    Číslo uložené, které při spuštění načíst.
     savepath           řetězec  Cesta, kde hra bude ukládat uložené hry.
-    versioninfo        řetězec  Verze ScummVM, která vytvořila soubor.
+    versioninfo        řetězec  Verze NovelVM, která vytvořila soubor.
     gameid             řetězec  Skutečné id hry. Užitečné, pokud máte několik verzí stejné hry a chcete pro ně různé přezdívky. Viz příklad.
     description        řetězec  Popis hry jak se zobrazí ve spouštěči.
     language           řetězec  Určí jazyk (en, us, de, fr, it, pt, es,
@@ -1885,14 +1885,14 @@ Jsou rozpoznávána následující klíčová slova:
     tempo              číslo    Rychlost hudby (50-200) (výchozí: 100)
     speech_volume      číslo    Nastavení hlasitosti řeči (0-255)
     midi_gain          číslo    Zvýšení MIDI (0-1000) (výchozí: 100) (Podporováno pouze některými ovladači MIDI.)
-    copy_protection    boolean  Povolí ochranu proti kopírování v určitých hrách, kde by ji ScummVM standardně zakázal.
+    copy_protection    boolean  Povolí ochranu proti kopírování v určitých hrách, kde by ji NovelVM standardně zakázal.
     demo_mode          boolean  Spustit demoverzi v Maniac Mansion
     alt_intro          boolean  Použít alternativní úvod pro CD verze Beneath a Steel Sky a Flight of the Amazon Queen
     boot_param         číslo    Předá toto číslo zaváděcímu skriptu
 
 Hry Sierra používající jádro AGI přidávají následující nestandardní klíčové slovo:
 
-    originalsaveload   boolean  Pokud true, jsou použity původní obrazovky nahrávání/uložení místo vylepšených ze ScummVM
+    originalsaveload   boolean  Pokud true, jsou použity původní obrazovky nahrávání/uložení místo vylepšených ze NovelVM
     altamigapalette    boolean  Použít alternativní paletu, běžné pro hry Amiga. Toto byl původní starý standard
     mousesupport       boolean  Povolí podporu myši. Umožní použít myš pro pohyb a pro ovládání herních nabídek
 
@@ -1900,7 +1900,7 @@ Hry Sierra používající jádro SCI přidávají následující nestandardní 
 
     disable_dithering  boolean  Odstranit artefakty chvění v některých hrách EGA
     prefer_digitalsfx  boolean  Pokud true, jsou upřednostňovány digitální zvukové efekty před syntetizovanými
-    originalsaveload   boolean  Pokud true, jsou použity původní obrazovky nahrávání/uložení místo vylepšených ze ScummVM
+    originalsaveload   boolean  Pokud true, jsou použity původní obrazovky nahrávání/uložení místo vylepšených ze NovelVM
     native_fb01        boolean  Pokud true, je ovladač hudby pro kartu IBM Music Feature nebo modul syntezátoru Yahama FB-01 FM použit jako výstup MIDI
 	use_cdaudio        boolean  Použít zvuky na CD místo ve hře, pokud je dostupné
     windows_cursors    boolean  Použít kurzory Windows (menší a černobílé) místo kurzorů z DOS (King's Quest 6)
@@ -1967,7 +1967,7 @@ The Legend of Kyrandia: Malcolm's Revenge přidává následující nestandardn�
 The Neverhood přidává následující nestandardní klíčová slova:
 
     originalsaveload   boolean  Pokud true, jsou použity původní obrazovky pro
-                                načítání/ukládání místo obrazovek ScummVM
+                                načítání/ukládání místo obrazovek NovelVM
     skiphallofrecordsscenes     boolean
                                 Pokud true, umožní hráči přeskočit
                                 obrazovky v Síni záznamů
@@ -1985,7 +1985,7 @@ The 7th Guest přidává následující nestandardní klíčové slovo:
 Zork Nemesis: The Forbidden Lands přidává následující nestandardní klíčové slovo:
 
     originalsaveload   boolean  Pokud true, jsou pro obrázky při uložení/načtení her
-                                použity původní místo vylepšených ze ScummVM
+                                použity původní místo vylepšených ze NovelVM
     doublefps          boolean  Pokud true, je herní rychlost zvýšena z 30 snímků za sekundu na 60
     venusenabled       boolean  Pokud true, je povolen herní systém nápovědy Venus
     noanimwhileturning boolean  Pokud true, jsou při otáčení v panoramatickém režimu
@@ -1994,7 +1994,7 @@ Zork Nemesis: The Forbidden Lands přidává následující nestandardní klíč
 Zork: Grand Inquisitor přidává následující nestandardní klíčové slovo:
 
     originalsaveload   boolean  Pokud true, jsou pro obrázky při uložení/načtení her
-                                použity původní místo vylepšených ze ScummVM
+                                použity původní místo vylepšených ze NovelVM
     doublefps          boolean  Pokud true, je herní rychlost zvýšena z 30 snímků za sekundu na 60
     noanimwhileturning boolean  Pokud true, jsou při otáčení v panoramatickém režimu
                                 zakázány
@@ -2004,123 +2004,123 @@ Zork: Grand Inquisitor přidává následující nestandardní klíčové slovo:
 8.2) Vlastní herní volby, které mohou být přepínány pomoci grafického rozhraní
 ---- -------------------------------------------------------------------------
 Mnoho vlastních herních voleb v předchozí části může být přepnuto přes grafické rozhraní. Pokud je takováto volba pro určitou hru dostupná, objeví se karta "Jádro" při přidávání nebo úpravě nastavení této hry.
-Pokud vlastní možnosti nejsou zobrazeny, musí být konkrétní hry spuštěny jednou nebo znovu přidány do seznamu her spouštěče ScummVM. Toto aktualizuje nastavení každé položky, čímž umožní zobrazení vlastních voleb.
+Pokud vlastní možnosti nejsou zobrazeny, musí být konkrétní hry spuštěny jednou nebo znovu přidány do seznamu her spouštěče NovelVM. Toto aktualizuje nastavení každé položky, čímž umožní zobrazení vlastních voleb.
 
 9.0) Sestavení:
 ---- ----------
-Pro aktuální přehled o tom, jak ScummVM sestavit pro různé platformy, prohlédněte si, prosím, naší Wiki, zvláště tuto stránku:
+Pro aktuální přehled o tom, jak NovelVM sestavit pro různé platformy, prohlédněte si, prosím, naší Wiki, zvláště tuto stránku:
 
-   <https://wiki.scummvm.org/index.php/Compiling_ScummVM>
+   <https://wiki.novelvm.org/index.php/Compiling_NovelVM>
 
 Pokud sestavujete ve Windows, Linux nebo Mac OS X, potřebujete SDL-1.2.2
 Nebo novější (starší verze mohou fungovat, ale nejsou podporovány) a podporovaný kompilátor. Většina kompilátorů, včetně GCC, mingw a novějších verzí Microsoft Visual C++ jsou podporovány. Pokud chcete použít stopy CD komprimované do MP3 nebo soubory .SOU, musíte nainstalovat knihovnu MAD; podobně potřebujete vhodné knihovny pro komprimovaný zvuk pomocí Ogg Vorbis a FLAC. Pro komprimované uložené stavy je potřeba mít zlib.
 
-Některé části ScummVM, zvláště zvětšovače, mají vysoce optimalizované verze napsané v assembleru. Pokud si přejete tuto možnost použít, potřebuje mít nainstalován assembler nasm (viz https://www.nasm.us/). Nezapomeňte, že v současnosti máme pouze verze optimalizované pro x86 MMX, a nebudou sestaveny pro jiné procesory.
+Některé části NovelVM, zvláště zvětšovače, mají vysoce optimalizované verze napsané v assembleru. Pokud si přejete tuto možnost použít, potřebuje mít nainstalován assembler nasm (viz https://www.nasm.us/). Nezapomeňte, že v současnosti máme pouze verze optimalizované pro x86 MMX, a nebudou sestaveny pro jiné procesory.
 
 Na Windows můžete určit USE_WINDBG a připojit WinDbg pro procházení ladících zpráv (viz <https://docs.microsoft.com/cs-cz/windows-hardware/drivers/debugger/index>).
 
    Windows:
    * Dev-C++
       Přečtěte si prosím:
-      <https://wiki.scummvm.org/index.php/Compiling_ScummVM/DevCPP>
+      <https://wiki.novelvm.org/index.php/Compiling_NovelVM/DevCPP>
    * MinGW
       Přečtěte si prosím:
-      <https://wiki.scummvm.org/index.php/Compiling_ScummVM/MinGW>
+      <https://wiki.novelvm.org/index.php/Compiling_NovelVM/MinGW>
    * Visual Studio (MSVC)
       Přečtěte si prosím:
-      <https://wiki.scummvm.org/index.php/Compiling_ScummVM/Visual_Studio>
+      <https://wiki.novelvm.org/index.php/Compiling_NovelVM/Visual_Studio>
 
    Linux:
    * GCC
       Přečtěte si prosím:
-      <https://wiki.scummvm.org/index.php/Compiling_ScummVM/GCC>
+      <https://wiki.novelvm.org/index.php/Compiling_NovelVM/GCC>
 
    Mac OS X:
       Přečtěte si prosím:
-      <https://wiki.scummvm.org/index.php/Mac_OS_X>
+      <https://wiki.novelvm.org/index.php/Mac_OS_X>
 
    AmigaOS4:
       Přečtěte si prosím:
-      <https://wiki.scummvm.org/index.php/AmigaOS>
+      <https://wiki.novelvm.org/index.php/AmigaOS>
 
    Apple iPhone:
       Přečtěte si prosím:
-      <https://wiki.scummvm.org/index.php/Compiling_ScummVM/iPhone>
+      <https://wiki.novelvm.org/index.php/Compiling_NovelVM/iPhone>
 
    Atari/FreeMiNT:
       Přečtěte si prosím:
-      <https://wiki.scummvm.org/index.php/Compiling_ScummVM/Atari/FreeMiNT>
+      <https://wiki.novelvm.org/index.php/Compiling_NovelVM/Atari/FreeMiNT>
 
    BeOS/ZETA/Haiku:
       Přečtěte si prosím:
-      <https://wiki.scummvm.org/index.php/Compiling_ScummVM/BeOS/ZETA/Haiku>
+      <https://wiki.novelvm.org/index.php/Compiling_NovelVM/BeOS/ZETA/Haiku>
 
    Google Android:
       Přečtěte si prosím:
-      <https://wiki.scummvm.org/index.php/Compiling_ScummVM/Android>
+      <https://wiki.novelvm.org/index.php/Compiling_NovelVM/Android>
 
    HP webOS:
       Přečtěte si prosím:
-      <https://wiki.scummvm.org/index.php/Compiling_ScummVM/WebOS>
+      <https://wiki.novelvm.org/index.php/Compiling_NovelVM/WebOS>
 
    Mac OS:
    * Mac OS X
       Přečtěte si prosím:
-      <https://wiki.scummvm.org/index.php/Mac_OS_X>
+      <https://wiki.novelvm.org/index.php/Mac_OS_X>
     * Mac OS X 10.2.8
       Přečtěte si prosím:
-      <https://wiki.scummvm.org/index.php/Compiling_ScummVM/Mac_OS_X_10.2.8>
+      <https://wiki.novelvm.org/index.php/Compiling_NovelVM/Mac_OS_X_10.2.8>
     * Mac OS X Křížová kompilace
       Přečtěte si prosím:
-      <https://wiki.scummvm.org/index.php/Compiling_ScummVM/Mac_OS_X_Crosscompiling>
+      <https://wiki.novelvm.org/index.php/Compiling_NovelVM/Mac_OS_X_Crosscompiling>
 
    Maemo:
       Přečtěte si prosím:
-      <https://wiki.scummvm.org/index.php/Compiling_ScummVM/Maemo>
+      <https://wiki.novelvm.org/index.php/Compiling_NovelVM/Maemo>
 
    Nintendo DS:
       Přečtěte si prosím:
-      <https://wiki.scummvm.org/index.php/Compiling_ScummVM/Nintendo_DS>
+      <https://wiki.novelvm.org/index.php/Compiling_NovelVM/Nintendo_DS>
 
    Nintendo Wii a Gamecube:
       Přečtěte si prosím:
-      <https://wiki.scummvm.org/index.php/Compiling_ScummVM/Wii>
+      <https://wiki.novelvm.org/index.php/Compiling_NovelVM/Wii>
 
    RaspberryPi:
       Přečtěte si prosím:
-      <https://wiki.scummvm.org/index.php/Compiling_ScummVM/RPI>
+      <https://wiki.novelvm.org/index.php/Compiling_NovelVM/RPI>
 
    Sega Dreamcast:
       Přečtěte si prosím:
-      <https://wiki.scummvm.org/index.php/Compiling_ScummVM/Dreamcast>
+      <https://wiki.novelvm.org/index.php/Compiling_NovelVM/Dreamcast>
 
    Sony Playstation:
    * Sony PlayStation 2
       Přečtěte si prosím:
-      <https://wiki.scummvm.org/index.php/Compiling_ScummVM/PlayStation_2>
+      <https://wiki.novelvm.org/index.php/Compiling_NovelVM/PlayStation_2>
    * Sony PlayStation 3
       Přečtěte si prosím:
-      <https://wiki.scummvm.org/index.php/PlayStation_3#Building_from_source>
+      <https://wiki.novelvm.org/index.php/PlayStation_3#Building_from_source>
    * Sony PlayStation Portable
       Přečtěte si prosím:
-      <https://wiki.scummvm.org/index.php/Compiling_ScummVM/PlayStation_Portable>
+      <https://wiki.novelvm.org/index.php/Compiling_NovelVM/PlayStation_Portable>
 
    Symbian:
       Přečtěte si prosím:
-      <https://wiki.scummvm.org/index.php/Compiling_ScummVM/Symbian>
+      <https://wiki.novelvm.org/index.php/Compiling_NovelVM/Symbian>
 
 
 10.0) Poděkování
 ----- ----------
 Prosím přečtěte si náš rozsáhlý seznam lidí, kterým chceme poděkovat na
 
-<https://www.scummvm.org/credits/>
+<https://www.novelvm.org/credits/>
 
 
 
 
 ------------------------------------------------------------------------
 Hodně Štěstí a Šťastné Adventurování!
-Tým ScummVM.
-<https://www.scummvm.org/>
+Tým NovelVM.
+<https://www.novelvm.org/>
 ------------------------------------------------------------------------

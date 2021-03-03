@@ -9,132 +9,132 @@ install:
 	$(INSTALL) -d "$(DESTDIR)$(bindir)"
 	$(INSTALL) -c -m 755 "./$(EXECUTABLE)" "$(DESTDIR)$(bindir)/$(EXECUTABLE)"
 	$(INSTALL) -d "$(DESTDIR)$(mandir)/man6/"
-	$(INSTALL) -c -m 644 "$(srcdir)/dists/scummvm.6" "$(DESTDIR)$(mandir)/man6/scummvm.6"
+	$(INSTALL) -c -m 644 "$(srcdir)/dists/novelvm.6" "$(DESTDIR)$(mandir)/man6/novelvm.6"
 	$(INSTALL) -d "$(DESTDIR)$(datarootdir)/pixmaps/"
-	$(INSTALL) -c -m 644 "$(srcdir)/icons/scummvm.xpm" "$(DESTDIR)$(datarootdir)/pixmaps/scummvm.xpm"
+	$(INSTALL) -c -m 644 "$(srcdir)/icons/novelvm.xpm" "$(DESTDIR)$(datarootdir)/pixmaps/novelvm.xpm"
 	$(INSTALL) -d "$(DESTDIR)$(datarootdir)/icons/hicolor/scalable/apps/"
-	$(INSTALL) -c -m 644 "$(srcdir)/icons/scummvm.svg" "$(DESTDIR)$(datarootdir)/icons/hicolor/scalable/apps/scummvm.svg"
+	$(INSTALL) -c -m 644 "$(srcdir)/icons/novelvm.svg" "$(DESTDIR)$(datarootdir)/icons/hicolor/scalable/apps/novelvm.svg"
 	$(INSTALL) -d "$(DESTDIR)$(docdir)"
 	$(INSTALL) -c -m 644 $(DIST_FILES_DOCS) "$(DESTDIR)$(docdir)"
 	$(INSTALL) -d "$(DESTDIR)$(datadir)"
 	$(INSTALL) -c -m 644 $(DIST_FILES_THEMES) $(DIST_FILES_NETWORKING) $(DIST_FILES_VKEYBD) $(DIST_FILES_ENGINEDATA) "$(DESTDIR)$(datadir)/"
 	$(INSTALL) -d "$(DESTDIR)$(datarootdir)/applications"
-	$(INSTALL) -c -m 644 "$(srcdir)/dists/scummvm.desktop" "$(DESTDIR)$(datarootdir)/applications/scummvm.desktop"
+	$(INSTALL) -c -m 644 "$(srcdir)/dists/novelvm.desktop" "$(DESTDIR)$(datarootdir)/applications/novelvm.desktop"
 	$(INSTALL) -d "$(DESTDIR)$(datarootdir)/metainfo"
-	$(INSTALL) -c -m 644 "$(srcdir)/dists/scummvm.appdata.xml" "$(DESTDIR)$(datarootdir)/metainfo/scummvm.appdata.xml"
+	$(INSTALL) -c -m 644 "$(srcdir)/dists/novelvm.appdata.xml" "$(DESTDIR)$(datarootdir)/metainfo/novelvm.appdata.xml"
 ifneq ($(DIST_FILES_SHADERS),)
 	$(INSTALL) -d "$(DESTDIR)$(datadir)/shaders"
 	$(INSTALL) -c -m 644 $(DIST_FILES_SHADERS) "$(DESTDIR)$(datadir)/shaders"
 endif
 ifdef DYNAMIC_MODULES
-	$(INSTALL) -d "$(DESTDIR)$(libdir)/scummvm/"
-	$(INSTALL) -c -m 644 $(PLUGINS) "$(DESTDIR)$(libdir)/scummvm/"
+	$(INSTALL) -d "$(DESTDIR)$(libdir)/novelvm/"
+	$(INSTALL) -c -m 644 $(PLUGINS) "$(DESTDIR)$(libdir)/novelvm/"
 endif
 
 install-strip:
 	$(INSTALL) -d "$(DESTDIR)$(bindir)"
 	$(INSTALL) -c -s -m 755 "./$(EXECUTABLE)" "$(DESTDIR)$(bindir)/$(EXECUTABLE)"
 	$(INSTALL) -d "$(DESTDIR)$(mandir)/man6/"
-	$(INSTALL) -c -m 644 "$(srcdir)/dists/scummvm.6" "$(DESTDIR)$(mandir)/man6/scummvm.6"
+	$(INSTALL) -c -m 644 "$(srcdir)/dists/novelvm.6" "$(DESTDIR)$(mandir)/man6/novelvm.6"
 	$(INSTALL) -d "$(DESTDIR)$(datarootdir)/pixmaps/"
-	$(INSTALL) -c -m 644 "$(srcdir)/icons/scummvm.xpm" "$(DESTDIR)$(datarootdir)/pixmaps/scummvm.xpm"
+	$(INSTALL) -c -m 644 "$(srcdir)/icons/novelvm.xpm" "$(DESTDIR)$(datarootdir)/pixmaps/novelvm.xpm"
 	$(INSTALL) -d "$(DESTDIR)$(datarootdir)/icons/hicolor/scalable/apps/"
-	$(INSTALL) -c -m 644 "$(srcdir)/icons/scummvm.svg" "$(DESTDIR)$(datarootdir)/icons/hicolor/scalable/apps/scummvm.svg"
+	$(INSTALL) -c -m 644 "$(srcdir)/icons/novelvm.svg" "$(DESTDIR)$(datarootdir)/icons/hicolor/scalable/apps/novelvm.svg"
 	$(INSTALL) -d "$(DESTDIR)$(docdir)"
 	$(INSTALL) -c -m 644 $(DIST_FILES_DOCS) "$(DESTDIR)$(docdir)"
 	$(INSTALL) -d "$(DESTDIR)$(datadir)"
 	$(INSTALL) -c -m 644 $(DIST_FILES_THEMES) $(DIST_FILES_NETWORKING) $(DIST_FILES_VKEYBD) $(DIST_FILES_ENGINEDATA) "$(DESTDIR)$(datadir)/"
 	$(INSTALL) -d "$(DESTDIR)$(datarootdir)/applications"
-	$(INSTALL) -c -m 644 "$(srcdir)/dists/scummvm.desktop" "$(DESTDIR)$(datarootdir)/applications/scummvm.desktop"
+	$(INSTALL) -c -m 644 "$(srcdir)/dists/novelvm.desktop" "$(DESTDIR)$(datarootdir)/applications/novelvm.desktop"
 	$(INSTALL) -d "$(DESTDIR)$(datarootdir)/metainfo"
-	$(INSTALL) -c -m 644 "$(srcdir)/dists/scummvm.appdata.xml" "$(DESTDIR)$(datarootdir)/metainfo/scummvm.appdata.xml"
+	$(INSTALL) -c -m 644 "$(srcdir)/dists/novelvm.appdata.xml" "$(DESTDIR)$(datarootdir)/metainfo/novelvm.appdata.xml"
 ifneq ($(DIST_FILES_SHADERS),)
 	$(INSTALL) -d "$(DESTDIR)$(datadir)/shaders"
 	$(INSTALL) -c -m 644 $(DIST_FILES_SHADERS) "$(DESTDIR)$(datadir)/shaders"
 endif
 ifdef DYNAMIC_MODULES
-	$(INSTALL) -d "$(DESTDIR)$(libdir)/scummvm/"
-	$(INSTALL) -c -s -m 644 $(PLUGINS) "$(DESTDIR)$(libdir)/scummvm/"
+	$(INSTALL) -d "$(DESTDIR)$(libdir)/novelvm/"
+	$(INSTALL) -c -s -m 644 $(PLUGINS) "$(DESTDIR)$(libdir)/novelvm/"
 endif
 
 uninstall:
 	rm -f "$(DESTDIR)$(bindir)/$(EXECUTABLE)"
-	rm -f "$(DESTDIR)$(mandir)/man6/scummvm.6"
-	rm -f "$(DESTDIR)$(datarootdir)/pixmaps/scummvm.xpm"
-	rm -f "$(DESTDIR)$(datarootdir)/icons/hicolor/scalable/apps/scummvm.svg"
+	rm -f "$(DESTDIR)$(mandir)/man6/novelvm.6"
+	rm -f "$(DESTDIR)$(datarootdir)/pixmaps/novelvm.xpm"
+	rm -f "$(DESTDIR)$(datarootdir)/icons/hicolor/scalable/apps/novelvm.svg"
 	rm -rf "$(DESTDIR)$(docdir)"
 	rm -rf "$(DESTDIR)$(datadir)"
-	rm -f "$(DESTDIR)$(datarootdir)/applications/scummvm.desktop"
-	rm -f "$(DESTDIR)$(datarootdir)/metainfo/scummvm.appdata.xml"
+	rm -f "$(DESTDIR)$(datarootdir)/applications/novelvm.desktop"
+	rm -f "$(DESTDIR)$(datarootdir)/metainfo/novelvm.appdata.xml"
 ifdef DYNAMIC_MODULES
-	rm -rf "$(DESTDIR)$(libdir)/scummvm/"
+	rm -rf "$(DESTDIR)$(libdir)/novelvm/"
 endif
 
 # Special generic target for simple archive distribution
 
 dist-generic: $(EXECUTABLE)
-	mkdir -p ./dist-generic/scummvm/data
-	mkdir -p ./dist-generic/scummvm/doc
-	cp $(EXECUTABLE) ./dist-generic/scummvm
-	cp $(DIST_FILES_DOCS) ./dist-generic/scummvm/doc
-	cp $(DIST_FILES_THEMES) ./dist-generic/scummvm/data
+	mkdir -p ./dist-generic/novelvm/data
+	mkdir -p ./dist-generic/novelvm/doc
+	cp $(EXECUTABLE) ./dist-generic/novelvm
+	cp $(DIST_FILES_DOCS) ./dist-generic/novelvm/doc
+	cp $(DIST_FILES_THEMES) ./dist-generic/novelvm/data
 ifdef DIST_FILES_ENGINEDATA
-	cp $(DIST_FILES_ENGINEDATA) ./dist-generic/scummvm/data
+	cp $(DIST_FILES_ENGINEDATA) ./dist-generic/novelvm/data
 endif
 ifdef DIST_FILES_NETWORKING
-	cp $(DIST_FILES_NETWORKING) ./dist-generic/scummvm/data
+	cp $(DIST_FILES_NETWORKING) ./dist-generic/novelvm/data
 endif
 ifdef DIST_FILES_VKEYBD
-	cp $(DIST_FILES_VKEYBD) ./dist-generic/scummvm/data
+	cp $(DIST_FILES_VKEYBD) ./dist-generic/novelvm/data
 endif
 ifdef DIST_FILES_SHADERS
-	mkdir -p ./dist-generic/scummvm/data/shaders
-	cp $(DIST_FILES_SHADERS) ./dist-generic/scummvm/data/shaders
+	mkdir -p ./dist-generic/novelvm/data/shaders
+	cp $(DIST_FILES_SHADERS) ./dist-generic/novelvm/data/shaders
 endif
 
 # Special target to create a application wrapper for Mac OS X
 
 ifdef USE_DOCKTILEPLUGIN
 
-# The NsDockTilePlugIn needs to be compiled in both 32 and 64 bits irrespective of how ScummVM itself is compiled.
+# The NsDockTilePlugIn needs to be compiled in both 32 and 64 bits irrespective of how NovelVM itself is compiled.
 # Therefore do not use $(CXXFLAGS) and $(LDFLAGS).
 
-ScummVMDockTilePlugin32.o:
-	$(CXX) -mmacosx-version-min=10.6 -arch i386 -O2 -c $(srcdir)/backends/taskbar/macosx/dockplugin/dockplugin.m -o ScummVMDockTilePlugin32.o
+NovelVMDockTilePlugin32.o:
+	$(CXX) -mmacosx-version-min=10.6 -arch i386 -O2 -c $(srcdir)/backends/taskbar/macosx/dockplugin/dockplugin.m -o NovelVMDockTilePlugin32.o
 
-ScummVMDockTilePlugin32: ScummVMDockTilePlugin32.o
-	$(CXX) -mmacosx-version-min=10.6 -arch i386 -bundle -framework Foundation -framework AppKit -fobjc-link-runtime ScummVMDockTilePlugin32.o -o ScummVMDockTilePlugin32
+NovelVMDockTilePlugin32: NovelVMDockTilePlugin32.o
+	$(CXX) -mmacosx-version-min=10.6 -arch i386 -bundle -framework Foundation -framework AppKit -fobjc-link-runtime NovelVMDockTilePlugin32.o -o NovelVMDockTilePlugin32
 
-ScummVMDockTilePlugin64.o:
-	$(CXX) -mmacosx-version-min=10.6 -arch x86_64 -O2 -c $(srcdir)/backends/taskbar/macosx/dockplugin/dockplugin.m -o ScummVMDockTilePlugin64.o
+NovelVMDockTilePlugin64.o:
+	$(CXX) -mmacosx-version-min=10.6 -arch x86_64 -O2 -c $(srcdir)/backends/taskbar/macosx/dockplugin/dockplugin.m -o NovelVMDockTilePlugin64.o
 
-ScummVMDockTilePlugin64: ScummVMDockTilePlugin64.o
-	$(CXX) -mmacosx-version-min=10.6 -arch x86_64 -bundle -framework Foundation -framework AppKit -fobjc-link-runtime ScummVMDockTilePlugin64.o -o ScummVMDockTilePlugin64
+NovelVMDockTilePlugin64: NovelVMDockTilePlugin64.o
+	$(CXX) -mmacosx-version-min=10.6 -arch x86_64 -bundle -framework Foundation -framework AppKit -fobjc-link-runtime NovelVMDockTilePlugin64.o -o NovelVMDockTilePlugin64
 
 ifdef MACOSX_64_BITS_ONLY
-ScummVMDockTilePlugin: ScummVMDockTilePlugin64
-	cp ScummVMDockTilePlugin64 ScummVMDockTilePlugin
+NovelVMDockTilePlugin: NovelVMDockTilePlugin64
+	cp NovelVMDockTilePlugin64 NovelVMDockTilePlugin
 else
-ScummVMDockTilePlugin: ScummVMDockTilePlugin32 ScummVMDockTilePlugin64
-	lipo -create ScummVMDockTilePlugin32 ScummVMDockTilePlugin64 -output ScummVMDockTilePlugin
+NovelVMDockTilePlugin: NovelVMDockTilePlugin32 NovelVMDockTilePlugin64
+	lipo -create NovelVMDockTilePlugin32 NovelVMDockTilePlugin64 -output NovelVMDockTilePlugin
 endif
 
-scummvm.docktileplugin: ScummVMDockTilePlugin
-	mkdir -p scummvm.docktileplugin/Contents
-	cp $(srcdir)/dists/macosx/dockplugin/Info.plist scummvm.docktileplugin/Contents
-	mkdir -p scummvm.docktileplugin/Contents/MacOS
-	cp ScummVMDockTilePlugin scummvm.docktileplugin/Contents/MacOS/
-	chmod 644 scummvm.docktileplugin/Contents/MacOS/ScummVMDockTilePlugin
+novelvm.docktileplugin: NovelVMDockTilePlugin
+	mkdir -p novelvm.docktileplugin/Contents
+	cp $(srcdir)/dists/macosx/dockplugin/Info.plist novelvm.docktileplugin/Contents
+	mkdir -p novelvm.docktileplugin/Contents/MacOS
+	cp NovelVMDockTilePlugin novelvm.docktileplugin/Contents/MacOS/
+	chmod 644 novelvm.docktileplugin/Contents/MacOS/NovelVMDockTilePlugin
 
 endif
 
-bundle_name = ScummVM.app
+bundle_name = NovelVM.app
 
 bundle-pack:
 	mkdir -p $(bundle_name)/Contents/MacOS
 	mkdir -p $(bundle_name)/Contents/Resources
 	echo "APPL????" > $(bundle_name)/Contents/PkgInfo
-	sed -e 's/$$(PRODUCT_BUNDLE_IDENTIFIER)/org.scummvm.scummvm/' $(srcdir)/dists/macosx/Info.plist >$(bundle_name)/Contents/Info.plist
+	sed -e 's/$$(PRODUCT_BUNDLE_IDENTIFIER)/org.novelvm.novelvm/' $(srcdir)/dists/macosx/Info.plist >$(bundle_name)/Contents/Info.plist
 ifdef USE_SPARKLE
 	mkdir -p $(bundle_name)/Contents/Frameworks
 	cp $(srcdir)/dists/macosx/dsa_pub.pem $(bundle_name)/Contents/Resources/
@@ -142,9 +142,9 @@ ifdef USE_SPARKLE
 	cp -R $(SPARKLEPATH)/Sparkle.framework $(bundle_name)/Contents/Frameworks/
 endif
 ifdef MACOSX_USE_LEGACY_ICONS
-	cp $(srcdir)/icons/scummvm_legacy.icns $(bundle_name)/Contents/Resources/scummvm.icns
+	cp $(srcdir)/icons/novelvm_legacy.icns $(bundle_name)/Contents/Resources/novelvm.icns
 else
-	cp $(srcdir)/icons/scummvm.icns $(bundle_name)/Contents/Resources/scummvm.icns
+	cp $(srcdir)/icons/novelvm.icns $(bundle_name)/Contents/Resources/novelvm.icns
 endif
 	cp $(DIST_FILES_DOCS) $(bundle_name)/Contents/Resources/
 	cp $(DIST_FILES_THEMES) $(bundle_name)/Contents/Resources/
@@ -165,7 +165,7 @@ endif
 	rm $(bundle_name)/Contents/Resources/AUTHORS
 	@sed -i'' -e "s/AUTHORS/AUTHORS.rtf/g" $(bundle_name)/Contents/Resources/README.md
 ifdef USE_PANDOC
-	@sed -i'' -e "s|href=\"AUTHORS\"|href=\"https://www.scummvm.org/credits/\"|g" $(bundle_name)/Contents/Resources/README$(PANDOCEXT)
+	@sed -i'' -e "s|href=\"AUTHORS\"|href=\"https://www.novelvm.org/credits/\"|g" $(bundle_name)/Contents/Resources/README$(PANDOCEXT)
 endif
 	cp $(bundle_name)/Contents/Resources/COPYING.LGPL $(bundle_name)/Contents/Resources/COPYING-LGPL
 	cp $(bundle_name)/Contents/Resources/COPYING.FREEFONT $(bundle_name)/Contents/Resources/COPYING-FREEFONT
@@ -175,18 +175,18 @@ endif
 ifneq ($(DIST_FILES_SHADERS),)
 	chmod 755 $(bundle_name)/Contents/Resources/shaders
 endif
-	cp scummvm-static $(bundle_name)/Contents/MacOS/scummvm
-	chmod 755 $(bundle_name)/Contents/MacOS/scummvm
-	$(STRIP) $(bundle_name)/Contents/MacOS/scummvm
+	cp novelvm-static $(bundle_name)/Contents/MacOS/novelvm
+	chmod 755 $(bundle_name)/Contents/MacOS/novelvm
+	$(STRIP) $(bundle_name)/Contents/MacOS/novelvm
 ifdef USE_DOCKTILEPLUGIN
 	mkdir -p $(bundle_name)/Contents/PlugIns
-	cp -r scummvm.docktileplugin $(bundle_name)/Contents/PlugIns/
+	cp -r novelvm.docktileplugin $(bundle_name)/Contents/PlugIns/
 endif
 
 ifdef USE_DOCKTILEPLUGIN
-bundle: scummvm-static scummvm.docktileplugin bundle-pack
+bundle: novelvm-static novelvm.docktileplugin bundle-pack
 else
-bundle: scummvm-static bundle-pack
+bundle: novelvm-static bundle-pack
 endif
 
 iphonebundle: iphone
@@ -203,10 +203,10 @@ endif
 ifdef DIST_FILES_VKEYBD
 	cp $(DIST_FILES_VKEYBD) $(bundle_name)/
 endif
-	$(STRIP) scummvm
-	ldid -S scummvm
-	chmod 755 scummvm
-	cp scummvm $(bundle_name)/ScummVM
+	$(STRIP) novelvm
+	ldid -S novelvm
+	chmod 755 novelvm
+	cp novelvm $(bundle_name)/NovelVM
 	cp $(srcdir)/dists/iphone/icon.png $(bundle_name)/
 	cp $(srcdir)/dists/iphone/icon-72.png $(bundle_name)/
 	cp $(srcdir)/dists/iphone/Default.png $(bundle_name)/
@@ -305,7 +305,7 @@ ios7bundle: iphone
 			s=2}\
 		s==0 {print $$0}\
 		s > 0 { s-- }' $(srcdir)/dists/ios7/Info.plist >$(bundle_name)/Info.plist
-	sed -i'' -e 's/$$(PRODUCT_BUNDLE_IDENTIFIER)/org.scummvm.scummvm/' $(bundle_name)/Info.plist
+	sed -i'' -e 's/$$(PRODUCT_BUNDLE_IDENTIFIER)/org.novelvm.novelvm/' $(bundle_name)/Info.plist
 	sed -i'' -e '/UILaunchStoryboardName/{N;d;}' $(bundle_name)/Info.plist
 	cp $(DIST_FILES_DOCS) $(bundle_name)/
 	cp $(DIST_FILES_THEMES) $(bundle_name)/
@@ -318,10 +318,10 @@ endif
 ifdef DIST_FILES_VKEYBD
 	cp $(DIST_FILES_VKEYBD) $(bundle_name)/
 endif
-	$(STRIP) scummvm
-	ldid -S scummvm
-	chmod 755 scummvm
-	cp scummvm $(bundle_name)/ScummVM
+	$(STRIP) novelvm
+	ldid -S novelvm
+	chmod 755 novelvm
+	cp novelvm $(bundle_name)/NovelVM
 	cp $(srcdir)/dists/ios7/Images.xcassets/AppIcon.appiconset/icon4-29@2x.png $(bundle_name)/AppIcon29x29@2x.png
 	cp $(srcdir)/dists/ios7/Images.xcassets/AppIcon.appiconset/icon4-29@2x.png $(bundle_name)/AppIcon29x29@2x~ipad.png
 	cp $(srcdir)/dists/ios7/Images.xcassets/AppIcon.appiconset/icon4-29@3x.png $(bundle_name)/AppIcon29x29@3x.png
@@ -335,14 +335,14 @@ endif
 	cp $(srcdir)/dists/ios7/Images.xcassets/AppIcon.appiconset/icon4-76@2x.png $(bundle_name)/AppIcon76x76@2x~ipad.png
 	cp $(srcdir)/dists/ios7/Images.xcassets/AppIcon.appiconset/icon4-76.png $(bundle_name)/AppIcon76x76~ipad.png
 	cp $(srcdir)/dists/ios7/Images.xcassets/AppIcon.appiconset/icon4-83.5@2x.png $(bundle_name)/AppIcon83.5x83.5@2x~ipad.png
-	cp $(srcdir)/dists/ios7/Images.xcassets/LaunchImage.launchimage/ScummVM-splash-640x1136-1.png $(bundle_name)/LaunchImage-700-568h@2x.png
-	cp $(srcdir)/dists/ios7/Images.xcassets/LaunchImage.launchimage/ScummVM-splash-2048x1536.png $(bundle_name)/LaunchImage-700-Landscape@2x~ipad.png
-	cp $(srcdir)/dists/ios7/Images.xcassets/LaunchImage.launchimage/ScummVM-splash-1024x768.png $(bundle_name)/LaunchImage-700-Landscape~ipad.png
-	cp $(srcdir)/dists/ios7/Images.xcassets/LaunchImage.launchimage/ScummVM-splash-1536x2048.png $(bundle_name)/LaunchImage-700-Portrait@2x~ipad.png
-	cp $(srcdir)/dists/ios7/Images.xcassets/LaunchImage.launchimage/ScummVM-splash-768x1024.png $(bundle_name)/LaunchImage-700-Portrait~ipad.png
-	cp $(srcdir)/dists/ios7/Images.xcassets/LaunchImage.launchimage/ScummVM-splash-1242x2208.png $(bundle_name)/LaunchImage-800-Portrait-736h@3x.png
-	cp $(srcdir)/dists/ios7/Images.xcassets/LaunchImage.launchimage/ScummVM-splash-2208x1242.png $(bundle_name)/LaunchImage-800-Landscape-736h@3x.png
-	cp $(srcdir)/dists/ios7/Images.xcassets/LaunchImage.launchimage/ScummVM-splash-750x1334.png $(bundle_name)/LaunchImage-800-667h@2x.png
+	cp $(srcdir)/dists/ios7/Images.xcassets/LaunchImage.launchimage/NovelVM-splash-640x1136-1.png $(bundle_name)/LaunchImage-700-568h@2x.png
+	cp $(srcdir)/dists/ios7/Images.xcassets/LaunchImage.launchimage/NovelVM-splash-2048x1536.png $(bundle_name)/LaunchImage-700-Landscape@2x~ipad.png
+	cp $(srcdir)/dists/ios7/Images.xcassets/LaunchImage.launchimage/NovelVM-splash-1024x768.png $(bundle_name)/LaunchImage-700-Landscape~ipad.png
+	cp $(srcdir)/dists/ios7/Images.xcassets/LaunchImage.launchimage/NovelVM-splash-1536x2048.png $(bundle_name)/LaunchImage-700-Portrait@2x~ipad.png
+	cp $(srcdir)/dists/ios7/Images.xcassets/LaunchImage.launchimage/NovelVM-splash-768x1024.png $(bundle_name)/LaunchImage-700-Portrait~ipad.png
+	cp $(srcdir)/dists/ios7/Images.xcassets/LaunchImage.launchimage/NovelVM-splash-1242x2208.png $(bundle_name)/LaunchImage-800-Portrait-736h@3x.png
+	cp $(srcdir)/dists/ios7/Images.xcassets/LaunchImage.launchimage/NovelVM-splash-2208x1242.png $(bundle_name)/LaunchImage-800-Landscape-736h@3x.png
+	cp $(srcdir)/dists/ios7/Images.xcassets/LaunchImage.launchimage/NovelVM-splash-750x1334.png $(bundle_name)/LaunchImage-800-667h@2x.png
 
 
 ifndef WITHOUT_SDL
@@ -469,15 +469,15 @@ endif
 # Special target to create a static linked binary for Mac OS X.
 # We use -force_cpusubtype_ALL to ensure the binary runs on every
 # PowerPC machine.
-scummvm-static: $(DETECT_OBJS) $(OBJS)
-	+$(LD) $(LDFLAGS) -force_cpusubtype_ALL -o scummvm-static $(DETECT_OBJS) $(OBJS) \
+novelvm-static: $(DETECT_OBJS) $(OBJS)
+	+$(LD) $(LDFLAGS) -force_cpusubtype_ALL -o novelvm-static $(DETECT_OBJS) $(OBJS) \
 		-framework CoreMIDI \
 		$(OSX_STATIC_LIBS) \
 		$(OSX_ZLIB)
 
 # Special target to create a static linked binary for the iPhone (legacy, and iOS 7+)
 iphone: $(DETECT_OBJS) $(OBJS)
-	+$(LD) $(LDFLAGS) -o scummvm $(DETECT_OBJS) $(OBJS) \
+	+$(LD) $(LDFLAGS) -o novelvm $(DETECT_OBJS) $(OBJS) \
 		$(OSX_STATIC_LIBS) \
 		-framework UIKit -framework CoreGraphics -framework OpenGLES \
 		-framework CoreFoundation -framework QuartzCore -framework Foundation \
@@ -486,52 +486,52 @@ iphone: $(DETECT_OBJS) $(OBJS)
 # Special target to create a snapshot disk image for Mac OS X
 # TODO: Replace AUTHORS by Credits.rtf
 osxsnap: bundle
-	mkdir ScummVM-snapshot
-	cp $(DIST_FILES_DOCS) ./ScummVM-snapshot/
-	mv ./ScummVM-snapshot/COPYING ./ScummVM-snapshot/License\ \(GPL\)
-	mv ./ScummVM-snapshot/COPYING.LGPL ./ScummVM-snapshot/License\ \(LGPL\)
-	mv ./ScummVM-snapshot/COPYING.FREEFONT ./ScummVM-snapshot/License\ \(FREEFONT\)
-	mv ./ScummVM-snapshot/COPYING.OFL ./ScummVM-snapshot/License\ \(OFL\)
-	mv ./ScummVM-snapshot/COPYING.BSD ./ScummVM-snapshot/License\ \(BSD\)
-	mv ./ScummVM-snapshot/COPYING.ISC ./ScummVM-snapshot/License\ \(ISC\)
-	mv ./ScummVM-snapshot/COPYING.LUA ./ScummVM-snapshot/License\ \(Lua\)
-	mv ./ScummVM-snapshot/COPYING.MIT ./ScummVM-snapshot/License\ \(MIT\)
-	mv ./ScummVM-snapshot/COPYING.TINYGL ./ScummVM-snapshot/License\ \(TinyGL\)
-	$(XCODETOOLSPATH)/SetFile -t ttro -c ttxt ./ScummVM-snapshot/*
-	mkdir ScummVM-snapshot/doc
-	cp $(srcdir)/doc/QuickStart ./ScummVM-snapshot/doc/QuickStart
-	mkdir ScummVM-snapshot/doc/cz
-	cp $(DIST_FILES_DOCS_cz) ./ScummVM-snapshot/doc/cz/
-	mkdir ScummVM-snapshot/doc/da
-	cp $(DIST_FILES_DOCS_da) ./ScummVM-snapshot/doc/da/
-	mkdir ScummVM-snapshot/doc/de
-	cp $(DIST_FILES_DOCS_de) ./ScummVM-snapshot/doc/de/
-	mkdir ScummVM-snapshot/doc/es
-	cp $(DIST_FILES_DOCS_es) ./ScummVM-snapshot/doc/es/
-	mkdir ScummVM-snapshot/doc/fr
-	cp $(DIST_FILES_DOCS_fr) ./ScummVM-snapshot/doc/fr/
-	mkdir ScummVM-snapshot/doc/it
-	cp $(DIST_FILES_DOCS_it) ./ScummVM-snapshot/doc/it/
-	mkdir ScummVM-snapshot/doc/no-nb
-	cp $(DIST_FILES_DOCS_no-nb) ./ScummVM-snapshot/doc/no-nb/
-	mkdir ScummVM-snapshot/doc/se
-	cp $(DIST_FILES_DOCS_se) ./ScummVM-snapshot/doc/se/
-	$(XCODETOOLSPATH)/SetFile -t ttro -c ttxt ./ScummVM-snapshot/doc/QuickStart
-	$(XCODETOOLSPATH)/SetFile -t ttro -c ttxt ./ScummVM-snapshot/doc/*/*
-	xattr -w "com.apple.TextEncoding" "utf-8;134217984" ./ScummVM-snapshot/doc/*/*
-	$(XCODETOOLSPATH)/CpMac -r $(bundle_name) ./ScummVM-snapshot/
-	cp $(srcdir)/dists/macosx/DS_Store ./ScummVM-snapshot/.DS_Store
-	cp $(srcdir)/dists/macosx/background.jpg ./ScummVM-snapshot/background.jpg
-	$(XCODETOOLSPATH)/SetFile -a V ./ScummVM-snapshot/.DS_Store
-	$(XCODETOOLSPATH)/SetFile -a V ./ScummVM-snapshot/background.jpg
+	mkdir NovelVM-snapshot
+	cp $(DIST_FILES_DOCS) ./NovelVM-snapshot/
+	mv ./NovelVM-snapshot/COPYING ./NovelVM-snapshot/License\ \(GPL\)
+	mv ./NovelVM-snapshot/COPYING.LGPL ./NovelVM-snapshot/License\ \(LGPL\)
+	mv ./NovelVM-snapshot/COPYING.FREEFONT ./NovelVM-snapshot/License\ \(FREEFONT\)
+	mv ./NovelVM-snapshot/COPYING.OFL ./NovelVM-snapshot/License\ \(OFL\)
+	mv ./NovelVM-snapshot/COPYING.BSD ./NovelVM-snapshot/License\ \(BSD\)
+	mv ./NovelVM-snapshot/COPYING.ISC ./NovelVM-snapshot/License\ \(ISC\)
+	mv ./NovelVM-snapshot/COPYING.LUA ./NovelVM-snapshot/License\ \(Lua\)
+	mv ./NovelVM-snapshot/COPYING.MIT ./NovelVM-snapshot/License\ \(MIT\)
+	mv ./NovelVM-snapshot/COPYING.TINYGL ./NovelVM-snapshot/License\ \(TinyGL\)
+	$(XCODETOOLSPATH)/SetFile -t ttro -c ttxt ./NovelVM-snapshot/*
+	mkdir NovelVM-snapshot/doc
+	cp $(srcdir)/doc/QuickStart ./NovelVM-snapshot/doc/QuickStart
+	mkdir NovelVM-snapshot/doc/cz
+	cp $(DIST_FILES_DOCS_cz) ./NovelVM-snapshot/doc/cz/
+	mkdir NovelVM-snapshot/doc/da
+	cp $(DIST_FILES_DOCS_da) ./NovelVM-snapshot/doc/da/
+	mkdir NovelVM-snapshot/doc/de
+	cp $(DIST_FILES_DOCS_de) ./NovelVM-snapshot/doc/de/
+	mkdir NovelVM-snapshot/doc/es
+	cp $(DIST_FILES_DOCS_es) ./NovelVM-snapshot/doc/es/
+	mkdir NovelVM-snapshot/doc/fr
+	cp $(DIST_FILES_DOCS_fr) ./NovelVM-snapshot/doc/fr/
+	mkdir NovelVM-snapshot/doc/it
+	cp $(DIST_FILES_DOCS_it) ./NovelVM-snapshot/doc/it/
+	mkdir NovelVM-snapshot/doc/no-nb
+	cp $(DIST_FILES_DOCS_no-nb) ./NovelVM-snapshot/doc/no-nb/
+	mkdir NovelVM-snapshot/doc/se
+	cp $(DIST_FILES_DOCS_se) ./NovelVM-snapshot/doc/se/
+	$(XCODETOOLSPATH)/SetFile -t ttro -c ttxt ./NovelVM-snapshot/doc/QuickStart
+	$(XCODETOOLSPATH)/SetFile -t ttro -c ttxt ./NovelVM-snapshot/doc/*/*
+	xattr -w "com.apple.TextEncoding" "utf-8;134217984" ./NovelVM-snapshot/doc/*/*
+	$(XCODETOOLSPATH)/CpMac -r $(bundle_name) ./NovelVM-snapshot/
+	cp $(srcdir)/dists/macosx/DS_Store ./NovelVM-snapshot/.DS_Store
+	cp $(srcdir)/dists/macosx/background.jpg ./NovelVM-snapshot/background.jpg
+	$(XCODETOOLSPATH)/SetFile -a V ./NovelVM-snapshot/.DS_Store
+	$(XCODETOOLSPATH)/SetFile -a V ./NovelVM-snapshot/background.jpg
 	hdiutil create -ov -format UDZO -imagekey zlib-level=9 -fs HFS+ \
-					-srcfolder ScummVM-snapshot \
-					-volname "ScummVM" \
-					ScummVM-snapshot.dmg
-	rm -rf ScummVM-snapshot
+					-srcfolder NovelVM-snapshot \
+					-volname "NovelVM" \
+					NovelVM-snapshot.dmg
+	rm -rf NovelVM-snapshot
 
 publish-appcast:
-	cp dists/macosx/scummvm_appcast.xml ../scummvm-web/public_html/appcasts/macosx/release.xml
+	cp dists/macosx/novelvm_appcast.xml ../novelvm-web/public_html/appcasts/macosx/release.xml
 
 
 #
@@ -563,11 +563,11 @@ endif
 
 # Target to create Raspberry Pi zip containig binary and specific README
 raspberrypi_dist:
-	mkdir -p $(srcdir)/scummvm-rpi
-	cp $(srcdir)/backends/platform/sdl/raspberrypi/README.RASPBERRYPI $(srcdir)/scummvm-rpi/README
-	cp $(srcdir)/scummvm $(srcdir)/scummvm-rpi
-	zip -r scummvm-rpi.zip scummvm-rpi
-	rm -f -R scummvm-rpi
+	mkdir -p $(srcdir)/novelvm-rpi
+	cp $(srcdir)/backends/platform/sdl/raspberrypi/README.RASPBERRYPI $(srcdir)/novelvm-rpi/README
+	cp $(srcdir)/novelvm $(srcdir)/novelvm-rpi
+	zip -r novelvm-rpi.zip novelvm-rpi
+	rm -f -R novelvm-rpi
 
 # Mark special targets as phony
 .PHONY: deb bundle osxsnap install uninstall

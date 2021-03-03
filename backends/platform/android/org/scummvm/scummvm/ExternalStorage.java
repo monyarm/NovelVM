@@ -1,4 +1,4 @@
-package org.scummvm.scummvm;
+package org.novelvm.novelvm;
 
 import android.content.Context;
 import android.os.Environment;
@@ -26,9 +26,9 @@ import android.os.Build;
 public class ExternalStorage {
 	public static final String SD_CARD = "sdCard";
 	public static final String EXTERNAL_SD_CARD = "externalSdCard";
-	public static final String DATA_DIRECTORY = "ScummVM data";
-	public static final String DATA_DIRECTORY_INT = "ScummVM data (Int)";
-	public static final String DATA_DIRECTORY_EXT = "ScummVM data (Ext))";
+	public static final String DATA_DIRECTORY = "NovelVM data";
+	public static final String DATA_DIRECTORY_INT = "NovelVM data (Int)";
+	public static final String DATA_DIRECTORY_EXT = "NovelVM data (Ext))";
 
 
 	// Find candidate removable sd card paths
@@ -167,7 +167,7 @@ public class ExternalStorage {
 
 			// Iterate over each line of the mounts listing.
 			while ((lineRead = bufferedReader.readLine()) != null) {
-//				Log.d(ScummVM.LOG_TAG, "\nMounts line: " + lineRead);
+//				Log.d(NovelVM.LOG_TAG, "\nMounts line: " + lineRead);
 				mountFields = lineRead.split(" ");
 
 				// columns: device, mountpoint, fs type, options... Example:
@@ -228,7 +228,7 @@ public class ExternalStorage {
 		//      alternatives such as Context#getExternalFilesDir(String), MediaStore, or Intent#ACTION_OPEN_DOCUMENT.
 		//
 		// This may be non-removable.
-		Log.d(ScummVM.LOG_TAG, "Environment.getExternalStorageDirectory():");
+		Log.d(NovelVM.LOG_TAG, "Environment.getExternalStorageDirectory():");
 		addPath(ancestor(Environment.getExternalStorageDirectory()), candidatePaths);
 
 		// TODO maybe use getExternalStorageState(File path), with and without an argument,
@@ -251,10 +251,10 @@ public class ExternalStorage {
 		}
 
 		if (candidatePaths.isEmpty()) {
-			Log.w(ScummVM.LOG_TAG, "No removable microSD card found.");
+			Log.w(NovelVM.LOG_TAG, "No removable microSD card found.");
 			return candidatePaths;
 		} else {
-			Log.i(ScummVM.LOG_TAG, "\nFound potential removable storage locations: " + candidatePaths);
+			Log.i(NovelVM.LOG_TAG, "\nFound potential removable storage locations: " + candidatePaths);
 		}
 
 		// Accept or eliminate candidate paths if we can determine whether they're removable storage.
@@ -266,14 +266,14 @@ public class ExternalStorage {
 				// handle illegalArgumentException if the path is not a valid storage device.
 				try {
 					if (Environment.isExternalStorageRemovable(dir)) {
-						Log.i(ScummVM.LOG_TAG, dir.getPath() + " is removable external storage");
+						Log.i(NovelVM.LOG_TAG, dir.getPath() + " is removable external storage");
 						addPath(dir.getAbsolutePath(), candidatePaths);
 					} else if (Environment.isExternalStorageEmulated(dir)) {
-						Log.d(ScummVM.LOG_TAG, "Removing emulated external storage dir " + dir);
+						Log.d(NovelVM.LOG_TAG, "Removing emulated external storage dir " + dir);
 						itf.remove();
 					}
 				} catch (IllegalArgumentException e) {
-					Log.d(ScummVM.LOG_TAG, "isRemovable(" + dir.getPath() + "): not a valid storage device.", e);
+					Log.d(NovelVM.LOG_TAG, "isRemovable(" + dir.getPath() + "): not a valid storage device.", e);
 				}
 			}
 		}
@@ -282,17 +282,17 @@ public class ExternalStorage {
 		// On pre-Lollipop, we only have singular externalStorage. Check whether it's removable.
 		if (Build.VERSION.SDK_INT >= 9) {
 			File externalStorage = Environment.getExternalStorageDirectory();
-			Log.d(ScummVM.LOG_TAG, String.format(Locale.ROOT, "findSDCardPath: getExternalStorageDirectory = %s", externalStorage.getPath()));
+			Log.d(NovelVM.LOG_TAG, String.format(Locale.ROOT, "findSDCardPath: getExternalStorageDirectory = %s", externalStorage.getPath()));
 			if (Environment.isExternalStorageRemovable()) {
 				// Make sure this is a candidate.
 				// TODO: Does this contains() work? Should we be canonicalizing paths before comparing?
 				if (candidatePaths.contains(externalStorage)) {
-					Log.d(ScummVM.LOG_TAG, "Using externalStorage dir " + externalStorage);
+					Log.d(NovelVM.LOG_TAG, "Using externalStorage dir " + externalStorage);
 					// return externalStorage;
 					addPath(externalStorage.getAbsolutePath(), candidatePaths);
 				}
 			} else if (Build.VERSION.SDK_INT >= 11 && Environment.isExternalStorageEmulated()) {
-				Log.d(ScummVM.LOG_TAG, "Removing emulated external storage dir " + externalStorage);
+				Log.d(NovelVM.LOG_TAG, "Removing emulated external storage dir " + externalStorage);
 				candidatePaths.remove(externalStorage);
 			}
 		}
@@ -332,10 +332,10 @@ public class ExternalStorage {
 
 				// Eliminate candidate if not a directory or not fully accessible.
 				if (fileNew.exists() && fileNew.isDirectory() && fileNew.canExecute()) {
-					Log.d(ScummVM.LOG_TAG, "  Adding candidate path " + strNew);
+					Log.d(NovelVM.LOG_TAG, "  Adding candidate path " + strNew);
 					paths.add(fileNew);
 				} else {
-					Log.d(ScummVM.LOG_TAG, String.format(Locale.ROOT, "  Invalid path %s: exists: %b isDir: %b canExec: %b canRead: %b",
+					Log.d(NovelVM.LOG_TAG, String.format(Locale.ROOT, "  Invalid path %s: exists: %b isDir: %b canExec: %b canRead: %b",
 					      strNew, fileNew.exists(), fileNew.isDirectory(), fileNew.canExecute(), fileNew.canRead()));
 				}
 			}

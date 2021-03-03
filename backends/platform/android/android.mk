@@ -9,10 +9,10 @@ PATH_BUILD = ./android_project
 PATH_BUILD_GRADLE = $(PATH_BUILD)/build.gradle
 PATH_BUILD_ASSETS = $(PATH_BUILD)/assets
 PATH_BUILD_LIB = $(PATH_BUILD)/lib/$(ABI)
-PATH_BUILD_LIBSCUMMVM = $(PATH_BUILD)/lib/$(ABI)/libscummvm.so
+PATH_BUILD_LIBNOVELVM = $(PATH_BUILD)/lib/$(ABI)/libnovelvm.so
 
-APK_MAIN = ScummVM-debug.apk
-APK_MAIN_RELEASE = ScummVM-release-unsigned.apk
+APK_MAIN = NovelVM-debug.apk
+APK_MAIN_RELEASE = NovelVM-release-unsigned.apk
 
 $(PATH_BUILD):
 	$(MKDIR) $(PATH_BUILD)
@@ -31,15 +31,15 @@ $(PATH_BUILD_ASSETS): $(DIST_FILES_THEMES) $(DIST_FILES_ENGINEDATA) $(DIST_FILES
 	$(INSTALL) -d $(PATH_BUILD_ASSETS)
 	$(INSTALL) -c -m 644 $(DIST_FILES_THEMES) $(DIST_FILES_ENGINEDATA) $(DIST_FILES_NETWORKING) $(DIST_FILES_VKEYBD) $(DIST_FILES_DOCS) $(PORT_DISTFILES) $(PATH_BUILD_ASSETS)/
 
-$(PATH_BUILD_LIBSCUMMVM): libscummvm.so | $(PATH_BUILD)
+$(PATH_BUILD_LIBNOVELVM): libnovelvm.so | $(PATH_BUILD)
 	$(INSTALL) -d  $(PATH_BUILD_LIB)
-	$(INSTALL) -c -m 644 libscummvm.so $(PATH_BUILD_LIBSCUMMVM)
+	$(INSTALL) -c -m 644 libnovelvm.so $(PATH_BUILD_LIBNOVELVM)
 
-$(APK_MAIN): $(PATH_BUILD_GRADLE) $(PATH_BUILD_ASSETS) $(PATH_BUILD_LIBSCUMMVM) | $(PATH_BUILD)
+$(APK_MAIN): $(PATH_BUILD_GRADLE) $(PATH_BUILD_ASSETS) $(PATH_BUILD_LIBNOVELVM) | $(PATH_BUILD)
 	(cd $(PATH_BUILD); ./gradlew assembleDebug)
 	$(CP) $(PATH_BUILD)/build/outputs/apk/debug/$(APK_MAIN) $@
 
-$(APK_MAIN_RELEASE): $(PATH_BUILD_GRADLE) $(PATH_BUILD_ASSETS) $(PATH_BUILD_LIBSCUMMVM) | $(PATH_BUILD)
+$(APK_MAIN_RELEASE): $(PATH_BUILD_GRADLE) $(PATH_BUILD_ASSETS) $(PATH_BUILD_LIBNOVELVM) | $(PATH_BUILD)
 	(cd $(PATH_BUILD); ./gradlew assembleRelease)
 	$(CP) $(PATH_BUILD)/build/outputs/apk/release/$(APK_MAIN_RELEASE) $@
 
@@ -55,13 +55,13 @@ androidrelease: $(APK_MAIN_RELEASE)
 androidtestmain: $(APK_MAIN)
 	(cd $(PATH_BUILD); ./gradlew installDebug)
 	# $(ADB) install -g -r $(APK_MAIN)
-	# $(ADB) shell am start -a android.intent.action.MAIN -c android.intent.category.LAUNCHER -n org.scummvm.scummvm/.ScummVMActivity
+	# $(ADB) shell am start -a android.intent.action.MAIN -c android.intent.category.LAUNCHER -n org.novelvm.novelvm/.NovelVMActivity
 
 androidtest: $(APK_MAIN)
 	# @set -e; for apk in $^; do \
 	# 	$(ADB) install -g -r $$apk; \
 	# done
-	# $(ADB) shell am start -a android.intent.action.MAIN -c android.intent.category.LAUNCHER -n org.scummvm.scummvm/.ScummVMActivity
+	# $(ADB) shell am start -a android.intent.action.MAIN -c android.intent.category.LAUNCHER -n org.novelvm.novelvm/.NovelVMActivity
 	(cd $(PATH_BUILD); ./gradlew installDebug)
 
 # used by buildbot!

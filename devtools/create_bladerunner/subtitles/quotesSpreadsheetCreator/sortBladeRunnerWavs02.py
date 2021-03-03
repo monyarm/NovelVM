@@ -144,7 +144,7 @@ SUPPORTED_PLACEHOLDER_VQA_LOCALIZED_FILES = [
 SUPPORTED_SPECIAL_POGO_FILE = 'POGO.TR'
 SUPPORTED_DIALOGUE_VERSION_SHEET = 'SBTLVERS.TRE'
 
-# v0.85: Russian code (RU_RUS) now corresponds to 'E' suffix instead of 'R' since the unofficial Russian version supported uses the English resources without renaming them, and this is how the ScummVM engine handles that version currently.
+# v0.85: Russian code (RU_RUS) now corresponds to 'E' suffix instead of 'R' since the unofficial Russian version supported uses the English resources without renaming them, and this is how the NovelVM engine handles that version currently.
 SUPPORTED_LANGUAGES_DESCRIPTION_CODE_TLIST = [('EN_ANY', 'E', 'English'), ('DE_DEU', 'G', 'German'), ('FR_FRA', 'F', 'French'), ('IT_ITA', 'I', 'Italian'), ('ES_ESP', 'S', 'Spanish'), ('RU_RUS', 'E', 'Russian')]
 DEFAULT_LANG_DESC_CODE = SUPPORTED_LANGUAGES_DESCRIPTION_CODE_TLIST[0]
 

@@ -22,7 +22,7 @@
 ;
 
 ;;;
-;;; ScummVM .PKG file for .SIS generation
+;;; NovelVM .PKG file for .SIS generation
 ;;;
 
 ;Language - standard language definitions
@@ -30,27 +30,27 @@
 
 ; List of localised vendor names - one per language. At least one must be provided (English [EN]).
 ; List must correspond to list of languages specified elsewhere in the .pkg
-%{"ScummVM"}
+%{"NovelVM"}
 ; The non-localised, globally unique vendor name (mandatory)
-:"ScummVM"
+:"NovelVM"
 
 ; UID is the app's UID
-#{"ScummVM S60v3"},(0x2006FE7E), 2,02,0
+#{"NovelVM S60v3"},(0x2006FE7E), 2,02,0
 
 ;Supports Series 60 v 3.0
 [0x101F7961], 0, 0, 0, {"Series60ProductID"}
 ;Supports Series 60 v 5.0
 [0x1028315F], 0, 0, 0, {"Series60ProductID"}
 
-;ScummVM1 dependency
-(0xA0000657), 2, 2, 0 ~ 2, 2, 0, {"ScummVM1.sisx"}
+;NovelVM1 dependency
+(0xA0000657), 2, 2, 0 ~ 2, 2, 0, {"NovelVM1.sisx"}
 
 ; Launcher, Application, AIF & Resource file
-"$(EPOCROOT)epoc32\release\gcce\urel\ScummVM5.exe" -		"!:\sys\bin\ScummVM5.exe"
-"$(EPOCROOT)epoc32\data\z\resource\apps\ScummVM5.rsc" -	"!:\resource\apps\ScummVM5.rsc"
-"$(EPOCROOT)epoc32\Data\Z\resource\apps\ScummVM5_loc.rsc"-	"!:\resource\apps\ScummVM5_loc.rsc"
-"$(EPOCROOT)epoc32\data\z\private\10003a3f\apps\ScummVM5_reg.rsc" -
-							"!:\private\10003a3f\import\apps\ScummVM5_reg.rsc"
+"$(EPOCROOT)epoc32\release\gcce\urel\NovelVM5.exe" -		"!:\sys\bin\NovelVM5.exe"
+"$(EPOCROOT)epoc32\data\z\resource\apps\NovelVM5.rsc" -	"!:\resource\apps\NovelVM5.rsc"
+"$(EPOCROOT)epoc32\Data\Z\resource\apps\NovelVM5_loc.rsc"-	"!:\resource\apps\NovelVM5_loc.rsc"
+"$(EPOCROOT)epoc32\data\z\private\10003a3f\apps\NovelVM5_reg.rsc" -
+							"!:\private\10003a3f\import\apps\NovelVM5_reg.rsc"
 
 
 ; Scummvm Documentation
@@ -61,8 +61,8 @@
 "..\HUMBLE"-"", FT, TC
 
 
-;IF NOT exists("!:\data\scummvm\")
-;"..\..\..\..\"-"!:\data\scummvm\"
+;IF NOT exists("!:\data\novelvm\")
+;"..\..\..\..\"-"!:\data\novelvm\"
 ;endif
 
 ;IF NOT exists()

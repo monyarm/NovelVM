@@ -11,7 +11,7 @@ UID3 0xA0000658 // application UID
 // app_file statement).
 RESOURCE APP_REGISTRATION_INFO
 	{
-	app_file = "scummVM_A0000658"; // filename of application binary (minus extension)
+	app_file = "novelVM_A0000658"; // filename of application binary (minus extension)
 	// Specify the location of the localisable icon/caption definition file
-	localisable_resource_file = "\\Resource\\Apps\\ScummVM_A0000658_loc";
+	localisable_resource_file = "\\Resource\\Apps\\NovelVM_A0000658_loc";
 	}

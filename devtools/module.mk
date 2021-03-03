@@ -53,7 +53,7 @@ wwwroot:
 # Rules to explicitly rebuild the credits / MD5 tables.
 # The rules for the files in the "web" resp. "docs" modules
 # assume that you are invoking "make" from within a complete
-# checkout of the ScummVM repository. Of course if that is not the
+# checkout of the NovelVM repository. Of course if that is not the
 # case, then you have to modify those paths...
 #
 
@@ -61,7 +61,7 @@ credits:
 	$(srcdir)/devtools/credits.pl --text > $(srcdir)/AUTHORS
 #	$(srcdir)/devtools/credits.pl --rtf > $(srcdir)/Credits.rtf
 	$(srcdir)/devtools/credits.pl --cpp > $(srcdir)/gui/credits.h
-	$(srcdir)/devtools/credits.pl --yaml > $(srcdir)/../scummvm-web/data/en/credits.yaml
+	$(srcdir)/devtools/credits.pl --yaml > $(srcdir)/../novelvm-web/data/en/credits.yaml
 
 md5scumm: devtools/md5table$(EXEEXT)
 	devtools/md5table$(EXEEXT) --c++ < $(srcdir)/devtools/scumm-md5.txt > $(srcdir)/engines/scumm/scumm-md5.h

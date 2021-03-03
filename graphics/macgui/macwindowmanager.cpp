@@ -456,7 +456,7 @@ MacDrawPixPtr MacWindowManager::getDrawPixel() {
 }
 
 void MacWindowManager::loadDesktop() {
-	Common::SeekableReadStream *file = getFile("scummvm_background.bmp");
+	Common::SeekableReadStream *file = getFile("novelvm_background.bmp");
 	if (!file)
 		return;
 

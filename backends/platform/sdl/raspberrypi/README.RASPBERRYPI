@@ -1,10 +1,10 @@
-ScummVM-RASPBERRYPI README
+NovelVM-RASPBERRYPI README
 ==============================================================================
 
 Notes
 ============
 
-This version of ScummVM uses SDL2 hardware accelerated graphics, be it
+This version of NovelVM uses SDL2 hardware accelerated graphics, be it
 plain SDL2 which in turn uses dispmanx/gles2 or by using gles1 via an
 SDL2-configured GLES1 context.
 
@@ -18,7 +18,7 @@ Requirements
 Controls
 ============
 
-The standard ScummVM keyboard and mouse controls are used as in any other 
+The standard NovelVM keyboard and mouse controls are used as in any other 
 GNU/Linux based system.
 Use the --joystick parameter if you want to use a joystick instead of the
 intended mouse for playing the games (not recommended).
@@ -32,7 +32,7 @@ We have at least three methods to get the binaries into the Raspbian SD:
 keeping the SD card on the Raspberry Pi, and using scp to copy the package over 
 to your home directory in the Debian filesystem.
 
-scp scummvm-rpi_<version>.zip pi@<raspberrypi_ip>:/home/pi
+scp novelvm-rpi_<version>.zip pi@<raspberrypi_ip>:/home/pi
 
 2) If your RaspberryPi has internet access, you can simply use wget to 
 download the package to your home folder:
@@ -48,26 +48,26 @@ How to mount an SD and copy files to it is beyond the scope of this README.
 Once we have the package file in our home directory using one of the three 
 aforementioned methods, we would need to uncompress it:
 
-unzip scummvm-rpi_<version>.zip
+unzip novelvm-rpi_<version>.zip
 
-As a result, a directory containing the scummvm along with this README will be
+As a result, a directory containing the novelvm along with this README will be
 created. 
-We can run it by simply changing to our scummvm directory and executing the 
-scummvm file.
+We can run it by simply changing to our novelvm directory and executing the 
+novelvm file.
 
-cd scummvm-rpi
-./scummvm
+cd novelvm-rpi
+./novelvm
 
-I recommend copying the games to /home/pi/scummvm-rpi. Adding the games via the menu
-works as in any other system ScummVM runs on.
+I recommend copying the games to /home/pi/novelvm-rpi. Adding the games via the menu
+works as in any other system NovelVM runs on.
 
 Building from sources
 ==============================
 
 Recommended method is building by cross-compiling on a GNU/Linux X86-based computer.
-You can find concise instructions for this on the ScummVM wiki:
+You can find concise instructions for this on the NovelVM wiki:
 
-https://wiki.scummvm.org/index.php/Compiling_ScummVM/RPI
+https://wiki.novelvm.org/index.php/Compiling_NovelVM/RPI
 
 The configure script is disabling scalers because we prefer dispmanx for that, which 
 makes scalers unnecessary on a CPU limited platform like this, timestamps because most people

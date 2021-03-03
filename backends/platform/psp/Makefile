@@ -1,4 +1,4 @@
-# SCUMMVM-PSP MakeFile
+# NOVELVM-PSP MakeFile
 
 
 #Use only this section to modify how the makefile behaves ------------
@@ -52,7 +52,7 @@ USE_LIBOGG = 1
 # General variables
 srcdir = ../../..
 VPATH = $(srcdir)
-TARGET = scummvm-psp
+TARGET = novelvm-psp
 # PSP SDK location variables
 PSPSDK := $(shell psp-config --pspsdk-path)
 PSPBIN = $(PSPSDK)/../bin
@@ -85,8 +85,8 @@ CXX_UPDATE_DEP_FLAG = -Wp,-MMD,"$(*D)/$(DEPDIR)/$(*F).d",-MQ,"$@",-MP
 # Variables for dynamic plugin building
 PLUGIN_PREFIX =
 PLUGIN_SUFFIX = .plg
-PLUGIN_EXTRA_DEPS = $(srcdir)/backends/plugins/elf/plugin.syms scummvm-psp.elf
-PLUGIN_LDFLAGS = -nostartfiles -Wl,-q,--just-symbols=scummvm-psp.org.elf,-T$(srcdir)/backends/plugins/psp/plugin.ld,--retain-symbols-file,$(srcdir)/backends/plugins/elf/plugin.syms -lstdc++ -lc
+PLUGIN_EXTRA_DEPS = $(srcdir)/backends/plugins/elf/plugin.syms novelvm-psp.elf
+PLUGIN_LDFLAGS = -nostartfiles -Wl,-q,--just-symbols=novelvm-psp.org.elf,-T$(srcdir)/backends/plugins/psp/plugin.ld,--retain-symbols-file,$(srcdir)/backends/plugins/elf/plugin.syms -lstdc++ -lc
 
 # PSP-specific variables
 STRIP   = psp-strip
@@ -159,7 +159,7 @@ include $(srcdir)/Makefile.common
 
 # Variables for PSP-specific rules
 PSP_EBOOT_SFO = param.sfo
-PSP_EBOOT_TITLE = ScummVM-PSP
+PSP_EBOOT_TITLE = NovelVM-PSP
 PSP_EBOOT = EBOOT.PBP
 PSP_EBOOT_ICON = icon0.png
 PSP_EBOOT_ICON1 = NULL

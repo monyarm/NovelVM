@@ -4,13 +4,13 @@ det du leter etter her, og forstår litt engelsk, kan du prøve å lete videre
 i den engelske README-filen.
 
 For mer informasjon, kompatibilitetslister, donasjonsdetaljer, nyeste versjon
-av ScummVM, fremdriftsoversikt med mer, besøk ScummVMs hjemmeside på:
-https://www.scummvm.org/
+av NovelVM, fremdriftsoversikt med mer, besøk NovelVMs hjemmeside på:
+https://www.novelvm.org/
 
 Innholdsfortegnelse:
 -------------------
 1.0) Introduksjon
- * 1.1 Om ScummVM
+ * 1.1 Om NovelVM
  * 1.2 Hurtigstart
 2.0) Kontaktinfo
  * 2.1 Rapportering av Bugs
@@ -18,30 +18,30 @@ Innholdsfortegnelse:
 1.0) Introduksjon:
 ---- -------------
 
-1.1) Om ScummVM:
+1.1) Om NovelVM:
 ---- --------------
-ScummVM er et program som lar deg kjøre visse klassiske grafiske
+NovelVM er et program som lar deg kjøre visse klassiske grafiske
 pek-og-klikk eventyrspill hvis du har datafilene til disse fra før.
-Den interessante detaljen er at ScummVM bare erstatter programfilene
+Den interessante detaljen er at NovelVM bare erstatter programfilene
 som kom med spillet, slik at du kan spille spillene på systemer de
 aldri ble designet for i grunnlaget.
 
-Opprinnelig var ScummVM bare designet for å kjøre LucasArts sine SCUMM-
+Opprinnelig var NovelVM bare designet for å kjøre LucasArts sine SCUMM-
 spill, slik som Maniac Mansion, Monkey Island, Day of The Tentacle eller
 Sam and Max. SCUMM står for «Script Creation Utility for Maniac Mansion»,
 (Skriptproduksjonsverktøy for Maniac Mansion), som var det første spillet
 LucasArts designet for dette systemet. I nyere tid har det da også døpt
-ScummVM (der 'VM' betyr Virtuell Maskin).
+NovelVM (der 'VM' betyr Virtuell Maskin).
 
 Over tid har det blitt lagt til støtte for flere ikke-SCUMM-spill, så
-ScummVM støtter nå også mange av Sierras AGI og SCI-spill (slik som
+NovelVM støtter nå også mange av Sierras AGI og SCI-spill (slik som
 King's Quest 1-6, Space Quest 1-5, ...), Discworld 1 og 2, Simon the
 Sorcerer 1 og 2, Beneath A Steel Sky, Lure of the Temptress, Broken
 Sword I og II, Flight of the Amazon Queen, Gobliiins 1-3, The Legend of
 Kyrandia-serien, mange av Humongous Entertainment sine SCUMM-spill for
 barn (inkludert Freddi Fish-, og Putt Putt-spillene) mfl. Du finner
 en utfyllende liste med detaljer rundt hvilke eventyrspill som støttes,
-og hvor godt de støttes på kompatibilitets-siden. ScummVM forbedres
+og hvor godt de støttes på kompatibilitets-siden. NovelVM forbedres
 stadig, så det kan lønne seg å kikke innom med jevne mellomrom.
 
 Blant systemene som spillene nå kan spilles på, finner vi vanlige
@@ -49,47 +49,47 @@ stasjonære datamaskiner (med Windows, Linux, Mac OS X, etc), spillkonsoller
 (Dreamcast, Nintendo DS & Wii, PSP, ...), smarttelefoner (Android,
 iPhone, Symbian ...) mfl.
 
-På nåværende tidspunkt er ScummVM fortsatt under kraftig utvikling. Så
+På nåværende tidspunkt er NovelVM fortsatt under kraftig utvikling. Så
 være obs på at selv om vi forsøker å sikre oss at de fleste spillene kan
 fullføres uten større feil og mangler, kan det forekomme at spill krasjer,
 og vi gir ingen garanti for at ting fungerer. Når det er sagt, så har
 enkelte av spillene vært støttet i lang tid, og bør fungere finfint med
-enhver ny «stable»-versjon av ScummVM. Du kan finne en pekepinn på hvor
+enhver ny «stable»-versjon av NovelVM. Du kan finne en pekepinn på hvor
 godt hvert enkelt spill fungerer ved å se på kompatibilitetssiden vår.
-Faktisk, hvis man ser litt rundtom på nettet, vil man oppdage at ScummVM
+Faktisk, hvis man ser litt rundtom på nettet, vil man oppdage at NovelVM
 brukes kommersielt for å relansere noen av de støttede spillene på moderne
 platformer. Dette viser at flere firma er fornøyd med kvaliteten på
 programmet, og hvor godt det kjører enkelte av spillene.
 
-Hvis du liker ScummVM, doner gjerne ved å bruke PayPal-knappen på hjemme-
+Hvis du liker NovelVM, doner gjerne ved å bruke PayPal-knappen på hjemme-
 siden vår. Dette hjelper oss til å kunne kjøpe verktøyene vi trenger for
-å utvikle ScummVM enklere og mer effektivt. Hvis du ikke kan donere, hjelp
+å utvikle NovelVM enklere og mer effektivt. Hvis du ikke kan donere, hjelp
 gjerne ved å sende inn en patch.
 
 1.2) Hurtigstart:
 ---- ------------
 VIKTIG: Denne korte gaiden antar at du bruker ScumMVM på bokmål. Som standard
-bruker ScummVM samme språk som operativsystemet ditt. Hvis du foretrekker å
-bruker ScummVM på engelsk, vil du muligens også foretrekke å følge gaiden
+bruker NovelVM samme språk som operativsystemet ditt. Hvis du foretrekker å
+bruker NovelVM på engelsk, vil du muligens også foretrekke å følge gaiden
 i den engelske README-filen.
 
-For de rastløse; en enkel femstegs-gaid til å få ScummVM opp og kjøre:
+For de rastløse; en enkel femstegs-gaid til å få NovelVM opp og kjøre:
 
-1. Last ned ScummVM fra <https://www.scummvm.org/downloads/> og installer.
+1. Last ned NovelVM fra <https://www.novelvm.org/downloads/> og installer.
 
 2. Lag en mappe på harddisken din, og kopier spill-datafilene fra original-
 mediene til denne mappen. Gjenta dette for alle spillene du ønsker å spille.
 (Det er en fordel om du bruker en adskilt mappe for hvert spill)
 
-3. Start ScummVM.
+3. Start NovelVM.
 
-Dersom ScummVM starter på engelsk istedenfor på bokmål, gjør følgende
+Dersom NovelVM starter på engelsk istedenfor på bokmål, gjør følgende
 for å endre språk:
 - Klikk på «Options».
 - Klikk på den høyre pilen i fanelinjen og velg fanen «Misc».
 - Velg «Norsk (bokmål)» i «GUI Language» boksen, og klikk OK.
 - Godkjenn meldingen som dukker opp, og klikk på «Quit» for å avslutte
-ScummVM, start så programmet på nytt.
+NovelVM, start så programmet på nytt.
 
 Velg «Legg til spill», velg mappen som inneholder spillfilene (ikke
 prøv å velge datafilene direkte!) og klikk «Velg».
@@ -100,7 +100,7 @@ la standardinstillingene være). Godkjenn denne dialogen.
 
 5. Velg spillet du vil spille i lista, og klikk 'Start'.
 
-ScummVM husker spillene du har lagt til. Så om du lukker ScummVM, vil
+NovelVM husker spillene du har lagt til. Så om du lukker NovelVM, vil
 listen over spill du har lagt til tidligere fortsatt være der. Derfor
 kan du ved senere anledninger gå direkte til steg 5, med mindre du vil
 legge til flere spill.
@@ -108,15 +108,15 @@ legge til flere spill.
 Tips: Om du vil legge til flere spill samtidig, prøv å holde shift-
 tasten nede mens du klikker på «Legg til spill» da vil teksten der
 forandre seg til «Legg til flere» og om du klikker på den, får du også
-samme spørsmål om å velge en mappe, men nå vil ScummVM lete gjennom
+samme spørsmål om å velge en mappe, men nå vil NovelVM lete gjennom
 alle undermapper etter støttede spill.
 
 2.0) Kontaktinfo:
 ---- ------------
-Den enkleste måten å komme i kontakt med ScummVM-teamet på er ved å
+Den enkleste måten å komme i kontakt med NovelVM-teamet på er ved å
 sende inn en bug-rapport, eller ved å bruke forumet du finner på
-https://forums.scummvm.org . Du kan også bli med og delta på epost-
-listen scummvm-devel , eller chatte med oss på IRC (#scummvm på
+https://forums.novelvm.org . Du kan også bli med og delta på epost-
+listen novelvm-devel , eller chatte med oss på IRC (#novelvm på
 irc.freenode.net) Vær så snill å ikke spør oss om å legge til støtte
 for et ustøttet spill -- les FAQen på hjemmesiden vår først. Legg merke
 til at det offisielle språket på forum, epostliste og chat er engelsk,
@@ -132,14 +132,14 @@ lenger ned i dette dokumentet, og kompatibilitetslisten på hjemmesiden
 vår angående spillet det gjelder, for å forsikre deg om at problemet ikke
 allerede har blitt rapportert:
 
-  https://www.scummvm.org/compatibility/
+  https://www.novelvm.org/compatibility/
 
 Vennligst ikke rapporter bugs om spill som ikke står listet som
 «completable» i «Supported Games»-seksjonen, eller på kompatibilitetslisten.
 Vi VET at de spillene har bugs.
 
 Vennligst inkluder følgende informasjon:
-    - ScummVM-versjon (VÆR SÅ SNILL; test den ferskeste git/Daily-builden)
+    - NovelVM-versjon (VÆR SÅ SNILL; test den ferskeste git/Daily-builden)
     - Bug-detaljer, inkludert instruksjoner om hvordan man reproduserer buggen.
     - Spillets språk (Engelsk, Tysk, ...)
     - Spillversjon (med tale, diskettversjon, ...)

@@ -42,8 +42,8 @@ int main(int argc, char *argv[]) {
 	char STDOUT_FILE[256], STDERR_FILE[256]; // shhh, don't tell anybody :)
 	strcpy(STDOUT_FILE, Symbian::GetExecutablePath());
 	strcpy(STDERR_FILE, Symbian::GetExecutablePath());
-	strcat(STDOUT_FILE, "scummvm.stdout.txt");
-	strcat(STDERR_FILE, "scummvm.stderr.txt");
+	strcat(STDOUT_FILE, "novelvm.stdout.txt");
+	strcat(STDERR_FILE, "novelvm.stderr.txt");
 
 	/* Flush the output in case anything is queued */
 	fclose(stdout);
@@ -86,7 +86,7 @@ int main(int argc, char *argv[]) {
 #endif
 
 	// Invoke the actual ScummVM main entry point:
-	int res = scummvm_main(argc, argv);
+	int res = novelvm_main(argc, argv);
 
 	// Free OSystem
 	g_system->destroy();

@@ -314,7 +314,7 @@ void SdlGraphicsManager::saveScreenshot() {
 #endif
 
 	for (int n = 0;; n++) {
-		filename = Common::String::format("scummvm%s%s-%05d.%s", currentTarget.empty() ? "" : "-",
+		filename = Common::String::format("novelvm%s%s-%05d.%s", currentTarget.empty() ? "" : "-",
 		                                  currentTarget.c_str(), n, extension);
 
 		Common::FSNode file = Common::FSNode(screenshotsPath + filename);

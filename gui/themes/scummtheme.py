@@ -94,7 +94,7 @@ def buildDefTheme(themeName):
 
 def printUsage():
 	print ("===============================")
-	print ("ScummVM Theme Generation Script")
+	print ("NovelVM Theme Generation Script")
 	print ("===============================")
 	print ("Usage:")
 	print ("scummtheme.py makeall")

@@ -162,7 +162,7 @@ void OSystem_iOS7::initBackend() {
 #ifdef IPHONE_SANDBOXED
 	_savefileManager = new SandboxedSaveFileManager(_chrootBasePath, "/Savegames");
 #else
-	_savefileManager = new DefaultSaveFileManager(SCUMMVM_SAVE_PATH);
+	_savefileManager = new DefaultSaveFileManager(NOVELVM_SAVE_PATH);
 #endif
 
 	_timerManager = new DefaultTimerManager();
@@ -365,7 +365,7 @@ Common::String OSystem_iOS7::getDefaultConfigFileName() {
 	Common::String path = "/Preferences";
 	return path;
 #else
-	return SCUMMVM_PREFS_PATH;
+	return NOVELVM_PREFS_PATH;
 #endif
 }
 
@@ -402,7 +402,7 @@ void iOS7_main(int argc, char **argv) {
 
 	//OSystem_iOS7::migrateApp();
 
-	FILE *newfp = fopen("/var/mobile/.scummvm.log", "a");
+	FILE *newfp = fopen("/var/mobile/.novelvm.log", "a");
 	if (newfp != NULL) {
 		fclose(stdout);
 		fclose(stderr);
@@ -418,8 +418,8 @@ void iOS7_main(int argc, char **argv) {
 #ifdef IPHONE_SANDBOXED
 	chdir(iOS7_getDocumentsDir());
 #else
-	system("mkdir " SCUMMVM_ROOT_PATH);
-	system("mkdir " SCUMMVM_SAVE_PATH);
+	system("mkdir " NOVELVM_ROOT_PATH);
+	system("mkdir " NOVELVM_SAVE_PATH);
 
 	chdir("/var/mobile/");
 #endif
@@ -427,8 +427,8 @@ void iOS7_main(int argc, char **argv) {
 	g_system = OSystem_iOS7::sharedInstance();
 	assert(g_system);
 
-	// Invoke the actual ScummVM main entry point:
-	scummvm_main(argc, (const char *const *) argv);
+	// Invoke the actual NovelVM main entry point:
+	novelvm_main(argc, (const char *const *) argv);
 	g_system->quit();       // TODO: Consider removing / replacing this!
 
 	if (newfp != NULL) {

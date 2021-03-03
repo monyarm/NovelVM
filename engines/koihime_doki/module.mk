@@ -2,7 +2,6 @@ MODULE := engines/koihime_doki
 
 MODULE_OBJS := \
 	koihime_doki.o \
-	detection.o \
 	metaengine.o \
 	formats/archive/exwlcs.o
 
@@ -16,3 +15,6 @@ endif
 
 # Include common rules
 include $(srcdir)/rules.mk
+
+
+DETECT_OBJS += $(MODULE)/detection.o

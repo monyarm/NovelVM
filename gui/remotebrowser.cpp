@@ -126,7 +126,7 @@ void RemoteBrowserDialog::handleTickle() {
 
 	if (_showError) {
 		_showError = false;
-		MessageDialog alert(_("ScummVM could not access the directory!"));
+		MessageDialog alert(_("NovelVM could not access the directory!"));
 		alert.runModal();
 	}
 

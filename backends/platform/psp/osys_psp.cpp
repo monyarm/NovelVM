@@ -55,7 +55,7 @@ OSystem_PSP::~OSystem_PSP() {}
 #define PSP_SCREEN_WIDTH 480
 #define PSP_SCREEN_HEIGHT 272
 
-#define PSP_DEFAULT_SAVE_PATH "ms0:/scummvm_savegames"
+#define PSP_DEFAULT_SAVE_PATH "ms0:/novelvm_savegames"
 
 void OSystem_PSP::initBackend() {
 	DEBUG_ENTER_FUNC();
@@ -442,5 +442,5 @@ void OSystem_PSP::getTimeAndDate(TimeDate &td) const {
 }
 
 Common::String OSystem_PSP::getDefaultConfigFileName() {
-	return "ms0:/scummvm.ini";
+	return "ms0:/novelvm.ini";
 }

@@ -40,7 +40,7 @@ In list view, click on a slot to save the game to that slot. Enter a description
 Autosave
 ------------
 
-ScummVM automatically saves your game every 5 minutes. The :ref:`autosave period <autosave>` can be changed in the Misc settings tab, or in the :doc:`configuration file <../advanced_topics/configuration_file>`.
+NovelVM automatically saves your game every 5 minutes. The :ref:`autosave period <autosave>` can be changed in the Misc settings tab, or in the :doc:`configuration file <../advanced_topics/configuration_file>`.
 
 Location of saved game files
 ===============================
@@ -57,21 +57,21 @@ Default saved game paths are shown below.
 		Windows NT4 
 		^^^^^^^^^^^^
 
-		``C:\WINDOWS\Profiles\username\Application Data\ScummVM\Saved games\`` 
+		``C:\WINDOWS\Profiles\username\Application Data\NovelVM\Saved games\`` 
 		
 		---
 		:column: col-lg-12 mb-2
 
 		Windows 2000/XP
 		^^^^^^^^^^^^^^^^^
-		``\Documents and Settings\username\Application Data\ScummVM\Saved games\``
+		``\Documents and Settings\username\Application Data\NovelVM\Saved games\``
 
 		---
 		:column: col-lg-12 mb-2
 
 		Window Vista/7/8/10
 		^^^^^^^^^^^^^^^^^^^^^^
-		``%APPDATA%\ScummVM\Saved games``
+		``%APPDATA%\NovelVM\Saved games``
 
 
 .. tabbed:: macOS
@@ -79,7 +79,7 @@ Default saved game paths are shown below.
 	.. panels::
 		:column: col-lg-12 mb-2
 
-		``~/Documents/ScummVM Savegames/``
+		``~/Documents/NovelVM Savegames/``
 	
 
 .. tabbed:: Linux/Unix
@@ -88,11 +88,11 @@ Default saved game paths are shown below.
 		:column: col-lg-12 mb-2
 
 		
-		ScummVM follows the XDG Base Directory Specification, so by default the saved games can be found at ``~/.local/share/scummvm/saves/``, but this location might vary depending on the value of the ``XDG_DATA_HOME`` environment variable.
+		NovelVM follows the XDG Base Directory Specification, so by default the saved games can be found at ``~/.local/share/novelvm/saves/``, but this location might vary depending on the value of the ``XDG_DATA_HOME`` environment variable.
 		
 		``.local`` is a hidden directory. To view it use ``ls -a`` on the command line.
 
-		If ScummVM was installed using Snap, the saves can be found at ``~/snap/scummvm/current/.local/share/scummvm/saves/``
+		If NovelVM was installed using Snap, the saves can be found at ``~/snap/novelvm/current/.local/share/novelvm/saves/``
 
 	
 

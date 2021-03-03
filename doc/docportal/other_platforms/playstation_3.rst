@@ -2,7 +2,7 @@
 PlayStation 3
 =============================
 
-This page contains all the information you need to get ScummVM up and running on a PlayStation 3.
+This page contains all the information you need to get NovelVM up and running on a PlayStation 3.
 
 What you'll need
 ===================
@@ -11,14 +11,14 @@ What you'll need
 - A USB drive
 - A computer
 
-Installing ScummVM
+Installing NovelVM
 =====================================
 
-Download the Playstation 3 package from the `ScummVM Downloads page <https://www.scummvm.org/downloads/>`_. Copy the ``.pkg`` file to a USB drive. 
+Download the Playstation 3 package from the `NovelVM Downloads page <https://www.novelvm.org/downloads/>`_. Copy the ``.pkg`` file to a USB drive. 
 
-Plug the USB drive into the PS3.  Go to the XMB, then go to **Games > Install Package** to install the ScummVM package.
+Plug the USB drive into the PS3.  Go to the XMB, then go to **Games > Install Package** to install the NovelVM package.
 
-To launch ScummVM, go to the XMB, then go to **Games > PlayStation 3 > ScummVM**. 
+To launch NovelVM, go to the XMB, then go to **Games > PlayStation 3 > NovelVM**. 
 
 
 Transferring game files
@@ -26,14 +26,14 @@ Transferring game files
 
 Games can be launched from either a USB drive, or from the internal hard drive. The hard drive has better performance.  
 
-To copy game files to the hard drive, use the USB drive, or use ScummVM's :doc:`cloud functionality <../use_scummvm/connect_cloud>`. 
+To copy game files to the hard drive, use the USB drive, or use NovelVM's :doc:`cloud functionality <../use_novelvm/connect_cloud>`. 
 
-See :doc:`../use_scummvm/game_files` for more information about game file requirements.
+See :doc:`../use_novelvm/game_files` for more information about game file requirements.
 
 Controls
 =================
 
-Controls can also be manually configured in the :doc:`Keymaps tab <../settings/keymaps>`. See the :doc:`../use_scummvm/keyboard_shortcuts` page for common keyboard shortcuts. 
+Controls can also be manually configured in the :doc:`Keymaps tab <../settings/keymaps>`. See the :doc:`../use_novelvm/keyboard_shortcuts` page for common keyboard shortcuts. 
 
 
 Default control map
@@ -83,7 +83,7 @@ Saved games
 Configuration file 
 **************************
 
-``/hdd0/game/SCUM12000/USRDIR/scummvm.ini``
+``/hdd0/game/SCUM12000/USRDIR/novelvm.ini``
 
 Settings
 ==========

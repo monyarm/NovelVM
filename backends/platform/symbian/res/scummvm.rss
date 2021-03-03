@@ -2,7 +2,7 @@
  * Copyright (C) 2003-2005 Andreas 'Sprawl' Karlsson - Original EPOC port, ESDL
  * Copyright (C) 2003-2005 Lars 'AnotherGuest' Persson - Original EPOC port, Audio System
  * Copyright (C) 2005 Jurgen 'SumthinWicked' Braam - EPOC/CVS maintainer
- * Copyright (C) 2005-2017 The ScummVM Team
+ * Copyright (C) 2005-2017 The NovelVM Team
  *
  * ScummVM is the legal property of its developers, whose names
  * are too numerous to list here. Please refer to the COPYRIGHT
@@ -24,7 +24,7 @@
  *
  */
 
-// ScummVM.RSS
+// NovelVM.RSS
 
 NAME SCUM
 
@@ -50,7 +50,7 @@ RESOURCE MENU_BAR r_scum_menubar                                         // *** 
 {
       titles =
     {
-		MENU_TITLE { menu_pane = r_scum_menu; txt = "ScummVM"; }
+		MENU_TITLE { menu_pane = r_scum_menu; txt = "NovelVM"; }
 	};
 }
 

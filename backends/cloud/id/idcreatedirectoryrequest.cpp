@@ -49,14 +49,14 @@ void IdCreateDirectoryRequest::start() {
 	_workingRequest = nullptr;
 	_ignoreCallback = false;
 
-	//the only exception when we create parent folder - is when it's ScummVM/ base folder
+	//the only exception when we create parent folder - is when it's NovelVM/ base folder
 	Common::String prefix = _requestedParentPath;
 	if (prefix.size() > 7)
 		prefix.erase(7);
-	if (prefix.equalsIgnoreCase("ScummVM")) {
+	if (prefix.equalsIgnoreCase("NovelVM")) {
 		Storage::BoolCallback callback = new Common::Callback<IdCreateDirectoryRequest, Storage::BoolResponse>(this, &IdCreateDirectoryRequest::createdBaseDirectoryCallback);
 		Networking::ErrorCallback failureCallback = new Common::Callback<IdCreateDirectoryRequest, Networking::ErrorResponse>(this, &IdCreateDirectoryRequest::createdBaseDirectoryErrorCallback);
-		_workingRequest = _storage->createDirectory("ScummVM", callback, failureCallback);
+		_workingRequest = _storage->createDirectory("NovelVM", callback, failureCallback);
 		return;
 	}
 

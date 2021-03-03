@@ -1,4 +1,4 @@
-ScummVM-N64 README
+NovelVM-N64 README
 ==============================================================================
 
 Requirements
@@ -20,7 +20,7 @@ hkz-libn64 is a library to control Nintendo64 hardware (es, video, audio, input,
 Build cart images from binaries
 ===============================
 
-ScummVM N64 cart images are composed by two parts: a binary with executable code
+NovelVM N64 cart images are composed by two parts: a binary with executable code
 and a romfs image, containing game datafiles and other useful data.
 Prebuilt binaries needs to be joined with a romfs image containing datafiles
 from _YOUR_ games.
@@ -35,16 +35,16 @@ cp -a ../games/mygamedata ./GAMEDATA
 genromfs -f ./ROMFS.img -d ./GAMEDATA -V romname
 
 This creates a ROMFS image with 'mygamedata' directory inside.
-Now you need to join this with the appropriate scummvm engine binary:
+Now you need to join this with the appropriate novelvm engine binary:
 
 [EXAMPLE]
-cat scummvm-bass.bin ROMFS.img > scummvm-bass.n64
+cat novelvm-bass.bin ROMFS.img > novelvm-bass.n64
 
 Now the last step, you need to fix the checksum of the image, there are various
 tools for this, i normally use ucon64.
 
 [EXAMPLE]
-ucon64 --n64 --chk scummvm-bass.n64
+ucon64 --n64 --chk novelvm-bass.n64
 
 This gives you a n64 cart image you can use with your flashcart/copier to play
 the game.
@@ -55,23 +55,23 @@ the DoctorV64 for example requires the image to be byte-swapped and padded to
 the nearest 2mb multiple size. You can use ucon64 tool to perform these changes.
 
 [EXAMPLE]
-ucon64 --n64 --v64 --padn=16777216 scummvm-bass.n64
+ucon64 --n64 --v64 --padn=16777216 novelvm-bass.n64
 
 You are then ready to upload the image to the cart and play!
 
 Saving & loading
 ================
 
-ScummVM-N64 port supports two kind of saves: FlashRAM saves and controller pak saves.
+NovelVM-N64 port supports two kind of saves: FlashRAM saves and controller pak saves.
 If both are detected, FlashRAM is used.
 
-WARNING!!! ScummVM-N64 currently _ERASES_ the data contained in your FlashRAM and
+WARNING!!! NovelVM-N64 currently _ERASES_ the data contained in your FlashRAM and
 controller PAK without warning!!! Plug those in only if you want to use their space
-for ScummVM saves.
+for NovelVM saves.
 
 * Controller PAK:
 The PAK is a device plugged in the expansion port located underneath the gamepad, it
-contains at most 32 kilobytes of data, which makes it very limited for ScummVM use (a
+contains at most 32 kilobytes of data, which makes it very limited for NovelVM use (a
 lot of games save size grows over 32kb when the game approaches the end). It contains
 battery backed up ram, so savegames might disappear if the battery runs off.
 

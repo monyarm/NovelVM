@@ -688,14 +688,14 @@ void GuiManager::initTextToSpeech() {
 		currentLanguage = "en";
 	ttsMan->setLanguage(currentLanguage);
 #endif
-	int volume = (ConfMan.getInt("speech_volume", "scummvm") * 100) / 256;
-	if (ConfMan.hasKey("mute", "scummvm") && ConfMan.getBool("mute", "scummvm"))
+	int volume = (ConfMan.getInt("speech_volume", "novelvm") * 100) / 256;
+	if (ConfMan.hasKey("mute", "novelvm") && ConfMan.getBool("mute", "novelvm"))
 		volume = 0;
 	ttsMan->setVolume(volume);
 
 	unsigned voice;
-	if(ConfMan.hasKey("tts_voice")) {
-		voice = ConfMan.getInt("tts_voice", "scummvm");
+	if (ConfMan.hasKey("tts_voice")) {
+		voice = ConfMan.getInt("tts_voice", "novelvm");
 		if (voice >= ttsMan->getVoicesArray().size())
 			voice = ttsMan->getDefaultVoice();
 	} else

@@ -1,155 +1,155 @@
-# [ScummVM README](https://www.scummvm.org/) · [![Build Status](https://travis-ci.org/scummvm/scummvm.svg?branch=master)](https://travis-ci.org/scummvm/scummvm) ![CI](https://github.com/scummvm/scummvm/workflows/CI/badge.svg) [![Translation status](https://translations.scummvm.org/widgets/scummvm/-/scummvm/svg-badge.svg)](https://translations.scummvm.org/engage/scummvm/?utm_source=widget) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md#pull-requests) [![Codacy Badge](https://app.codacy.com/project/badge/Grade/e06e5b18f8464fef859b5a7f78d10357)](https://www.codacy.com/gh/scummvm/scummvm/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=scummvm/scummvm&amp;utm_campaign=Badge_Grade)
+# [NovelVM README](https://www.novelvm.org/) · [![Build Status](https://travis-ci.org/novelvm/novelvm.svg?branch=master)](https://travis-ci.org/novelvm/novelvm) ![CI](https://github.com/novelvm/novelvm/workflows/CI/badge.svg) [![Translation status](https://translations.novelvm.org/widgets/novelvm/-/novelvm/svg-badge.svg)](https://translations.novelvm.org/engage/novelvm/?utm_source=widget) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md#pull-requests) [![Codacy Badge](https://app.codacy.com/project/badge/Grade/e06e5b18f8464fef859b5a7f78d10357)](https://www.codacy.com/gh/novelvm/novelvm/dashboard?utm_source=github.com&utm_medium=referral&utm_content=novelvm/novelvm&utm_campaign=Badge_Grade)
 
 For more information, compatibility lists, details on donating, the
-latest release, progress reports and more, please visit the ScummVM home
-page at: <https://www.scummvm.org/>
+latest release, progress reports and more, please visit the NovelVM home
+page at: <https://www.novelvm.org/>
 
 ## Table of Contents:
 
-  - [1.0) Introduction](#10-introduction)
-      - [1.1) About ScummVM](#11-about-scummvm)
-      - [1.2) Quick start](#12-quick-start)
-      - [1.3) F.A.Q.](#13-faq)
-  - [2.0) Contact](#20-contact)
-      - [2.1) Reporting Bugs](#21-reporting-bugs)
-  - [3.0) Supported Games](#30-supported-games)
-      - [3.1) Copy Protection](#31-copy-protection)
-      - [3.2) Datafiles](#32-datafiles)
-      - [3.3) Multi-CD games notes](#33-multi-cd-games-notes)
-      - [3.4) Known Problems](#34-known-problems)
-      - [3.5) Extra Data Files](#35-extra-data-files)
-      - [3.6) Blade Runner notes](#36-blade-runner-notes)
-      - [3.7) Broken Sword games notes](#37-broken-sword-games-notes)
-          - [3.7.1) Broken Sword](#371-broken-sword)
-          - [3.7.2) Broken Sword II](#372-broken-sword-ii)
-          - [3.7.3) Broken Sword games
+-   [1.0) Introduction](#10-introduction)
+    -   [1.1) About NovelVM](#11-about-novelvm)
+    -   [1.2) Quick start](#12-quick-start)
+    -   [1.3) F.A.Q.](#13-faq)
+-   [2.0) Contact](#20-contact)
+    -   [2.1) Reporting Bugs](#21-reporting-bugs)
+-   [3.0) Supported Games](#30-supported-games)
+    -   [3.1) Copy Protection](#31-copy-protection)
+    -   [3.2) Datafiles](#32-datafiles)
+    -   [3.3) Multi-CD games notes](#33-multi-cd-games-notes)
+    -   [3.4) Known Problems](#34-known-problems)
+    -   [3.5) Extra Data Files](#35-extra-data-files)
+    -   [3.6) Blade Runner notes](#36-blade-runner-notes)
+    -   [3.7) Broken Sword games notes](#37-broken-sword-games-notes)
+        -   [3.7.1) Broken Sword](#371-broken-sword)
+        -   [3.7.2) Broken Sword II](#372-broken-sword-ii)
+        -   [3.7.3) Broken Sword games
             cutscenes](#373-broken-sword-games-cutscenes)
-          - [3.7.4) Broken Sword games cutscenes, in
+        -   [3.7.4) Broken Sword games cutscenes, in
             retrospect](#374-broken-sword-games-cutscenes-in-retrospect)
-      - [3.8) Day of the Tentacle notes](#38-day-of-the-tentacle-notes)
-      - [3.9) Dragon History notes](#39-dragon-history-notes)
-      - [3.10) Escape from Monkey Island notes](#310-escape-from-monkey-island-notes)
-          - [3.10.1) Escape from Monkey Island (PS2) notes](#3101-escape-from-monkey-island-ps2-notes)
-          - [3.10.2) Default keyboard settings](#3102-default-keyboard-settings)
-          - [3.10.3) Joystick/gamepad support](#3103-joystick-gamepad-support)
-      - [3.11) Flight of the Amazon Queen
+    -   [3.8) Day of the Tentacle notes](#38-day-of-the-tentacle-notes)
+    -   [3.9) Dragon History notes](#39-dragon-history-notes)
+    -   [3.10) Escape from Monkey Island notes](#310-escape-from-monkey-island-notes)
+        -   [3.10.1) Escape from Monkey Island (PS2) notes](#3101-escape-from-monkey-island-ps2-notes)
+        -   [3.10.2) Default keyboard settings](#3102-default-keyboard-settings)
+        -   [3.10.3) Joystick/gamepad support](#3103-joystick-gamepad-support)
+    -   [3.11) Flight of the Amazon Queen
         notes](#311-flight-of-the-amazon-queen-notes)
-      - [3.12) Gobliiins notes](#312-gobliiins-notes)
-      - [3.13) Grim Fandango notes](#313-grim-fandango-notes)
-      - [3.14) Inherit the Earth: Quest for the Orb
+    -   [3.12) Gobliiins notes](#312-gobliiins-notes)
+    -   [3.13) Grim Fandango notes](#313-grim-fandango-notes)
+    -   [3.14) Inherit the Earth: Quest for the Orb
         notes](#314-inherit-the-earth-quest-for-the-orb-notes)
-      - [3.15) The Longest Journey notes](#315-the-longest-journey-notes)
-          - [3.15.1) Input controls](#3151-input-controls)
-          - [3.15.2) Modding The Longest Journey](#3152-modding-the-longest-journey)
-      - [3.16) Mickey's Space Adventure
+    -   [3.15) The Longest Journey notes](#315-the-longest-journey-notes)
+        -   [3.15.1) Input controls](#3151-input-controls)
+        -   [3.15.2) Modding The Longest Journey](#3152-modding-the-longest-journey)
+    -   [3.16) Mickey's Space Adventure
         notes](#316-mickeys-space-adventure-notes)
-      - [3.17) Might and Magic Xeen games
+    -   [3.17) Might and Magic Xeen games
         notes](#317-might-and-magic-xeen-games-notes)
-      - [3.18) Myst game notes](#318-myst-game-notes)
-      - [3.19) Myst3 game notes](#319-myts3-game-notes)
-          - [3.19.1) Input controls](#3191-input-controls)
-      - [3.20) Quest for Glory notes](#320-quest-for-glory-notes)
-      - [3.21) Riven game notes](#321-riven-game-notes)
-      - [3.22) Simon the Sorcerer games
+    -   [3.18) Myst game notes](#318-myst-game-notes)
+    -   [3.19) Myst3 game notes](#319-myts3-game-notes)
+        -   [3.19.1) Input controls](#3191-input-controls)
+    -   [3.20) Quest for Glory notes](#320-quest-for-glory-notes)
+    -   [3.21) Riven game notes](#321-riven-game-notes)
+    -   [3.22) Simon the Sorcerer games
         notes](#322-simon-the-sorcerer-games-notes)
-      - [3.23) Starship Titanic game
+    -   [3.23) Starship Titanic game
         notes](#323-starship-titanic-game-notes)
-      - [3.24) The Curse of Monkey Island
+    -   [3.24) The Curse of Monkey Island
         notes](#324-the-curse-of-monkey-island-notes)
-      - [3.25) The Feeble Files notes](#325-the-feeble-files-notes)
-      - [3.26) The Legend of Kyrandia
+    -   [3.25) The Feeble Files notes](#325-the-feeble-files-notes)
+    -   [3.26) The Legend of Kyrandia
         notes](#326-the-legend-of-kyrandia-notes)
-      - [3.27) Troll's Tale notes](#327-trolls-tale-notes)
-      - [3.28) Winnie the Pooh notes](#328-winnie-the-pooh-notes)
-      - [3.29) Sierra AGI games: Predictive Input
+    -   [3.27) Troll's Tale notes](#327-trolls-tale-notes)
+    -   [3.28) Winnie the Pooh notes](#328-winnie-the-pooh-notes)
+    -   [3.29) Sierra AGI games: Predictive Input
         Dialog](#329-sierra-agi-games-predictive-input-dialog)
-      - [3.30) Sierra SCI games: Simultaneous speech and
+    -   [3.30) Sierra SCI games: Simultaneous speech and
         subtitles](#330-sierra-sci-games-simultaneous-speech-and-subtitles)
-      - [3.31) Zork games notes](#331-zork-games-notes)
-          - [3.31.1) Zork Nemesis: The Forbidden
+    -   [3.31) Zork games notes](#331-zork-games-notes)
+        -   [3.31.1) Zork Nemesis: The Forbidden
             Lands](#3311-zork-nemesis-the-forbidden-lands)
-          - [3.31.2) Zork: Grand
+        -   [3.31.2) Zork: Grand
             Inquisitor](#3312-zork-grand-inquisitor)
-      - [3.32) Commodore64 games notes](#332-commodore64-games-notes)
-      - [3.33) Macintosh games notes](#333-macintosh-games-notes)
-  - [4.0) Supported Platforms](#40-supported-platforms)
-  - [5.0) Running ScummVM](#50-running-scummvm)
-      - [5.1) Command Line Options](#51-command-line-options)
-      - [5.2) Global Menu](#52-global-menu)
-      - [5.3) Graphics filters](#53-graphics-filters)
-      - [5.4) Hotkeys](#54-hotkeys)
-      - [5.5) Language options](#55-language-options)
-  - [6.0) Saved Games](#60-saved-games)
-      - [6.1) Autosaves](#61-autosaves)
-      - [6.2) Converting Saved Games](#62-converting-saved-games)
-      - [6.3) Viewing/Loading saved games from the command
+    -   [3.32) Commodore64 games notes](#332-commodore64-games-notes)
+    -   [3.33) Macintosh games notes](#333-macintosh-games-notes)
+-   [4.0) Supported Platforms](#40-supported-platforms)
+-   [5.0) Running NovelVM](#50-running-novelvm)
+    -   [5.1) Command Line Options](#51-command-line-options)
+    -   [5.2) Global Menu](#52-global-menu)
+    -   [5.3) Graphics filters](#53-graphics-filters)
+    -   [5.4) Hotkeys](#54-hotkeys)
+    -   [5.5) Language options](#55-language-options)
+-   [6.0) Saved Games](#60-saved-games)
+    -   [6.1) Autosaves](#61-autosaves)
+    -   [6.2) Converting Saved Games](#62-converting-saved-games)
+    -   [6.3) Viewing/Loading saved games from the command
         line](#63-viewingloading-saved-games-from-the-command-line)
-  - [7.0) Music and Sound](#70-music-and-sound)
-      - [7.1) AdLib emulation](#71-adlib-emulation)
-      - [7.2) FluidSynth MIDI emulation](#72-fluidsynth-midi-emulation)
-      - [7.3) MT-32 emulation](#73-mt-32-emulation)
-      - [7.4) MIDI emulation](#74-midi-emulation)
-      - [7.5) Native MIDI support](#75-native-midi-support)
-          - [7.5.1) Using MIDI options to customize Native MIDI
+-   [7.0) Music and Sound](#70-music-and-sound)
+    -   [7.1) AdLib emulation](#71-adlib-emulation)
+    -   [7.2) FluidSynth MIDI emulation](#72-fluidsynth-midi-emulation)
+    -   [7.3) MT-32 emulation](#73-mt-32-emulation)
+    -   [7.4) MIDI emulation](#74-midi-emulation)
+    -   [7.5) Native MIDI support](#75-native-midi-support)
+        -   [7.5.1) Using MIDI options to customize Native MIDI
             output](#751-using-midi-options-to-customize-native-midi-output)
-      - [7.6) UNIX native, ALSA and dmedia sequencer
+    -   [7.6) UNIX native, ALSA and dmedia sequencer
         support](#76-unix-native-alsa-and-dmedia-sequencer-support)
-          - [7.6.1) ALSA sequencer \[UNIX
+        -   [7.6.1) ALSA sequencer \[UNIX
             ONLY\]](#761-alsa-sequencer-unix-only)
-          - [7.6.2) IRIX dmedia sequencer: \[UNIX
+        -   [7.6.2) IRIX dmedia sequencer: \[UNIX
             ONLY\]](#762-irix-dmedia-sequencer-unix-only)
-      - [7.7) TiMidity++ MIDI server
+    -   [7.7) TiMidity++ MIDI server
         support](#77-timidity-midi-server-support)
-      - [7.8) Using compressed audio
+    -   [7.8) Using compressed audio
         files](#78-using-compressed-audio-files)
-          - [7.8.1) Using MP3 files for CD
+        -   [7.8.1) Using MP3 files for CD
             audio](#781-using-mp3-files-for-cd-audio)
-          - [7.8.2) Using Ogg Vorbis files for CD
+        -   [7.8.2) Using Ogg Vorbis files for CD
             audio](#782-using-ogg-vorbis-files-for-cd-audio)
-          - [7.8.3) Using Flac files for CD
+        -   [7.8.3) Using Flac files for CD
             audio](#783-using-flac-files-for-cd-audio)
-          - [7.8.4) Compressing MONSTER.SOU with
+        -   [7.8.4) Compressing MONSTER.SOU with
             MP3](#784-compressing-monstersou-with-mp3)
-          - [7.8.5) Compressing MONSTER.SOU with Ogg
+        -   [7.8.5) Compressing MONSTER.SOU with Ogg
             Vorbis](#785-compressing-monstersou-with-ogg-vorbis)
-          - [7.8.6) Compressing MONSTER.SOU with
+        -   [7.8.6) Compressing MONSTER.SOU with
             Flac](#786-compressing-monstersou-with-flac)
-          - [7.8.7) Compressing music/sfx/speech in AGOS
+        -   [7.8.7) Compressing music/sfx/speech in AGOS
             games](#787-compressing-musicsfxspeech-in-agos-games)
-          - [7.8.8) Compressing speech/music in Broken
+        -   [7.8.8) Compressing speech/music in Broken
             Sword](#788-compressing-speechmusic-in-broken-sword)
-          - [7.8.9) Compressing speech/music in Broken Sword
+        -   [7.8.9) Compressing speech/music in Broken Sword
             II](#789-compressing-speechmusic-in-broken-sword-ii)
-      - [7.9) Output sample rate](#79-output-sample-rate)
-  - [8.0) Configuration file](#80-configuration-file)
-      - [8.1) Recognized configuration
+    -   [7.9) Output sample rate](#79-output-sample-rate)
+-   [8.0) Configuration file](#80-configuration-file)
+    -   [8.1) Recognized configuration
         keywords](#81-recognized-configuration-keywords)
-      - [8.2) Custom game options that can be toggled via the
+    -   [8.2) Custom game options that can be toggled via the
         GUI](#82-custom-game-options-that-can-be-toggled-via-the-gui)
-  - [9.0) Screenshots (SDL backend
+-   [9.0) Screenshots (SDL backend
     only)](#90-screenshots-sdl-backend-only)
-  - [10.0) Compiling](#100-compiling)
-  - [11.0) Changelog](#110-changelog)
-  - [12.0) Credits](#120-credits)
+-   [10.0) Compiling](#100-compiling)
+-   [11.0) Changelog](#110-changelog)
+-   [12.0) Credits](#120-credits)
 
 ## 1.0) Introduction
 
-### 1.1) About ScummVM
+### 1.1) About NovelVM
 
-ScummVM is a program which allows you to run certain classic graphical
+NovelVM is a program which allows you to run certain classic graphical
 adventure games and Role-Playing games, provided you already have their data
-files. The clever part about this: ScummVM just replaces the executables
+files. The clever part about this: NovelVM just replaces the executables
 shipped with the game, allowing you to play them on systems for which
-they were never designed\! Also, ScummVM is not an emulator.
+they were never designed\! Also, NovelVM is not an emulator.
 
 Originally it was designed to run LucasArts' SCUMM games, such as Maniac
 Mansion, Monkey Island, Day of the Tentacle or Sam and Max. SCUMM stands
 for 'Script Creation Utility for Maniac Mansion', which was the first
 game for which LucasArts designed this system. And much later it gave
-its name to ScummVM ('VM' meaning Virtual Machine).
+its name to NovelVM ('VM' meaning Virtual Machine).
 
 Over time support for a lot of non-SCUMM games has been added, and
-ScummVM now also supports many of Sierra's AGI and SCI games (such as
+NovelVM now also supports many of Sierra's AGI and SCI games (such as
 King's Quest 1-7, Space Quest 1-6, ...), Discworld 1 and 2, Simon the
 Sorcerer 1 and 2, Beneath A Steel Sky, Lure of the Temptress, Broken
 Sword I and II, Flight of the Amazon Queen, Gobliiins 1-3, The Legend of
@@ -158,43 +158,43 @@ games (including Freddi Fish and Putt Putt games) and many more. Eventually,
 we also embraced 3D games such as Grim Fandango, Escape from Monkey Island,
 Myst III and The Longest Journey. You can find a full list with details
 on which adventures are supported and how well on the compatibility page.
-ScummVM is continually improving, so check back often.
+NovelVM is continually improving, so check back often.
 
 Among the systems on which you can play those games are regular desktop
 computers (running Windows, Linux, Mac OS X, ...), game consoles
 (Dreamcast, Nintendo DS & Wii, PSP, ...), smartphones (Android, iPhone,
 Symbian ...) and more.
 
-At this time ScummVM is still under heavy development. Be aware that
+At this time NovelVM is still under heavy development. Be aware that
 whilst we attempt to make sure that many games can be completed with few
 major bugs, crashes can happen and we offer no warranty. That being
 said, some of the games have been supported for a long time and should
 work fine with any recent stable release. You can get a feeling of how
-well each game is working in ScummVM by looking at the compatibility
+well each game is working in NovelVM by looking at the compatibility
 page. Actually, if you browse a bit around you might discover that
-ScummVM is even being used commercially to re-release some of the
+NovelVM is even being used commercially to re-release some of the
 supported games on modern platforms. This shows that several companies
 are happy with the quality of the software and how well it can run some
 of the games.
 
-If you enjoy ScummVM feel free to donate using the PayPal button on the
-ScummVM homepage. This will help us buy utilities needed to develop
-ScummVM easier and quicker. If you cannot donate, help and contribute a
+If you enjoy NovelVM feel free to donate using the PayPal button on the
+NovelVM homepage. This will help us buy utilities needed to develop
+NovelVM easier and quicker. If you cannot donate, help and contribute a
 patch\!
 
 ### 1.2) Quick start
 
-For the impatient among you, here is how to get ScummVM running in five
+For the impatient among you, here is how to get NovelVM running in five
 simple steps.
 
-1.  Download ScummVM from <https://www.scummvm.org/downloads/> and
+1.  Download NovelVM from <https://www.novelvm.org/downloads/> and
     install it.
 
 2.  Create a directory on your hard drive and copy the game datafiles
     from the original media to this directory. Repeat this for every
     game you want to play.
 
-3.  Start ScummVM, choose 'Add game', select the directory with the game
+3.  Start NovelVM, choose 'Add game', select the directory with the game
     datafiles (do not try to select the datafiles themselves\!) and
     press `Choose`.
 
@@ -210,21 +210,21 @@ want to add more games.
 Hint: If you want to add multiple games in one go, try pressing and
 holding the shift key before clicking 'Add game' -- its label will
 change to 'Mass Add' and if you press it, you are again asked to select
-a directory, only this time ScummVM will search through all
+a directory, only this time NovelVM will search through all
 subdirectories for supported games.
 
 ### 1.3) F.A.Q.
 
 We've compiled a list of F.A.Q. at:
 
-<https://www.scummvm.org/faq/>
+<https://www.novelvm.org/faq/>
 
 ## 2.0) Contact
 
-The easiest way to contact the ScummVM team is by submitting bug reports
-(see section 2.1) or by using our forums at <https://forums.scummvm.org>.
-You can also join and e-mail the scummvm-devel mailing list, or chat
-with us on IRC (\#scummvm on irc.freenode.net) Please do not ask us to
+The easiest way to contact the NovelVM team is by submitting bug reports
+(see section 2.1) or by using our forums at <https://forums.novelvm.org>.
+You can also join and e-mail the novelvm-devel mailing list, or chat
+with us on IRC (\#novelvm on irc.freenode.net) Please do not ask us to
 support an unsupported game -- read the FAQ on our web site first.
 
 ### 2.1) Reporting Bugs
@@ -235,7 +235,7 @@ reproducible, and still occurs in the latest git/Daily build version.
 Also check the known problems list (below) and the compatibility list on
 our website for that game, to ensure the issue is not already known:
 
-<https://www.scummvm.org/compatibility/>
+<https://www.novelvm.org/compatibility/>
 
 Please do not report bugs for games that are not listed as being
 completeable in the 'Supported Games' section, or compatibility list. We
@@ -243,12 +243,12 @@ _know_ those games have bugs.
 
 Please include the following information:
 
-  - ScummVM version (PLEASE test the latest git/Daily build)
-  - Bug details, including instructions on reproducing
-  - Language of game (English, German, ...)
-  - Version of game (talkie, floppy, ...)
-  - Platform and Compiler (Win32, Linux, FreeBSD, ...)
-  - Attach a saved game if possible - If this bug only occurred
+-   NovelVM version (PLEASE test the latest git/Daily build)
+-   Bug details, including instructions on reproducing
+-   Language of game (English, German, ...)
+-   Version of game (talkie, floppy, ...)
+-   Platform and Compiler (Win32, Linux, FreeBSD, ...)
+-   Attach a saved game if possible - If this bug only occurred
     recently, please note the last version without the bug, and the
     first version including the bug. That way we can fix it quicker by
     looking at the changes made.
@@ -263,7 +263,7 @@ At the moment the following games have been reported to work, and should
 be playable to the end: A more detailed compatibility list of the
 supported games can be found here:
 
-<https://www.scummvm.org/compatibility/>
+<https://www.novelvm.org/compatibility/>
 
 | LucasArts (SCUMM) Games:                |              |
 | --------------------------------------- | ------------ |
@@ -458,12 +458,12 @@ supported games can be found here:
 | Zork: Grand Inquisitor                                              | \[zgi\]         |
 | Zork Nemesis: The Forbidden Lands                                   | \[znemesis\]    |
 
-| 3D Games:                    |              |
-| ---------------------------- | ------------ |
-| Grim Fandango                | \[grim\]     |
-| Escape from Monkey Island    | \[monkey4\]  |
-| Myst III Exile               | \[myst3\]    |
-| The Longest Journey          | \[tlj\]      |
+| 3D Games:                 |             |
+| ------------------------- | ----------- |
+| Grim Fandango             | \[grim\]    |
+| Escape from Monkey Island | \[monkey4\] |
+| Myst III Exile            | \[myst3\]   |
+| The Longest Journey       | \[tlj\]     |
 
 | Humongous Entertainment (SCUMM) Games:                         |                   |
 | -------------------------------------------------------------- | ----------------- |
@@ -552,7 +552,7 @@ supported games can be found here:
 | The New Kid on the Block                  | \[newkid\]     |
 
 The following games are based on the SCUMM engine, but NOT supported by
-ScummVM (yet):
+NovelVM (yet):
 
     Moonbase Commander
 
@@ -563,7 +563,7 @@ reports are above) if you encounter such a bug in a 'supported' game.
 
 ### 3.1) Copy Protection
 
-The ScummVM team does not condone piracy. However, there are cases where
+The NovelVM team does not condone piracy. However, there are cases where
 the game companies (such as LucasArts) themselves bundled 'cracked'
 executables with their games -- in these cases the data files still
 contain the copy protection scripts, but the interpreter bypasses them
@@ -571,54 +571,54 @@ contain the copy protection scripts, but the interpreter bypasses them
 the producer of the game did it). There is no way for us to tell the
 difference between legitimate and pirated data files, so for the games
 where we know that a cracked version of the original interpreter was
-sold at some point, ScummVM will always have to bypass the copy
+sold at some point, NovelVM will always have to bypass the copy
 protection.
 
-In some cases ScummVM will still show the copy protection screen. Try
+In some cases NovelVM will still show the copy protection screen. Try
 entering any answer. Chances are that it will work.
 
-ScummVM will skip copy protection in the following games:
+NovelVM will skip copy protection in the following games:
 
-  - Beneath a Steel Sky
-      - bypassed with kind permission from Revolution Software.
-  - Dreamweb
-      - a list of available commands in the in-game terminals is now
+-   Beneath a Steel Sky
+    -   bypassed with kind permission from Revolution Software.
+-   Dreamweb
+    -   a list of available commands in the in-game terminals is now
         shown when the player uses the `help` command
-  - Inherit the Earth: Quest for the Orb (Floppy version)
-      - bypassed with kind permission from Wyrmkeep Entertainment, since
+-   Inherit the Earth: Quest for the Orb (Floppy version)
+    -   bypassed with kind permission from Wyrmkeep Entertainment, since
         it was bypassed in all CD releases of the game.
-  - Loom (EGA DOS)
-  - Lure of the Temptress
-  - Maniac Mansion
-  - Might and Magic: World of Xeen
-  - Monkey Island 2: LeChuck's Revenge
-  - Rex Nebular and The Cosmic Gender Bender
-  - Simon the Sorcerer 1 (Floppy version)
-  - Simon the Sorcerer 2 (Floppy version)
-      - bypassed with kind permission from Adventure Soft, since it was
+-   Loom (EGA DOS)
+-   Lure of the Temptress
+-   Maniac Mansion
+-   Might and Magic: World of Xeen
+-   Monkey Island 2: LeChuck's Revenge
+-   Rex Nebular and The Cosmic Gender Bender
+-   Simon the Sorcerer 1 (Floppy version)
+-   Simon the Sorcerer 2 (Floppy version)
+    -   bypassed with kind permission from Adventure Soft, since it was
         bypassed in all CD releases of the game.
-  - The Secret of Monkey Island (VGA)
-  - Voyeur
-  - Waxworks
-  - Zak McKracken and the Alien Mindbenders
+-   The Secret of Monkey Island (VGA)
+-   Voyeur
+-   Waxworks
+-   Zak McKracken and the Alien Mindbenders
 
 ### 3.2) Datafiles
 
 For a comprehensive list of required Datafiles for supported games
 visit:
 
-<https://wiki.scummvm.org/index.php/Datafiles>
+<https://wiki.novelvm.org/index.php/Datafiles>
 
 ### 3.3) Multi-CD games notes
 
-In general, ScummVM does not deal very well with Multi-CD games. This is
-because ScummVM assumes everything about a game can be found in one
-directory. Even if ScummVM does make some provisions for asking the user
+In general, NovelVM does not deal very well with Multi-CD games. This is
+because NovelVM assumes everything about a game can be found in one
+directory. Even if NovelVM does make some provisions for asking the user
 to change CD, the original game executables usually installed a small
 number of files to the hard disk. Unless these files can be found on all
-the CDs, ScummVM will be in trouble.
+the CDs, NovelVM will be in trouble.
 
-Fortunately, ScummVM has no problems running the games entirely from
+Fortunately, NovelVM has no problems running the games entirely from
 hard disk, if you create a directory with the correct combination of
 files. Usually, when a file appears on more than one CD you can pick
 either of them.
@@ -632,7 +632,7 @@ site, please see the section on reporting bugs.
 
 CD Audio Games:
 
-  - When playing games that use CD Audio (FM-TOWNS games, Loom CD, etc)
+-   When playing games that use CD Audio (FM-TOWNS games, Loom CD, etc)
     users of Microsoft Windows 2000/XP may experience random crashes.
     This is due to a long-standing Windows bug, resulting in corrupt
     game files being read from the CD. Please copy the game data to your
@@ -640,93 +640,94 @@ CD Audio Games:
 
 FM-TOWNS versions:
 
-  - The Kanji versions require the FM-TOWNS Font ROM.
+-   The Kanji versions require the FM-TOWNS Font ROM.
 
 Loom:
 
-  - Turning off the subtitles via the config file does not work reliably
+-   Turning off the subtitles via the config file does not work reliably
     as the Loom scripts automatically turn them on again.
-  - MIDI support in the EGA version requires the Roland update from
+-   MIDI support in the EGA version requires the Roland update from
     LucasArts.
-  - The PC-Engine Kanji version requires the system card rom.
+-   The PC-Engine Kanji version requires the system card rom.
 
 The Secret of Monkey Island:
 
-  - MIDI support in the EGA version requires the Roland update from
+-   MIDI support in the EGA version requires the Roland update from
     LucasArts.
 
 Beneath a Steel Sky:
 
-  - Amiga versions aren't supported.
-  - Floppy demos aren't supported.
-  - Not a bug: CD version is missing speech for some dialogs, this is
+-   Amiga versions aren't supported.
+-   Floppy demos aren't supported.
+-   Not a bug: CD version is missing speech for some dialogs, this is
     normal.
 
 Elvira - Mistress of the Dark:
 
-  - No music in the Atari ST version.
+-   No music in the Atari ST version.
 
 Elvira II - The Jaws of Cerberus
 
-  - No music in the Atari ST version.
-  - No sound effects in the PC version.
-  - Palette issues in the Atari ST version.
+-   No music in the Atari ST version.
+-   No sound effects in the PC version.
+-   Palette issues in the Atari ST version.
 
 Inherit the Earth: Quest for the Orb:
 
-  - Amiga versions aren't supported.
+-   Amiga versions aren't supported.
 
 Lure of the Temptress:
 
-  - No Roland MT-32 support.
-  - Sound support is incomplete and doesn't sound like original.
+-   No Roland MT-32 support.
+-   Sound support is incomplete and doesn't sound like original.
 
 Simon the Sorcerer 1:
 
-  - Subtitles aren't available in the English and German CD versions as
+-   Subtitles aren't available in the English and German CD versions as
     they are missing the majority of subtitles.
 
 Simon the Sorcerer 2:
 
-  - Combined speech and subtitles will often cause speech to be cut off
+-   Combined speech and subtitles will often cause speech to be cut off
     early, this is a limitation of the original game.
-  - Only default language (English) of data files is supported in Amiga
+-   Only default language (English) of data files is supported in Amiga
     and Macintosh versions.
 
 Simon the Sorcerer's Puzzle Pack:
 
-  - No support for displaying, entering, loading or saving high scores.
-  - No support for displaying names of items, when hovering over them in
+-   No support for displaying, entering, loading or saving high scores.
+-   No support for displaying names of items, when hovering over them in
     Swampy Adventures.
 
 The Feeble Files:
 
-  - Subtitles are often incomplete, they were always disabled in the
+-   Subtitles are often incomplete, they were always disabled in the
     original game.
 
 The Legend of Kyrandia:
 
-  - No music or sound effects in the Macintosh floppy versions.
-  - Macintosh CD is using included DOS music and sound effects.
+-   No music or sound effects in the Macintosh floppy versions.
+-   Macintosh CD is using included DOS music and sound effects.
 
 Humongous Entertainment games:
 
-  - Only the original load and save interface can be used.
-  - No support for multiplayer or printing images.
+-   Only the original load and save interface can be used.
+-   No support for multiplayer or printing images.
 
 ### 3.5) Extra Data Files
 
-Some games require additional files that are not part of the original data. Those files can generally be found in our [Downloads](https://www.scummvm.org/downloads/#extras) page.
+Some games require additional files that are not part of the original data. Those files can generally be found in our [Downloads](https://www.novelvm.org/downloads/#extras) page.
 
 Games that require additional data:
-  - Beneath a Steel Sky (sky.cpt)
-  - Flight of the Amazon Queen
-  - Kyrandia Series (kyra.dat)
-  - Lands of Lore Series (kyra.dat)
-  - Lure of the Temptress (lure.dat)
-  - Versailles 1685 (cryomni3d.dat)
 
-The most up to date list of Engine data files can be found in our [source code repository](https://github.com/scummvm/scummvm/tree/master/dists/engine-data)
+-   Beneath a Steel Sky (sky.cpt)
+-   Flight of the Amazon Queen
+-   Kyrandia Series (kyra.dat)
+-   Lands of Lore Series (kyra.dat)
+-   Lure of the Temptress (lure.dat)
+-   Versailles 1685 (cryomni3d.dat)
+
+The most up to date list of Engine data files can be found in our [source code repository](https://github.com/novelvm/novelvm/tree/master/dists/engine-data)
 
 ### 3.6) Blade Runner notes
 
@@ -734,13 +735,13 @@ Supported versions are English (both CD and DVD), French, German,
 Italian, Russian (by Fargus Multimedia) and Spanish. Other unofficial
 versions exist but they are based on the English version.
 
-All *.mix, *.tlk and *.dat files are needed from all 4 CDs/DVD.
+All _.mix, _.tlk and \*.dat files are needed from all 4 CDs/DVD.
 Files named CDFRAMES.DAT need to be renamed to CDFRAMES1.DAT,
 CDFRAMES2.DAT, CDFRAMES3.DAT and CDFRAMES4.DAT according on
 the CD they came from. Other files with the same name on different
 CDs are identical and it doesn't matter which one is used.
 
-To enable subtitles, download a file from our [Downloads](https://www.scummvm.org/games/#bladerunner) page
+To enable subtitles, download a file from our [Downloads](https://www.novelvm.org/games/#bladerunner) page
 and place file SUBTITLES.MIX next to the other game files.
 
 "Blade Runner with restored content" is not yet supported and might
@@ -750,7 +751,7 @@ contain game breaking bugs.
 
 The instructions for the Broken Sword games are for the Sold-Out
 Software versions, with each game on two CDs, since these were the
-versions most easily available at the time ScummVM gained support for
+versions most easily available at the time NovelVM gained support for
 them. Hopefully they are general enough to be useful to other releases
 as well.
 
@@ -776,7 +777,7 @@ For this game, you will need all of the files from the clusters
 directories on both CDs. (Actually, a few of them may not be strictly
 necessary, but the ones that I'm uncertain about are all fairly small.)
 You will need to rename the speech.clu and music.clu files speech1.clu,
-speech2.clu, music1.clu and music2.clu so that ScummVM can tell which
+speech2.clu, music1.clu and music2.clu so that NovelVM can tell which
 ones are from CD 1 and which ones are from CD 2. Any other files that
 appear in both cluster directories are identical. Use whichever you
 like.
@@ -796,28 +797,28 @@ you find that neater.
 
 For the PlayStation versions, you can dump the original videos off the
 disc. For each of the files ending in an "STR" extension, you should
-dump them as *raw* sectors off the disc (all 2352 bytes per sector). You
+dump them as _raw_ sectors off the disc (all 2352 bytes per sector). You
 may also use the re-encoded cutscenes mentioned below instead, but this
 will not work for all videos in Broken Sword II. For more information,
 see:
 
-<https://wiki.scummvm.org/index.php/HOWTO-PlayStation_Videos>
+<https://wiki.novelvm.org/index.php/HOWTO-PlayStation_Videos>
 
 Some re-releases of the games, as well as the PlayStation version, do
 not have Smacker videos. Revolution Software has kindly allowed us to
 provide re-encoded cutscenes for download on our website:
 
-<https://www.scummvm.org/downloads/>
+<https://www.novelvm.org/downloads/>
 
 These cutscenes are provided in DXA format with FLAC audio. Their
 quality is equal to the original games due to the use of lossless
-compression. Viewing these cutscenes requires a version of ScummVM
+compression. Viewing these cutscenes requires a version of NovelVM
 compiled with both FLAC and zlib support.
 
 For systems that are too slow to handle the decoding of FLAC audio, the
 audio for these cutscenes is also provided separately as OGG Vorbis
 audio. Viewing these cutscenes with OGG Vorbis audio requires a version
-of ScummVM compiled with both libVorbis and zlib support.
+of NovelVM compiled with both libVorbis and zlib support.
 
 For Broken Sword, we also provide a subtitles add-on. Simply unpack it
 and follow the instructions in its readme.txt file. The subtitle pack
@@ -832,17 +833,17 @@ versions of this format to us, and had requested we not reverse engineer
 it, an alternative solution had to be found.
 
 In Broken Sword II, it was possible to play back the voice-over without
-playing the video itself. This remained a fallback until ScummVM 1.0.0,
+playing the video itself. This remained a fallback until NovelVM 1.0.0,
 but was never the only solution for any stable release.
 
-In ScummVM 0.6.0 we used MPEG, which provided a reasonable trade-off
-between size and quality. In ScummVM 0.10.0 this was superseded by DXA
+In NovelVM 0.6.0 we used MPEG, which provided a reasonable trade-off
+between size and quality. In NovelVM 0.10.0 this was superseded by DXA
 (originally added for AdventureSoft's "The Feeble Files"). This gave us
 a way of providing the cutscenes in the exact same quality as the
 originals, at the cost of being larger.
 
 Finally, in early 2006, the Smacker format was reverse engineered for
-the FFmpeg project. Thanks to their hard work, ScummVM 1.0.0 now
+the FFmpeg project. Thanks to their hard work, NovelVM 1.0.0 now
 supports the original cutscenes. At the same time, MPEG support was
 dropped. From a technical standpoint, this was a good thing since
 decoding MPEG movies added a lot of complexity, and they didn't look as
@@ -851,13 +852,13 @@ good as the Smacker and DXA versions anyway.
 ### 3.8) Day of the Tentacle notes
 
 At one point in the game, you come across a computer that allows you to
-play the original Maniac Mansion as an easter egg. ScummVM supports
+play the original Maniac Mansion as an easter egg. NovelVM supports
 this, with a few caveats:
 
-ScummVM will scan your configuration file for a game that's in a
+NovelVM will scan your configuration file for a game that's in a
 `Maniac` sub-folder of your Day of the Tentacle folder. If you've copied
 the data files from the CD version, this should already be the case but
-you have to add the game to ScummVM as well.
+you have to add the game to NovelVM as well.
 
 To return to Day of the Tentacle, press F5 and select "Return to
 Launcher".
@@ -890,74 +891,76 @@ All game files and the walkthrough can be downloaded from:
 
 You will need to copy the data files from your Escape from Monkey Island
 CDs into one directory. Specifically, you'll need:
-  * All of the `M4B` files from both CDs.
+
+-   All of the `M4B` files from both CDs.
     One of the files is easy to miss:
     `local.m4b` is located on CD1 in `Monkey4/MonkeyInstall`.
-        Note: The file `voiceAll.m4b` is repeated on both CDs. Use the
-              copy from the first CD, it contains all of the required
-              voice data.
-  * The `Textures` directory, combined from both CDs. When copying,
+    Note: The file `voiceAll.m4b` is repeated on both CDs. Use the
+    copy from the first CD, it contains all of the required
+    voice data.
+-   The `Textures` directory, combined from both CDs. When copying,
     rename the `FullMonkeyMap.imt` files to `FullMonkeyMap1.imt` and
     `FullMonkeyMap2.imt` from CDs 1 and 2 respectively.
-  * The `Movies` directory from each CD.
-  * A copy of the Escape from Monkey Monkey Island update EXE.
+-   The `Movies` directory from each CD.
+-   A copy of the Escape from Monkey Monkey Island update EXE.
     You will need a patch specific to the EMI version you're using:
 
-Language   | URL
----------- |---------------------------------------------------------
-English    | https://scummvm.org/frs/extras/patches/MonkeyUpdate.exe
-Portuguese | https://scummvm.org/frs/extras/patches/MonkeyUpdate_BRZ.exe
-German     | https://scummvm.org/frs/extras/patches/MonkeyUpdate_DEU.exe
-Spanish    | https://scummvm.org/frs/extras/patches/MonkeyUpdate_ESP.exe
-French     | https://scummvm.org/frs/extras/patches/MonkeyUpdate_FRA.exe
-Italian    | https://scummvm.org/frs/extras/patches/MonkeyUpdate_ITA.exe
+| Language   | URL                                                         |
+| ---------- | ----------------------------------------------------------- |
+| English    | https://novelvm.org/frs/extras/patches/MonkeyUpdate.exe     |
+| Portuguese | https://novelvm.org/frs/extras/patches/MonkeyUpdate_BRZ.exe |
+| German     | https://novelvm.org/frs/extras/patches/MonkeyUpdate_DEU.exe |
+| Spanish    | https://novelvm.org/frs/extras/patches/MonkeyUpdate_ESP.exe |
+| French     | https://novelvm.org/frs/extras/patches/MonkeyUpdate_FRA.exe |
+| Italian    | https://novelvm.org/frs/extras/patches/MonkeyUpdate_ITA.exe |
 
-  * "EFMI Installer" if you have the Mac version of EMI.
+-   "EFMI Installer" if you have the Mac version of EMI.
 
 #### 3.10.1) Escape from Monkey Island (PS2)
 
 You will need to copy the data files from your Escape from Monkey Island
 DVD into one directory. Specifically, you'll need:
-  * All of the `M4B` files from the DVD.
-  * The `Videos`, `demos`, `jambalay`, `lucre`, `melee` and `monkey`
+
+-   All of the `M4B` files from the DVD.
+-   The `Videos`, `demos`, `jambalay`, `lucre`, `melee` and `monkey`
     directores.
 
 #### 3.10.2) Default keyboard settings
 
-Key             | Binding
---------------- | ---------------------------------------------
-Arrow keys      | Movement
-`Shift`         | Hold to run
-`Enter`         | Selects items in inventory, conversation, etc
-`Escape`        | Skips cutscenes, exits certain screens
-`e`             | Examine
-`u`             | Use
-`p`             | Pickup
-`i`             | Inventory
-`q`             | Exit Dialog Menu
-`.`             | Skips dialogue
-`F1`            | Menu
-`Alt` + `x`     | Quit (in-game)
-`Ctrl` + `c`    | Force quit (from command line)
-`Alt` + `Enter` | Switch between windowed mode and fullscreen
-`Alt` + `s`     | Save a screenshot
+| Key             | Binding                                       |
+| --------------- | --------------------------------------------- |
+| Arrow keys      | Movement                                      |
+| `Shift`         | Hold to run                                   |
+| `Enter`         | Selects items in inventory, conversation, etc |
+| `Escape`        | Skips cutscenes, exits certain screens        |
+| `e`             | Examine                                       |
+| `u`             | Use                                           |
+| `p`             | Pickup                                        |
+| `i`             | Inventory                                     |
+| `q`             | Exit Dialog Menu                              |
+| `.`             | Skips dialogue                                |
+| `F1`            | Menu                                          |
+| `Alt` + `x`     | Quit (in-game)                                |
+| `Ctrl` + `c`    | Force quit (from command line)                |
+| `Alt` + `Enter` | Switch between windowed mode and fullscreen   |
+| `Alt` + `s`     | Save a screenshot                             |
 
 #### 3.10.3) Joystick/gamepad support
 
 If you want to use a joystick or gamepad for navigation, the joystick
 support of the engine needs to be enabled using one of the following two
 options:
-  * start ScummVM with `--joystick` parameter,
-  * add `joystick\_num=0` to the `[scummvm]` section of the
-    configuration file (see section 6.1. how to find it).
 
+-   start NovelVM with `--joystick` parameter,
+-   add `joystick\_num=0` to the `[novelvm]` section of the
+    configuration file (see section 6.1. how to find it).
 
 ### 3.11) Flight of the Amazon Queen notes
 
 Only the original non-freeware version of Flight of the Amazon Queen
 (from original CD), requires the `queen.tbl` datafile (available from the `Downloads` page on our website) in either the
 directory containing the `queen.1` game data file, in your extrapath, or
-in the directory where your ScummVM executable resides.
+in the directory where your NovelVM executable resides.
 
 Alternatively, you can use the `compress_queen` tool from the tools
 package to 'rebuild' your FOTAQ data file to include the table for that
@@ -974,14 +977,15 @@ without the CD in the drive all the time. The speech is also in that
 track and its volume is therefore changed with the music volume control
 as well.
 
-#### 3.13) Grim Fandango ####
+#### 3.13) Grim Fandango
 
 You will need to copy the data files from your Grim Fandango CDs into one
 directory. Specifically, you'll need:
-  * All of the `LAB` files from both CDs.
-  * A copy of the Grim Fandango 1.01 update EXE.
-        The patch can be downloaded from:
-        https://scummvm.org/frs/extras/patches/gfupd101.exe
+
+-   All of the `LAB` files from both CDs.
+-   A copy of the Grim Fandango 1.01 update EXE.
+    The patch can be downloaded from:
+    https://novelvm.org/frs/extras/patches/gfupd101.exe
 
 ### 3.14) Inherit the Earth: Quest for the Orb notes
 
@@ -989,7 +993,7 @@ In order to run the Mac OS X Wyrmkeep re-release of the game you will
 need to copy over data from the CD to your hard disk. If you're on a PC
 then consult:
 
-<https://wiki.scummvm.org/index.php/HOWTO-Mac_Games>
+<https://wiki.novelvm.org/index.php/HOWTO-Mac_Games>
 
 Although it primarily talks about SCUMM games, it mentions the
 "HFSExplorer" utility which you need to extract the files. Note that you
@@ -1002,17 +1006,18 @@ For the old Mac OS 9 release you need to copy the files in MacBinary
 format, as they should include both resource and data forks. Copy all
 'ITE \*' files.
 
-### 3.15) The Longest Journey notes ###
+### 3.15) The Longest Journey notes
 
 You will need to copy the data files from your The Longest Journey CDs,
 DVD or digital distribution into one directory. Specifically, you'll
 need:
-  * The `1a`—`79` directories (only `4f` for demo version).
-  * The `global` directory.
-  * The `static` directory.
-  * The `fonts` directory (not critical, but recommended – see below).
-  * `x.xarc` and all the `INI` files.
-  * `game.exe` (not critical, but recommended for a styled message dialog)
+
+-   The `1a`—`79` directories (only `4f` for demo version).
+-   The `global` directory.
+-   The `static` directory.
+-   The `fonts` directory (not critical, but recommended – see below).
+-   `x.xarc` and all the `INI` files.
+-   `game.exe` (not critical, but recommended for a styled message dialog)
 
 The 2-CD and DVD versions have some of the data files packed in installer
 archives. The archives need to be unpacked before they can be used.
@@ -1029,95 +1034,95 @@ The mouse is used to interact with objects and menu elements.
 
 Available keyboard shortcuts:
 
-Key             | Binding
---------------- | -------------------------------------------------------------------------------------------
-`Escape`        | Skip video sequence or current line of dialogue, skip time if *Time Skip* option is enabled
-`F1`            | Diary Menu
-`F2`            | Save game
-`F3`            | Load game
-`F4`            | Conversation Log
-`F5`            | April's Diary (initially disabled)
-`F6`            | Video replay
-`F7`            | Game settings
-`F8`            | Save a screenshot
-`F9`            | Toggle subtitles on and off
-`F10`           | Quit game and return to main menu
-`A`             | Cycle back through inventory cursor items
-`S`             | Cycle forward through inventory cursor items
-`I`             | Inventory
-`P`             | Pause the game
-`X`             | Display all exits on current location
-`Page Up`       | Scroll up in dialogues and in your inventory
-`Up arrow`      | Scroll up in dialogues and in your inventory
-`Page Down`     | Scroll down in dialogues and in your inventory
-`Down arrow`    | Scroll down in dialogues and in your inventory
-`Enter`         | Select currently highlighted dialogue choice
-`1` – `9`       | Select a dialogue choice
-`Ctrl` + `F5`   | ScummVM menu
-`Alt` + `Enter` | Switch between windowed mode and fullscreen
-`Ctrl` + `c`    | Force quit (from command line)
-`Ctrl` + `q`    | Quit (in-game)
-`Alt` + `x`     | Quit
-`Alt` + `q`     | Quit
-`Alt` + `s`     | Save a screenshot
+| Key             | Binding                                                                                     |
+| --------------- | ------------------------------------------------------------------------------------------- |
+| `Escape`        | Skip video sequence or current line of dialogue, skip time if _Time Skip_ option is enabled |
+| `F1`            | Diary Menu                                                                                  |
+| `F2`            | Save game                                                                                   |
+| `F3`            | Load game                                                                                   |
+| `F4`            | Conversation Log                                                                            |
+| `F5`            | April's Diary (initially disabled)                                                          |
+| `F6`            | Video replay                                                                                |
+| `F7`            | Game settings                                                                               |
+| `F8`            | Save a screenshot                                                                           |
+| `F9`            | Toggle subtitles on and off                                                                 |
+| `F10`           | Quit game and return to main menu                                                           |
+| `A`             | Cycle back through inventory cursor items                                                   |
+| `S`             | Cycle forward through inventory cursor items                                                |
+| `I`             | Inventory                                                                                   |
+| `P`             | Pause the game                                                                              |
+| `X`             | Display all exits on current location                                                       |
+| `Page Up`       | Scroll up in dialogues and in your inventory                                                |
+| `Up arrow`      | Scroll up in dialogues and in your inventory                                                |
+| `Page Down`     | Scroll down in dialogues and in your inventory                                              |
+| `Down arrow`    | Scroll down in dialogues and in your inventory                                              |
+| `Enter`         | Select currently highlighted dialogue choice                                                |
+| `1` – `9`       | Select a dialogue choice                                                                    |
+| `Ctrl` + `F5`   | NovelVM menu                                                                                |
+| `Alt` + `Enter` | Switch between windowed mode and fullscreen                                                 |
+| `Ctrl` + `c`    | Force quit (from command line)                                                              |
+| `Ctrl` + `q`    | Quit (in-game)                                                                              |
+| `Alt` + `x`     | Quit                                                                                        |
+| `Alt` + `q`     | Quit                                                                                        |
+| `Alt` + `s`     | Save a screenshot                                                                           |
 
 #### 3.15.2) Modding The Longest Journey
 
-ScummVM can load replacement assets instead of the original files for
+NovelVM can load replacement assets instead of the original files for
 some of the asset types. By leveraging this capability, users can create
 mods for the game. These are the currently supported modding features:
 
-  * Load mods from the `mods` directory inside the game data path.
-  Each mod should be in its own directory in the `mods` subdirectory.
-  Mods are loaded in alphabetical order.
+-   Load mods from the `mods` directory inside the game data path.
+    Each mod should be in its own directory in the `mods` subdirectory.
+    Mods are loaded in alphabetical order.
 
-  * Load external PNG files instead of the XMG files inside the game
-  archives.
+-   Load external PNG files instead of the XMG files inside the game
+    archives.
     The replacement PNG files can have larger dimensions when compared to
-  the original XMG images, enabling the creation of a high resolution mod.
+    the original XMG images, enabling the creation of a high resolution mod.
     The game looks for the replacement files in a mod directory and then
-  in the `xarc` subdirectory of the directory containing the archive in
-  which the XMG picture to be replaced is located. For instance:
-  `mods/[my_mod]/1e/00/xarc/fountain_layercenter.png` needs to be used for
-  the Venice park background.
-    ScummVM expects PNGs to be in pre-multiplied alpha format for improved
-  load times. However the `replacement_png_premultiply_alpha` `scummvm.ini`
-  setting allows to load regular transparency PNGs when set to `true` for
-  convenience when testing.
+    in the `xarc` subdirectory of the directory containing the archive in
+    which the XMG picture to be replaced is located. For instance:
+    `mods/[my_mod]/1e/00/xarc/fountain_layercenter.png` needs to be used for
+    the Venice park background.
+    NovelVM expects PNGs to be in pre-multiplied alpha format for improved
+    load times. However the `replacement_png_premultiply_alpha` `novelvm.ini`
+    setting allows to load regular transparency PNGs when set to `true` for
+    convenience when testing.
 
-  * Load replacement video files for the Smacker animations.
+-   Load replacement video files for the Smacker animations.
     The replacement files can be either in Smacker or Bink encoding. With
-  Smacker, only 1-bit transparency can be used. Transparent pixels must have
-  the Cyan color (#00FFFF). When using Bink, 8-bit transparency can be used.
-  The alpha channel should be encoded in the pre-multiplied alpha format.
+    Smacker, only 1-bit transparency can be used. Transparent pixels must have
+    the Cyan color (#00FFFF). When using Bink, 8-bit transparency can be used.
+    The alpha channel should be encoded in the pre-multiplied alpha format.
     The replacement videos can have larger dimensions than the originals
-  but must have the same number of frames and the same frame rate.
+    but must have the same number of frames and the same frame rate.
     Like with PNG files, replacement video files are loaded from mod folders:
-  for instance `mods/[my_mod]/08/02/xarc/011001.bik` is the animation where
-  the tree spirit lifts the egg back into the nest.
+    for instance `mods/[my_mod]/08/02/xarc/011001.bik` is the animation where
+    the tree spirit lifts the egg back into the nest.
 
-  * Load replacement textures for the 3d models.
+-   Load replacement textures for the 3d models.
     Each original `tm` file contains several textures, each with its
-  associated mipmaps. The replacement files are `zip` archives containing
-  `dds` packaged textures. The replacement archives must be placed at the root
-  of the mod directory and be named after the `tm` file they replace:
-  `mods/[my_mod]/april_waitress.tm.zip`.
+    associated mipmaps. The replacement files are `zip` archives containing
+    `dds` packaged textures. The replacement archives must be placed at the root
+    of the mod directory and be named after the `tm` file they replace:
+    `mods/[my_mod]/april_waitress.tm.zip`.
     Each `zip` archive must contain all the textures from the replaced `tm`
-  file. The textures need to be encoded in uncompressed RGB or RGBA `dds`
-  files with mipmaps. Files inside the archive must be named according
-  to the replaced texture name, but with the `bmp` extension replaced with
-  `dds`: `backdress-highres-battic.dds`
+    file. The textures need to be encoded in uncompressed RGB or RGBA `dds`
+    files with mipmaps. Files inside the archive must be named according
+    to the replaced texture name, but with the `bmp` extension replaced with
+    `dds`: `backdress-highres-battic.dds`
     The `extractAllTextures` console command can be used to extract the `tm`
-  files to `png` files.
+    files to `png` files.
 
 Contact us if you need further capabilities for your mod.
 
 ### 3.16) Mickey's Space Adventure notes
 
-To run Mickey's Space Adventure under ScummVM, the original executable
+To run Mickey's Space Adventure under NovelVM, the original executable
 of the game (mickey.exe) is needed together with the game's data files.
 
-There is extensive mouse support for the game under ScummVM, even though
+There is extensive mouse support for the game under NovelVM, even though
 there wasn't any mouse support in the original game. Menu items can be
 selected using the mouse, and it is possible to move to other locations
 using the mouse as well. When the mouse cursor is hovered on the edges
@@ -1137,15 +1142,15 @@ should be encoded and renamed as track32 through to track60.
 For the GOG Might and Magic 4-5 installation, install the game to your
 computer, and do the following steps:
 
-  - The game1.inst (CUE) and game1.gog (BIN) file from the game folder
+-   The game1.inst (CUE) and game1.gog (BIN) file from the game folder
     is a CD image. Use software like Virtual CloneDrive to mount it as a
     drive. Linux and MacOS users can use bchunk to convert it to an ISO.
-  - Copy all the .cc files from the subfolder in the mounted drive to a
+-   Copy all the .cc files from the subfolder in the mounted drive to a
     new empty game folder that you create for the game.
-  - Copy all the music/\*.ogg files from the GOG installation to your
+-   Copy all the music/\*.ogg files from the GOG installation to your
     game folder. You'll then need to rename all of them from xeen??.ogg
     to track??.ogg
-  - You should then be able to point ScummVM to this new game folder,
+-   You should then be able to point NovelVM to this new game folder,
     and the CD talkie version should be detected.
 
 Savegames from either Clouds or Darkside of Xeen games can be
@@ -1156,11 +1161,11 @@ the savegames to use the World of Xeen savegame format, by default
 'worldofxeen.\*'
 
 The Xeen engine also offers two custom options in the Engine tab for the
-games in the ScummVM launcher. They are:
+games in the NovelVM launcher. They are:
 
-  - To change the threshold armor breaks at for characters from -10HP to
+-   To change the threshold armor breaks at for characters from -10HP to
     -80HP
-  - To show values for inventory items, even outside of the blacksmith,
+-   To show values for inventory items, even outside of the blacksmith,
     allowing the relative strength/value of armor and weapons to be
     compared.
 
@@ -1174,20 +1179,21 @@ F5: Menu
 Myst will autosave to slot 0 if no save or an autosave is present in
 slot 0.
 
-### 3.19) Myst3 game notes ###
+### 3.19) Myst3 game notes
 
 You will need to copy the data files from your Myst III CDs or DVD into
 one directory. Specifically, you'll need:
-  * The `M3Data` directory.
-  * The `Data` directory.
-  * The menu language file `[LANGUAGE].m3u` (DVD only).
+
+-   The `M3Data` directory.
+-   The `Data` directory.
+-   The menu language file `[LANGUAGE].m3u` (DVD only).
 
 The game must be at least version 1.1. For most releases of the game, the
 update is already applied on the installation media and no action is
 required.
-Otherwise, ScummVM asks for the update to be installed and refuses to
+Otherwise, NovelVM asks for the update to be installed and refuses to
 run the game. The updates can be downloaded from
-https://scummvm.org/frs/extras/patches/
+https://novelvm.org/frs/extras/patches/
 
 The DVD version is multilingual, you can change the in-game language from
 the game menu. However, you must choose the language of the menus by
@@ -1212,14 +1218,14 @@ The mouse is used to look around and interact with the ages.
 
 Available keyboard shortcuts:
 
-Key           | Binding
-------------- | ------------------------------
-`Escape`      | Original Myst III menu
-`Space`       | Skip cutscenes, interact
-`Ctrl` + `F5` | ScummVM menu
-`Ctrl` + `c`  | Force quit (from command line)
-`Ctrl` + `q`  | Quit (in-game)
-`Alt`  + `s`  | Save a screenshot
+| Key           | Binding                        |
+| ------------- | ------------------------------ |
+| `Escape`      | Original Myst III menu         |
+| `Space`       | Skip cutscenes, interact       |
+| `Ctrl` + `F5` | NovelVM menu                   |
+| `Ctrl` + `c`  | Force quit (from command line) |
+| `Ctrl` + `q`  | Quit (in-game)                 |
+| `Alt` + `s`   | Save a screenshot              |
 
 ### 3.20) Quest for Glory notes
 
@@ -1239,7 +1245,7 @@ for Glory II.
 If you want to use a saved character from the original Sierra
 interpreter, you will need to rename the character file to
 "qfg\[game-number\]-\[character-filename\].sav" and place it in the
-ScummVM save path (see section 6.0), otherwise the file won't get listed
+NovelVM save path (see section 6.0), otherwise the file won't get listed
 on the import screen.
 
 Example: qfg2-thief.sav
@@ -1289,47 +1295,47 @@ missing in both of these versions of The Feeble Files. It's called "The
 Feeble Files - Omni TV and epilogue cutscenes for the Amiga and
 Macintosh versions" and you can get it here:
 
-<https://www.scummvm.org/games/#feeble>
+<https://www.novelvm.org/games/#feeble>
 
 Windows: If you have the Windows version of The Feeble Files, there are
 several things to note.
 
 Many of the files necessary for the game are stored in an InstallShield
-file called data1.cab, which ScummVM is unable to unpack. You will need
+file called data1.cab, which NovelVM is unable to unpack. You will need
 to use the original installer or i5comp to unpack the contents of this
 file. The i5comp decompression tool, can be found via a search on the
 internet.
 
-To use the speech files with ScummVM, they need to be renamed as
+To use the speech files with NovelVM, they need to be renamed as
 follows:
 
-  - Rename voices.wav on CD1 to voices1.wav
-  - Rename voices.wav on CD2 to voices2.wav
-  - Rename voices.wav on CD3 to voices3.wav
-  - Rename voices.wav on CD4 to voices4.wav
+-   Rename voices.wav on CD1 to voices1.wav
+-   Rename voices.wav on CD2 to voices2.wav
+-   Rename voices.wav on CD3 to voices3.wav
+-   Rename voices.wav on CD4 to voices4.wav
 
 ### 3.26) The Legend of Kyrandia notes
 
-To run The Legend of Kyrandia under ScummVM you need the `kyra.dat`
-file. The file should already be included in official ScummVM packages.
-In case ScummVM complains that the file is missing you can find it on
-the `Downloads` page of the ScummVM website. Note that the current
-Windows release of ScummVM should contain the file embedded into the
-executable, thus you only need to grab it in case ScummVM complains
+To run The Legend of Kyrandia under NovelVM you need the `kyra.dat`
+file. The file should already be included in official NovelVM packages.
+In case NovelVM complains that the file is missing you can find it on
+the `Downloads` page of the NovelVM website. Note that the current
+Windows release of NovelVM should contain the file embedded into the
+executable, thus you only need to grab it in case NovelVM complains
 about the file being missing.
 
 ### 3.27) Troll's Tale notes
 
 The original game came in a PC booter disk, therefore it is necessary to
 dump the contents of that disk in an image file and name it "troll.img"
-to be able to play the game under ScummVM.
+to be able to play the game under NovelVM.
 
 ### 3.28) Winnie the Pooh notes
 
 It is possible to import saved games from the original interpreter of
-the game into ScummVM.
+the game into NovelVM.
 
-There is extensive mouse support for the game under ScummVM, even though
+There is extensive mouse support for the game under NovelVM, even though
 there wasn't any mouse support in the original game. Menu items can be
 selected using the mouse, and it is possible to move to other locations
 using the mouse as well. When the mouse cursor is hovered on the edges
@@ -1340,14 +1346,14 @@ is simpler and more straightforward than moving around using the menu.
 
 ### 3.29) Sierra AGI games: Predictive Input Dialog
 
-The Predictive Input Dialog is a ScummVM aid for running AGI engine
+The Predictive Input Dialog is a NovelVM aid for running AGI engine
 games (which notoriously require command line input) on devices with
 limited keyboard support. In these situations, since typing with
 emulated keyboards is quite tedious, commands can be entered quickly and
 easily via the Predictive Input Dialog.
 
 In order to enable predictive input in AGI games, you need to copy the
-pred.dic file in the ScummVM extras directory or the directory of the
+pred.dic file in the NovelVM extras directory or the directory of the
 game you wish to play. This dictionary has been created by parsing
 through all known AGI games and contains the maximum set of common
 words.
@@ -1388,7 +1394,7 @@ to enter the word `look` you must press the following:
 5\#\#6\#\#6\#\#5\#
 
 The dialog is fully usable with the mouse, but a few provisions have
-been made in some ScummVM ports to make its use more comfortable by
+been made in some NovelVM ports to make its use more comfortable by
 naturally mapping the functionality to the numeric keypad. Also, the
 dialog's buttons can be navigated with the arrow and the enter keys.
 
@@ -1397,72 +1403,72 @@ dialog's buttons can be navigated with the arrow and the enter keys.
 Certain CD versions of Sierra SCI games had both speech and text
 resources. Some have an option to toggle between the two, but there are
 some cases where there wasn't any option to enable both simultaneously.
-In ScummVM, it is possible to enjoy a combined mode, where both speech
+In NovelVM, it is possible to enjoy a combined mode, where both speech
 and text are shown at the same time. This mode can be toggled in the
-ScummVM audio options, but each game has different behavior in-game
+NovelVM audio options, but each game has different behavior in-game
 regarding speech and text toggling.
 
 The CD games where speech and subtitles can be shown simultaneously are:
 
-  - EcoQuest 1 CD
-  - Freddy Pharkas CD
-  - Gabriel Knight CD
-  - King's Quest 6 CD
-  - King's Quest VII CD
-  - Laura Bow 2 CD
-  - Leisure Suit Larry 6 CD
-  - Leisure Suit Larry 6 (hires) CD
-  - Police Quest 4 CD
-  - Shivers CD
-  - Space Quest 4 CD
-  - Space Quest 6 CD
-  - Torin's Passage CD
+-   EcoQuest 1 CD
+-   Freddy Pharkas CD
+-   Gabriel Knight CD
+-   King's Quest 6 CD
+-   King's Quest VII CD
+-   Laura Bow 2 CD
+-   Leisure Suit Larry 6 CD
+-   Leisure Suit Larry 6 (hires) CD
+-   Police Quest 4 CD
+-   Shivers CD
+-   Space Quest 4 CD
+-   Space Quest 6 CD
+-   Torin's Passage CD
 
 **EcoQuest 1 CD:** Speech and text can be toggled via the game's "Mode"
-option in the options dialog, or via ScummVM's audio options.
+option in the options dialog, or via NovelVM's audio options.
 
 **Freddy Pharkas CD:** There is no in-game option to toggle speech and
-text. Only ScummVM's audio options can be used to toggle this feature.
+text. Only NovelVM's audio options can be used to toggle this feature.
 Note that some spoken dialog is missing from the game texts.
 
 **Gabriel Knight CD:** Speech and text can be toggled via the "Text" and
-"Voice" buttons in the game's settings dialog, or via ScummVM's audio
+"Voice" buttons in the game's settings dialog, or via NovelVM's audio
 options.
 
 **King's Quest 6 CD:** Speech and text can be toggled via the "Mode"
 button in the options dialog (with an extra "Dual" setting added in
-ScummVM), or via ScummVM's audio options.
+NovelVM), or via NovelVM's audio options.
 
 **King's Quest VII CD:** There is no in-game option to toggle speech and
-text. Only ScummVM's audio options can be used to toggle this feature.
+text. Only NovelVM's audio options can be used to toggle this feature.
 Note that the subtitles were disabled in the official release of this
 game, so some subtitles may be wrong or missing.
 
 **Laura Bow 2 CD:** Speech and text can be toggled via the "Mode" button
-in the options dialog (with an extra "Dual" setting added in ScummVM),
-or via ScummVM's audio options.
+in the options dialog (with an extra "Dual" setting added in NovelVM),
+or via NovelVM's audio options.
 
 **Leisure Suit Larry 6 CD:** Either speech only or speech and text can
 be selected. There is no in-game option to toggle text only. Only
-ScummVM's audio options can be used to enable the text only mode.
+NovelVM's audio options can be used to enable the text only mode.
 
 **Leisure Suit Larry 6 (hires) CD:** Text can be toggled by selecting
-the "Text On/Off" option from the in-game "Game" menu, or via ScummVM's
+the "Text On/Off" option from the in-game "Game" menu, or via NovelVM's
 audio options. Speech cannot be disabled.
 
 **Police Quest 4 CD:** Either speech only or text only can be selected
-from the game's settings dialog. Only ScummVM's audio options can be
+from the game's settings dialog. Only NovelVM's audio options can be
 used to enable text+speech mode.
 
 **Shivers CD:** Text can be toggled by selecting the "Text" option from
-the game's settings dialog, or via ScummVM's audio options. Note that
+the game's settings dialog, or via NovelVM's audio options. Note that
 only videos have subtitles in this game.
 
 **Space Quest 4 CD:** Speech and text can be toggled via the "Display
-Mode" button in the options dialog, or via ScummVM's audio options.
+Mode" button in the options dialog, or via NovelVM's audio options.
 
 **Space Quest 6 CD:** Speech and text can be toggled via the "Speech"
-and "Text" buttons in the game's settings dialog, or via ScummVM's audio
+and "Text" buttons in the game's settings dialog, or via NovelVM's audio
 options.
 
 **Torin's Passage CD:** Text can be toggled by selecting "Closed
@@ -1480,8 +1486,8 @@ corresponding destination.
 
 Download the Liberation(tm) fonts package
 <https://releases.pagure.org/liberation-fonts/liberation-fonts-ttf-2.00.1.tar.gz>
-and unpack all the ttf files into your ScummVM extras directory.
-Alternatively, ScummVM comes with the GNU FreeFont fonts, though at the
+and unpack all the ttf files into your NovelVM extras directory.
+Alternatively, NovelVM comes with the GNU FreeFont fonts, though at the
 time of writing these fonts cause some text rendering issues. Download
 the subtitles patch <https://www.thezorklibrary.com/installguides/znpatch.zip>
 and unzip the addon directory into the game root directory
@@ -1490,27 +1496,27 @@ and unzip the addon directory into the game root directory
 
 Download the Liberation(tm) fonts package
 <https://releases.pagure.org/liberation-fonts/liberation-fonts-ttf-2.00.1.tar.gz>
-and unpack all the ttf files into your ScummVM extras directory.
-Alternatively, ScummVM comes with the GNU FreeFont fonts, though at the
+and unpack all the ttf files into your NovelVM extras directory.
+Alternatively, NovelVM comes with the GNU FreeFont fonts, though at the
 time of writing these fonts cause some text rendering issues.
 
 ### 3.32) Commodore64 games notes
 
 Both Maniac Mansion and Zak McKracken run but Maniac Mansion is not yet
 playable. Simply name the D64 disks "maniac1.d64" and "maniac2.d64"
-respectively "zak1.d64" and "zak2.d64", then ScummVM should be able to
+respectively "zak1.d64" and "zak2.d64", then NovelVM should be able to
 automatically detect the game if you point it at the right directory.
 
 Alternatively, you can use `extract_mm_c64` from the tools package to
 extract the data files. But then the game will not be properly
-autodetected by ScummVM, and you must make sure that the platform is set
+autodetected by NovelVM, and you must make sure that the platform is set
 to Commodore64. We recommend using the much simpler approach described
 in the previous paragraph.
 
 ### 3.33) Macintosh games notes
 
 All LucasArts SCUMM based adventures, except COMI, also exist in
-versions for the Macintosh. ScummVM can use most (all?) of them,
+versions for the Macintosh. NovelVM can use most (all?) of them,
 however, in some cases some additional work is required. First off, if
 you are not using a Macintosh for this, accessing the CD/floppy data
 might be tricky. The reason for this is that the mac uses a special disk
@@ -1521,8 +1527,8 @@ Unix-like operating systems.
 
 Most of the newer games on the Macintosh shipped with only a single data
 file (note that in some cases this data file was made invisible, so you
-may need extra tools in order to copy it). ScummVM is able to directly
-use such a data file; simply point ScummVM at the directory containing
+may need extra tools in order to copy it). NovelVM is able to directly
+use such a data file; simply point NovelVM at the directory containing
 it, and it should work (just like with every other supported game).
 
 We also provide a tool called `extract_scumm_mac` in the tools package
@@ -1532,51 +1538,51 @@ nor recommended.
 For further information on copying Macintosh game files to your hard
 disk see:
 
-<https://wiki.scummvm.org/index.php/HOWTO-Mac_Games>
+<https://wiki.novelvm.org/index.php/HOWTO-Mac_Games>
 
 ## 4.0) Supported Platforms
 
-ScummVM has been ported to run on many platforms and operating systems.
-Links to these ports can be found either on the ScummVM web page or by a
+NovelVM has been ported to run on many platforms and operating systems.
+Links to these ports can be found either on the NovelVM web page or by a
 Google search. Many thanks to our porters for their efforts. If you have
-a port of ScummVM and wish to commit it into the master git, feel free
+a port of NovelVM and wish to commit it into the master git, feel free
 to contact us\!
 
 Supported platforms include (but are not limited to):
 
-  - UNIX (Linux, Solaris, IRIX, \*BSD, ...)
-  - Windows
-  - Mac OS X
-  - AmigaOS
-  - Android
-  - Atari/FreeMiNT
-  - BeOS
-  - Dreamcast
-  - GP2x
-  - Haiku
-  - iPhone (also includes iPod Touch and iPad)
-  - Maemo (Nokia Internet tablet N810)
-  - Nintendo 64
-  - Nintendo DS
-  - Nintendo GameCube
-  - Nintendo Wii
-  - OpenPandora
-  - OS/2
-  - PlayStation 2
-  - PlayStation 3
-  - PlayStation Portable
-  - PlayStation Vita
-  - Raspberry Pi
-  - RISC OS
-  - Symbian
-  - WebOS
+-   UNIX (Linux, Solaris, IRIX, \*BSD, ...)
+-   Windows
+-   Mac OS X
+-   AmigaOS
+-   Android
+-   Atari/FreeMiNT
+-   BeOS
+-   Dreamcast
+-   GP2x
+-   Haiku
+-   iPhone (also includes iPod Touch and iPad)
+-   Maemo (Nokia Internet tablet N810)
+-   Nintendo 64
+-   Nintendo DS
+-   Nintendo GameCube
+-   Nintendo Wii
+-   OpenPandora
+-   OS/2
+-   PlayStation 2
+-   PlayStation 3
+-   PlayStation Portable
+-   PlayStation Vita
+-   Raspberry Pi
+-   RISC OS
+-   Symbian
+-   WebOS
 
 The Dreamcast port does not support The Curse of Monkey Island, nor The
 Dig. The Nintendo DS port does not support Full Throttle, The Dig, or
 The Curse of Monkey Island. For more platform specific limitations,
 please refer to our Wiki:
 
-<https://wiki.scummvm.org/index.php/Platforms>
+<https://wiki.novelvm.org/index.php/Platforms>
 
 In the Macintosh port, the right mouse button is emulated via Cmd-Click
 (that is, you click the mouse button while holding the
@@ -1587,33 +1593,33 @@ Xbox, and Xbox 360. Please note that these are not made
 by us, so we neither endorse nor can we support them. Use at your own
 risk\!
 
-## 5.0) Running ScummVM
+## 5.0) Running NovelVM
 
-Please note that by default, ScummVM will save games in the directory it
+Please note that by default, NovelVM will save games in the directory it
 is executed from, so you should refrain from running it from more than
 one location. Further information, including how to specify a specific
 save directory to avoid this issue, are in section 6.0.
 
-ScummVM can be launched directly by running the executable. In this
+NovelVM can be launched directly by running the executable. In this
 case, the built-in launcher will activate. From this, you can add games
 (click 'Add Game'), or launch games which have already been configured.
 Games can also be added in mass quantities. By pressing shift + 'Add
 Game' (Note that the image turns to 'Mass Add'), you can then specify a
-directory to start in, and ScummVM will attempt to detect games in all
+directory to start in, and NovelVM will attempt to detect games in all
 subdirectories of that directory.
 
-ScummVM can also be launched into a game directly using Command Line
+NovelVM can also be launched into a game directly using Command Line
 arguments -- see the next section.
 
 ### 5.1) Command Line Options
 
-    Usage: scummvm [OPTIONS]... [GAME]
+    Usage: novelvm [OPTIONS]... [GAME]
 
     [GAME]                   Short name of game to load. For example, 'scumm:monkey'
                               for Monkey Island. This can be either a built-in
                               gameid, or a user configured target.
 
-    -v, --version            Display ScummVM version information and exit
+    -v, --version            Display NovelVM version information and exit
     -h, --help               Display a brief help text and exit
     -z, --list-games         Display list of supported games and exit
     -t, --list-targets       Display list of configured targets and exit
@@ -1691,7 +1697,7 @@ arguments -- see the next section.
     --alt-intro              Use alternative intro for CD versions of Beneath a
                               Steel Sky and Flight of the Amazon Queen
     --copy-protection        Enable copy protection in games, when
-                              ScummVM disables it by default.
+                              NovelVM disables it by default.
     --talkspeed=NUM          Set talk delay for SCUMM games, or talk speed for
                               other games (default: 60)
     --demo-mode              Start demo mode of Maniac Mansion (Classic version)
@@ -1710,20 +1716,19 @@ built-in gameid. A brief list of the latter can be found in section 3.0.
 
 Examples:
 
-  - Win32:
+-   Win32:
     Running Monkey Island, fullscreen, from a hard disk:
-    `C:\Games\LucasArts\scummvm.exe -f -pC:\Games\LucasArts\monkey\
-    scumm:monkey`
+    `C:\Games\LucasArts\novelvm.exe -f -pC:\Games\LucasArts\monkey\ scumm:monkey`
     Running Full Throttle from CD, fullscreen and with subtitles
     enabled:
-    `C:\Games\LucasArts\scummvm.exe -f -n -pD:\resource\ scumm:ft`
+    `C:\Games\LucasArts\novelvm.exe -f -n -pD:\resource\ scumm:ft`
 
-  - Unix:
+-   Unix:
     Running Monkey Island, fullscreen, from a hard disk:
-    `/path/to/scummvm -f -p/games/LucasArts/monkey/ scumm:monkey`
+    `/path/to/novelvm -f -p/games/LucasArts/monkey/ scumm:monkey`
     Running Full Throttle from CD, fullscreen and with subtitles
     enabled:
-    `/path/to/scummvm -f -n -p/cdrom/resource/ scumm:ft`
+    `/path/to/novelvm -f -n -p/cdrom/resource/ scumm:ft`
 
 ### 5.2) Global Menu
 
@@ -1732,7 +1737,7 @@ engines by pressing Ctrl-F5. From this menu there are the following
 buttons: Resume, Options, About, Return to Launcher, and Quit. Selecting
 `Options` will display a dialog where basic audio settings, such as
 volume levels, can be adjusted. Selecting 'Return to Launcher' will
-close the current game and return the user back to the ScummVM Launcher,
+close the current game and return the user back to the NovelVM Launcher,
 where another game may be selected to play.
 
 Note: Returning to the Launcher is not supported by all of the engines,
@@ -1774,7 +1779,7 @@ Engines which currently support returning to the Launcher are:
 
 ### 5.3) Graphics filters
 
-ScummVM offers several anti-aliasing filters to attempt to improve
+NovelVM offers several anti-aliasing filters to attempt to improve
 visual quality. These are the same filters used in many other emulators,
 such as MAME. These filters take the original game graphics, and scale
 it by a certain fixed factor (usually 2x or 3x) before displaying them
@@ -1799,15 +1804,15 @@ They are:
     dotmatrix  - Dot matrix effect. Factor 2x.
 
 To select a graphics filter, select it in the Launcher, or pass its name
-via the '-g' option to scummvm, for example:
+via the '-g' option to novelvm, for example:
 
-    scummvm -gadvmame2x scumm:monkey2
+    novelvm -gadvmame2x scumm:monkey2
 
 Note \#1: Not all backends support all (or even any) of the filters
 listed above; some may support additional ones. The filters listed above
 are those supported by the default SDL backend.
 
-Note \#2: Filters can be very slow when ScummVM is compiled in a debug
+Note \#2: Filters can be very slow when NovelVM is compiled in a debug
 configuration without optimizations. And there is always a speed impact
 when using any form of anti-aliasing/linear filtering.
 
@@ -1819,7 +1824,7 @@ Curse of Monkey Island or Broken Sword) will be scaled to 1280x960 and
 
 ### 5.4) Hotkeys
 
-ScummVM supports various in-game hotkeys. They differ between SCUMM
+NovelVM supports various in-game hotkeys. They differ between SCUMM
 games and other games.
 
 ```
@@ -1862,7 +1867,7 @@ games and other games.
     Alt-F5                 - Displays the original save/load box, if the
                              game has one. You can save and load games using
                              this, however it is not intended for this purpose,
-                             and may even crash ScummVM in some games.
+                             and may even crash NovelVM in some games.
     i                      - Displays IQ points (Indiana Jones and the Last
                              Crusade, and Indiana Jones and the Fate of
                              Atlantis)
@@ -1973,7 +1978,7 @@ games and other games.
 
   Starship Titanic:
     Ctrl-c                 - Open up the developer's cheat room
-    Ctrl-d                 - Open up the ScummVM Debugger
+    Ctrl-d                 - Open up the NovelVM Debugger
     Left click             - Move action
     Shift-Left click       - Edit room glyph chevrons and
                               quick movement transitions
@@ -2065,13 +2070,13 @@ synchronisation.
 
 ### 5.5) Language options
 
-ScummVM includes a language option for Maniac Mansion, Zak McKracken,
+NovelVM includes a language option for Maniac Mansion, Zak McKracken,
 The Dig, The Curse of Monkey Island, Beneath a Steel Sky and Broken
 Sword.
 
 Note that with the exception of Beneath a Steel Sky, Broken Sword,
 multilanguage versions of Goblins games and Nippon Safes Inc., using
-this option does *not* change the language of the game (which usually is
+this option does _not_ change the language of the game (which usually is
 hardcoded), but rather is only used to select the appropriate font (e.g.
 for a German version of a game, one containing umlauts).
 
@@ -2132,60 +2137,60 @@ The platforms that currently have a different default directory are:
 
 **Mac OS X:**
 
-`$HOME/Documents/ScummVM Savegames/`
+`$HOME/Documents/NovelVM Savegames/`
 
 **Other unices:**
 
 We follow the XDG Base Directory Specification. This means by default
-saved games can be found in: `$XDG_DATA_HOME/scummvm/saves/`
+saved games can be found in: `$XDG_DATA_HOME/novelvm/saves/`
 
 If `XDG_DATA_HOME` is not defined or empty, `~/.local/share` will be
 used as value of `XDG_DATA_HOME` in accordance with the specification.
 
-If an earlier version of ScummVM was installed on your system, the
-previous default location of `~/.scummvm` will be kept. This is detected
-based on the presence of the path `~/.scummvm`.
+If an earlier version of NovelVM was installed on your system, the
+previous default location of `~/.novelvm` will be kept. This is detected
+based on the presence of the path `~/.novelvm`.
 
 **Windows Vista/7:**
 
-`\Users\username\AppData\Roaming\ScummVM\Saved games\`
+`\Users\username\AppData\Roaming\NovelVM\Saved games\`
 
 **Windows 2000/XP:**
 
-`\Documents and Settings\username\Application Data\ScummVM\Saved games\`
+`\Documents and Settings\username\Application Data\NovelVM\Saved games\`
 
 **Windows NT4:**
 
-`<windir>\Profiles\username\Application Data\ScummVM\Saved games\`
+`<windir>\Profiles\username\Application Data\NovelVM\Saved games\`
 
 Saved games are stored under a hidden area in Windows
 NT4/2000/XP/Vista/7, which can be accessed by running
-`%APPDATA%\ScummVM\Saved Games` or by enabling hidden files in Windows
+`%APPDATA%\NovelVM\Saved Games` or by enabling hidden files in Windows
 Explorer.
 
 Note for Windows NT4/2000/XP/Vista/7 users: The default saved games
-location changed in ScummVM 1.5.0. The migration batch file can be used
+location changed in NovelVM 1.5.0. The migration batch file can be used
 to copy saved games from the old default location, to the new default
 location.
 
 ### 6.1) Autosaves
 
-For some games ScummVM will by default automatically save the current
+For some games NovelVM will by default automatically save the current
 state every five minutes (adjustable via the `autosave_period` config
 setting). The default autosave slot for many engines is slot 0.
 
 The games/engines listed below have autosave support.
 
-  - AGI games
-  - Beneath a Steel Sky
-  - Bud Tucker in Double Trouble
-  - COMPOSER games
-  - Flight of the Amazon Queen
-  - Myst
-  - Riven
-  - SCUMM games
-  - The Legend of Kyrandia I (slot 999)
-  - ZVISION games
+-   AGI games
+-   Beneath a Steel Sky
+-   Bud Tucker in Double Trouble
+-   COMPOSER games
+-   Flight of the Amazon Queen
+-   Myst
+-   Riven
+-   SCUMM games
+-   The Legend of Kyrandia I (slot 999)
+-   ZVISION games
 
 For the SCUMM engine, this saved game can then be loaded again via
 Ctrl-0, or the F5 menu.
@@ -2196,66 +2201,66 @@ Using saved games from original versions isn't supported by all game
 engines. Only the following games can use saved games from their
 original versions.
 
-  - Blade Runner
+-   Blade Runner
 
-      - Use the debugger console and command "save" to save the game to
+    -   Use the debugger console and command "save" to save the game to
         the original format and command "load" to load such a one
-      - Saved games between different languages are interchangeable
-      - It is not recommended to convert saved games from the version
+    -   Saved games between different languages are interchangeable
+    -   It is not recommended to convert saved games from the version
         with restored content as they might behave unexpectedly
         or might cause game breaking bugs
 
-  - Elvira 1
+-   Elvira 1
 
-      - Add 8 bytes (saved game name) to the start of the saved game
+    -   Add 8 bytes (saved game name) to the start of the saved game
         file
-      - Rename the saved game to `elvira1.xxx`
+    -   Rename the saved game to `elvira1.xxx`
 
-  - Elvira 2
+-   Elvira 2
 
-      - Add 8 bytes (saved game name) to the start of the saved game
+    -   Add 8 bytes (saved game name) to the start of the saved game
         file
-      - Rename the saved game to `elvira2-pc.xxx` (DOS version) or
+    -   Rename the saved game to `elvira2-pc.xxx` (DOS version) or
         `elvira2.xxx` (Other versions)
 
-  - Myst
+-   Myst
 
-      - Rename the saved game to `myst-xxx.mys`
-      - Saves from the masterpiece edition and the regular edition are
+    -   Rename the saved game to `myst-xxx.mys`
+    -   Saves from the masterpiece edition and the regular edition are
         interchangeable
 
-  - Riven
+-   Riven
 
-      - Rename the saved game to `riven-xxx.rvn`
-      - Saves from the CD and DVD edition are not interchangeable
+    -   Rename the saved game to `riven-xxx.rvn`
+    -   Saves from the CD and DVD edition are not interchangeable
 
-  - Simon the Sorcerer 1
+-   Simon the Sorcerer 1
 
-      - Rename the saved game to `simon1.xxx`
+    -   Rename the saved game to `simon1.xxx`
 
-  - Simon the Sorcerer 2
+-   Simon the Sorcerer 2
 
-      - Rename the saved game to `simon2.xxx`
+    -   Rename the saved game to `simon2.xxx`
 
-  - Starship Titanic
+-   Starship Titanic
 
-      - Rename the saved game to `titanic-win.xxx` for saves from the
+    -   Rename the saved game to `titanic-win.xxx` for saves from the
         English version and `titanic-win-de.xxx` for saves from the
         German version
-      - Saved games between different languages are not interchangeable
+    -   Saved games between different languages are not interchangeable
 
-  - The Feeble Files
+-   The Feeble Files
 
-      - Rename the saved game to `feeble.xxx`
+    -   Rename the saved game to `feeble.xxx`
 
-  - Waxworks
+-   Waxworks
 
-      - Add 8 bytes (saved game name) to the start of the saved game
+    -   Add 8 bytes (saved game name) to the start of the saved game
         file
-      - Rename the saved game to `waxworks-pc.xxx` (DOS version) or
+    -   Rename the saved game to `waxworks-pc.xxx` (DOS version) or
         `waxworks.xxx` (Other versions)
 
-Where `xxx` is exact the saved game slot (i.e., 001) under ScummVM
+Where `xxx` is exact the saved game slot (i.e., 001) under NovelVM
 
 ### 6.3) Viewing/Loading saved games from the command line
 
@@ -2270,35 +2275,35 @@ game.
 
 Engines which currently support `--list-saves` are:
 
-  - AGI
-  - AGOS
-  - BLADERUNNER
-  - CGE
-  - CINE
-  - CRUISE
-  - CRYOMNI3D
-  - DRACI
-  - GROOVIE
-  - HUGO
-  - KYRA
-  - LURE
-  - MOHAWK
-  - PARALLACTION
-  - QUEEN
-  - SAGA
-  - SCI
-  - SCUMM
-  - SKY
-  - SWORD1
-  - SWORD2
-  - TEENAGENT
-  - TINSEL
-  - TITANIC
-  - TOON
-  - TOUCHE
-  - TSAGE
-  - TUCKER
-  - ZVISION
+-   AGI
+-   AGOS
+-   BLADERUNNER
+-   CGE
+-   CINE
+-   CRUISE
+-   CRYOMNI3D
+-   DRACI
+-   GROOVIE
+-   HUGO
+-   KYRA
+-   LURE
+-   MOHAWK
+-   PARALLACTION
+-   QUEEN
+-   SAGA
+-   SCI
+-   SCUMM
+-   SKY
+-   SWORD1
+-   SWORD2
+-   TEENAGENT
+-   TINSEL
+-   TITANIC
+-   TOON
+-   TOUCHE
+-   TSAGE
+-   TUCKER
+-   ZVISION
 
 **`--save-slot/-x`**
 
@@ -2310,37 +2315,37 @@ slot number.
 
 Engines which currently support `--save-slot` / `-x are`:
 
-  - AGI
-  - BLADERUNNER
-  - CGE
-  - CINE
-  - CRUISE
-  - CRYOMNI3D
-  - DRACI
-  - GROOVIE
-  - HUGO
-  - KYRA
-  - LURE
-  - MOHAWK
-  - QUEEN
-  - SAGA
-  - SCI
-  - SCUMM
-  - SKY
-  - SWORD1
-  - SWORD2
-  - TEENAGENT
-  - TINSEL
-  - TITANIC
-  - TOON
-  - TOUCHE
-  - TSAGE
-  - TUCKER
-  - ZVISION
+-   AGI
+-   BLADERUNNER
+-   CGE
+-   CINE
+-   CRUISE
+-   CRYOMNI3D
+-   DRACI
+-   GROOVIE
+-   HUGO
+-   KYRA
+-   LURE
+-   MOHAWK
+-   QUEEN
+-   SAGA
+-   SCI
+-   SCUMM
+-   SKY
+-   SWORD1
+-   SWORD2
+-   TEENAGENT
+-   TINSEL
+-   TITANIC
+-   TOON
+-   TOUCHE
+-   TSAGE
+-   TUCKER
+-   ZVISION
 
 ## 7.0) Music and Sound
 
-On most operating systems and for most games, ScummVM will by default
+On most operating systems and for most games, NovelVM will by default
 use MT-32 or AdLib emulation for music playback. MIDI may not be
 available on all operating systems or may need manual configuration. If
 you want to use MIDI, you have several different choices of output,
@@ -2365,24 +2370,24 @@ depending on your operating system and configuration.
     windows    - Windows MIDI. Uses built-in sequencer, for Windows users
 
 To select a sound driver, select it in the Launcher, or pass its name
-via the `-e` option to scummvm, for example:
+via the `-e` option to novelvm, for example:
 
-`scummvm -eadlib scumm:monkey2`
+`novelvm -eadlib scumm:monkey2`
 
 ### 7.1) AdLib emulation
 
-By default an AdLib card will be emulated and ScummVM will output the
+By default an AdLib card will be emulated and NovelVM will output the
 music as sampled waves. This is the default mode for several games, and
 offers the best compatibility between machines and games.
 
 ### 7.2) FluidSynth MIDI emulation
 
-If ScummVM was build with libfluidsynth support it will be able to play
+If NovelVM was build with libfluidsynth support it will be able to play
 MIDI music through the FluidSynth driver. You will have to specify a
 SoundFont to use, however.
 
 Since the default output volume from FluidSynth can be fairly low,
-ScummVM will set the gain by default to get a stronger signal. This can
+NovelVM will set the gain by default to get a stronger signal. This can
 be further adjusted using the `--midi-gain` command-line option, or the
 `midi_gain` config file setting.
 
@@ -2396,14 +2401,14 @@ some cases. A fast CPU is recommended.
 ### 7.3) MT-32 emulation
 
 Some games which contain MIDI music data also have improved tracks
-designed for the MT-32 sound module. ScummVM can now emulate this
+designed for the MT-32 sound module. NovelVM can now emulate this
 device, however you must provide original MT-32 ROMs to make it work:
 
 `MT32_PCM.ROM` - IC21 (512KB)
 `MT32_CONTROL.ROM` - IC26 (32KB) and IC27 (32KB), interleaved byte-wise
 
 Place these ROMs in the game directory, in your extrapath, or in the
-directory where your ScummVM executable resides.
+directory where your NovelVM executable resides.
 
 You don't need to specify `--native-mt32` with this driver, as it
 automatically gets turned on.
@@ -2416,7 +2421,7 @@ CPU is strongly recommended.
 Some games (such as Sam & Max) only contain MIDI music data. This once
 prevented music for these games from working on platforms that do not
 support MIDI, or soundcards that do not provide MIDI drivers (e.g. many
-soundcards will not play MIDI under Linux). ScummVM can now emulate MIDI
+soundcards will not play MIDI under Linux). NovelVM can now emulate MIDI
 mode using sampled waves and AdLib, FluidSynth MIDI emulation or MT-32
 emulation using the `-eadlib`, `-efluidsynth` or `-emt32` options
 respectively. However, if you are capable of using native MIDI, we
@@ -2430,19 +2435,19 @@ the Windows MIDI driver, use the `-ewindows` option.
 
 #### 7.5.1) Using MIDI options to customize Native MIDI output
 
-ScummVM supports a variety of MIDI modes, depending on the capabilities
+NovelVM supports a variety of MIDI modes, depending on the capabilities
 of your MIDI device.
 
-If `--native-mt32` is specified, ScummVM will treat your device as a
+If `--native-mt32` is specified, NovelVM will treat your device as a
 real MT-32. Because the instrument mappings and system exclusive
 commands of the MT-32 vary from those of General MIDI devices, you
 should only enable this option if you are using an actual Roland MT-32,
 LAPC-I, CM-64, CM-32L, CM-500, or GS device with an MT-32 map.
 
-If `--enable-gs` is specified, ScummVM will initialize your
+If `--enable-gs` is specified, NovelVM will initialize your
 GS-compatible device with settings that mimic the MT-32's reverb, (lack
 of) chorus, pitch bend sensitivity, etc. If it is specified in
-conjunction with `--native-mt32`, ScummVM will select the
+conjunction with `--native-mt32`, NovelVM will select the
 MT-32-compatible map and drumset on your GS device. This setting works
 better than default GM or GS emulation with games that do not have
 custom instrument mappings (Loom and Monkey1). You should only specify
@@ -2451,7 +2456,7 @@ as an SC-55, SC-88, SC-88 Pro, SC-8820, SC-8850, etc. Please note that
 `--enable-gs` is automatically disabled in both DOTT and Samnmax, since
 they use General MIDI natively.
 
-If neither of the above settings is enabled, ScummVM will initialize
+If neither of the above settings is enabled, NovelVM will initialize
 your device in General MIDI mode and use GM emulation in games with
 MT-32 soundtracks.
 
@@ -2462,13 +2467,13 @@ order to combine MIDI music with AdLib sound effects.
 ### 7.6) UNIX native, ALSA and dmedia sequencer support
 
 If your soundcard driver supports a sequencer, you may set the
-environment variable `SCUMMVM_MIDI` to your sequencer device -- for
+environment variable `NOVELVM_MIDI` to your sequencer device -- for
 example, to /dev/sequencer
 
 If you have problems with not hearing audio in this configuration, you
-may need to set the environment variable `SCUMMVM_MIDIPORT` to 1 or 2.
+may need to set the environment variable `NOVELVM_MIDIPORT` to 1 or 2.
 This selects the port on the selected sequencer to use. Then start
-scummvm with the `-eseq` parameter. This should work on several cards,
+novelvm with the `-eseq` parameter. This should work on several cards,
 and may offer better performance and quality than AdLib emulation.
 However, for those systems where sequencer support does not work, you
 can always fall back on AdLib emulation.
@@ -2476,7 +2481,7 @@ can always fall back on AdLib emulation.
 #### 7.6.1) ALSA sequencer \[UNIX ONLY\]
 
 If you have installed the ALSA driver with sequencer support, then you
-may set the environment variable `SCUMMVM_PORT` or the config file
+may set the environment variable `NOVELVM_PORT` or the config file
 variable `alsa_port` to specify your sequencer port. If neither is set,
 the default behavior is to try both "65:0" and "17:0".
 
@@ -2540,7 +2545,7 @@ command as described earlier in this section.
 #### 7.6.2) IRIX dmedia sequencer: \[UNIX ONLY\]
 
 If you are using IRIX and the dmedia driver with sequencer support, you
-can set the environment variable `SCUMMVM_MIDIPORT` or the config file
+can set the environment variable `NOVELVM_MIDIPORT` or the config file
 variable `dmedia_port` to specify your sequencer port. The default is to
 use the first port.
 
@@ -2553,13 +2558,13 @@ To get a list of configured midi interfaces on your system, run
           Software Synth
 ```
 
-In this example, you can configure ScummVM to use the "Software Synth"
+In this example, you can configure NovelVM to use the "Software Synth"
 instead of the default "Serial Port 2" by adding a line
 
     dmedia_port=Software Synth
 
-to your configuration file in the section \[scummvm\], or setting
-`SCUMMVM_PORT=Software Synth` in your environment.
+to your configuration file in the section \[novelvm\], or setting
+`NOVELVM_PORT=Software Synth` in your environment.
 
 ### 7.7) TiMidity++ MIDI server support
 
@@ -2572,17 +2577,17 @@ First, you need to start a daemon:
 
     timidity -ir 7777
 
-Now you can start ScummVM and try selection TiMidity music output. By
+Now you can start NovelVM and try selection TiMidity music output. By
 default, it will connect to localhost:7777, but you can change host/port
 via the `TIMIDITY_HOST` environment variable. You can also specify a
-"device number" using the `SCUMMVM_MIDIPORT` environment variable.
+"device number" using the `NOVELVM_MIDIPORT` environment variable.
 
 ### 7.8) Using compressed audio files
 
 #### 7.8.1) Using MP3 files for CD audio
 
 Use LAME or some other MP3 encoder to rip the cd audio tracks to files.
-Name the files track1.mp3 track2.mp3 etc. ScummVM must be compiled with
+Name the files track1.mp3 track2.mp3 etc. NovelVM must be compiled with
 MAD support to use this option. You will need to rip the file from the
 CD as a WAV file, then encode the MP3 files in constant bit rate. This
 can be done with the following LAME command line:
@@ -2592,7 +2597,7 @@ can be done with the following LAME command line:
 #### 7.8.2) Using Ogg Vorbis files for CD audio
 
 Use oggenc or some other vorbis encoder to encode the audio tracks to
-files. Name the files track1.ogg track2.ogg etc. ScummVM must be
+files. Name the files track1.ogg track2.ogg etc. NovelVM must be
 compiled with vorbis support to use this option. You will need to rip
 the files from the CD as a WAV file, then encode the vorbis files. This
 can be done with the following oggenc command line with the value after
@@ -2605,7 +2610,7 @@ q specifying the desired quality from 0 to 10:
 Use flac or some other flac encoder to encode the audio tracks to files.
 Name the files track1.flac track2.flac etc. If your filesystem only
 allows three letter extensions, name the files track1.fla track2.fla
-etc. ScummVM must be compiled with flac support to use this option. You
+etc. NovelVM must be compiled with flac support to use this option. You
 will need to rip the files from the CD as a WAV file, then encode the
 flac files. This can be done with the following flac command line:
 
@@ -2617,7 +2622,7 @@ will only affect the encoding time and resulting filesize.
 #### 7.8.4) Compressing MONSTER.SOU with MP3
 
 You need LAME, and our `compress_scumm_sou` utility from the
-scummvm-tools package to perform this task, and ScummVM must be compiled
+novelvm-tools package to perform this task, and NovelVM must be compiled
 with MAD support.
 
     compress_scumm_sou monster.sou
@@ -2627,7 +2632,7 @@ to your game directory. You can safely remove the monster.sou file.
 
 #### 7.8.5) Compressing MONSTER.SOU with Ogg Vorbis
 
-As above, but ScummVM must be compiled with OGG support. Run:
+As above, but NovelVM must be compiled with OGG support. Run:
 
     compress_scumm_sou --vorbis monster.sou
 
@@ -2637,7 +2642,7 @@ of time than MP3, so have a good book handy.
 
 #### 7.8.6) Compressing MONSTER.SOU with Flac
 
-As above, but ScummVM must be compiled with Flac support. Run:
+As above, but NovelVM must be compiled with Flac support. Run:
 
     compress_scumm_sou --flac monster.sou
 
@@ -2651,9 +2656,9 @@ before you use other values.
 
 #### 7.8.7) Compressing music/sfx/speech in AGOS games
 
-Use our `compress_agos` utility from the scummvm-tools package to
+Use our `compress_agos` utility from the novelvm-tools package to
 perform this task. You can choose between multiple target formats, but
-note that you can only use each if ScummVM was compiled with the
+note that you can only use each if NovelVM was compiled with the
 respective decoder support enabled.
 
 ```
@@ -2688,7 +2693,7 @@ file.
 
 #### 7.8.8) Compressing speech/music in Broken Sword
 
-The `compress_sword1` tool from the scummvm-tools package can encode
+The `compress_sword1` tool from the novelvm-tools package can encode
 music and speech to MP3, Ogg Vorbis as well as Flac. The easiest way to
 encode the files is simply copying the executable into your BS1
 directory (together with the lame encoder) and run it from there. This
@@ -2705,9 +2710,9 @@ Use `compress_sword1 --help` to get a full list of the options.
 
 #### 7.8.9) Compressing speech/music in Broken Sword II
 
-Use our `compress_sword2` utility from the scummvm-tools package to
+Use our `compress_sword2` utility from the novelvm-tools package to
 perform this task. You can choose between multiple target formats, but
-note that you can only use each if ScummVM was compiled with the
+note that you can only use each if NovelVM was compiled with the
 respective decoder support enabled.
 
 ```
@@ -2733,14 +2738,14 @@ Sword.
 
 ### 7.9) Output sample rate
 
-The output sample rate tells ScummVM how many sound samples to play per
+The output sample rate tells NovelVM how many sound samples to play per
 channel per second. There is much that could be said on this subject,
 but most of it would be irrelevant here. The short version is that for
 most games 22050 Hz is fine, but in some cases 44100 Hz is preferable.
 On extremely low-end systems you may want to use 11025 Hz, but it is
 unlikely that you have to worry about that.
 
-To elaborate, most of the sounds ScummVM has to play were sampled at
+To elaborate, most of the sounds NovelVM has to play were sampled at
 either 22050 Hz or 11025 Hz. Using a higher sample rate will not
 magically improve the quality of these sounds. Hence, 22050 Hz is fine.
 
@@ -2749,14 +2754,14 @@ probably sampled at 44100 Hz, so for these games that may be a better
 choice of sample rate.
 
 When using the AdLib, FM Towns, PC Speaker or IBM PCjr music drivers,
-ScummVM is responsible for generating the samples. Usually 22050 Hz will
+NovelVM is responsible for generating the samples. Usually 22050 Hz will
 be plenty for these, but there is at least one piece of AdLib music in
 Beneath a Steel Sky that will sound a lot better at 44100 Hz.
 
 Using frequencies in between is not recommended. For one thing, your
-sound card may not support it. In theory, ScummVM should fall back on a
+sound card may not support it. In theory, NovelVM should fall back on a
 sensible frequency in that case, but don't count on it. More
-importantly, ScummVM has to resample all sounds to its output frequency.
+importantly, NovelVM has to resample all sounds to its output frequency.
 This is much easier to do well if the output frequency is a multiple of
 the original frequency.
 
@@ -2766,53 +2771,52 @@ By default, the configuration file is saved in, and loaded from:
 
 **Windows Vista/7:**
 
-`\Users\username\AppData\Roaming\ScummVM\scummvm.ini`
+`\Users\username\AppData\Roaming\NovelVM\novelvm.ini`
 
 **Windows 2000/XP:**
 
-`\Documents and Settings\username\Application Data\ScummVM\scummvm.ini`
+`\Documents and Settings\username\Application Data\NovelVM\novelvm.ini`
 
 **Windows NT4:**
 
-`<windir>\Profiles\username\Application Data\ScummVM\scummvm.ini`
+`<windir>\Profiles\username\Application Data\NovelVM\novelvm.ini`
 
 **Windows 95/98/ME:**
 
-`<windir>\scummvm.ini`
+`<windir>\novelvm.ini`
 
-If an earlier version of ScummVM was installed under Windows, the
-previous default location of `<windir>\scummvm.ini` will be kept.
+If an earlier version of NovelVM was installed under Windows, the
+previous default location of `<windir>\novelvm.ini` will be kept.
 
 **Unix:**
 
 We follow the XDG Base Directory Specification. This means our
-configuration can be found in: `$XDG_CONFIG_HOME/scummvm/scummvm.ini`
+configuration can be found in: `$XDG_CONFIG_HOME/novelvm/novelvm.ini`
 
 If `XDG_CONFIG_HOME` is not defined or empty, `~/.config` will be used
 as value for `XDG_CONFIG_HOME` in accordance with the specification.
 
-If an earlier version of ScummVM was installed on your system, the
-previous default location of `~/.scummvmrc` will be kept.
+If an earlier version of NovelVM was installed on your system, the
+previous default location of `~/.novelvmrc` will be kept.
 
 **Mac OS X:**
 
-`~/Library/Preferences/ScummVM Preferences` (here, `~` refers to your
+`~/Library/Preferences/NovelVM Preferences` (here, `~` refers to your
 home directory)
 
 **iOS:**
 
-
 For sandboxed version: `/Preferences`
-Otherwise: `/var/mobile/Library/ScummVM/Preferences`
+Otherwise: `/var/mobile/Library/NovelVM/Preferences`
 
 **Others:**
 
-`scummvm.ini` in the current directory
+`novelvm.ini` in the current directory
 
 An example config file looks as follows:
 
 ```
-    [scummvm]
+    [novelvm]
     gfx_mode=supereagle
     fullscreen=true
     savepath=C:\saves\
@@ -2859,12 +2863,12 @@ The following keywords are recognized:
                                 saved games.
     screenshotpath     string   The path to where screenshots are saved.
     iconspath          string   The path to where to look for icons to use as
-                                overlay for the ScummVM icon in the Windows
+                                overlay for the NovelVM icon in the Windows
                                 taskbar or macOS X Dock when running a game.
                                 The icon files should be named after the game
                                 ids and be in ico format on Windows or png
                                 format on macOS X.
-    versioninfo        string   The version of the ScummVM that created the
+    versioninfo        string   The version of the NovelVM that created the
                                 configuration file.
 
     gameid             string   The real id of a game. Useful if you have
@@ -2927,7 +2931,7 @@ The following keywords are recognized:
                                 supported by some MIDI drivers.)
 
     copy_protection    bool     Enable copy protection in certain games, in
-                                those cases where ScummVM disables it by
+                                those cases where NovelVM disables it by
                                 default.
     demo_mode          bool     Start demo in Maniac Mansion
     alt_intro          bool     Use alternative intro for CD versions of
@@ -2939,7 +2943,7 @@ The following keywords are recognized:
 Sierra games using the AGI engine add the following non-standard keywords:
 
     originalsaveload   bool     If true, the original save/load screens are
-                                used instead of the enhanced ScummVM ones
+                                used instead of the enhanced NovelVM ones
     altamigapalette    bool     Use an alternative palette, common for all
                                 Amiga games. This was the old behavior
     mousesupport       bool     Enables mouse support. Allows to use mouse
@@ -2951,7 +2955,7 @@ Sierra games using the SCI engine add the following non-standard keywords:
     prefer_digitalsfx  bool     If true, digital sound effects are preferred
                                 instead of synthesized ones
     originalsaveload   bool     If true, the original save/load screens are
-                                used instead of the enhanced ScummVM ones
+                                used instead of the enhanced NovelVM ones
     native_fb01        bool     If true, the music driver for an IBM Music
                                 Feature card or a Yamaha FB-01 FM synth module
                                 is used for MIDI output
@@ -2963,10 +2967,10 @@ Sierra games using the SCI engine add the following non-standard keywords:
                                 instead of the normal golden ones (Space Quest 4)
 
 Blade Runner adds the following non-standard keywords:
-    shorty             bool     If true, game will shrink the actors and make
-                                their voices high pitched
-    sitcom             bool     If true, game will add laughter after actor's
-                                line or narration
+shorty bool If true, game will shrink the actors and make
+their voices high pitched
+sitcom bool If true, game will add laughter after actor's
+line or narration
 
 Broken Sword II adds the following non-standard keywords:
 
@@ -3054,7 +3058,7 @@ keywords:
 The Neverhood adds the following non-standard keywords:
 
     originalsaveload   bool     If true, the original save/load screens are
-                                used instead of the enhanced ScummVM ones
+                                used instead of the enhanced NovelVM ones
     skiphallofrecordsscenes     bool
                                 If true, allows the player to skip
                                 past the Hall of Records storyboard scenes
@@ -3072,7 +3076,7 @@ The 7th Guest adds the following non-standard keyword:
 Zork Nemesis: The Forbidden Lands adds the following non-standard keywords:
 
     originalsaveload   bool     If true, the original save/load screens are
-                                used instead of the enhanced ScummVM ones
+                                used instead of the enhanced NovelVM ones
     doublefps          bool     If true, game FPS are increased from 30 to 60
     venusenabled       bool     If true, the in-game Venus help system is
                                 enabled
@@ -3082,7 +3086,7 @@ Zork Nemesis: The Forbidden Lands adds the following non-standard keywords:
 Zork: Grand Inquisitor adds the following non-standard keywords:
 
     originalsaveload   bool     If true, the original save/load screens are
-                                used instead of the enhanced ScummVM ones
+                                used instead of the enhanced NovelVM ones
     doublefps          bool     If true, game FPS are increased from 30 to 60
     noanimwhileturning bool     If true, animations are disabled while turning
                                 in panoramic mode
@@ -3096,7 +3100,7 @@ A lot of the custom game options in the previous section can be toggled
 via the GUI. If a custom option is available for a specific game, a new
 tab called "Engine" will appear when adding or editing the configuration
 of that game. If the custom options are not shown, the games in question
-will need to be run once or readded in the ScummVM launcher's game list.
+will need to be run once or readded in the NovelVM launcher's game list.
 This will update the configuration of each entry, allowing the custom
 options to be shown.
 
@@ -3107,26 +3111,26 @@ can use alt+s to take snapshots (see section 5.4 - Hotkeys).
 
 You can specify the directory in which you want the screenshots to be
 created in the config file. To do so add a screenshotpath value under
-the `[scummvm]` section:
+the `[novelvm]` section:
 
-    [scummvm]
+    [novelvm]
     screenshotpath=/path/to/screenshots/
 
 The default location, when no screenshot path is defined in the config
 file, depends on the OS:
 
-  - Windows: In `Users\username\My Pictures\ScummVM Screenshots`.
-  - macOS X: On the Desktop.
-  - Other unices: In the XDG Pictures user directory,
-      e.g. `~/Pictures/ScummVM Screenshots`
-  - Any other OS: In the current directory.
+-   Windows: In `Users\username\My Pictures\NovelVM Screenshots`.
+-   macOS X: On the Desktop.
+-   Other unices: In the XDG Pictures user directory,
+    e.g. `~/Pictures/NovelVM Screenshots`
+-   Any other OS: In the current directory.
 
 ## 10.0) Compiling
 
-For an up-to-date overview on how to compile ScummVM for various
+For an up-to-date overview on how to compile NovelVM for various
 platforms, please consult our Wiki, in particular this page:
 
-<https://wiki.scummvm.org/index.php/Compiling_ScummVM>
+<https://wiki.novelvm.org/index.php/Compiling_NovelVM>
 
 If you are compiling for Windows, Linux or Mac OS X, you need SDL-1.2.2
 or newer (older versions may work, but are unsupported), and a supported
@@ -3136,7 +3140,7 @@ tracks or .SOU files, you will need to install the MAD library; likewise
 you will need the appropriate libraries for Ogg Vorbis and FLAC
 compressed sound. For compressed save states, zlib is required.
 
-Some parts of ScummVM, particularly scalers, have highly optimized
+Some parts of NovelVM, particularly scalers, have highly optimized
 versions written in assembler. If you wish to use this option, you will
 need to install nasm assembler (see <https://www.nasm.us/>). Note that
 we currently only have x86 MMX optimized versions, and they will not
@@ -3146,111 +3150,112 @@ On Windows, you can define `USE_WINDBG` and attach WinDbg to browse
 debug messages (see
 <https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/index>).
 
-  - Windows:
+-   Windows:
 
-      - MinGW:
+    -   MinGW:
 
-          - Please refer to:
-            <https://wiki.scummvm.org/index.php/Compiling_ScummVM/MinGW>
+        -   Please refer to:
+            <https://wiki.novelvm.org/index.php/Compiling_NovelVM/MinGW>
 
-      - Visual Studio (MSVC):
+    -   Visual Studio (MSVC):
 
-          - Please refer to:
-            <https://wiki.scummvm.org/index.php/Compiling_ScummVM/Visual_Studio>
+        -   Please refer to:
+            <https://wiki.novelvm.org/index.php/Compiling_NovelVM/Visual_Studio>
 
-  - Linux:
+-   Linux:
 
-      - GCC:
+    -   GCC:
 
-          - Please refer to:
-            <https://wiki.scummvm.org/index.php/Compiling_ScummVM/GCC>
+        -   Please refer to:
+            <https://wiki.novelvm.org/index.php/Compiling_NovelVM/GCC>
 
-  - AmigaOS4:
+-   AmigaOS4:
 
-      - Please refer to:
-        <https://wiki.scummvm.org/index.php/Compiling_ScummVM/AmigaOS4>
+    -   Please refer to:
+        <https://wiki.novelvm.org/index.php/Compiling_NovelVM/AmigaOS4>
 
-  - Apple iPhone:
+-   Apple iPhone:
 
-      - Please refer to:
-        <https://wiki.scummvm.org/index.php/Compiling_ScummVM/iPhone>
+    -   Please refer to:
+        <https://wiki.novelvm.org/index.php/Compiling_NovelVM/iPhone>
 
-  - Atari/FreeMiNT:
+-   Atari/FreeMiNT:
 
-      - Please refer to:
-        <https://wiki.scummvm.org/index.php/Compiling_ScummVM/Atari/FreeMiNT>
+    -   Please refer to:
+        <https://wiki.novelvm.org/index.php/Compiling_NovelVM/Atari/FreeMiNT>
 
-  - BeOS/ZETA/Haiku:
+-   BeOS/ZETA/Haiku:
 
-      - Please refer to:
-        <https://wiki.scummvm.org/index.php/Compiling_ScummVM/BeOS/ZETA/Haiku>
+    -   Please refer to:
+        <https://wiki.novelvm.org/index.php/Compiling_NovelVM/BeOS/ZETA/Haiku>
 
-  - Google Android:
+-   Google Android:
 
-      - Please refer to:
-        <https://wiki.scummvm.org/index.php/Compiling_ScummVM/Android>
+    -   Please refer to:
+        <https://wiki.novelvm.org/index.php/Compiling_NovelVM/Android>
 
-  - HP webOS:
+-   HP webOS:
 
-      - Please refer to:
-        <https://wiki.scummvm.org/index.php/Compiling_ScummVM/WebOS>
+    -   Please refer to:
+        <https://wiki.novelvm.org/index.php/Compiling_NovelVM/WebOS>
 
-  - Mac OS:
+-   Mac OS:
 
-      - Mac OS X:
+    -   Mac OS X:
 
-          - Please refer to:
-            <https://wiki.scummvm.org/index.php/Compiling_ScummVM/macOS>
+        -   Please refer to:
+            <https://wiki.novelvm.org/index.php/Compiling_NovelVM/macOS>
 
-      - Mac OS X 10.2.8:
+    -   Mac OS X 10.2.8:
 
-          - Please refer to:
-            <https://wiki.scummvm.org/index.php/Compiling_ScummVM/Mac_OS_X_10.2.8>
+        -   Please refer to:
+            <https://wiki.novelvm.org/index.php/Compiling_NovelVM/Mac_OS_X_10.2.8>
 
-      - Mac OS X Crosscompiling:
+    -   Mac OS X Crosscompiling:
 
-          - Please refer to:
-            <https://wiki.scummvm.org/index.php/Compiling_ScummVM/Mac_OS_X_Crosscompiling>
+        -   Please refer to:
+            <https://wiki.novelvm.org/index.php/Compiling_NovelVM/Mac_OS_X_Crosscompiling>
 
-  - Maemo:
+-   Maemo:
 
-      - Please refer to:
-        <https://wiki.scummvm.org/index.php/Compiling_ScummVM/Maemo>
+    -   Please refer to:
+        <https://wiki.novelvm.org/index.php/Compiling_NovelVM/Maemo>
 
-  - Nintendo Wii and Gamecube:
+-   Nintendo Wii and Gamecube:
 
-      - Please refer to:
-        <https://wiki.scummvm.org/index.php/Compiling_ScummVM/Wii>
+    -   Please refer to:
+        <https://wiki.novelvm.org/index.php/Compiling_NovelVM/Wii>
 
-  - Raspberry Pi:
+-   Raspberry Pi:
 
-      - Please refer to:
-        <https://wiki.scummvm.org/index.php/Compiling_ScummVM/RPI>
+    -   Please refer to:
+        <https://wiki.novelvm.org/index.php/Compiling_NovelVM/RPI>
 
-  - Sega Dreamcast:
+-   Sega Dreamcast:
 
-      - Please refer to:
-        <https://wiki.scummvm.org/index.php/Compiling_ScummVM/Dreamcast>
+    -   Please refer to:
+        <https://wiki.novelvm.org/index.php/Compiling_NovelVM/Dreamcast>
 
-  - Sony Playstation:
+-   Sony Playstation:
 
-      - Sony PlayStation 2:
+    -   Sony PlayStation 2:
 
-          - Please refer to:
-            <https://wiki.scummvm.org/index.php/Compiling_ScummVM/PlayStation_2>
+        -   Please refer to:
+            <https://wiki.novelvm.org/index.php/Compiling_NovelVM/PlayStation_2>
 
-      - Sony PlayStation 3:
-          - Please refer to:
-            <https://wiki.scummvm.org/index.php/PlayStation_3#Building_from_source>
+    -   Sony PlayStation 3:
 
-      - Sony PlayStation Portable:
-          - Please refer to:
-            <https://wiki.scummvm.org/index.php/Compiling_ScummVM/PlayStation_Portable>
+        -   Please refer to:
+            <https://wiki.novelvm.org/index.php/PlayStation_3#Building_from_source>
 
-  - Symbian:
+    -   Sony PlayStation Portable:
+        -   Please refer to:
+            <https://wiki.novelvm.org/index.php/Compiling_NovelVM/PlayStation_Portable>
 
-      - Please refer to:
-        <https://wiki.scummvm.org/index.php/Compiling_ScummVM/Symbian>
+-   Symbian:
+
+    -   Please refer to:
+        <https://wiki.novelvm.org/index.php/Compiling_NovelVM/Symbian>
 
 ## 11.0) Changelog
 
@@ -3260,8 +3265,8 @@ Please refer to our extensive Changelog [here](NEWS.md).
 
 Please refer to our extensive Credits list [here](AUTHORS).
 
------
+---
 
 > Good Luck and Happy Adventuring\!
-> The ScummVM team.
-> <https://www.scummvm.org/>
+> The NovelVM team.
+> <https://www.novelvm.org/>

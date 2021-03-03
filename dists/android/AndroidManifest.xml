@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="org.scummvm.scummvm"
+	package="org.novelvm.novelvm"
 	android:installLocation="auto"
 	android:launchMode="singleTask"
-	android:sharedUserId="org.scummvm.scummvm">
+	android:sharedUserId="org.novelvm.novelvm">
 
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -33,7 +33,7 @@
 	<application
 		android:allowBackup="true"
 		android:description="@string/app_desc"
-		android:icon="@mipmap/scummvm"
+		android:icon="@mipmap/novelvm"
 		android:isGame="true"
 		android:label="@string/app_name"
 		android:resizeableActivity="false"
@@ -54,7 +54,7 @@
 			</intent-filter>
 		</activity>
 		<activity
-			android:name=".ScummVMActivity"
+			android:name=".NovelVMActivity"
 			android:banner="@drawable/leanback_icon"
 			android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
 			android:screenOrientation="landscape"

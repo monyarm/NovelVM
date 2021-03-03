@@ -14,7 +14,7 @@ mkdir testbed
 cd testbed
 
 # For game detection
-echo "ScummVM rocks!" > TESTBED
+echo "NovelVM rocks!" > TESTBED
 
 mkdir test1
 mkdir Test2

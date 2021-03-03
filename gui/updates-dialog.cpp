@@ -46,7 +46,7 @@ UpdatesDialog::UpdatesDialog() : Dialog(30, 20, 260, 124) {
 	int buttonHeight = g_gui.xmlEval()->getVar("Globals.Button.Height", 0);
 
 	Common::U32String message = _(
-		"ScummVM now supports automatic check for updates\n"
+		"NovelVM now supports automatic check for updates\n"
 		"which requires access to the Internet. Would you\n"
 		"like to enable this feature?");
 	Common::U32String message2 = _("You can change this setting later in the Misc tab\n"

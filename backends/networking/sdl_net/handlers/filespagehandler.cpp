@@ -182,7 +182,7 @@ void FilesPageHandler::addItem(Common::String &content, const Common::String &it
 void FilesPageHandler::handle(Client &client) {
 	Common::String response =
 		"<html>" \
-		"<head><title>ScummVM</title><meta charset=\"utf-8\"/></head>" \
+		"<head><title>NovelVM</title><meta charset=\"utf-8\"/></head>" \
 		"<body>" \
 		"<p>{create_directory_desc}</p>" \
 		"<form action=\"create\">" \
@@ -215,7 +215,7 @@ void FilesPageHandler::handle(Client &client) {
 
 	// show an error message if failed to list directory
 	if (!listDirectory(path, content, itemTemplate)) {
-		HandlerUtils::setFilesManagerErrorMessageHandler(client, Common::convertFromU32String(_("ScummVM couldn't list the directory you specified.")).c_str());
+		HandlerUtils::setFilesManagerErrorMessageHandler(client, Common::convertFromU32String(_("NovelVM couldn't list the directory you specified.")).c_str());
 		return;
 	}
 

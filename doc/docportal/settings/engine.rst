@@ -6,8 +6,8 @@ Use the Engine tab to change settings that are unique to the game being played.
 
 From the Launcher, highlight a game on the games list, select **Edit Game**, and then select the **Engine** tab. This tab is not available for all games. 
 
-To find out which engine powers your game, have a look at the ScummVM Supported Games `wiki page
-<https://wiki.scummvm.org/index.php?title=Category:Supported_Games>`_. 
+To find out which engine powers your game, have a look at the NovelVM Supported Games `wiki page
+<https://wiki.novelvm.org/index.php?title=Category:Supported_Games>`_. 
 
 Engines: ADL_ | AGI_ | BLADERUNNER_ | CGE_ | CINE_ | DRASCULA_ | DREAMWEB_ | HDB_ | HOPKINS_ | KYRA_ | LURE_ | MADS_ | NEVERHOOD_ | SCI_ | SCUMM_ | SHERLOCK_ | SKY_ | SUPERNOVA_ | TOLTECS_ | WINTERMUTE_ | XEEN_ |
 
@@ -62,7 +62,7 @@ AGI
 .. _osl:
 
 Use original save/load screens
-	Uses the original save/load screens instead of the ScummVM screens. 
+	Uses the original save/load screens instead of the NovelVM screens. 
 
 	*originalsaveload* 
 
@@ -165,7 +165,7 @@ CINE
 *********
 
 Use original save/load screen
-	Uses the original save/load screens instead of the ScummVM screens. 
+	Uses the original save/load screens instead of the NovelVM screens. 
 
 	*originalsaveload* 
 
@@ -184,7 +184,7 @@ DRASCULA
 *************
 
 Use original save/load screens
-	Uses the original save/load screens instead of the ScummVM screens. 
+	Uses the original save/load screens instead of the NovelVM screens. 
 
 	*originalsaveload* 
 
@@ -196,7 +196,7 @@ DREAMWEB
 **********
 
 Use original save/load screens
-	Uses the original save/load screens instead of the ScummVM screens. 
+	Uses the original save/load screens instead of the NovelVM screens. 
 
 	*originalsaveload* 
 
@@ -361,7 +361,7 @@ NEVERHOOD
 ************
 
 Use original save/load screens
-	Uses the original save/load screens instead of the ScummVM screens. 
+	Uses the original save/load screens instead of the NovelVM screens. 
 
 	*originalsaveload* 
 
@@ -441,7 +441,7 @@ Prefer digital sound effects
 	*prefer_digitalsfx*
 
 Use original save/load screens
-	Uses the original save/load screens instead of the ScummVM screens. 
+	Uses the original save/load screens instead of the NovelVM screens. 
 
 	*originalsaveload* 
 
@@ -516,7 +516,7 @@ SHERLOCK
 *********
 
 Use original load/save screens
-	Uses the original save/load screens instead of the ScummVM screens.
+	Uses the original save/load screens instead of the NovelVM screens.
 	
 	*originalsaveload* 
 
@@ -596,7 +596,7 @@ TOLTECS
 **************
 
 Use original save/load screens
-	Uses the original save/load screens instead of the ScummVM screens. 
+	Uses the original save/load screens instead of the NovelVM screens. 
 
 	*originalsaveload* 
 	

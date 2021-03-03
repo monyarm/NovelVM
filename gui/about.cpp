@@ -96,10 +96,10 @@ AboutDialog::AboutDialog()
 		_lines.push_back(U32String());
 
 	Common::String version("C0""ScummVM ");
-	version += gScummVMVersion;
+	version += gNovelVMVersion;
 	_lines.push_back(version);
 
-	Common::U32String date = Common::U32String::format(_("(built on %s)"), gScummVMBuildDate);
+	Common::U32String date = Common::U32String::format(_("(built on %s)"), gNovelVMBuildDate);
 	_lines.push_back(U32String("C2") + date);
 
 	for (i = 0; i < ARRAYSIZE(copyright_text); i++)
@@ -109,7 +109,7 @@ AboutDialog::AboutDialog()
 	features += _("Features compiled in:");
 	addLine(features);
 	Common::String featureList("C0");
-	featureList += gScummVMFeatures;
+	featureList += gNovelVMFeatures;
 	addLine(featureList);
 
 	_lines.push_back(U32String());

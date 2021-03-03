@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<map id="101" type="xml" fname="scummvm.xml" width="57" height="11" levels="1"
+<map id="101" type="xml" fname="novelvm.xml" width="57" height="11" levels="1"
  borderbehavior="exit" showavatar="true" music="2" tileset="base" tilemap="base">
 	<tiles>
 		127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127

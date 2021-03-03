@@ -151,7 +151,7 @@ SUPPORTED_VIDEO_DIALOGUE_SHEETS_LOCALIZED = ['INTRO_', 'MW_A_', 'MW_B01_', 'MW_B
 # Each Text Resource (TRx) sheet gets a specific font to handle their translation to Text Resource
 # TAHOMA means both TAHOMA Fonts (18 and 24)(their translation should be identical (although in the original they have minor differences but they don't affect anything)
 # We use a single naming for TAHOMA here because both TAHOMA18 and TAHOMA24 are used for ENDCRED.TRx
-# The TRx files that are identically named to the originals are supposed to override them (needs ScummVM compatible functionality for that)
+# The TRx files that are identically named to the originals are supposed to override them (needs NovelVM compatible functionality for that)
 # This is so that fan made translations are supported.
 # V:1.00 - Added 'SBTLVERS.TR' here to provide info for the versioning and compilation date of the Subtitles.MIX file
 SUPPORTED_TRANSLATION_SHEETS = [('OPTIONS.TR', 'KIA6PT'),
@@ -171,13 +171,13 @@ SUPPORTED_TRANSLATION_SHEETS = [('OPTIONS.TR', 'KIA6PT'),
 								('ENDCRED.TR', 'TAHOMA'),
 								('POGO.TR', 'KIA6PT'),
 								(SUPPORTED_DIALOGUE_VERSION_SHEET[:-1], SUBTITLES_FONT_NAME_CATEGORY)]
-# The FON files that are identically named to the originals are supposed to override them (needs ScummVM compatible functionality for that)
+# The FON files that are identically named to the originals are supposed to override them (needs NovelVM compatible functionality for that)
 # We don't deal with 10PT.FON since it's not used.
 # Also we don't deal with the SYSTEM (external OS font) that ERRORMSG.TRx uses!
 # TODO we probably could skip importing ERRORMSG.TRx (to SUBTITLES.MIX) altogether, since translating that has no point! In that case SYSTEM.FON should be removed from here since it's currently of no use otherwise and support for it is not really required.
 SUPPORTED_OTHER_FILES_FOR_MIX = [DEFAULT_SUBTITLES_FONT_NAME, 'KIA6PT.FON', 'TAHOMA18.FON', 'TAHOMA24.FON', 'SYSTEM.FON']
 
-# v1.10: Russian code (RU_RUS) now corresponds to 'E' suffix instead of 'R' since the unofficial Russian version supported uses the English resources without renaming them, and this is how the ScummVM engine handles that version currently.
+# v1.10: Russian code (RU_RUS) now corresponds to 'E' suffix instead of 'R' since the unofficial Russian version supported uses the English resources without renaming them, and this is how the NovelVM engine handles that version currently.
 SUPPORTED_LANGUAGES_DESCRIPTION_CODE_TLIST = [('EN_ANY', 'E', 'English'), ('DE_DEU', 'G', 'German'), ('FR_FRA', 'F', 'French'), ('IT_ITA', 'I', 'Italian'), ('ES_ESP', 'S', 'Spanish'), ('RU_RUS', 'E', 'Russian'), ('EFIGS', '#', 'EFIGS')]
 DEFAULT_LANG_DESC_CODE = SUPPORTED_LANGUAGES_DESCRIPTION_CODE_TLIST[0]
 

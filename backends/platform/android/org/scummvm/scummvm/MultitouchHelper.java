@@ -1,5 +1,5 @@
 
-package org.scummvm.scummvm;
+package org.novelvm.novelvm;
 
 import android.os.Message;
 import android.util.Log;
@@ -10,10 +10,10 @@ import androidx.annotation.NonNull;
 
 import java.lang.ref.WeakReference;
 
-import static org.scummvm.scummvm.ScummVMEventsBase.JE_MULTI;
+import static org.novelvm.novelvm.NovelVMEventsBase.JE_MULTI;
 
 public class MultitouchHelper {
-	private final ScummVM _scummvm;
+	private final NovelVM _novelvm;
 
 	private boolean _candidateStartOfMultitouchSession;
 	// a flag indicating whether we are in multitouch mode (more than one fingers down)
@@ -49,8 +49,8 @@ public class MultitouchHelper {
 	final private MultitouchHelper.MultitouchHelperHandler _multiTouchLevelUpgradeHandler = new MultitouchHelper.MultitouchHelperHandler(this);
 
 	// constructor
-	public MultitouchHelper(ScummVM scummvm) {
-		_scummvm = scummvm;
+	public MultitouchHelper(NovelVM novelvm) {
+		_novelvm = novelvm;
 
 		_multitouchMode = false;
 		_multitouchLevel =  0;
@@ -162,7 +162,7 @@ public class MultitouchHelper {
 							}
 
 							// send the missing pointer down event first
-							_scummvm.pushEvent(JE_MULTI,
+							_novelvm.pushEvent(JE_MULTI,
 								event.getPointerCount(),
 								MotionEvent.ACTION_POINTER_DOWN,
 								actionEventX,
@@ -177,7 +177,7 @@ public class MultitouchHelper {
 				}
 
 //				if (pointerIndex == -1) {
-//					Log.d(ScummVM.LOG_TAG,"Warning: pointerIndex == -1 and getPointerCount = " + event.getPointerCount());
+//					Log.d(NovelVM.LOG_TAG,"Warning: pointerIndex == -1 and getPointerCount = " + event.getPointerCount());
 //				}
 
 				if (pointerIndex != -1) {
@@ -191,7 +191,7 @@ public class MultitouchHelper {
 				// we are only concerned for events with fingers down equal to the decided level of multitouch session
 				if (getMultitouchLevel() == event.getPointerCount()) {
 					// arg1 will be the number of fingers down in the MULTI event we send to events.cpp
-					_scummvm.pushEvent(JE_MULTI,
+					_novelvm.pushEvent(JE_MULTI,
 						event.getPointerCount(),
 						event.getAction(),
 						actionEventX,
@@ -246,7 +246,7 @@ public class MultitouchHelper {
 				setMultitouchLevel(2);
 
 				// send the delayed pointer down event
-				_scummvm.pushEvent(JE_MULTI,
+				_novelvm.pushEvent(JE_MULTI,
 					2,
 					MotionEvent.ACTION_POINTER_DOWN,
 					_cachedActionEventOnPointer2DownX,

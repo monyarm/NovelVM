@@ -8,5 +8,5 @@ PRJ_MMPFILES
 
 //STOP_AUTO_PROJECTS//
 
-.\ScummVM_S60.mmp
-.\ScummVM_S60_App.mmp
+.\NovelVM_S60.mmp
+.\NovelVM_S60_App.mmp

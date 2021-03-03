@@ -136,11 +136,8 @@ jint JNI::onLoad(JavaVM *vm) {
 	if (_vm->GetEnv((void **)&env, JNI_VERSION_1_2))
 		return JNI_ERR;
 
-#ifdef BACKEND_ANDROID3D
-	jclass cls = env->FindClass("org/residualvm/residualvm/ResidualVM");
-#else
-	jclass cls = env->FindClass("org/scummvm/scummvm/ScummVM");
-#endif
+
+	jclass cls = env->FindClass("org/novelvm/novelvm/NovelVM");
 	if (cls == 0)
 		return JNI_ERR;
 
@@ -387,14 +384,14 @@ void JNI::showKeyboardControl(bool enable) {
 // The following adds assets folder to search set.
 // However searching and retrieving from "assets" on Android this is slow
 // so we also make sure to add the "path" directory, with a higher priority
-// This is done via a call to ScummVMActivity's (java) getSysArchives
+// This is done via a call to NovelVMActivity's (java) getSysArchives
 void JNI::addSysArchivesToSearchSet(Common::SearchSet &s, int priority) {
 	JNIEnv *env = JNI::getEnv();
 
-	// get any additional specified paths (from ScummVMActivity code)
+	// get any additional specified paths (from NovelVMActivity code)
 	// Insert them with "priority" priority.
 	jobjectArray array =
-		(jobjectArray)env->CallObjectMethod(_jobj, _MID_getSysArchives);
+	    (jobjectArray)env->CallObjectMethod(_jobj, _MID_getSysArchives);
 
 	if (env->ExceptionCheck()) {
 		LOGE("Error finding system archive path");
@@ -514,9 +511,9 @@ void JNI::setAudioStop() {
 // natives for the dark side
 
 void JNI::create(JNIEnv *env, jobject self, jobject asset_manager,
-				jobject egl, jobject egl_display,
-				jobject at, jint audio_sample_rate, jint audio_buffer_size) {
-	LOGI("%s", gScummVMFullVersion);
+                 jobject egl, jobject egl_display,
+                 jobject at, jint audio_sample_rate, jint audio_buffer_size) {
+	LOGI("%s", gNovelVMFullVersion);
 
 	assert(!_system);
 
@@ -568,8 +565,8 @@ void JNI::create(JNIEnv *env, jobject self, jobject asset_manager,
 	cls = env->GetObjectClass(_jobj_egl);
 
 	FIND_METHOD(EGL10_, eglSwapBuffers,
-				"(Ljavax/microedition/khronos/egl/EGLDisplay;"
-				"Ljavax/microedition/khronos/egl/EGLSurface;)Z");
+	            "(Ljavax/microedition/khronos/egl/EGLDisplay;"
+	            "Ljavax/microedition/khronos/egl/EGLSurface;)Z");
 
 	_jobj_audio_track = env->NewGlobalRef(at);
 
@@ -624,7 +621,7 @@ jint JNI::main(JNIEnv *env, jobject self, jobjectArray args) {
 	int argc = env->GetArrayLength(args);
 	if (argc > MAX_NARGS) {
 		throwByName(env, "java/lang/IllegalArgumentException",
-					"too many arguments");
+		            "too many arguments");
 		return 0;
 	}
 
@@ -651,11 +648,11 @@ jint JNI::main(JNIEnv *env, jobject self, jobjectArray args) {
 		env->DeleteLocalRef(arg);
 	}
 
-	LOGI("Entering scummvm_main with %d args", argc);
+	LOGI("Entering novelvm_main with %d args", argc);
 
-	res = scummvm_main(argc, argv);
+	res = novelvm_main(argc, argv);
 
-	LOGI("scummvm_main exited with code %d", res);
+	LOGI("novelvm_main exited with code %d", res);
 
 	_system->quit();
 
@@ -680,7 +677,7 @@ cleanup:
 }
 
 void JNI::pushEvent(JNIEnv *env, jobject self, int type, int arg1, int arg2,
-					int arg3, int arg4, int arg5, int arg6) {
+                    int arg3, int arg4, int arg5, int arg6) {
 	// drop events until we're ready and after we quit
 	if (!_ready_for_events) {
 		LOGW("dropping event");
@@ -706,8 +703,8 @@ void JNI::setPause(JNIEnv *env, jobject self, jboolean value) {
 
 #ifdef BACKEND_ANDROID3D
 		if (value &&
-				g_engine->hasFeature(Engine::kSupportsSavingDuringRuntime) &&
-				g_engine->canSaveGameStateCurrently())
+		    g_engine->hasFeature(Engine::kSupportsSavingDuringRuntime) &&
+		    g_engine->canSaveGameStateCurrently())
 			g_engine->saveGameState(0, "Android parachute");
 #endif
 	}
@@ -723,7 +720,7 @@ void JNI::setPause(JNIEnv *env, jobject self, jboolean value) {
 
 
 jstring JNI::getNativeVersionInfo(JNIEnv *env, jobject self) {
-	return convertToJString(env, Common::U32String(gScummVMVersion));
+	return convertToJString(env, Common::U32String(gNovelVMVersion));
 }
 
 jstring JNI::convertToJString(JNIEnv *env, const Common::U32String &str) {
@@ -752,7 +749,7 @@ Common::Array<Common::String> JNI::getAllStorageLocations() {
 	JNIEnv *env = JNI::getEnv();
 
 	jobjectArray array =
-		(jobjectArray)env->CallObjectMethod(_jobj, _MID_getAllStorageLocations);
+	    (jobjectArray)env->CallObjectMethod(_jobj, _MID_getAllStorageLocations);
 
 	if (env->ExceptionCheck()) {
 		LOGE("Error finding system archive path");

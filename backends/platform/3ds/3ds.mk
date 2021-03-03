@@ -1,11 +1,11 @@
-TARGET := scummvm
+TARGET := novelvm
 
-APP_TITLE       := ScummVM
+APP_TITLE       := NovelVM
 APP_DESCRIPTION := Point-and-click adventure game engines
-APP_AUTHOR      := ScummVM Team
+APP_AUTHOR      := NovelVM Team
 APP_ICON        := $(srcdir)/backends/platform/3ds/app/icon.png
 
-APP_RSF         := $(srcdir)/backends/platform/3ds/app/scummvm.rsf
+APP_RSF         := $(srcdir)/backends/platform/3ds/app/novelvm.rsf
 APP_BANNER_IMAGE:= $(srcdir)/backends/platform/3ds/app/banner.png
 APP_BANNER_AUDIO:= $(srcdir)/backends/platform/3ds/app/banner.wav
 

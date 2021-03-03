@@ -6,14 +6,14 @@
 # leave one space after the ':'.
 
        |-----handy-ruler------------------------------------------------------|
-scummvm: ScummVM
-scummvm:
-scummvm: ScummVM is a collection of interpreters, capable of emulating
-scummvm: several adventure game engines. ScummVM mainly supports engines
-scummvm: created using SCUMM (Script Creation Utility for Maniac Mansion),
-scummvm: used in various LucasArts games such as Monkey Island, Day of the
-scummvm: Tentacle, and others. ScummVM also contains interpreters for several
-scummvm: non-SCUMM games, currently these are Beneath a Steel Sky, Broken
-scummvm: Sword I & II and Simon the Sorcerer 1 & 2.
-scummvm:
-scummvm:
+novelvm: NovelVM
+novelvm:
+novelvm: NovelVM is a collection of interpreters, capable of emulating
+novelvm: several adventure game engines. NovelVM mainly supports engines
+novelvm: created using SCUMM (Script Creation Utility for Maniac Mansion),
+novelvm: used in various LucasArts games such as Monkey Island, Day of the
+novelvm: Tentacle, and others. NovelVM also contains interpreters for several
+novelvm: non-SCUMM games, currently these are Beneath a Steel Sky, Broken
+novelvm: Sword I & II and Simon the Sorcerer 1 & 2.
+novelvm:
+novelvm:

@@ -17,7 +17,7 @@
  * https://developer.android.com/reference/android/inputmethodservice/KeyboardView
  */
 
-package org.scummvm.scummvm;
+package org.novelvm.novelvm;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -458,7 +458,7 @@ public class CustomKeyboardView extends View implements View.OnClickListener {
                     float deltaY = me2.getY() - me1.getY();
                     int travelX = getWidth() / 2; // Half the keyboard width
                     int travelY = getHeight() / 2; // Half the keyboard height
-                    //Log.d(ScummVM.LOG_TAG, "mSwipeTracker.computeCurrentVelocity()");
+                    //Log.d(NovelVM.LOG_TAG, "mSwipeTracker.computeCurrentVelocity()");
                     mSwipeTracker.computeCurrentVelocity(1000);
                     final float endingVelocityX = mSwipeTracker.getXVelocity();
                     final float endingVelocityY = mSwipeTracker.getYVelocity();
@@ -494,7 +494,7 @@ public class CustomKeyboardView extends View implements View.OnClickListener {
                     }
 
                     if (sendDownKey) {
-                        //Log.d(ScummVM.LOG_TAG, "CustomKeyboardView::  initGestureDetector() - sendDownKey");
+                        //Log.d(NovelVM.LOG_TAG, "CustomKeyboardView::  initGestureDetector() - sendDownKey");
                         detectAndSendKey(mDownKey, mStartX, mStartY, me1.getEventTime(), false, false);
                     }
                     return false;
@@ -882,12 +882,12 @@ public class CustomKeyboardView extends View implements View.OnClickListener {
     }
 
     private void detectAndSendKey(int index, int x, int y, long eventTime, boolean isRepeated, boolean isReleaseKey) {
-        //Log.d(ScummVM.LOG_TAG, "CustomKeyboardView:: index =" + index + "isRelease: "+ isReleaseKey);
+        //Log.d(NovelVM.LOG_TAG, "CustomKeyboardView:: index =" + index + "isRelease: "+ isReleaseKey);
         if (index != NOT_A_KEY && index < mKeys.length) {
             final CustomKeyboard.CustomKey key = mKeys[index];
             if (key.text != null) {
                 mKeyboardActionListener.onText(key.text);
-                //Log.d(ScummVM.LOG_TAG, "CustomKeyboardView:: detectAndSendKey - (key.text != null)");
+                //Log.d(NovelVM.LOG_TAG, "CustomKeyboardView:: detectAndSendKey - (key.text != null)");
                 mKeyboardActionListener.onRelease(NOT_A_KEY);
             } else {
                 int code = key.codes[0];
@@ -904,7 +904,7 @@ public class CustomKeyboardView extends View implements View.OnClickListener {
                     }
                     code = key.codes[mTapCount];
                 }
-                //Log.d(ScummVM.LOG_TAG, "CustomKeyboardView:: detectAndSendKey - (key.text is null) code = " + code + " x: " + x + " y: " + y);
+                //Log.d(NovelVM.LOG_TAG, "CustomKeyboardView:: detectAndSendKey - (key.text is null) code = " + code + " x: " + x + " y: " + y);
                 if (!isReleaseKey) {
                     mKeyboardActionListener.onKey(code, codes);
                 }
@@ -1170,7 +1170,7 @@ public class CustomKeyboardView extends View implements View.OnClickListener {
                         Context.LAYOUT_INFLATER_SERVICE);
                 mMiniKeyboardContainer = inflater.inflate(mPopupLayout, null);
                 mMiniKeyboard = (CustomKeyboardView) mMiniKeyboardContainer.findViewById(
-                    R.id.ScummVMKeyboardView);
+                    R.id.NovelVMKeyboardView);
                 View closeButton = mMiniKeyboardContainer.findViewById(
                     android.R.id.closeButton);
                 if (closeButton != null) closeButton.setOnClickListener(this);
@@ -1213,7 +1213,7 @@ public class CustomKeyboardView extends View implements View.OnClickListener {
                 mMiniKeyboardCache.put(popupKey, mMiniKeyboardContainer);
             } else {
                 mMiniKeyboard = (CustomKeyboardView) mMiniKeyboardContainer.findViewById(
-                    R.id.ScummVMKeyboardView);
+                    R.id.NovelVMKeyboardView);
             }
             getLocationInWindow(mCoordinates);
             mPopupX = popupKey.x + getPaddingLeft();
@@ -1405,7 +1405,7 @@ public class CustomKeyboardView extends View implements View.OnClickListener {
                             // Unfortunately, we will also get a "release" event on MotionEvent.ACTION_UP but that is safe since it is ignored
                             removeMessages();
                             if (mRepeatKeyIndex >= 0 && !mMiniKeyboardOnScreen && !mAbortKey) {
-                                //Log.d(ScummVM.LOG_TAG, "CustomKeyboardView:: onModifiedTouchEvent - MotionEvent.ACTION_MOVE Final Rep");
+                                //Log.d(NovelVM.LOG_TAG, "CustomKeyboardView:: onModifiedTouchEvent - MotionEvent.ACTION_MOVE Final Rep");
                                 detectAndSendKey(mCurrentKey, touchX, touchY, eventTime, true, true);
                             }
                             showPreview(NOT_A_KEY);
@@ -1449,10 +1449,10 @@ public class CustomKeyboardView extends View implements View.OnClickListener {
                 Arrays.fill(mKeyIndices, NOT_A_KEY);
                 // If we're not on a repeating key (which sends on a DOWN event)
                 if (mRepeatKeyIndex == NOT_A_KEY && !mMiniKeyboardOnScreen && !mAbortKey) {
-                    //Log.d(ScummVM.LOG_TAG, "CustomKeyboardView:: onModifiedTouchEvent - MotionEvent.ACTION_UP No Rep");
+                    //Log.d(NovelVM.LOG_TAG, "CustomKeyboardView:: onModifiedTouchEvent - MotionEvent.ACTION_UP No Rep");
                     detectAndSendKey(mCurrentKey, touchX, touchY, eventTime, false, true);
                 } else if (mRepeatKeyIndex >= 0 && mRepeatKeyIndex != NOT_A_KEY && !mMiniKeyboardOnScreen && !mAbortKey) {
-                    //Log.d(ScummVM.LOG_TAG, "CustomKeyboardView:: onModifiedTouchEvent - MotionEvent.ACTION_UP Final Rep");
+                    //Log.d(NovelVM.LOG_TAG, "CustomKeyboardView:: onModifiedTouchEvent - MotionEvent.ACTION_UP Final Rep");
                     detectAndSendKey(mCurrentKey, touchX, touchY, eventTime, true, true);
                 }
                 invalidateKey(keyIndex);
@@ -1474,7 +1474,7 @@ public class CustomKeyboardView extends View implements View.OnClickListener {
 //    @UnsupportedAppUsage
     private boolean repeatKey() {
         CustomKeyboard.CustomKey key = mKeys[mRepeatKeyIndex];
-        //Log.d(ScummVM.LOG_TAG, "CustomKeyboardView:: repeatKey");
+        //Log.d(NovelVM.LOG_TAG, "CustomKeyboardView:: repeatKey");
         detectAndSendKey(mCurrentKey, key.x, key.y, mLastTapTime, true, false);
         return true;
     }
@@ -1580,7 +1580,7 @@ public class CustomKeyboardView extends View implements View.OnClickListener {
         }
 
         public void addMovement(MotionEvent ev) {
-            //Log.d(ScummVM.LOG_TAG, "SwipeTracker - Add Movement");
+            //Log.d(NovelVM.LOG_TAG, "SwipeTracker - Add Movement");
             long time = ev.getEventTime();
             final int N = ev.getHistorySize();
             for (int i=0; i<N; i++) {

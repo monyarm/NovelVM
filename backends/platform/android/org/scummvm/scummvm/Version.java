@@ -1,4 +1,4 @@
-package org.scummvm.scummvm;
+package org.novelvm.novelvm;
 
 // Based on code from: https://stackoverflow.com/a/11024200
 public class Version implements Comparable<Version> {

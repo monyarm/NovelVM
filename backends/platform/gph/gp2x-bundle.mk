@@ -1,6 +1,6 @@
 # Special target to create bundles for the GP2X.
 
-bundle_name = release/scummvm-gp2x
+bundle_name = release/novelvm-gp2x
 f=$(shell which $(STRIP))
 libloc = $(shell dirname $(f))
 
@@ -12,8 +12,8 @@ gp2x-bundle: $(EXECUTABLE)
 
 	echo "Please put your save games in this dir" >> "$(bundle_name)/saves/PUT_SAVES_IN_THIS_DIR"
 
-	$(CP) $(srcdir)/dists/gph/gp2x/scummvm.gpe $(bundle_name)
-	$(CP) $(srcdir)/dists/gph/scummvm.png $(bundle_name)
+	$(CP) $(srcdir)/dists/gph/gp2x/novelvm.gpe $(bundle_name)
+	$(CP) $(srcdir)/dists/gph/novelvm.png $(bundle_name)
 	$(CP) $(srcdir)/dists/gph/README-GPH $(bundle_name)
 	$(CP) $(srcdir)/dists/gph/gp2x/mmuhack/mmuhack.o $(bundle_name)
 
@@ -50,8 +50,8 @@ gp2x-bundle-debug: $(EXECUTABLE)
 
 	echo "Please put your save games in this dir" >> "$(bundle_name)/saves/PUT_SAVES_IN_THIS_DIR"
 
-	$(CP) $(srcdir)/dists/gph/gp2x/scummvm.gpe $(bundle_name)
-	$(CP) $(srcdir)/dists/gph/scummvm.png $(bundle_name)
+	$(CP) $(srcdir)/dists/gph/gp2x/novelvm.gpe $(bundle_name)
+	$(CP) $(srcdir)/dists/gph/novelvm.png $(bundle_name)
 	$(CP) $(srcdir)/dists/gph/README-GPH $(bundle_name)
 	$(CP) $(srcdir)/dists/gph/gp2x/mmuhack/mmuhack.o $(bundle_name)
 
@@ -70,8 +70,8 @@ endif
 	$(INSTALL) -c -m 777 $(srcdir)/$(EXECUTABLE) $(bundle_name)/$(EXECUTABLE)
 
 ifdef DYNAMIC_MODULES
-	$(INSTALL) -d "$(bundle_name)/scummvm/plugins"
-	$(INSTALL) -c -m 644 $(PLUGINS) "$(bundle_name)/scummvm/plugins"
+	$(INSTALL) -d "$(bundle_name)/novelvm/plugins"
+	$(INSTALL) -c -m 644 $(PLUGINS) "$(bundle_name)/novelvm/plugins"
 endif
 
 	$(CP) $(libloc)/../arm-open2x-linux/lib/libdl.so $(bundle_name)/lib/libdl.so

@@ -1,53 +1,53 @@
 <?xml version="1.0"?>
-<!-- When creating new keyboard layout, add it to TextInputKeyboardList array in ScummVMActivity.java -->
-<CustomKeyboard xmlns:scummvm="http://schemas.android.com/apk/res-auto"
-	scummvm:keyWidth="10%p"
-	scummvm:horizontalGap="0px"
-	scummvm:verticalGap="0px"
-	scummvm:keyHeight="10%p">
+<!-- When creating new keyboard layout, add it to TextInputKeyboardList array in NovelVMActivity.java -->
+<CustomKeyboard xmlns:novelvm="http://schemas.android.com/apk/res-auto"
+	novelvm:keyWidth="10%p"
+	novelvm:horizontalGap="0px"
+	novelvm:verticalGap="0px"
+	novelvm:keyHeight="10%p">
 	<CustomRow>
-		<CustomKey scummvm:codes="45" scummvm:keyLabel="q" scummvm:isRepeatable="true" scummvm:keyEdgeFlags="left"/>
-		<CustomKey scummvm:codes="51" scummvm:keyLabel="w" scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="33" scummvm:keyLabel="e" scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="46" scummvm:keyLabel="r" scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="48" scummvm:keyLabel="t" scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="53" scummvm:keyLabel="y" scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="49" scummvm:keyLabel="u" scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="37" scummvm:keyLabel="i" scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="43" scummvm:keyLabel="o" scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="44" scummvm:keyLabel="p" scummvm:isRepeatable="true" scummvm:keyEdgeFlags="right"/>
+		<CustomKey novelvm:codes="45" novelvm:keyLabel="q" novelvm:isRepeatable="true" novelvm:keyEdgeFlags="left"/>
+		<CustomKey novelvm:codes="51" novelvm:keyLabel="w" novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="33" novelvm:keyLabel="e" novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="46" novelvm:keyLabel="r" novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="48" novelvm:keyLabel="t" novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="53" novelvm:keyLabel="y" novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="49" novelvm:keyLabel="u" novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="37" novelvm:keyLabel="i" novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="43" novelvm:keyLabel="o" novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="44" novelvm:keyLabel="p" novelvm:isRepeatable="true" novelvm:keyEdgeFlags="right"/>
 	</CustomRow>
 	<CustomRow>
-		<CustomKey scummvm:codes="29" scummvm:keyLabel="a" scummvm:isRepeatable="true" scummvm:keyEdgeFlags="left"/>
-		<CustomKey scummvm:codes="47" scummvm:keyLabel="s" scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="32" scummvm:keyLabel="d" scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="34" scummvm:keyLabel="f" scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="35" scummvm:keyLabel="g" scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="36" scummvm:keyLabel="h" scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="38" scummvm:keyLabel="j" scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="39" scummvm:keyLabel="k" scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="40" scummvm:keyLabel="l" scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="74" scummvm:keyLabel=";" scummvm:isRepeatable="true" scummvm:keyEdgeFlags="right"/>
+		<CustomKey novelvm:codes="29" novelvm:keyLabel="a" novelvm:isRepeatable="true" novelvm:keyEdgeFlags="left"/>
+		<CustomKey novelvm:codes="47" novelvm:keyLabel="s" novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="32" novelvm:keyLabel="d" novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="34" novelvm:keyLabel="f" novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="35" novelvm:keyLabel="g" novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="36" novelvm:keyLabel="h" novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="38" novelvm:keyLabel="j" novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="39" novelvm:keyLabel="k" novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="40" novelvm:keyLabel="l" novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="74" novelvm:keyLabel=";" novelvm:isRepeatable="true" novelvm:keyEdgeFlags="right"/>
 	</CustomRow>
 	<CustomRow>
-		<CustomKey scummvm:codes="-1" scummvm:keyLabel="⇪" scummvm:keyEdgeFlags="left"/>
-		<CustomKey scummvm:codes="54" scummvm:keyLabel="z" scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="52" scummvm:keyLabel="x" scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="31" scummvm:keyLabel="c" scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="50" scummvm:keyLabel="v" scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="30" scummvm:keyLabel="b" scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="42" scummvm:keyLabel="n" scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="41" scummvm:keyLabel="m" scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="67" scummvm:keyLabel="⬅" scummvm:isRepeatable="true" scummvm:keyWidth="20%p" scummvm:keyEdgeFlags="right"/>
+		<CustomKey novelvm:codes="-1" novelvm:keyLabel="⇪" novelvm:keyEdgeFlags="left"/>
+		<CustomKey novelvm:codes="54" novelvm:keyLabel="z" novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="52" novelvm:keyLabel="x" novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="31" novelvm:keyLabel="c" novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="50" novelvm:keyLabel="v" novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="30" novelvm:keyLabel="b" novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="42" novelvm:keyLabel="n" novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="41" novelvm:keyLabel="m" novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="67" novelvm:keyLabel="⬅" novelvm:isRepeatable="true" novelvm:keyWidth="20%p" novelvm:keyEdgeFlags="right"/>
 	</CustomRow>
 	<CustomRow rowEdgeFlags="bottom">
-		<CustomKey scummvm:codes="-6" scummvm:keyLabel="123…"  scummvm:keyEdgeFlags="left"/>
-		<CustomKey scummvm:codes="71" scummvm:keyLabel="["     scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="72" scummvm:keyLabel="]"     scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="76" scummvm:keyLabel="/"     scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="62" scummvm:keyLabel="Space" scummvm:isRepeatable="true" scummvm:keyWidth="20%p"/>
-		<CustomKey scummvm:codes="55" scummvm:keyLabel=","     scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="56" scummvm:keyLabel="."     scummvm:isRepeatable="true"/>
-		<CustomKey scummvm:codes="66" scummvm:keyLabel="Enter" scummvm:isRepeatable="true" scummvm:keyWidth="20%p" scummvm:keyEdgeFlags="right"/>
+		<CustomKey novelvm:codes="-6" novelvm:keyLabel="123…"  novelvm:keyEdgeFlags="left"/>
+		<CustomKey novelvm:codes="71" novelvm:keyLabel="["     novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="72" novelvm:keyLabel="]"     novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="76" novelvm:keyLabel="/"     novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="62" novelvm:keyLabel="Space" novelvm:isRepeatable="true" novelvm:keyWidth="20%p"/>
+		<CustomKey novelvm:codes="55" novelvm:keyLabel=","     novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="56" novelvm:keyLabel="."     novelvm:isRepeatable="true"/>
+		<CustomKey novelvm:codes="66" novelvm:keyLabel="Enter" novelvm:isRepeatable="true" novelvm:keyWidth="20%p" novelvm:keyEdgeFlags="right"/>
 	</CustomRow>
 </CustomKeyboard>

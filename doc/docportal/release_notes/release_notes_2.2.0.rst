@@ -42,7 +42,7 @@ General
 ****************
 
     - Autosaves are now supported for all the engines.
-    - Errors are more likely to open the debugger, and be displayed, than just crash ScummVM.
+    - Errors are more likely to open the debugger, and be displayed, than just crash NovelVM.
     - Games are sorted in GUI ignoring the articles.
     - Now Hebrew is displayed correctly in GUI (requires FriBiDi library).
     - Updated the Roland MT-32 emulation code to Munt 2.4.0.
@@ -137,7 +137,7 @@ Supernova
 Sky
 ********
 
-    - Fixed syncing of music volume between built-in settings panel and ScummVM configuration. 
+    - Fixed syncing of music volume between built-in settings panel and NovelVM configuration. 
 
 Sword1
 ********
@@ -195,18 +195,18 @@ iOS port
     - Fixed unsupported graphic mode for some games (such as SCI games with high quality video scaling enabled).
     - Removed Quit button to follow the iOS design guidelines.
     - Removed virtual keyboard input assistant bar. In particular this means that we no longer see a bar at the bottom of the screen when using an external keyboard.
-    - Added save of current game state if possible when switching to a different task and restore game state when returning to the ScummVM task. 
+    - Added save of current game state if possible when switching to a different task and restore game state when returning to the NovelVM task. 
 
 Linux port
 ************
 
-    - Added option to use the system file browser instead of the ScummVM file browser. 
+    - Added option to use the system file browser instead of the NovelVM file browser. 
 
 MacOS X port
 *************
 
     - Fixed blurry on Retina screens. Unfortunately this required dropping support for the dark theme for window decorations.
-    - Fixed Taskbar icon display when running a game (this was broken since ScummVM 1.9.0). 
+    - Fixed Taskbar icon display when running a game (this was broken since NovelVM 1.9.0). 
 
 RISC OS port
 *****************

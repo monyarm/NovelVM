@@ -38,14 +38,14 @@
 namespace GUI {
 
 Widget::Widget(GuiObject *boss, int x, int y, int w, int h, const Common::U32String &tooltip)
-	: GuiObject(x, y, w, h), _type(0), _boss(boss), _tooltip(tooltip),
-	  _flags(0), _hasFocus(false), _state(ThemeEngine::kStateEnabled) {
+    : GuiObject(x, y, w, h), _type(0), _boss(boss), _tooltip(tooltip),
+      _flags(0), _hasFocus(false), _state(ThemeEngine::kStateEnabled) {
 	init();
 }
 
 Widget::Widget(GuiObject *boss, const Common::String &name, const Common::U32String &tooltip)
-	: GuiObject(name), _type(0), _boss(boss), _tooltip(tooltip),
-	  _flags(0), _hasFocus(false), _state(ThemeEngine::kStateDisabled) {
+    : GuiObject(name), _type(0), _boss(boss), _tooltip(tooltip),
+      _flags(0), _hasFocus(false), _state(ThemeEngine::kStateDisabled) {
 	init();
 }
 
@@ -281,8 +281,8 @@ Common::U32String Widget::cleanupHotkey(const Common::U32String &label) {
 
 void Widget::read(const Common::U32String &str) {
 #ifdef USE_TTS
-	if (ConfMan.hasKey("tts_enabled", "scummvm") &&
-			ConfMan.getBool("tts_enabled", "scummvm")) {
+	if (ConfMan.hasKey("tts_enabled", "novelvm") &&
+	    ConfMan.getBool("tts_enabled", "novelvm")) {
 		Common::TextToSpeechManager *ttsMan = g_system->getTextToSpeechManager();
 		if (ttsMan == nullptr)
 			return;

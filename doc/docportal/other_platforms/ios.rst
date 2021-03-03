@@ -3,37 +3,37 @@
 iOS
 ==============
 
-This page contains all the information you need to get ScummVM up and running on an iOS device.
+This page contains all the information you need to get NovelVM up and running on an iOS device.
 
 
-Installing ScummVM
+Installing NovelVM
 =====================
-There are two ways to install ScummVM on an iOS device, and the method you use depends on whether or not the device has custom firmware installed. 
+There are two ways to install NovelVM on an iOS device, and the method you use depends on whether or not the device has custom firmware installed. 
 
 Devices without custom firmware
 ************************************
 
-To installing ScummVM on an iOS device without custom firmware you need to build the app from the source code, and then install it on your device. While a basic knowledge of the command line would be useful, the following instructions, if followed carefully, can be completed by anyone. 
+To installing NovelVM on an iOS device without custom firmware you need to build the app from the source code, and then install it on your device. While a basic knowledge of the command line would be useful, the following instructions, if followed carefully, can be completed by anyone. 
 
 What you'll need
 ^^^^^^^^^^^^^^^^^^^^
 
 - A Mac computer with Xcode installed. Xcode is a free App, available from the Mac App Store.
 - An Apple Developer account. You can sign up for a free account on the `Apple Developer Member Center <https://developer.apple.com/membercenter/>`_ with your Apple ID. 
-- The ScummVM `iOS Libraries <https://www.scummvm.org/frs/build/scummvm-ios7-libs-v2.zip>`_ downloaded, and the zip file extracted. 
+- The NovelVM `iOS Libraries <https://www.novelvm.org/frs/build/novelvm-ios7-libs-v2.zip>`_ downloaded, and the zip file extracted. 
 
 .. note::
 
-    If you have a free Apple developer account, each build will only be valid for 7 days, which means you will need to repeat these steps and rebuild ScummVM every week.
+    If you have a free Apple developer account, each build will only be valid for 7 days, which means you will need to repeat these steps and rebuild NovelVM every week.
 
 Step 1: Setting up the Xcode project
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The first step is to download the repository containing the code required to build the app. The next steps require use of the command line. Go to **Applications > Utilities > Terminal** and copy and paste the following, then press :kbd:`return`. This downloads (clones) the source code into your Home directory, into a folder called ``scummvm``:
+The first step is to download the repository containing the code required to build the app. The next steps require use of the command line. Go to **Applications > Utilities > Terminal** and copy and paste the following, then press :kbd:`return`. This downloads (clones) the source code into your Home directory, into a folder called ``novelvm``:
 
 .. code-block:: bash
 
-    git clone --depth 1 -b branch-2-2-0 https://github.com/scummvm/scummvm.git
+    git clone --depth 1 -b branch-2-2-0 https://github.com/novelvm/novelvm.git
 
 .. tip::
 
@@ -47,11 +47,11 @@ Create a new directory called ``build`` at the same level as the repository you 
 
     mkdir build
 
-Copy the contents of the ``scummvm-ios7-libs-v2`` folder you extracted earlier into the ``build`` directory, using either the Finder, or the command line as follows: 
+Copy the contents of the ``novelvm-ios7-libs-v2`` folder you extracted earlier into the ``build`` directory, using either the Finder, or the command line as follows: 
 
 .. code-block::
 
-    cp -r ~/Downloads/scummvm-ios7-libs-v2/* ~/build/
+    cp -r ~/Downloads/novelvm-ios7-libs-v2/* ~/build/
 
 If your downloaded iOS library folder is not in the Downloads folder as it is in the preceding example, change the path to where the folder actually is. 
 
@@ -59,7 +59,7 @@ Now let's change the present working directory and then set up the tools require
 
 .. code-block:: bash
 
-    cd scummvm/devtools/create_project/xcode
+    cd novelvm/devtools/create_project/xcode
     xcodebuild
 
 
@@ -76,36 +76,36 @@ It's time to generate the Xcode project. Run the following on the command line:
 
 .. code::
 
-    ../scummvm/devtools/create_project/xcode/build/Release/create_project ../scummvm --xcode --enable-fluidsynth --disable-nasm --disable-opengl --disable-theora --disable-taskbar --disable-tts --disable-fribidi
+    ../novelvm/devtools/create_project/xcode/build/Release/create_project ../novelvm --xcode --enable-fluidsynth --disable-nasm --disable-opengl --disable-theora --disable-taskbar --disable-tts --disable-fribidi
 
 The resulting directory structure looks like this:
 
 .. code-block:: bash
 
     Home
-     |--scummvm
+     |--novelvm
      '--build
          |-- include 
          |-- lib
          |-- engines
-         '-- scummvm.xcodeproj
+         '-- novelvm.xcodeproj
 
 
-Open the ``scummvm.xcodeproj`` file from the Finder, or from the command line:
+Open the ``novelvm.xcodeproj`` file from the Finder, or from the command line:
 
 .. code-block:: bash
 
-    open scummvm.xcodeproj
+    open novelvm.xcodeproj
 
-Step 3: Building the ScummVM app
+Step 3: Building the NovelVM app
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-When Xcode is open, connect a device to install ScummVM onto. At the top of the window, select **ScummVM-iOS** and then select the device you just connected. You will need to "Trust" the device for it to show up on the list of connected devices. 
+When Xcode is open, connect a device to install NovelVM onto. At the top of the window, select **NovelVM-iOS** and then select the device you just connected. You will need to "Trust" the device for it to show up on the list of connected devices. 
 
 .. figure:: ../images/ios/choose_device.gif
 
    
-The last step before building ScummVM is to change the bundle identifier and manage signing. Click on the **scummvm** project in the left pane, and then click on **ScummVM - iOS** under **TARGETS**. On the menu bar above, click on **General**. Under **Identity** there is a field labeled **Bundle Identifier**. Enter a unique identifier in reverse-DNS format. This can be as simple as com.\ *yournamehere*. 
+The last step before building NovelVM is to change the bundle identifier and manage signing. Click on the **novelvm** project in the left pane, and then click on **NovelVM - iOS** under **TARGETS**. On the menu bar above, click on **General**. Under **Identity** there is a field labeled **Bundle Identifier**. Enter a unique identifier in reverse-DNS format. This can be as simple as com.\ *yournamehere*. 
 
 .. figure:: ../images/ios/identifier.gif
 
@@ -118,9 +118,9 @@ Next to **General**, click on **Signing & Capabilities**. Under **Signing**, tic
 
 If you have not added your developer account to Xcode, do this now. Click **Add an Account** in the dropdown menu.
 
-In the upper left-hand corner, press the play button to build ScummVM. When the build is finished, it launches on your connected device. 
+In the upper left-hand corner, press the play button to build NovelVM. When the build is finished, it launches on your connected device. 
 
-If ScummVM does not launch and you get an error message advising that the app failed to launch due to an invalid code signature, inadequate entitlements or because its profile has not been explicitly trusted by the user, you need to trust the apps that you have built. On your iOS device, go to **Settings > General > Device Management > Developer App > Trust "Apple Development:yourAppleIDhere" > Trust**.
+If NovelVM does not launch and you get an error message advising that the app failed to launch due to an invalid code signature, inadequate entitlements or because its profile has not been explicitly trusted by the user, you need to trust the apps that you have built. On your iOS device, go to **Settings > General > Device Management > Developer App > Trust "Apple Development:yourAppleIDhere" > Trust**.
 
 
 Devices with custom firmware
@@ -133,12 +133,12 @@ What you'll need
 - A file manager app such as Filza installed on the device.
 
 
-Downloading and installing ScummVM
+Downloading and installing NovelVM
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Go to the `ScummVM downloads page <https://www.scummvm.org/downloads>`_ and download the recommended ``.deb`` or ``.ipa`` package. When the device asks how to open the file, choose Filza.
+Go to the `NovelVM downloads page <https://www.novelvm.org/downloads>`_ and download the recommended ``.deb`` or ``.ipa`` package. When the device asks how to open the file, choose Filza.
 
-Ensure the package is saved somewhere in the ``/var/mobile/`` directory. It defaults to ``/var/mobile/Documents/``, which is fine. Tap on the file and then tap **Install** in the upper right corner to install ScummVM.
+Ensure the package is saved somewhere in the ``/var/mobile/`` directory. It defaults to ``/var/mobile/Documents/``, which is fine. Tap on the file and then tap **Install** in the upper right corner to install NovelVM.
 
 Restart your device for the install to complete. 
 
@@ -147,18 +147,18 @@ Transferring game files
 
 There are multiple ways to transfer game files to your iOS device. 
 
-ScummVM has built-in cloud functionality, which lets you connect your Google Drive, OneDrive, Box or Dropbox account. For more information, see the :doc:`../use_scummvm/connect_cloud` page. ScummVM also has the ability to run a local web server. For more information, see the :doc:`../use_scummvm/LAN` page. 
+NovelVM has built-in cloud functionality, which lets you connect your Google Drive, OneDrive, Box or Dropbox account. For more information, see the :doc:`../use_novelvm/connect_cloud` page. NovelVM also has the ability to run a local web server. For more information, see the :doc:`../use_novelvm/LAN` page. 
 
 .. note::
 
- ScummVM's cloud functionality does not currently support iCloud, however you can upload game folders to your iCloud and then use the Files app on your iOS device to copy these folders into the local ScummVM folder.
+ NovelVM's cloud functionality does not currently support iCloud, however you can upload game folders to your iCloud and then use the Files app on your iOS device to copy these folders into the local NovelVM folder.
 
-Another way to transfer files (for macOS Catalina and newer) to your device is by using the Finder while your device is connected to your Mac. In the Finder app on your Mac, navigate to **Locations** in the left pane, and click on the connected device. Click on **Files**, then drag the folder containing the game files into the **ScummVM** folder. For older versions of macOS, and for Windows users, file transfer can be done in iTunes. 
+Another way to transfer files (for macOS Catalina and newer) to your device is by using the Finder while your device is connected to your Mac. In the Finder app on your Mac, navigate to **Locations** in the left pane, and click on the connected device. Click on **Files**, then drag the folder containing the game files into the **NovelVM** folder. For older versions of macOS, and for Windows users, file transfer can be done in iTunes. 
 
 .. image:: ../images/ios/ios_transfer_files.gif
    
 
-See :doc:`../use_scummvm/game_files` for more information about game file requirements. 
+See :doc:`../use_novelvm/game_files` for more information about game file requirements. 
 
 Controls
 ============
@@ -221,9 +221,9 @@ Paths
 Saved games
 **************
 
-``/var/mobile/Library/ScummVM/Savegames/`` if the device is jailbroken, or ``Savegames/`` in the ScummVM folder for a non-jailbroken device. Access this folder through the Finder or iTunes. 
+``/var/mobile/Library/NovelVM/Savegames/`` if the device is jailbroken, or ``Savegames/`` in the NovelVM folder for a non-jailbroken device. Access this folder through the Finder or iTunes. 
 
 Configuration file
 *********************
 
-``/var/mobile/Library/ScummVM/Preferences`` if the device is jailbroken, or ``Preferences`` in the ScummVM folder for a non-jailbroken device. Access this folder through the Finder or iTunes. 
+``/var/mobile/Library/NovelVM/Preferences`` if the device is jailbroken, or ``Preferences`` in the NovelVM folder for a non-jailbroken device. Access this folder through the Finder or iTunes. 

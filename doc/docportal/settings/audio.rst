@@ -14,7 +14,7 @@ Audio settings are found on four tabs:
 	
 	From the Launcher, highlight the game in the games list, select **Edit Game**, and then select the applicable tab. 
 
-For a comprehensive look at how to use ScummVM's extensive audio settings, check out our :doc:`../advanced_topics/understand_audio` guide. 
+For a comprehensive look at how to use NovelVM's extensive audio settings, check out our :doc:`../advanced_topics/understand_audio` guide. 
 
 All settings can also be changed in the :doc:`../advanced_topics/configuration_file`. The configuration key is listed in italics after each setting description. 
 
@@ -40,14 +40,14 @@ Use the Audio tab to change the sound output for games.
 .. _device:
 
 Preferred device (global settings) or Music device (game-specific settings)
-	Specifies the device ScummVM uses to output audio. When set to **<default>**, ScummVM automatically chooses the most appropriate option for the played game. If set to an MT-32 or a MIDI device, or if ScummVM chooses one of these automatically, the settings on the MT-32 or MIDI tabs also apply.
+	Specifies the device NovelVM uses to output audio. When set to **<default>**, NovelVM automatically chooses the most appropriate option for the played game. If set to an MT-32 or a MIDI device, or if NovelVM chooses one of these automatically, the settings on the MT-32 or MIDI tabs also apply.
 
 	*music_driver* 
 
 .. _opl:
 
 AdLib Emulator 
-	Chooses which emulator is used by ScummVM when the AdLib emulator is chosen as the **Preferred device**.
+	Chooses which emulator is used by NovelVM when the AdLib emulator is chosen as the **Preferred device**.
 
 	*opl_driver* 
 
@@ -132,7 +132,7 @@ Use the MIDI tab to change the settings of General MIDI (GM) devices.
 .. _gm:
 
 GM Device
-	Specifies a preferred General MIDI device, which ScummVM uses if the **Preferred device** is set to **<default>** and General MIDI playback is required.   
+	Specifies a preferred General MIDI device, which NovelVM uses if the **Preferred device** is set to **<default>** and General MIDI playback is required.   
 
 	*gm_device* 
 
@@ -293,21 +293,21 @@ Use the MT-32 tab to change the settings of Roland MT-32 devices.
 .. _mt32:
 
 MT-32 Device
-	Specifies a preferred MT-32 device, which ScummVM uses if the **Preferred device** is set to **<default>** and MT-32 playback is required. 
+	Specifies a preferred MT-32 device, which NovelVM uses if the **Preferred device** is set to **<default>** and MT-32 playback is required. 
 
 	*mt32_device*
 
 .. _nativemt32:
 
 **True Roland MT-32 (disable GM emulation)**
-	Tells ScummVM that the MIDI device is an actual Roland MT-32, LAPC-I, CM-64, CM-32L, CM-500 or other MT-32 device. Note that this cannot be used in conjuntion with the Roland GS device option. 
+	Tells NovelVM that the MIDI device is an actual Roland MT-32, LAPC-I, CM-64, CM-32L, CM-500 or other MT-32 device. Note that this cannot be used in conjuntion with the Roland GS device option. 
 
 	*native_mt32*
 
 .. _gs:
 
 **Roland GS device (enable MT-32 mappings)**
-	Tells ScummVM that the MIDI device is a GS device that has an MT-32 map, such as an SC-55, SC-88 or SC-8820. Note that this cannot be used in conjunction with the True Roland MT-32 option. 
+	Tells NovelVM that the MIDI device is a GS device that has an MT-32 map, such as an SC-55, SC-88 or SC-8820. Note that this cannot be used in conjunction with the True Roland MT-32 option. 
 
 	*enable_gs*
 

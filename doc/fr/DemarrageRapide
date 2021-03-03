@@ -5,12 +5,12 @@ un peu l'anglais, jetez un coup d'oeil au fichier README anglais.
 
 Pour plus d'informations, liste des jeux compatibles, détails pour
 faire un don, la dernière version disponibles et bien plus encore,
-visitez le site web de ScummVM à l'adresse https://www.scummvm.org/
+visitez le site web de NovelVM à l'adresse https://www.novelvm.org/
 
 Table des matières:
 -------------------
 1.0) Introduction
- * 1.1 À propos de ScummVM
+ * 1.1 À propos de NovelVM
  * 1.2 Démarrage rapide
 2.0) Contact
  * 2.1 Signaler des bogues
@@ -18,12 +18,12 @@ Table des matières:
 1.0) Introduction:
 ---- -------------
 
-1.1) À propos de ScummVM:
+1.1) À propos de NovelVM:
 ---- --------------------
-ScummVM est un logiciel qui vous permet de jouer certain jeux
+NovelVM est un logiciel qui vous permet de jouer certain jeux
 d'aventures graphiques de type 'point-and-click' (pointer et cliquer), à
 condition que vous possédiez les fichiers de données du jeu. Le plus
-astucieux: ScummVM remplace juste les exécutables fournis avec les jeux,
+astucieux: NovelVM remplace juste les exécutables fournis avec les jeux,
 vous permettant de jouer sur les systèmes pour lesquels ils n'ont jamais
 été conçus!
 
@@ -31,10 +31,10 @@ A l'origine il a été conçu pour exécuter les jeux basé sur le système
 SCUMM de LucasArts, tels que Maniac Mansion, Monkey Island, Day of the
 Tentacle ou Sam et Max. SCUMM est l'acronyme de 'Script Creation Utility
 for Maniac Mansion', qui a été le premier jeu pour lequel LucasArts a
-conçu ce système. Et beaucoup plus tard, il donna son nom à ScummVM
+conçu ce système. Et beaucoup plus tard, il donna son nom à NovelVM
 ('VM' signifiant Virtual Machine).
 
-Au cours du temps de nombreux jeux non-SCUMM ont été ajoutés, et ScummVM
+Au cours du temps de nombreux jeux non-SCUMM ont été ajoutés, et NovelVM
 prend désormais en charge de nombreux jeux Sierra AGI et SCI (tels que
 King's Quest 1-6, Space Quest 1-5, ...), Discworld 1 et 2, Simon the
 Sorcerer 1 et 2, Beneath A Steel Sky, Lure of the Temptress, Les
@@ -44,7 +44,7 @@ Gobliiins 1-3, la série des Legend of Kyrandia, un grand nombre de jeux
 pour enfants de Humongous Entertainment (incluant les jeux Marine Malice
 et Pouce-Pouce) et beaucoup plus. Vous pouvez trouver une liste complète
 et détaillée sur les aventures qui sont pris en charge et les problèmes
-connus sur la page de compatibilité. ScummVM évolue en permanence, donc
+connus sur la page de compatibilité. NovelVM évolue en permanence, donc
 vérifier cette liste de compatibilités souvent.
 
 Vous pouvez jouer à ces jeux sur des ordinateurs de bureau classiques
@@ -52,36 +52,36 @@ Vous pouvez jouer à ces jeux sur des ordinateurs de bureau classiques
 Nintendo DS et Wii, PSP, ...), smartphones (Android, iPhone, Symbian
 ...) et plus encore.
 
-À ce stade ScummVM est encore en cours de développement. Soyez conscient
+À ce stade NovelVM est encore en cours de développement. Soyez conscient
 que malgré tous nos efforts pour en faire un logiciel le plus stable
 possible, des plantages peuvent survenir. et nous n'offrons aucune
 garantie. Cela étant dit, certains jeux sont supportés depuis longtemps
 et devrait fonctionner correctement avec une version stable et récente
-de ScummVM. Vous pouvez vous faire une idée du niveau de support d'un
+de NovelVM. Vous pouvez vous faire une idée du niveau de support d'un
 jeu en regardant la page de compatibilité. En fait, si vous cherchez un
-peu vous pourrez découvrir que ScummVM est même utilisé dans le commerce
+peu vous pourrez découvrir que NovelVM est même utilisé dans le commerce
 pour la ré-édition sur les plates-formes modernes de quelques-uns des
 jeux supportés. Cela montre que plusieurs entreprises sont satisfaits de
 la qualité du logiciel.
 
-Si vous aimez ScummVM n'hésitez pas à faire un don en utilisant le
-bouton PayPal sur la page d'accueil ScummVM. Cela nous aidera à acheter
-les services nécessaires pour rendre le développement de ScummVM plus
+Si vous aimez NovelVM n'hésitez pas à faire un don en utilisant le
+bouton PayPal sur la page d'accueil NovelVM. Cela nous aidera à acheter
+les services nécessaires pour rendre le développement de NovelVM plus
 facile et plus rapide. Si vous ne pouvez pas faire de don, vous pouvez
 aussi proposer des patches!
 
 1.2) Démarrage rapide:
 ---- ----------------
 IMPORTANT: Les instructions ci-dessous supposent que vous utilisez
-ScummVM en Français. Par défaut, ScummVM utilise la langue de votre
-système d'exploitation. Si vous préférez utiliser ScummVM en Anglais,
+NovelVM en Français. Par défaut, NovelVM utilise la langue de votre
+système d'exploitation. Si vous préférez utiliser NovelVM en Anglais,
 il est sans doute préférable de lire le fichier README Anglais.
 
 
-Pour les plus impatients, voici comment obtenir ScummVM en cinq étapes
+Pour les plus impatients, voici comment obtenir NovelVM en cinq étapes
 simples.
 
-1. Télécharger ScummVM sur <https://www.scummvm.org/downloads/> et
+1. Télécharger NovelVM sur <https://www.novelvm.org/downloads/> et
 installer l'application.
 
 2. Créez un répertoire sur votre disque dur et copier les fichiers de
@@ -89,16 +89,16 @@ données de jeu à partir du support original dans ce répertoire. Répétez
 cette opération pour chaque jeu que vous voulez jouer. Utilisez un
 répertoire séparé pour chaque jeu.
 
-3. Lancez ScummVM.
+3. Lancez NovelVM.
 
-Si ScummVM apparaît en anglais au lieu du français, procédez comme suit
+Si NovelVM apparaît en anglais au lieu du français, procédez comme suit
 pour changer la langue:
 - Cliquez sur 'Options'.
 - Cliquez sur la flèche droite dans la barre d'onglets et sélectionnez
   l'onglet 'Misc'.
 - Choisissez 'Francais' dans le champs 'GUI Language' et cliquez sur
   'OK'. Confirmez-le message qui apparaît, cliquez sur 'Quit' pour
-  quitter ScummVM, puis redémarrer le programme.
+  quitter NovelVM, puis redémarrer le programme.
 
 Maintenant cliquez sur 'Ajouter...', puis sélectionnez le répertoire
 contenant les fichiers de données du jeu (ne pas essayer de sélectionner
@@ -112,7 +112,7 @@ dialogue.
 5. Sélectionnez le jeu que vous voulez jouer dans la liste, et appuyez
 sur 'Démarrer'.
 
-ScummVM se souvient des jeux ajoutés. Donc si vous quittez ScummVM puis
+NovelVM se souvient des jeux ajoutés. Donc si vous quittez NovelVM puis
 le relancez la liste des jeux contiendra tous les jeux que vous avez
 déjà ajoutés. Vous pouvez donc passer directement à l'étape 5, à moins
 que vous vouliez ajouter des jeux supplémentaires.
@@ -120,17 +120,17 @@ que vous vouliez ajouter des jeux supplémentaires.
 Astuce: Si vous souhaitez ajouter plusieurs jeux d'un coup, essayez
 d'appuyer et de maintenir la touche Maj (Shift) tout en cliquant sur
 'Ajouter...' - son texte changera en 'Ajout Massif…'. Vous serez alors
-invitez à sélectioner un répertoire dans lequel ScummVM parcourra tous
+invitez à sélectioner un répertoire dans lequel NovelVM parcourra tous
 les sous-répertoires à la recherche de jeux supportés.
 
 
 2.0) Contact:
 ---- --------
-La meilleure façon de contacter l'équipe de ScummVM est de soumettre
+La meilleure façon de contacter l'équipe de NovelVM est de soumettre
 des rapports de bogues (voir section 2.1) ou d'utiliser nos forums
-https://forums.scummvm.org. Vous pouvez également envoyer un e-mail sur
-la liste de diffusion scummvm-devel, ou discuter avec nous sur IRC
-(#scummvm sur irc.freenode.net). S'il vous plaît ne nous demandez pas de
+https://forums.novelvm.org. Vous pouvez également envoyer un e-mail sur
+la liste de diffusion novelvm-devel, ou discuter avec nous sur IRC
+(#novelvm sur irc.freenode.net). S'il vous plaît ne nous demandez pas de
 supporter un jeu non pris en charge - lire la FAQ sur notre site web
 avant. Notez que la langue officielle de la liste de diffusion, forum et
 chat est l'Anglais, et aucune autre langues ne doivent être utilisée.
@@ -145,7 +145,7 @@ vérifiez que le bogue est reproductible, et se produit encore dans la
 connus (ci-dessous) et la liste de compatibilité sur notre site Web pour
 ce jeu, pour s'assurer que le problème n'est pas déjà connue:
 
-   https://www.scummvm.org/compatibility/
+   https://www.novelvm.org/compatibility/
 
 Veuillez ne pas rapporter de bogues sur les jeux qui ne sont pas
 répertoriés comme étant finissable sur la liste de compatibilité. Nous
@@ -153,7 +153,7 @@ savons que ces jeux ont des bogues.
 
 Veuillez inclure les informations suivantes lorsque vous signalez un
 problème:
-     - Version de ScummVM (veuillez tester avec la 'Daily Build' la plus
+     - Version de NovelVM (veuillez tester avec la 'Daily Build' la plus
        récente)
      - Détails du problème, incluant les instructions pour le reproduire
      - Langue du jeu (anglais, allemand, ...)

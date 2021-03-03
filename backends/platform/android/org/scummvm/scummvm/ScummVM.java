@@ -1,4 +1,4 @@
-package org.scummvm.scummvm;
+package org.novelvm.novelvm;
 
 import androidx.annotation.NonNull;
 import android.content.res.AssetManager;
@@ -20,11 +20,11 @@ import javax.microedition.khronos.egl.EGLDisplay;
 import javax.microedition.khronos.egl.EGLSurface;
 import javax.microedition.khronos.opengles.GL10;
 
-public abstract class ScummVM implements SurfaceHolder.Callback, Runnable {
-	final protected static String LOG_TAG = "ScummVM";
+public abstract class NovelVM implements SurfaceHolder.Callback, Runnable {
+	final protected static String LOG_TAG = "NovelVM";
 	final private AssetManager _asset_manager;
 	final private Object _sem_surface;
-	final private MyScummVMDestroyedCallback _svm_destroyed_callback;
+	final private MyNovelVMDestroyedCallback _svm_destroyed_callback;
 
 	private EGL10 _egl;
 	private EGLDisplay _egl_display = EGL10.EGL_NO_DISPLAY;
@@ -51,7 +51,7 @@ public abstract class ScummVM implements SurfaceHolder.Callback, Runnable {
 
 	// pause the engine and all native threads
 	final public native void setPause(boolean pause);
-	// Feed an event to ScummVM.  Safe to call from other threads.
+	// Feed an event to NovelVM.  Safe to call from other threads.
 	final public native void pushEvent(int type, int arg1, int arg2, int arg3,
 										int arg4, int arg5, int arg6);
 
@@ -75,14 +75,14 @@ public abstract class ScummVM implements SurfaceHolder.Callback, Runnable {
 	abstract protected String createFileWithSAF(String filePath);
 	abstract protected void closeFileWithSAF(String hackyFilename);
 
-	public ScummVM(AssetManager asset_manager, SurfaceHolder holder, final MyScummVMDestroyedCallback scummVMDestroyedCallback) {
+	public NovelVM(AssetManager asset_manager, SurfaceHolder holder, final MyNovelVMDestroyedCallback novelVMDestroyedCallback) {
 		_asset_manager = asset_manager;
 		_sem_surface = new Object();
-		_svm_destroyed_callback = scummVMDestroyedCallback;
+		_svm_destroyed_callback = novelVMDestroyedCallback;
 		holder.addCallback(this);
 	}
 
-	final public String getInstallingScummVMVersionInfo() {
+	final public String getInstallingNovelVMVersionInfo() {
 		return getNativeVersionInfo();
 	}
 
@@ -149,7 +149,7 @@ public abstract class ScummVM implements SurfaceHolder.Callback, Runnable {
 			deinitEGL();
 			deinitAudio();
 
-			throw new RuntimeException("Error preparing the ScummVM thread", e);
+			throw new RuntimeException("Error preparing the NovelVM thread", e);
 		}
 
 		create(_asset_manager, _egl, _egl_display,
@@ -502,6 +502,6 @@ public abstract class ScummVM implements SurfaceHolder.Callback, Runnable {
 //			}
 //		}
 
-		System.loadLibrary("scummvm");
+		System.loadLibrary("novelvm");
 	}
 }

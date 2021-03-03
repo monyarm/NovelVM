@@ -203,7 +203,7 @@ Common::String OSystem_MacOSX::getSystemLanguage() const {
 }
 
 Common::String OSystem_MacOSX::getDefaultConfigFileName() {
-	const Common::String baseConfigName = "Library/Preferences/ScummVM Preferences";
+	const Common::String baseConfigName = "Library/Preferences/NOvelVM Preferences";
 
 	Common::String configFile;
 
@@ -230,7 +230,7 @@ Common::String OSystem_MacOSX::getDefaultLogFileName() {
 		return Common::String();
 	}
 
-	return Common::String(prefix) + "/Library/Logs/scummvm.log";
+	return Common::String(prefix) + "/Library/Logs/novelvm.log";
 }
 
 Common::String OSystem_MacOSX::getScreenshotsPath() {

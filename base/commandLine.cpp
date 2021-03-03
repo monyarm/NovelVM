@@ -64,9 +64,9 @@ static const char USAGE_STRING[] =
 static const char HELP_STRING[] = "NoUsageString"; // save more data segment space
 #else
 static const char HELP_STRING[] =
-	"ScummVM - Graphical Adventure Game Interpreter\n"
+	"NovelVM - Graphical Adventure Game Interpreter\n"
 	"Usage: %s [OPTIONS]... [GAME]\n"
-	"  -v, --version            Display ScummVM version information and exit\n"
+	"  -v, --version            Display NovelVM version information and exit\n"
 	"  -h, --help               Display a brief help text and exit\n"
 	"  -z, --list-games         Display list of supported games and exit\n"
 	"  -t, --list-targets       Display list of configured targets and exit\n"
@@ -170,7 +170,7 @@ static const char HELP_STRING[] =
 	"                           Steel Sky and Flight of the Amazon Queen\n"
 #endif
 	"  --copy-protection        Enable copy protection in games, when\n"
-	"                           ScummVM disables it by default.\n"
+	"                           NovelVM disables it by default.\n"
 	"  --talkspeed=NUM          Set talk speed for games (default: 60)\n"
 	"                           Grim Fandango or EMI (default: 179).\n"
 #if defined(ENABLE_SCUMM) || defined(ENABLE_GROOVIE)
@@ -197,7 +197,7 @@ static const char HELP_STRING[] =
 ;
 #endif
 
-static const char *s_appName = "scummvm";
+static const char *s_appName = "novelvm";
 
 static void NORETURN_PRE usage(const char *s, ...) GCC_PRINTF(1, 2) NORETURN_POST;
 
@@ -314,7 +314,7 @@ void registerDefaults() {
 	ConfMan.registerDefault("gui_browser_native", true);
 	ConfMan.registerDefault("gui_return_to_launcher_at_exit", false);
 	// Specify threshold for scanning directories in the launcher
-	// If number of game entries in scummvm.ini exceeds the specified
+	// If number of game entries in novelvm.ini exceeds the specified
 	// number, then skip scanning. -1 = scan always
 	ConfMan.registerDefault("gui_list_max_scan_entries", -1);
 	ConfMan.registerDefault("game", "");
@@ -1065,7 +1065,7 @@ static Common::String detectGames(const Common::String &path, const Common::Stri
 	DetectedGames candidates = recListGames(dir, engineId, gameId, recursive);
 
 	if (candidates.empty()) {
-		printf("WARNING: ScummVM could not find any game in %s\n", dir.getPath().c_str());
+		printf("WARNING: NovelVM could not find any game in %s\n", dir.getPath().c_str());
 		if (noPath) {
 			printf("WARNING: Consider using --path=<path> to specify a directory\n");
 		}
@@ -1313,7 +1313,7 @@ void upgradeTargets() {
 
 		// TODO: We could also update the description. But not everybody will want that.
 		// Esp. because for some games (e.g. the combined Zak/Loom FM-TOWNS demo etc.)
-		// ScummVM still generates an incorrect description string. So, the description
+		// NovelVM still generates an incorrect description string. So, the description
 		// should only be updated if the user explicitly requests this.
 #if 0
 		if (desc != g->description) {
@@ -1375,15 +1375,15 @@ bool processSettings(Common::String &command, Common::StringMap &settings, Commo
 		listAudioDevices();
 		return true;
 	} else if (command == "version") {
-		printf("%s\n", gScummVMFullVersion);
-		printf("Features compiled in: %s\n", gScummVMFeatures);
+		printf("%s\n", gNovelVMFullVersion);
+		printf("Features compiled in: %s\n", gNovelVMFeatures);
 		return true;
 	} else if (command == "help") {
 		printf(HELP_STRING, s_appName);
 		return true;
 	} else if (command == "auto-detect") {
 		bool resursive = settings["recursive"] == "true";
-		// If auto-detects fails (returns an empty ID) return true to close ScummVM.
+		// If auto-detects fails (returns an empty ID) return true to close NovelVM.
 		// If we get a non-empty ID, we store it in command so that it gets processed together with the
 		// other command line options below.
 		if (resursive) {

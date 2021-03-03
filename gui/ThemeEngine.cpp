@@ -1801,7 +1801,7 @@ bool ThemeEngine::themeConfigParseHeader(Common::String header, Common::String &
 
 	Common::StringTokenizer tok(header, ":");
 
-	if (tok.nextToken() != SCUMMVM_THEME_VERSION_STR)
+	if (tok.nextToken() != NOVELVM_THEME_VERSION_STR)
 		return false;
 
 	themeName = tok.nextToken();
@@ -1916,7 +1916,7 @@ void ThemeEngine::listUsableThemes(Common::Archive &archive, Common::List<ThemeD
 	Common::ArchiveMemberList fileList;
 	archive.listMatchingMembers(fileList, "*.zip");
 	for (Common::ArchiveMemberList::iterator i = fileList.begin();
-	        i != fileList.end(); ++i) {
+	     i != fileList.end(); ++i) {
 		td.name.clear();
 		if (themeConfigUsable(**i, td.name)) {
 			td.filename = (*i)->getName();

@@ -2,17 +2,17 @@
 PlayStation Vita
 =====================
 
-This page contains all the information you need to get ScummVM up and running on a PS Vita.
+This page contains all the information you need to get NovelVM up and running on a PS Vita.
 
 What you'll need
 =======================
 
 - A homebrew-enabled PS Vita console with `Vitashell <https://github.com/TheOfficialFloW/VitaShell/releases/tag/v2.02>`_ installed. How to enable homebrew is outside the scope of this documentation.
 
-Installing ScummVM
+Installing NovelVM
 ======================================
 
-The PS Vita package is available for download on the ScummVM `Downloads page <https://www.scummvm.org/downloads>`_.
+The PS Vita package is available for download on the NovelVM `Downloads page <https://www.novelvm.org/downloads>`_.
 
 Copy the ``.vpk`` to the PS Vita and install it using VitaShell. 
 
@@ -26,9 +26,9 @@ Use VitaShell to transfer the files by USB or FTP, or use SD2Vita to transfer th
 
 Folders containing game files can be copied anywhere on the SD card. 
 
-ScummVM on the PS Vita supports :doc:`cloud functionality <../use_scummvm/connect_cloud>`. 
+NovelVM on the PS Vita supports :doc:`cloud functionality <../use_novelvm/connect_cloud>`. 
 
-See :doc:`../use_scummvm/game_files` for more information about game file requirements.
+See :doc:`../use_novelvm/game_files` for more information about game file requirements.
 
 
 Controls
@@ -37,7 +37,7 @@ Controls
 Default control map
 *********************************
 
-These controls can also be manually configured in the :doc:`Keymaps tab <../settings/keymaps>`. See the :doc:`../use_scummvm/keyboard_shortcuts` page for common keyboard shortcuts. 
+These controls can also be manually configured in the :doc:`Keymaps tab <../settings/keymaps>`. See the :doc:`../use_novelvm/keyboard_shortcuts` page for common keyboard shortcuts. 
 
 
 .. |square| raw:: html
@@ -104,11 +104,11 @@ These controls can also be manually configured in the :doc:`Keymaps tab <../sett
 Keyboard and mouse support
 ****************************
 
-Real bluetooth mice and keyboards work on the Vita and are supported by ScummVM. Go to **Settings > Devices** on the Vita home screen to pair your devices.
+Real bluetooth mice and keyboards work on the Vita and are supported by NovelVM. Go to **Settings > Devices** on the Vita home screen to pair your devices.
 
 .. note::
 
-    Not all bluetooth keyboards or mice pair successfully with the Vita. The ScummVM team tested the Jelly Bean BT keyboard and mouse combo (ASIN:B06Y56BBYP) and with the standalone Jelly Comb Bluetooth Wireless Mouse (ASIN:B075HBDWCF).
+    Not all bluetooth keyboards or mice pair successfully with the Vita. The NovelVM team tested the Jelly Bean BT keyboard and mouse combo (ASIN:B06Y56BBYP) and with the standalone Jelly Comb Bluetooth Wireless Mouse (ASIN:B075HBDWCF).
 
 Touch support
 ****************
@@ -165,11 +165,11 @@ Paths
 
 Saved games 
 *******************
-``ux0:/data/scummvm/saves`` 
+``ux0:/data/novelvm/saves`` 
 
 Configuration file 
 **************************
-``ux0:/data/scummvm/scummvm.ini``
+``ux0:/data/novelvm/novelvm.ini``
 
 
 Settings

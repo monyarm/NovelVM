@@ -1,4 +1,4 @@
-package org.scummvm.scummvm;
+package org.novelvm.novelvm;
 
 import android.annotation.SuppressLint;
 import android.os.Build;
@@ -14,7 +14,7 @@ import android.view.View;
  */
 public class MouseHelper implements View.OnHoverListener {
 	//private final View.OnHoverListener _listener;
-	private final ScummVM _scummvm;
+	private final NovelVM _novelvm;
 	private boolean _rmbPressed;
 	private boolean _lmbPressed;
 	private boolean _mmbPressed;
@@ -40,8 +40,8 @@ public class MouseHelper implements View.OnHoverListener {
 	 */
 	public static void checkHoverAvailable() {}
 
-	public MouseHelper(ScummVM scummvm) {
-		_scummvm = scummvm;
+	public MouseHelper(NovelVM novelvm) {
+		_novelvm = novelvm;
 		//_listener = createListener();
 	}
 
@@ -49,7 +49,7 @@ public class MouseHelper implements View.OnHoverListener {
 //		return new View.OnHoverListener() {
 //			@Override
 //			public boolean onHover(View view, MotionEvent e) {
-//				Log.d(ScummVM.LOG_TAG, "onHover mouseEvent");
+//				Log.d(NovelVM.LOG_TAG, "onHover mouseEvent");
 //				return onMouseEvent(e, true);
 //			}
 //		};
@@ -57,7 +57,7 @@ public class MouseHelper implements View.OnHoverListener {
 
 	@Override
 	public boolean onHover(View view, MotionEvent motionEvent) {
-		//Log.d(ScummVM.LOG_TAG, "onHover mouseEvent");
+		//Log.d(NovelVM.LOG_TAG, "onHover mouseEvent");
 		return onMouseEvent(motionEvent, true);
 //		return false;
 	}
@@ -106,7 +106,7 @@ public class MouseHelper implements View.OnHoverListener {
 
 		int source = e.getSource();
 
-		//Log.d(ScummVM.LOG_TAG, "isMouse keyEvent source: " + source);
+		//Log.d(NovelVM.LOG_TAG, "isMouse keyEvent source: " + source);
 
 		// SOURCE_MOUSE_RELATIVE is sent when mouse is detected as trackball
 		// TODO: why does this happen? Do we need to also check for SOURCE_TRACKBALL here?
@@ -147,16 +147,16 @@ public class MouseHelper implements View.OnHoverListener {
 		if (mbDown) {
 			if (!mbPressed) {
 				// mouse button was pressed just now
-				//Log.d(ScummVM.LOG_TAG, "handleButton mbDown, not mbPressed, mask = " + mask);
-				_scummvm.pushEvent(downEvent, (int)e.getX(), (int)e.getY(), e.getButtonState(), 0, 0, 0);
+				//Log.d(NovelVM.LOG_TAG, "handleButton mbDown, not mbPressed, mask = " + mask);
+				_novelvm.pushEvent(downEvent, (int)e.getX(), (int)e.getY(), e.getButtonState(), 0, 0, 0);
 			}
 
 			return true;
 		} else {
 			if (mbPressed) {
-				//Log.d(ScummVM.LOG_TAG, "handleButton not mbDown, mbPressed, mask = " + mask);
+				//Log.d(NovelVM.LOG_TAG, "handleButton not mbDown, mbPressed, mask = " + mask);
 				// mouse button was released just now
-				_scummvm.pushEvent(upEvent, (int)e.getX(), (int)e.getY(), e.getButtonState(), 0, 0, 0);
+				_novelvm.pushEvent(upEvent, (int)e.getX(), (int)e.getY(), e.getButtonState(), 0, 0, 0);
 			}
 
 			return false;
@@ -166,7 +166,7 @@ public class MouseHelper implements View.OnHoverListener {
 	@SuppressLint("InlinedApi")
 	public boolean onMouseEvent(MotionEvent e, boolean hover) {
 
-		_scummvm.pushEvent(ScummVMEventsBase.JE_MOUSE_MOVE,
+		_novelvm.pushEvent(NovelVMEventsBase.JE_MOUSE_MOVE,
 			(int) e.getX(),
 			(int) e.getY(),
 			0,
@@ -174,7 +174,7 @@ public class MouseHelper implements View.OnHoverListener {
 
 		int buttonState = e.getButtonState();
 
-		//Log.d(ScummVM.LOG_TAG, "onMouseEvent buttonState = " + buttonState);
+		//Log.d(NovelVM.LOG_TAG, "onMouseEvent buttonState = " + buttonState);
 
 		boolean lmbDown = (buttonState & MotionEvent.BUTTON_PRIMARY) == MotionEvent.BUTTON_PRIMARY;
 
@@ -186,31 +186,31 @@ public class MouseHelper implements View.OnHoverListener {
 		if (lmbDown) {
 			if (!_lmbPressed) {
 				// left mouse button was pressed just now
-				_scummvm.pushEvent(ScummVMEventsBase.JE_LMB_DOWN, (int)e.getX(), (int)e.getY(), e.getButtonState(), 0, 0, 0);
+				_novelvm.pushEvent(NovelVMEventsBase.JE_LMB_DOWN, (int)e.getX(), (int)e.getY(), e.getButtonState(), 0, 0, 0);
 			}
 
 			_lmbPressed = true;
 		} else {
 			if (_lmbPressed) {
 				// left mouse button was released just now
-				_scummvm.pushEvent(ScummVMEventsBase.JE_LMB_UP, (int)e.getX(), (int)e.getY(), e.getButtonState(), 0, 0, 0);
+				_novelvm.pushEvent(NovelVMEventsBase.JE_LMB_UP, (int)e.getX(), (int)e.getY(), e.getButtonState(), 0, 0, 0);
 			}
 
 			_lmbPressed = false;
 		}
 
-		_rmbPressed = handleButton(e, _rmbPressed, MotionEvent.BUTTON_SECONDARY, ScummVMEventsBase.JE_RMB_DOWN, ScummVMEventsBase.JE_RMB_UP);
-		_mmbPressed = handleButton(e, _mmbPressed, MotionEvent.BUTTON_TERTIARY, ScummVMEventsBase.JE_MMB_DOWN, ScummVMEventsBase.JE_MMB_UP);
-		_bmbPressed = handleButton(e, _bmbPressed, MotionEvent.BUTTON_BACK, ScummVMEventsBase.JE_BMB_DOWN, ScummVMEventsBase.JE_BMB_UP);
-		_fmbPressed = handleButton(e, _fmbPressed, MotionEvent.BUTTON_FORWARD, ScummVMEventsBase.JE_FMB_DOWN, ScummVMEventsBase.JE_FMB_UP);
+		_rmbPressed = handleButton(e, _rmbPressed, MotionEvent.BUTTON_SECONDARY, NovelVMEventsBase.JE_RMB_DOWN, NovelVMEventsBase.JE_RMB_UP);
+		_mmbPressed = handleButton(e, _mmbPressed, MotionEvent.BUTTON_TERTIARY, NovelVMEventsBase.JE_MMB_DOWN, NovelVMEventsBase.JE_MMB_UP);
+		_bmbPressed = handleButton(e, _bmbPressed, MotionEvent.BUTTON_BACK, NovelVMEventsBase.JE_BMB_DOWN, NovelVMEventsBase.JE_BMB_UP);
+		_fmbPressed = handleButton(e, _fmbPressed, MotionEvent.BUTTON_FORWARD, NovelVMEventsBase.JE_FMB_DOWN, NovelVMEventsBase.JE_FMB_UP);
 		// Lint warning for BUTTON_STYLUS... "
 		//  Field requires API level 23 (current min is 16): android.view.MotionEvent#BUTTON_STYLUS_PRIMARY"
 		//  Field requires API level 23 (current min is 16): android.view.MotionEvent#BUTTON_STYLUS_SECONDARY"
 		// We suppress it:
 		//
 		// https://stackoverflow.com/a/48588149
-		_srmbPressed = handleButton(e, _srmbPressed, MotionEvent.BUTTON_STYLUS_PRIMARY, ScummVMEventsBase.JE_RMB_DOWN, ScummVMEventsBase.JE_RMB_UP);
-		_smmbPressed = handleButton(e, _smmbPressed, MotionEvent.BUTTON_STYLUS_SECONDARY, ScummVMEventsBase.JE_MMB_DOWN, ScummVMEventsBase.JE_MMB_UP);
+		_srmbPressed = handleButton(e, _srmbPressed, MotionEvent.BUTTON_STYLUS_PRIMARY, NovelVMEventsBase.JE_RMB_DOWN, NovelVMEventsBase.JE_RMB_UP);
+		_smmbPressed = handleButton(e, _smmbPressed, MotionEvent.BUTTON_STYLUS_SECONDARY, NovelVMEventsBase.JE_MMB_DOWN, NovelVMEventsBase.JE_MMB_UP);
 
 		return true;
 	}

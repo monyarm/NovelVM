@@ -1,7 +1,7 @@
-Compiling ScummVM for SEGA Dreamcast
+Compiling NovelVM for SEGA Dreamcast
 ====================================
 
-If you want to compile ScummVM for your Dreamcast,
+If you want to compile NovelVM for your Dreamcast,
 you'll need the following:
 
 * gcc-4.6.3 configured as a cross-compiler for `sh-elf'
@@ -19,7 +19,7 @@ you'll need the following:
 
 Edit the Makefile to contain the path to libronin if you installed it
 somewhere other than /usr/local/ronin, then run `make dist', and you
-should get a scrambled binary SCUMMVM.BIN and some plugins *.PLG.
+should get a scrambled binary NOVELVM.BIN and some plugins *.PLG.
 
 For serial/IP upload, remove the "DYNAMIC_MODULES" line and just run `make',
-to get a static binary with the name `scummvm.elf'.
+to get a static binary with the name `novelvm.elf'.

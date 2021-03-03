@@ -10,9 +10,9 @@ make distclean
 make -j4
 VERSION=`make print-distversion`
 DISTS=`make print-dists`
-mkdir scummvm-$VERSION
-cp -r $DISTS EBOOT.PBP plugins scummvm-$VERSION
-mkdir scummvm-$VERSION/kbd
-cp -r backends/platform/psp/kbd/*.png scummvm-$VERSION/kbd
-zip -r9 scummvm-$VERSION-psp.zip scummvm-$VERSION
+mkdir novelvm-$VERSION
+cp -r $DISTS EBOOT.PBP plugins novelvm-$VERSION
+mkdir novelvm-$VERSION/kbd
+cp -r backends/platform/psp/kbd/*.png novelvm-$VERSION/kbd
+zip -r9 novelvm-$VERSION-psp.zip novelvm-$VERSION
 

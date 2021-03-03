@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!--
-    Debug visualizers for a few common ScummVM types for Visual Studio 2012 and up.
+    Debug visualizers for a few common NovelVM types for Visual Studio 2012 and up.
 
     To use, copy this file into Documents\Visual Studio 20xx\Visualizers.
 -->

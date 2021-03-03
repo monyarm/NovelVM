@@ -95,9 +95,9 @@ static vmsaveResult trySave(const char *gamename, const char *data, int size,
     return VMSAVE_NOSPACE;
 
   memset(&header, 0, sizeof(header));
-  strncpy(header.shortdesc, "ScummVM savegame", 16);
+  strncpy(header.shortdesc, "NovelVM savegame", 16);
   strncpy(header.longdesc, gamename, 32);
-  strncpy(header.id, "ScummVM", 16);
+  strncpy(header.id, "NovelVM", 16);
   icon.create_vmicon(iconbuffer);
   header.numicons = 1;
   memcpy(header.palette, iconbuffer, sizeof(header.palette));

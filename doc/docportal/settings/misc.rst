@@ -17,12 +17,12 @@ All settings can also be changed in the :doc:`../advanced_topics/configuration_f
 .. _theme:
 
 Theme
-	Changes the visual appearance of the ScummVM Launcher
+	Changes the visual appearance of the NovelVM Launcher
 
 	*gui_theme* 
 
 GUI Renderer
-	Defines how the ScummVM GUI is rendered; normal or antialiased.
+	Defines how the NovelVM GUI is rendered; normal or antialiased.
 
 	*gui_renderer* 
 
@@ -35,13 +35,13 @@ Autosave
 
 
 GUI Language
-	Chooses the language of the ScummVM Launcher.
+	Chooses the language of the NovelVM Launcher.
 
 	*gui_language* 
 
 .. _guilanguage:
 
-Switch the ScummVM GUI language to the game language
+Switch the NovelVM GUI language to the game language
 	If ticked, the Launcher language is the same as the game language. 
 
 	*gui_use_game_language* 
@@ -49,6 +49,6 @@ Switch the ScummVM GUI language to the game language
 .. _guibrowser:
 
 Use native system file browser
-	Uses the system file browser instead of the ScummVM browser. 
+	Uses the system file browser instead of the NovelVM browser. 
 
 	*gui_browser_native*

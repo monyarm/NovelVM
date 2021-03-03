@@ -8,67 +8,67 @@ chdir("../../../");
 @mmp_files = (
 
 	# Engine Project files
-	"mmp/scummvm_agi.mmp",
-	"mmp/scummvm_agos.mmp",
-	"mmp/scummvm_cge.mmp",
-	"mmp/scummvm_cine.mmp",
-	"mmp/scummvm_composer.mmp",
-	"mmp/scummvm_cruise.mmp",
-	"mmp/scummvm_draci.mmp",
-	"mmp/scummvm_drascula.mmp",
-	"mmp/scummvm_dreamweb.mmp",
-	"mmp/scummvm_gob.mmp",
-	"mmp/scummvm_groovie.mmp",
-	"mmp/scummvm_hopkins.mmp",
-	"mmp/scummvm_hugo.mmp",
-	"mmp/scummvm_kyra.mmp",
-	"mmp/scummvm_lure.mmp",
-	"mmp/scummvm_m4.mmp",
-	"mmp/scummvm_made.mmp",
-	"mmp/scummvm_mohawk.mmp",
-	"mmp/scummvm_mortevielle.mmp",
-	"mmp/scummvm_neverhood.mmp",
-	"mmp/scummvm_parallaction.mmp",
-	"mmp/scummvm_pegasus.mmp",
-	"mmp/scummvm_queen.mmp",
-	"mmp/scummvm_saga.mmp",
-	"mmp/scummvm_sci.mmp",
-	"mmp/scummvm_scumm.mmp",
-	"mmp/scummvm_sky.mmp",
-	"mmp/scummvm_sword1.mmp",
-	"mmp/scummvm_sword2.mmp",
-	"mmp/scummvm_teenagent.mmp",
-	"mmp/scummvm_tinsel.mmp",
-	"mmp/scummvm_toltecs.mmp",
-	"mmp/scummvm_tony.mmp",
-	"mmp/scummvm_toon.mmp",
-	"mmp/scummvm_touche.mmp",
-	"mmp/scummvm_tsage.mmp",
-	"mmp/scummvm_tucker.mmp",
-	"mmp/scummvm_voyeur.mmp",
-	"mmp/scummvm_wintermute.mmp",
+	"mmp/novelvm_agi.mmp",
+	"mmp/novelvm_agos.mmp",
+	"mmp/novelvm_cge.mmp",
+	"mmp/novelvm_cine.mmp",
+	"mmp/novelvm_composer.mmp",
+	"mmp/novelvm_cruise.mmp",
+	"mmp/novelvm_draci.mmp",
+	"mmp/novelvm_drascula.mmp",
+	"mmp/novelvm_dreamweb.mmp",
+	"mmp/novelvm_gob.mmp",
+	"mmp/novelvm_groovie.mmp",
+	"mmp/novelvm_hopkins.mmp",
+	"mmp/novelvm_hugo.mmp",
+	"mmp/novelvm_kyra.mmp",
+	"mmp/novelvm_lure.mmp",
+	"mmp/novelvm_m4.mmp",
+	"mmp/novelvm_made.mmp",
+	"mmp/novelvm_mohawk.mmp",
+	"mmp/novelvm_mortevielle.mmp",
+	"mmp/novelvm_neverhood.mmp",
+	"mmp/novelvm_parallaction.mmp",
+	"mmp/novelvm_pegasus.mmp",
+	"mmp/novelvm_queen.mmp",
+	"mmp/novelvm_saga.mmp",
+	"mmp/novelvm_sci.mmp",
+	"mmp/novelvm_scumm.mmp",
+	"mmp/novelvm_sky.mmp",
+	"mmp/novelvm_sword1.mmp",
+	"mmp/novelvm_sword2.mmp",
+	"mmp/novelvm_teenagent.mmp",
+	"mmp/novelvm_tinsel.mmp",
+	"mmp/novelvm_toltecs.mmp",
+	"mmp/novelvm_tony.mmp",
+	"mmp/novelvm_toon.mmp",
+	"mmp/novelvm_touche.mmp",
+	"mmp/novelvm_tsage.mmp",
+	"mmp/novelvm_tucker.mmp",
+	"mmp/novelvm_voyeur.mmp",
+	"mmp/novelvm_wintermute.mmp",
 	# New engines
-	"mmp/scummvm_access.mmp",
-	"mmp/scummvm_avalanche.mmp",
-	"mmp/scummvm_bbvs.mmp",
-	"mmp/scummvm_cge2.mmp",
-	"mmp/scummvm_fullpipe.mmp",
-	"mmp/scummvm_lastexpress.mmp",
-	"mmp/scummvm_mads.mmp",
-	"mmp/scummvm_prince.mmp",
-	"mmp/scummvm_sherlock.mmp",
-	"mmp/scummvm_sword25.mmp",
-	"mmp/scummvm_testbed.mmp",
-	"mmp/scummvm_zvision.mmp",
+	"mmp/novelvm_access.mmp",
+	"mmp/novelvm_avalanche.mmp",
+	"mmp/novelvm_bbvs.mmp",
+	"mmp/novelvm_cge2.mmp",
+	"mmp/novelvm_fullpipe.mmp",
+	"mmp/novelvm_lastexpress.mmp",
+	"mmp/novelvm_mads.mmp",
+	"mmp/novelvm_prince.mmp",
+	"mmp/novelvm_sherlock.mmp",
+	"mmp/novelvm_sword25.mmp",
+	"mmp/novelvm_testbed.mmp",
+	"mmp/novelvm_zvision.mmp",
 	# Target Platform Project Files
-	"S60/ScummVM_S60.mmp",
-	"S60v3/ScummVM_S60v3.mmp",
-	"S60v3/ScummVM_A0000658_S60v3.mmp",
-	"S80/ScummVM_S80.mmp",
-	"S90/ScummVM_S90.mmp",
-	"UIQ2/ScummVM_UIQ2.mmp",
-	"UIQ3/ScummVM_UIQ3.mmp",
-	"UIQ3/ScummVM_A0000658_UIQ3.mmp"
+	"S60/NovelVM_S60.mmp",
+	"S60v3/NovelVM_S60v3.mmp",
+	"S60v3/NovelVM_A0000658_S60v3.mmp",
+	"S80/NovelVM_S80.mmp",
+	"S90/NovelVM_S90.mmp",
+	"UIQ2/NovelVM_UIQ2.mmp",
+	"UIQ3/NovelVM_UIQ3.mmp",
+	"UIQ3/NovelVM_A0000658_UIQ3.mmp"
 
 );
 
@@ -77,7 +77,7 @@ ResetProjectFiles();
 
 print "
 =======================================================================================
-Updating slave MACRO settings in MMP files from master 'scummvm_base.mmp'
+Updating slave MACRO settings in MMP files from master 'novelvm_base.mmp'
 =======================================================================================
 
 ";
@@ -147,7 +147,7 @@ my @excludes_scumm = (
 
 
 #ParseModule(mmpStr,		dirStr,		ifdefArray,				[exclusionsArray])
-ParseModule("_base",	"base",		\@section_empty); # now in ./TRG/ScummVM_TRG.mmp, these never change anyways...
+ParseModule("_base",	"base",		\@section_empty); # now in ./TRG/NovelVM_TRG.mmp, these never change anyways...
 ParseModule("_base",	"common",	\@section_empty);
 ParseModule("_base",	"gui",		\@section_empty,		\@excludes_gui);
 ParseModule("_base",	"graphics",	\@section_empty,		\@excludes_graphics);
@@ -363,7 +363,7 @@ sub UpdateProjectFile
 	my $updated = " Updated @ ".localtime();
 	my $name;
 	my @mmp_files_plus_one = @mmp_files;
-	unshift @mmp_files_plus_one, "mmp/scummvm_base.mmp";
+	unshift @mmp_files_plus_one, "mmp/novelvm_base.mmp";
 
 	foreach $name (@mmp_files_plus_one)
 	{
@@ -398,7 +398,7 @@ sub UpdateSlaveMacros
 {
 	my $updated = " Updated @ ".localtime();
 
-	my $name = "mmp/scummvm_base.mmp";
+	my $name = "mmp/novelvm_base.mmp";
 	my $file = "$buildDir/$name";
 	print "Reading master MACROS from backends/symbian/$name ... ";
 
@@ -414,10 +414,10 @@ sub UpdateSlaveMacros
 	my $macros = $1;
 
 	my $libs_first = "\n// automagically enabled static libs from macros above\n";
-	my $libs_second = "STATICLIBRARY	scummvm_base.lib // must be above USE_* .libs\n";
+	my $libs_second = "STATICLIBRARY	novelvm_base.lib // must be above USE_* .libs\n";
 	my $macro_counter = 0;
 	my $macros2 = "\n"; # output for in *.mmp MACROS section
-	my $projects = "\n..\\mmp\\scummvm_base.mmp\n"; # output for in BLD.INF projects section
+	my $projects = "\n..\\mmp\\novelvm_base.mmp\n"; # output for in BLD.INF projects section
 
 	foreach $line (split("\n", $macros))
 	{
@@ -518,11 +518,11 @@ sub ResetProjectFiles()
 {
 	my $onestr, @lines;
 	my @mmp_files_plus_one = @mmp_files;
-#	unshift @mmp_files_plus_one, "mmp/scummvm_base.mmp";
+#	unshift @mmp_files_plus_one, "mmp/novelvm_base.mmp";
 
 	print "Resetting project files: ";
 
-	# we don't need to do mmp/scummvm_base.mmp", it was done in BuildPackageUpload.pl before the call to this script
+	# we don't need to do mmp/novelvm_base.mmp", it was done in BuildPackageUpload.pl before the call to this script
 	foreach $name (@mmp_files_plus_one)
 	{
 		my $file  = "$buildDir/$name";

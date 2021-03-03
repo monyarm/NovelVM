@@ -69,9 +69,9 @@
  * kernelmode for our loaderInit function
  */
 #ifndef USERSPACE_ONLY
-PSP_MODULE_INFO("SCUMMVM-PSP", 0x1000, 1, 1);
+PSP_MODULE_INFO("NOVELVM-PSP", 0x1000, 1, 1);
 #else
-PSP_MODULE_INFO("SCUMMVM-PSP", 0, 1, 1);
+PSP_MODULE_INFO("NOVELVM-PSP", 0, 1, 1);
 #endif
 
 /**
@@ -171,7 +171,7 @@ int main(void) {
 
 	SetupCallbacks();
 
-	static const char *argv[] = { "scummvm", NULL };
+	static const char *argv[] = { "novelvm", NULL };
 	static int argc = sizeof(argv) / sizeof(char *) - 1;
 
 	g_system = new OSystem_PSP();
@@ -188,7 +188,7 @@ int main(void) {
 	sceKernelSleepThread();	// that's it. That's all we're doing
 #endif
 
-	int res = scummvm_main(argc, argv);
+	int res = novelvm_main(argc, argv);
 
 	g_system->quit();	// TODO: Consider removing / replacing this!
 
