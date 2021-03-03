@@ -44,7 +44,7 @@ public:
 
 	const Common::String FileFormats[14] = {".bin", ".f00", ".f01", ".p00", ".p01", ".fpc", ".pak", ".pac", ".pack", ".se", ".arc", ".abin", ".se", ".pse"};
 
-	const Common::Array<Common::String> getFileExtensions();
+	const Common::Array<Common::String> getFileExtensions() override;
 
 	static bool isValid(Common::SeekableReadStream &stream);
 

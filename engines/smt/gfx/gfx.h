@@ -166,13 +166,6 @@ public:
 	Math::Matrix4 getMvpMatrix() const { return _mvpMatrix; }
 
 	void flipVertical(Graphics::Surface *s);
-
-	static const int kOriginalWidth = 640;
-	static const int kOriginalHeight = 480;
-	static const int kTopBorderHeight = 30;
-	static const int kBottomBorderHeight = 90;
-	static const int kFrameHeight = 360;
-
 	void computeScreenViewport();
 
 protected:
@@ -220,7 +213,7 @@ private:
 Renderer *CreateGfxOpenGL(OSystem *system);
 Renderer *CreateGfxOpenGLShader(OSystem *system);
 Renderer *CreateGfxTinyGL(OSystem *system);
-Renderer *createRenderer(OSystem *system);
+Renderer *createRenderer(OSystem *system/*, const char *gameId*/);
 
 } // End of namespace SMT
 
