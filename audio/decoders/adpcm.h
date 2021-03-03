@@ -60,7 +60,8 @@ enum ADPCMType {
 	kADPCMApple,               // Apple QuickTime IMA ADPCM
 	kADPCMDK3,                 // Duck DK3 IMA ADPCM
 	kADPCMXA,                  // XA ADPCM
-	kADPCM4XM				   // 4XM ADPCM
+	kADPCM4XM,                 // 4XM ADPCM
+	kADPCMADX                  // ADX ADPCM
 };
 
 /**
