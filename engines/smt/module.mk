@@ -5,6 +5,7 @@ MODULE_OBJS := \
 	metaengine.o \
 	formats/archive/pac.o \
 	formats/graphic/tmx.o \
+	formats/script/bmd.o \
 	gfx/gfx.o \
 	gfx/gfx_tinygl.o \
 	gfx/gfx_tinygl_texture.o \

@@ -39,6 +39,7 @@ void ADXFile::SetCoefficients(double cutoff, double sample_rate) {
 	coefficient[1] = (int16)floor(c * c * -4096);
 }
 
+
 ADXFile::ADXFile(const char *path) {
 
 	Common::File f;

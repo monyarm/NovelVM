@@ -63,6 +63,7 @@ private:
 	void readHeader(Common::SeekableReadStream *f);
 
 	void SetCoefficients(double cutoff, double sample_rate);
+	
 };
 } // namespace Format::Audio
 
