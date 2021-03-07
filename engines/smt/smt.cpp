@@ -8,6 +8,7 @@
 #include "graphics/transparent_surface.h"
 #include "smt/formats/archive/pac.h"
 #include "smt/formats/graphic/tmx.h"
+#include "smt/formats/script/bmd.h"
 
 #include "smt/smt.h"
 #include "util.h"
@@ -85,19 +86,20 @@ Common::Error SMTEngine::run() {
 	} */
 
 	//CVMArchive _data("DATA.CVM");
-	//PACArchive _data("test/OP_TITLE.BIN");
+	PACArchive _data("test/DATMSG.PAK");
+	_data.listMembers(list);
+	for (auto &&l : list) {
+		debug("%s", l.get()->getName().c_str());
+	}
 	//Common::DumpFile df;
 	//df.open("dumps/i_bust_02_61.tmx");
 	auto _dfile = _data.createReadStreamForMember("i_bust_02_61.tmx");
 	//df.writeStream(_dfile);
 
 	TMXFile _tmx("test/COIN_C10.TMX");
+	Format::Script::BMD _bmd("test/field.BMD");
 	//TMXFile _tmx("test/PSMT8.tmx");
 
-	//_data.listMembers(list);
-	//for (auto &&l : list) {
-	//	debug("%s", l.get()->getName().c_str());
-	//}
 
 	//CVMArchive _data("DATA.CVM");
 	//CVMArchive _btl("BTL.CVM");
