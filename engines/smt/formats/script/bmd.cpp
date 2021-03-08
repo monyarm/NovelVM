@@ -25,6 +25,8 @@ void BMD::readFile(Common::SeekableReadStream *stream) {
 	readRelocationTable(stream);
 	readDialogHeaders(stream);
 	readSpeakerTableHeader(stream);
+
+	
 }
 
 void BMD::readHeader(Common::SeekableReadStream *stream) {
@@ -96,9 +98,6 @@ void BMD::readSpeakerTableHeader(Common::SeekableReadStream *stream) {
 	if (speakerTableHeader.SpeakerNameArray.Offset != 0)
 		speakerTableHeader.SpeakerNameArray.Value = readSpeakerNames(stream, speakerTableHeader.SpeakerNameArray.Offset, speakerTableHeader.SpeakerCount);
 
-	for (uint i = 0; i < speakerTableHeader.SpeakerNameArray.Value.size(); i++) {
-		Common::hexdump(speakerTableHeader.SpeakerNameArray.Value[i].Value.data(), speakerTableHeader.SpeakerNameArray.Value[i].Value.size());
-	}
 	// if (header.Field08 != 0)
 	// 	Debug.WriteLine($ "{nameof( BinarySpeakerTableHeader )}.{nameof( header.Field08 )} = {header.Field08}");
 
@@ -110,8 +109,11 @@ Common::Array<Common::OffsetTo<Common::Array<byte> > > BMD::readSpeakerNames(Com
 
 	stream->seek(mPositionBase + BMDHeader::SIZE + address);
 
-	Common::Array<int32> speakerNameAddresses = Common::Array<int32>(count);
-	stream->read(speakerNameAddresses.data(), count * 4);
+	Common::Array<int32> speakerNameAddresses;
+	//stream->read(speakerNameAddresses.data(), count * 4);
+	for (int i = 0; i < count; i++) {
+		speakerNameAddresses.push_back((Endianness ? stream->readSint32BE() : stream->readSint32LE()));
+	}
 
 	auto speakerNames = Common::Array<Common::OffsetTo<Common::Array<byte> > >(count);
 
@@ -126,7 +128,6 @@ Common::Array<Common::OffsetTo<Common::Array<byte> > > BMD::readSpeakerNames(Com
 
 			bytes.push_back(b);
 		}
-		Common::hexdump(bytes.data(), bytes.size());
 
 		speakerNames[i] = Common::OffsetTo<Common::Array<byte> >(speakerNameAddresses[i], bytes);
 	}
@@ -143,6 +144,8 @@ void BMD::readMessageDialog(Common::SeekableReadStream *stream, BinaryMessageDia
 	message->Name = Common::String(_name, 24);
 	//debug("%s", _name);
 	message->PageCount = (Endianness ? stream->readSint16BE() : stream->readSint16LE());
+	// speakerId = 0xFFFF = use no speaker name?
+	// speakerId = 0x8000 = use variable speaker name?
 	message->SpeakerId = (Endianness ? stream->readUint16BE() : stream->readUint16LE());
 
 	if (message->PageCount > 0) {
