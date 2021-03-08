@@ -104,7 +104,7 @@ EXWLCSArchive::EXWLCSArchive(const Common::String &filename) : _exwlcsFilename(f
 
     unsigned char* buff = new unsigned char[entries[i].length];
 
-    exwlcsFile.seek(entries[i].offset, SEEK_SET);
+    exwlcsFile.seek(entries[i].offset);
 
     exwlcsFile.read(buff, entries[i].length);
     Common::String name(entries[i].filename + guess_file_extension(buff, entries[i].length));
@@ -165,7 +165,7 @@ Common::SeekableReadStream *EXWLCSArchive::createReadStreamForMember(const Commo
 
 	Common::File archiveFile;
 	archiveFile.open(_exwlcsFilename);
-	archiveFile.seek(hdr->offset, SEEK_SET);
+	archiveFile.seek(hdr->offset);
 
     unsigned char* buff = new unsigned char[hdr->length];
     unsigned long len = hdr->length;

@@ -211,18 +211,18 @@ WARN_UNUSED_RESULT bool MetaEngine::readSavegameHeader(Common::InSaveFile *in, E
 
 	// Sanity check
 	if (headerOffset >= in->pos() || headerOffset == 0) {
-		in->seek(oldPos, SEEK_SET); // Rewind the file
+		in->seek(oldPos); // Rewind the file
 		fillDummyHeader(header);
 		return false;
 	}
 
-	in->seek(headerOffset, SEEK_SET);
+	in->seek(headerOffset);
 
 	in->read(header->id, 6);
 
 	// Validate the header Id
 	if (strcmp(header->id, "SVMCR")) {
-		in->seek(oldPos, SEEK_SET); // Rewind the file
+		in->seek(oldPos); // Rewind the file
 		fillDummyHeader(header);
 		return false;
 	}
@@ -250,11 +250,11 @@ WARN_UNUSED_RESULT bool MetaEngine::readSavegameHeader(Common::InSaveFile *in, E
 
 	// Get the thumbnail
 	if (!Graphics::loadThumbnail(*in, header->thumbnail, skipThumbnail)) {
-		in->seek(oldPos, SEEK_SET); // Rewind the file
+		in->seek(oldPos); // Rewind the file
 		return false;
 	}
 
-	in->seek(oldPos, SEEK_SET); // Rewind the file
+	in->seek(oldPos); // Rewind the file
 
 	return true;
 }

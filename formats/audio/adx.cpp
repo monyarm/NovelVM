@@ -94,7 +94,7 @@ void ADXFile::readData(Common::SeekableReadStream *stream) {
 	stream->seek(dat.header.dataoffset-2,SEEK_SET);
 	auto cri = stream->readFourCC();
 	debug("%s", cri.c_str());
-	stream->seek(dat.header.dataoffset +4, SEEK_SET);
+	stream->seek(dat.header.dataoffset +4);
 
 	
 }

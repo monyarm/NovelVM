@@ -113,7 +113,7 @@ Common::SeekableReadStream *PAK::createReadStreamForMember(const Common::String 
 
 	Common::File archiveFile;
 	archiveFile.open(_pakFilename);
-	archiveFile.seek(hdr->position, SEEK_SET);
+	archiveFile.seek(hdr->position);
 
 	byte *data = (byte *)malloc(hdr->size);
 	assert(data);
