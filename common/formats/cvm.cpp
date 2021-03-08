@@ -20,7 +20,7 @@ CVM::CVM(const Common::String &filename) : _cvmFilename(filename) {
 
 void CVM::ReadFile(Common::SeekableReadStream &cvmFile) {
 
-	cvmFile.seek(CVM_HEADER_SIZE + ISO_RESERVED_SIZE, SEEK_SET);
+	cvmFile.seek(CVM_HEADER_SIZE + ISO_RESERVED_SIZE);
 
 	byte sectorType = cvmFile.readByte();
 
@@ -96,7 +96,7 @@ CVMEntry CVM::ReadISORecord(Common::SeekableReadStream &reader, bool isRoot, Com
 	bool isNotParentOrGrandparentDirectory = nameLength != 1 || isRoot;
 
 	if (isDirectory && isNotParentOrGrandparentDirectory) {
-		reader.seek(CVM_HEADER_SIZE + ((long)mLba * ISO_BLOCKSIZE), SEEK_SET);
+		reader.seek(CVM_HEADER_SIZE + ((long)mLba * ISO_BLOCKSIZE));
 		//mSubEntries = new List<IsoDirectoryRecord>();
 
 		// Set the initial sector start position
@@ -127,7 +127,7 @@ CVMEntry CVM::ReadISORecord(Common::SeekableReadStream &reader, bool isRoot, Com
 		}
 	}
 
-	reader.seek(posStart + length + ext_attr_length, SEEK_SET);
+	reader.seek(posStart + length + ext_attr_length);
 	return record;
 }
 
@@ -163,7 +163,7 @@ Common::SeekableReadStream *CVM::createReadStreamForMember(const Common::String 
 
 	Common::File f;
 	f.open(hdr->cvmFile);
-	f.seek(hdr->offset, SEEK_SET);
+	f.seek(hdr->offset);
 	byte *data = new byte[hdr->size];
 	f.read(data, hdr->size);
 

@@ -67,7 +67,7 @@ Common::SeekableReadStream *PAC::createReadStreamForMember(const Common::String 
 
 	Common::File archiveFile;
 	archiveFile.open(_pakFilename);
-	archiveFile.seek(hdr->position, SEEK_SET);
+	archiveFile.seek(hdr->position);
 
 	byte *data = (byte *)malloc(hdr->size);
 	assert(data);
@@ -101,7 +101,7 @@ PAC::FormatVersion PAC::DetectVersion(Common::SeekableReadStream &stream) {
 }
 
 bool PAC::IsValidFormatVersion1(Common::SeekableReadStream &stream) {
-	stream.seek(0, SEEK_SET);
+	stream.seek(0);
 	if (stream.size() <= 256) {
 		return false;
 	}
@@ -109,7 +109,7 @@ bool PAC::IsValidFormatVersion1(Common::SeekableReadStream &stream) {
 	// read some test data
 	Common::Array<byte> testData = Common::Array<byte>(256);
 	stream.read(testData.data(), 256);
-	stream.seek(0, SEEK_SET);
+	stream.seek(0);
 
 	// check if first byte is zero, if so then no name can be stored thus making the file corrupt
 	if (testData[0] == 0x00)
@@ -137,16 +137,16 @@ bool PAC::IsValidFormatVersion1(Common::SeekableReadStream &stream) {
 }
 
 bool PAC::IsValidFormatVersion2And3(Common::SeekableReadStream &stream, int entrySize, bool &isBigEndian) {
-	stream.seek(0, SEEK_SET);
+	stream.seek(0);
 	isBigEndian = false;
 
 	// check stream length
 	if (stream.size() <= 4 + entrySize)
 		return false;
 
-	byte *testData = new byte[4 + entrySize];
-	stream.read(testData, 4 + entrySize);
-	stream.seek(0, SEEK_SET);
+	Common::Array<byte> testData = Common::Array<byte>(4 + entrySize);
+	stream.read(testData.data(), 4 + entrySize);
+	stream.seek(0);
 
 	int numOfFiles = *(int*)&testData[0]; ;//int((testData[0]) << 24 |
 	                 //    (testData[0 + 1]) << 16 |
@@ -230,7 +230,7 @@ void PAC::ReadEntries(Common::SeekableReadStream &stream) {
 			fileName.trim();
 
 			// set position to length field
-			stream.seek(entryStartPosition + 252, SEEK_SET);
+			stream.seek(entryStartPosition + 252);
 
 			// read entry length
 			int length = IsLittleEndian() ? stream.readSint32LE() : stream.readSint32BE();
@@ -248,7 +248,7 @@ void PAC::ReadEntries(Common::SeekableReadStream &stream) {
 			// clear string builder for next iteration
 			stringBuilder.clear();
 			int pos = (stream.pos() + entry.size + 64 - 1) & ~(64 - 1);
-			stream.seek(pos, SEEK_SET);
+			stream.seek(pos);
 
 			entries[entry.name].reset(new Entry(entry));
 		}
