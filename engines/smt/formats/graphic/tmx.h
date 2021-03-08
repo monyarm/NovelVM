@@ -10,124 +10,120 @@
 #include "graphics/transparent_surface.h"
 #include "graphics/colormasks.h"
 
-enum PS2PixelFormat : byte
-{
-    PSMTC32 = 0x00,
-    PSMTC24 = 0x01,
-    PSMTC16 = 0x02,
-    PSMTC16S = 0x0A,
-    PSMT8 = 0x13,
-    PSMT4 = 0x14,
-    PSMT8H = 0x1B,
-    PSMT4HL = 0x24,
-    PSMT4HH = 0x2C,
-    PSMZ32 = 0x30,
-    PSMZ24 = 0x31,
-    PSMZ16 = 0x32,
-    PSMZ16S = 0x3A
+namespace SMT::Format::Graphic {
+enum PS2PixelFormat : byte {
+	PSMTC32 = 0x00,
+	PSMTC24 = 0x01,
+	PSMTC16 = 0x02,
+	PSMTC16S = 0x0A,
+	PSMT8 = 0x13,
+	PSMT4 = 0x14,
+	PSMT8H = 0x1B,
+	PSMT4HL = 0x24,
+	PSMT4HH = 0x2C,
+	PSMZ32 = 0x30,
+	PSMZ24 = 0x31,
+	PSMZ16 = 0x32,
+	PSMZ16S = 0x3A
 };
 
-struct TMXHeader
-{
-    uint16 tmxID;
-    // tmxID is always 0x0002
+struct TMXHeader {
+	uint16 tmxID;
+	// tmxID is always 0x0002
 
-    uint16 userID;
-    // can be set by user
+	uint16 userID;
+	// can be set by user
 
-    uint32 length;
-    // length of entire tmx data
+	uint32 length;
+	// length of entire tmx data
 
-    char tmxMagic[4];
-    // "TMX0" or 0x30584D54
+	char tmxMagic[4];
+	// "TMX0" or 0x30584D54
 
-    uint32 pad1;
-    // 0x00000000
+	uint32 pad1;
+	// 0x00000000
 };
 
-struct TMXFormatSettings
-{
+struct TMXFormatSettings {
 
-    byte numPalettes;
-    // typically either 0x00 or 0x01
+	byte numPalettes;
+	// typically either 0x00 or 0x01
 
-    PS2PixelFormat paletteFmt;
-    // PSMCT32, PSMCT16, PSMCT16S
+	PS2PixelFormat paletteFmt;
+	// PSMCT32, PSMCT16, PSMCT16S
 
-    uint16 width;
-    // width of image in pixels
+	uint16 width;
+	// width of image in pixels
 
-    uint16 height;
-    // width of image in pixels
+	uint16 height;
+	// width of image in pixels
 
-    PS2PixelFormat pixelFmt;
-    // PSMT8, PSMT8H, PSMT4, PSMT4HL, PSMT4HH
+	PS2PixelFormat pixelFmt;
+	// PSMT8, PSMT8H, PSMT4, PSMT4HL, PSMT4HH
 
-    byte numMipMaps;
-    // number of mip maps present
+	byte numMipMaps;
+	// number of mip maps present
 
-    int16 mipKL;
-    // if (mipKL == 0xFFFF) then values are not used
-    // mipK = (mipKL & 0x0FFF) / (1 << 4)
-    // mipL = (mipKL & 0xF000)
-    // default mipK = -0,0625
-    // default mipL = 3
+	int16 mipKL;
+	// if (mipKL == 0xFFFF) then values are not used
+	// mipK = (mipKL & 0x0FFF) / (1 << 4)
+	// mipL = (mipKL & 0xF000)
+	// default mipK = -0,0625
+	// default mipL = 3
 
-    byte reserved;
-    // always 0x00
+	byte reserved;
+	// always 0x00
 
-    byte wrapModes;
-    // if (wrapModes == 0xFF) then values are not used
-    // wrapX = (wrapModes & 0xC) >> 2
-    // wrapY = (wrapModes & 0x3)
-    // 0 = REPEAT
-    // 1 = CLAMP
-    // default is REPEAT
+	byte wrapModes;
+	// if (wrapModes == 0xFF) then values are not used
+	// wrapX = (wrapModes & 0xC) >> 2
+	// wrapY = (wrapModes & 0x3)
+	// 0 = REPEAT
+	// 1 = CLAMP
+	// default is REPEAT
 
-    uint32 userTextureID;
-    // can be set by user
+	uint32 userTextureID;
+	// can be set by user
 
-    uint32 userClutID;
-    // can be set by user
+	uint32 userClutID;
+	// can be set by user
 
-    char userComment[28];
-    // can be set by user
+	char userComment[28];
+	// can be set by user
 };
 
-struct TMXData
-{
-    TMXHeader header;
-    TMXFormatSettings formatsettings;
+struct TMXData {
+	TMXHeader header;
+	TMXFormatSettings formatsettings;
 
-    uint32 *palette;
-    byte *index;
+	uint32 *palette;
+	byte *index;
 };
 
-class TMXFile
-{
+class TMX {
 public:
-    TMXFile(const char *path);
-    TMXFile(Common::SeekableReadStream *stream);
-	~TMXFile() {
+	TMX(const char *path);
+	TMX(Common::SeekableReadStream *stream);
+	~TMX() {
 		_surface.free();
 	}
 
+	Graphics::TransparentSurface *getSurface();
 
-    Graphics::TransparentSurface * getSurface();
 private:
-    Graphics::TransparentSurface _surface;
-    TMXData dat;
+	Graphics::TransparentSurface _surface;
+	TMXData dat;
 
+	void readFile(Common::SeekableReadStream *stream);
 
-    void readFile(Common::SeekableReadStream *stream);
+	void readHeader(Common::SeekableReadStream *f);
 
-    void readHeader(Common::SeekableReadStream *f);
+	void readPalette(Common::SeekableReadStream *f);
 
-    void readPalette(Common::SeekableReadStream *f);
+	void readIndex(Common::SeekableReadStream *f);
 
-    void readIndex(Common::SeekableReadStream *f);
-
-    Common::Array<byte> tilePalette(Common::Array<byte> input);
+	Common::Array<byte> tilePalette(Common::Array<byte> input);
 };
+} // namespace SMT::Format::Graphic
 
 #endif

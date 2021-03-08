@@ -6,7 +6,6 @@
 //   email: asmodean [at] hush.com
 //   irc:   asmodean on efnet (irc.efnet.net)
 
-// This tool extracts data lcsebody+lcsebody.lst used by W�G��`�V�E�w���d�G杁`.
 
 #include "koihime_doki/koihime_doki.h"
 #include "common/archive.h"
@@ -14,7 +13,7 @@
 
 #include "koihime_doki/formats/archive/exwlcs.h"
 
-namespace KoihimeDoki
+namespace KoihimeDoki::Format::Archive
 {
 
 
@@ -82,7 +81,7 @@ EXWLCSArchive::EXWLCSArchive(const Common::String &filename) : _exwlcsFilename(f
     entry_count = exwlcsLst.readUint32LE();
     unsigned long key = unobfuscate();
 
-//    Common::Array<LCSENTRY> entries(sizeof(LCSENTRY) * entry_count);
+    //Common::Array<LCSENTRY> entries(sizeof(LCSENTRY) * entry_count);
 
     //LCSENTRY * entries = new LCSENTRY [entry_count];
     Common::Array<LCSENTRY> entries;
