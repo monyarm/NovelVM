@@ -4,30 +4,30 @@
 
 #include "smt/formats/archive/pac.h"
 
-namespace SMT {
-PACArchive::PACArchive() {
+namespace SMT::Format::Archive {
+PAC::PAC() {
 }
 
-PACArchive::PACArchive(const Common::String &filename) : _pakFilename(filename) {
+PAC::PAC(const Common::String &filename) : _pakFilename(filename) {
 	Common::File pacFile;
 
 	if (!pacFile.open(_pakFilename)) {
-		warning("PACArchive::PACArchive(): Could not find the archive file");
+		warning("PAC::PAC(): Could not find the archive file");
 		return;
 	}
 
 	readFile(pacFile);
 }
 
-PACArchive::PACArchive(Common::SeekableReadStream &stream) {
+PAC::PAC(Common::SeekableReadStream &stream) {
 
 	readFile(stream);
 }
 
-PACArchive::~PACArchive() {
+PAC::~PAC() {
 }
 
-void PACArchive::readFile(Common::SeekableReadStream &stream) {
+void PAC::readFile(Common::SeekableReadStream &stream) {
 
 	Version = DetectVersion(stream);
 	ReadEntries(stream);
@@ -35,11 +35,11 @@ void PACArchive::readFile(Common::SeekableReadStream &stream) {
 
 }
 
-bool PACArchive::hasFile(const Common::String &name) const {
+bool PAC::hasFile(const Common::String &name) const {
 	return entries.contains(name);
 }
 
-int PACArchive::listMembers(Common::ArchiveMemberList &list) const {
+int PAC::listMembers(Common::ArchiveMemberList &list) const {
 	int matches = 0;
 
 	EntriesMap::const_iterator it = entries.begin();
@@ -51,14 +51,14 @@ int PACArchive::listMembers(Common::ArchiveMemberList &list) const {
 	return matches;
 }
 
-const Common::ArchiveMemberPtr PACArchive::getMember(const Common::String &name) const {
+const Common::ArchiveMemberPtr PAC::getMember(const Common::String &name) const {
 	if (!hasFile(name))
 		return Common::ArchiveMemberPtr();
 
 	return Common::ArchiveMemberPtr(new Common::GenericArchiveMember(name, this));
 }
 
-Common::SeekableReadStream *PACArchive::createReadStreamForMember(const Common::String &name) const {
+Common::SeekableReadStream *PAC::createReadStreamForMember(const Common::String &name) const {
 	if (!entries.contains(name)) {
 		return 0;
 	}
@@ -78,15 +78,15 @@ Common::SeekableReadStream *PACArchive::createReadStreamForMember(const Common::
 	return new Common::MemoryReadStream(data, hdr->size, DisposeAfterUse::YES);
 }
 
-const Common::Array<Common::String> PACArchive::getFileExtensions() {
+const Common::Array<Common::String> PAC::getFileExtensions() {
 	return Common::Array<Common::String>(FileFormats, 14);
 }
 
-bool PACArchive::isValid(Common::SeekableReadStream &stream) {
+bool PAC::isValid(Common::SeekableReadStream &stream) {
 	return DetectVersion(stream) != FormatVersion::Unknown;
 }
 
-PACArchive::FormatVersion PACArchive::DetectVersion(Common::SeekableReadStream &stream) {
+PAC::FormatVersion PAC::DetectVersion(Common::SeekableReadStream &stream) {
 	bool isBigEndian;
 	if (IsValidFormatVersion1(stream))
 		return FormatVersion::Version1;
@@ -100,7 +100,7 @@ PACArchive::FormatVersion PACArchive::DetectVersion(Common::SeekableReadStream &
 	return FormatVersion::Unknown;
 }
 
-bool PACArchive::IsValidFormatVersion1(Common::SeekableReadStream &stream) {
+bool PAC::IsValidFormatVersion1(Common::SeekableReadStream &stream) {
 	stream.seek(0, SEEK_SET);
 	if (stream.size() <= 256) {
 		return false;
@@ -136,7 +136,7 @@ bool PACArchive::IsValidFormatVersion1(Common::SeekableReadStream &stream) {
 	return true;
 }
 
-bool PACArchive::IsValidFormatVersion2And3(Common::SeekableReadStream &stream, int entrySize, bool &isBigEndian) {
+bool PAC::IsValidFormatVersion2And3(Common::SeekableReadStream &stream, int entrySize, bool &isBigEndian) {
 	stream.seek(0, SEEK_SET);
 	isBigEndian = false;
 
@@ -200,7 +200,7 @@ bool PACArchive::IsValidFormatVersion2And3(Common::SeekableReadStream &stream, i
 		return true;
 }
 
-void PACArchive::ReadEntries(Common::SeekableReadStream &stream) {
+void PAC::ReadEntries(Common::SeekableReadStream &stream) {
 	Common::Array<char> stringBuilder;
 
 	if (Version == FormatVersion::Version1) {
@@ -299,8 +299,8 @@ void PACArchive::ReadEntries(Common::SeekableReadStream &stream) {
 	}
 }
 
-PACArchive *makePACArchive(const Common::String &name) {
-	return new PACArchive(name);
+PAC *makePAC(const Common::String &name) {
+	return new PAC(name);
 }
 
-} // End of namespace SMT
+} // namespace SMT::Format::Script

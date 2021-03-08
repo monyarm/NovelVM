@@ -1,7 +1,8 @@
 #include "smt/formats/graphic/tmx.h"
 #include "common/file.h"
+namespace SMT::Format::Graphic {
 
-TMXFile::TMXFile(const char *path) {
+TMX::TMX(const char *path) {
 
 	Common::File f;
 	if (f.open(path)) {
@@ -9,15 +10,15 @@ TMXFile::TMXFile(const char *path) {
 	}
 }
 
-TMXFile::TMXFile(Common::SeekableReadStream *stream) {
+TMX::TMX(Common::SeekableReadStream *stream) {
 	readFile(stream);
 }
 
-Graphics::TransparentSurface *TMXFile::getSurface() {
+Graphics::TransparentSurface *TMX::getSurface() {
 	return &_surface;
 }
 
-void TMXFile::readFile(Common::SeekableReadStream *stream) {
+void TMX::readFile(Common::SeekableReadStream *stream) {
 
 	readHeader(stream);
 	Common::hexdump((byte *)&dat.formatsettings.paletteFmt, 1);
@@ -27,7 +28,7 @@ void TMXFile::readFile(Common::SeekableReadStream *stream) {
 	readIndex(stream);
 }
 
-void TMXFile::readHeader(Common::SeekableReadStream *f) {
+void TMX::readHeader(Common::SeekableReadStream *f) {
 
 	dat.header.tmxID = f->readUint16BE();
 	dat.header.userID = f->readUint16BE();
@@ -51,7 +52,7 @@ void TMXFile::readHeader(Common::SeekableReadStream *f) {
 	f->read(&dat.formatsettings.userComment, 28);
 }
 
-void TMXFile::readPalette(Common::SeekableReadStream *f) {
+void TMX::readPalette(Common::SeekableReadStream *f) {
 
 	switch (dat.formatsettings.paletteFmt) {
 	case PSMTC32: {
@@ -90,7 +91,7 @@ void TMXFile::readPalette(Common::SeekableReadStream *f) {
 	};
 }
 
-void TMXFile::readIndex(Common::SeekableReadStream *f) {
+void TMX::readIndex(Common::SeekableReadStream *f) {
 
 	const Graphics::PixelFormat *format = new Graphics::PixelFormat(4, 8, 8, 8, 8, 24, 16, 8, 0);
 	switch (dat.formatsettings.pixelFmt) {
@@ -142,7 +143,7 @@ void TMXFile::readIndex(Common::SeekableReadStream *f) {
 	}
 }
 
-Common::Array<byte> TMXFile::tilePalette(Common::Array<byte> input) {
+Common::Array<byte> TMX::tilePalette(Common::Array<byte> input) {
 
 	Common::Array<byte> palette;
 
@@ -184,4 +185,5 @@ Common::Array<byte> TMXFile::tilePalette(Common::Array<byte> input) {
 		index += 8;
 	}
 	return palette;
+}
 }

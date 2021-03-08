@@ -80,7 +80,7 @@ Common::Error SMTEngine::run() {
 	Common::File f;
 
 	//CVMArchive _data("DATA.CVM");
-	PACArchive _data("test/DATMSG.PAK");
+	PAC _data("test/DATMSG.PAK");
 	_data.listMembers(list);
 	for (auto &&l : list) {
 		debug("%s", l.get()->getName().c_str());
@@ -88,9 +88,9 @@ Common::Error SMTEngine::run() {
 	//Common::DumpFile df;
 	//df.writeStream(_dfile);
 
-	TMXFile _tmx("test/COIN_C10.TMX");
+	TMX _tmx("test/COIN_C10.TMX");
 	Format::Script::BMD _bmd("test/field.BMD");
-	//TMXFile _tmx("test/PSMT8.tmx");
+	//TMX _tmx("test/PSMT8.tmx");
 
 
 	//CVMArchive _data("DATA.CVM");

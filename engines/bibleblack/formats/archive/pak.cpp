@@ -4,10 +4,9 @@
 
 #include "bibleblack/formats/archive/pak.h"
 
-namespace BibleBlack
-{
+namespace BibleBlack::Format::Archive {
 
-PAKArchive::PAKArchive(const Common::String &filename) : _pakFilename(filename)
+PAK::PAK(const Common::String &filename) : _pakFilename(filename)
 {
     Common::File pakFile;
     debug("%s", _pakFilename.c_str());
@@ -18,17 +17,17 @@ PAKArchive::PAKArchive(const Common::String &filename) : _pakFilename(filename)
 
     if (!pakFile.open(_pakFilename))
     {
-        warning("PAKArchive::PAKArchive(): Could not find the archive file");
+        warning("PAK::PAK(): Could not find the archive file");
         return;
     }
 
     uint16 numHeaders = pakFile.readUint16LE();
 
-    Common::Array<PakHeader> _tempHeaders;
+    Common::Array<PAKHeader> _tempHeaders;
 
     for (int i = 0; i < numHeaders; i++)
     {
-        PakHeader header;
+        PAKHeader header;
         char _name[9];
         char _extension[5];
 
@@ -65,28 +64,28 @@ PAKArchive::PAKArchive(const Common::String &filename) : _pakFilename(filename)
             _tempHeaders[i].size = _tempHeaders[i + 1].position - _tempHeaders[i].position;
         }
     }
-    for (const PakHeader& header : _tempHeaders)
+    for (const PAKHeader& header : _tempHeaders)
     {
-        _headers[header.name].reset(new PakHeader(header));
+        _headers[header.name].reset(new PAKHeader(header));
     }
 
     
 }
 
-PAKArchive::~PAKArchive()
+PAK::~PAK()
 {
 }
 
-bool PAKArchive::hasFile(const Common::String &name) const
+bool PAK::hasFile(const Common::String &name) const
 {
     return _headers.contains(name);
 }
 
-int PAKArchive::listMembers(Common::ArchiveMemberList &list) const
+int PAK::listMembers(Common::ArchiveMemberList &list) const
 {
     int matches = 0;
 
-    PakHeadersMap::const_iterator it = _headers.begin();
+    PAKHeadersMap::const_iterator it = _headers.begin();
     for (; it != _headers.end(); ++it)
     {
         list.push_back(Common::ArchiveMemberList::value_type(new Common::GenericArchiveMember(it->_value->name, this)));
@@ -96,7 +95,7 @@ int PAKArchive::listMembers(Common::ArchiveMemberList &list) const
     return matches;
 }
 
-const Common::ArchiveMemberPtr PAKArchive::getMember(const Common::String &name) const
+const Common::ArchiveMemberPtr PAK::getMember(const Common::String &name) const
 {
     if (!hasFile(name))
         return Common::ArchiveMemberPtr();
@@ -104,13 +103,13 @@ const Common::ArchiveMemberPtr PAKArchive::getMember(const Common::String &name)
     return Common::ArchiveMemberPtr(new Common::GenericArchiveMember(name, this));
 }
 
-Common::SeekableReadStream *PAKArchive::createReadStreamForMember(const Common::String &name) const
+Common::SeekableReadStream *PAK::createReadStreamForMember(const Common::String &name) const
 {
     if (!_headers.contains(name)) {
 		return 0;
 	}
 
-	PakHeader *hdr = _headers[name].get();
+	PAKHeader *hdr = _headers[name].get();
 
 	Common::File archiveFile;
 	archiveFile.open(_pakFilename);
@@ -125,9 +124,9 @@ Common::SeekableReadStream *PAKArchive::createReadStreamForMember(const Common::
 	return new Common::MemoryReadStream(data, hdr->size, DisposeAfterUse::YES);
 }
 
-PAKArchive *makePAKArchive(const Common::String &name)
+PAK *makePAK(const Common::String &name)
 {
-    return new PAKArchive(name);
+    return new PAK(name);
 }
 
-} // End of namespace BibleBlack
+} // namespace BibleBlackKoihimeDoki::Format::Archive

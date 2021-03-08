@@ -1,5 +1,5 @@
-#ifndef SMT_PACARCHIVE_H
-#define SMT_PACARCHIVE_H
+#ifndef SMT_PAC_H
+#define SMT_PAC_H
 
 #include "common/ptr.h"
 #include "common/str.h"
@@ -11,7 +11,7 @@
 #include "common/hash-str.h"
 #include "common/memstream.h"
 
-namespace SMT {
+namespace SMT::Format::Archive {
 
 class Archive;
 
@@ -23,15 +23,15 @@ struct Entry {
 
 typedef Common::HashMap<Common::String, Common::ScopedPtr<Entry>, Common::IgnoreCase_Hash, Common::IgnoreCase_EqualTo> EntriesMap;
 
-class PACArchive : public Common::Archive, public Common::FileFormat {
+class PAC : public Common::Archive, public Common::FileFormat {
 	EntriesMap entries;
 	Common::String _pakFilename;
 
 public:
-	PACArchive();
-	PACArchive(const Common::String &name);
-	PACArchive(Common::SeekableReadStream &stream);
-	~PACArchive() override;
+	PAC();
+	PAC(const Common::String &name);
+	PAC(Common::SeekableReadStream &stream);
+	~PAC() override;
 
 	void readFile(Common::SeekableReadStream &stream);
 	// Archive implementation
@@ -92,8 +92,8 @@ private:
  *
  * May return 0 in case of a failure.
  */
-PACArchive *makePACArchive(const Common::String &name);
+PAC *makePAC(const Common::String &name);
 
-} // End of namespace SMT
+} // namespace SMT::Format::Archive
 
 #endif

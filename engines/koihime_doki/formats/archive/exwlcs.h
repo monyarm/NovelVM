@@ -10,7 +10,7 @@
 #include "common/bufferedstream.h"
 #include "common/debug.h"
 
-namespace KoihimeDoki {
+namespace KoihimeDoki::Format::Archive {
 
 class Archive;
 
@@ -65,6 +65,6 @@ void unobfuscate(unsigned char* buff, unsigned long len) const;
  */
 EXWLCSArchive *makeEXWLCSArchive(const Common::String &name);
 
-} // End of namespace KoihimeDoki
+} // namespace KoihimeDoki::Format::Archive
 
 #endif

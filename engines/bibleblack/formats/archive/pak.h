@@ -1,5 +1,5 @@
-#ifndef BIBLEBLACK_PAKARCHIVE_H
-#define BIBLEBLACK_PAKARCHIVE_H
+#ifndef BIBLEBLACK_PAK_H
+#define BIBLEBLACK_PAK_H
 
 #include "common/ptr.h"
 #include "common/str.h"
@@ -10,26 +10,26 @@
 #include "common/bufferedstream.h"
 #include "common/debug.h"
 
-namespace BibleBlack {
+namespace BibleBlack::Format::Archive {
 
 class Archive;
 
 
-struct PakHeader {
+struct PAKHeader {
 Common::String name;
 uint32 position;
 uint32 size;
 };
 
-typedef Common::HashMap<Common::String, Common::ScopedPtr<PakHeader>, Common::IgnoreCase_Hash, Common::IgnoreCase_EqualTo> PakHeadersMap;
+typedef Common::HashMap<Common::String, Common::ScopedPtr<PAKHeader>, Common::IgnoreCase_Hash, Common::IgnoreCase_EqualTo> PAKHeadersMap;
 
-class PAKArchive : public Common::Archive {
-	PakHeadersMap _headers;
+class PAK : public Common::Archive {
+	PAKHeadersMap _headers;
 	Common::String _pakFilename;
 
 public:
-	PAKArchive(const Common::String &name);
-	~PAKArchive() override;
+	PAK(const Common::String &name);
+	~PAK() override;
 
 	// Archive implementation
 	bool hasFile(const Common::String &name) const override;
@@ -44,8 +44,8 @@ public:
  *
  * May return 0 in case of a failure.
  */
-PAKArchive *makePAKArchive(const Common::String &name);
+PAK *makePAK(const Common::String &name);
 
-} // End of namespace BibleBlack
+} // namespace BibleBlack::Format::Archive
 
 #endif
