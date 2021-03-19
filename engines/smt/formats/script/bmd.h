@@ -51,6 +51,8 @@ class BMD {
 		int32 DialogCount;
 		bool IsRelocated;
 		int16 Field1E;
+
+		BinaryFormatVersion Version;
 	};
 
 
@@ -111,6 +113,9 @@ class BMD {
 
 	Common::Array<BinaryDialogHeader> dialogHeaders;
 	BinarySpeakerTableHeader speakerTableHeader;
+
+	Common::String getSpeaker(int index);
+	static void ParsePages(Common::Array<int> lineStartAddresses, Common::Array<byte> buffer, BinaryFormatVersion version);
 
 	bool Endianness;
 	int32 mPositionBase;

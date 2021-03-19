@@ -86,7 +86,7 @@ Common::Error SMTEngine::run() {
 	} */
 
 	//CVMArchive _data("DATA.CVM");
-	PAC _data("test/DATMSG.PAK");
+	Format::Archive::PAC _data("test/DATMSG.PAK");
 	_data.listMembers(list);
 	for (auto &&l : list) {
 		debug("%s", l.get()->getName().c_str());
@@ -96,7 +96,7 @@ Common::Error SMTEngine::run() {
 	auto _dfile = _data.createReadStreamForMember("i_bust_02_61.tmx");
 	//df.writeStream(_dfile);
 
-	TMX _tmx("test/COIN_C10.TMX");
+	Format::Graphic::TMX _tmx("test/COIN_C10.TMX");
 	Format::Script::BMD _bmd("test/field.BMD");
 	//TMX _tmx("test/PSMT8.tmx");
 

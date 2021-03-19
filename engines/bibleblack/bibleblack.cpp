@@ -51,13 +51,13 @@ Common::Error BibleBlackEngine::run()
 
 	Graphics::PixelFormat format = g_system->getScreenFormat();
 
-	Common::Archive *A98FAST_PAK = makePAK("A98FAST.PAK");
+	Common::Archive *A98FAST_PAK = Format::Archive::makePAK("A98FAST.PAK");
 	_archives["A98FAST.PAK"].reset(A98FAST_PAK);
 
-	Common::Archive *A98SYS_PAK = makePAK("A98SYS.PAK");
+	Common::Archive *A98SYS_PAK = Format::Archive::makePAK("A98SYS.PAK");
 	_archives["A98SYS.PAK"].reset(A98SYS_PAK);
 
-	Common::Archive *STREAM_PAK = makePAK("STREAM.PAK");
+	Common::Archive *STREAM_PAK = Format::Archive::makePAK("STREAM.PAK");
 	_archives["STREAM.PAK"].reset(STREAM_PAK);
 
 	/*

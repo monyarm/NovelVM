@@ -51,7 +51,7 @@ Common::Error KoihimeDokiEngine::run()
 
 	Graphics::PixelFormat format = g_system->getScreenFormat();
 
-	Common::Archive *lcsebody1 = makeEXWLCSArchive("lcsebody1");
+	Common::Archive *lcsebody1 = Format::Archive::makeEXWLCSArchive("lcsebody1");
 	_archives["lcsebody1"].reset(lcsebody1);
 
 

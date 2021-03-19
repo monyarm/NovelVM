@@ -1,5 +1,6 @@
 #include "bmd.h"
 #include "common/array.h"
+#include "common/debug.h"
 #include "common/endian.h"
 #include "common/list.h"
 #include "common/stream.h"
@@ -26,7 +27,23 @@ void BMD::readFile(Common::SeekableReadStream *stream) {
 	readDialogHeaders(stream);
 	readSpeakerTableHeader(stream);
 
-	
+	// for (uint i = 0; i < dialogHeaders.size(); i++) {
+	// 	auto dialog = dialogHeaders[i].Dialog;
+	// 	auto dialogKind = dialogHeaders[i].DialogKind;
+
+	// 	switch (dialogKind) {
+	// 	case BinaryDialogKind::Message:
+	// 		debug("%s", dialog.Value.bmd.Name.c_str());
+	// 		debug("%s", getSpeaker(dialog.Value.bmd.SpeakerId).c_str());
+	// 		Common::hexdump(dialog.Value.bmd.TextBuffer.data(), dialog.Value.bmd.TextBufferSize);
+
+	// 		break;
+	// 	case BinaryDialogKind::Selection:
+	// 		debug("%s", dialog.Value.bsd.Name.c_str());
+	// 		Common::hexdump(dialog.Value.bsd.TextBuffer.data(), dialog.Value.bsd.TextBufferSize);
+	// 		break;
+	// 	}
+	// }
 }
 
 void BMD::readHeader(Common::SeekableReadStream *stream) {
@@ -160,8 +177,13 @@ void BMD::readMessageDialog(Common::SeekableReadStream *stream, BinaryMessageDia
 		message->TextBufferSize = 0;
 		//message.TextBuffer = null;
 	}
+	Common::Array<byte> buffer;
+	ParsePages(message->PageStartAddresses, buffer, BinaryFormatVersion::Unknown);
 
 	stream->seek(oldPos);
+}
+void BMD::ParsePages(Common::Array<int> lineStartAddresses, Common::Array<byte> buffer, BinaryFormatVersion version){
+	
 }
 
 void BMD::readSelectionDialog(Common::SeekableReadStream *stream, BinarySelectionDialog *message, int offset) {
@@ -205,6 +227,14 @@ void BMD::swapHeader() {
 	header.RelocationTableSize = SWAP_BYTES_32(header.RelocationTableSize);
 	header.DialogCount = SWAP_BYTES_32(header.DialogCount);
 	header.Field1E = SWAP_BYTES_16(header.Field1E);
+}
+
+Common::String BMD::getSpeaker(int index) {
+
+	if (index >= 0 && (uint)index <= speakerTableHeader.SpeakerNameArray.Value.size()) {
+		return Common::String((const char *)speakerTableHeader.SpeakerNameArray.Value[index].Value.data(), speakerTableHeader.SpeakerNameArray.Value[index].Value.size());
+	}
+	return "";
 }
 
 } // namespace SMT::Format::Script
