@@ -1,3 +1,4 @@
+#include "audio/mixer.h"
 #include "common/list.h"
 #include "common/formats/archive/cpk.h"
 #include "common/formats/archive/cvm.h"
@@ -12,6 +13,7 @@
 
 #include "smt/smt.h"
 #include "util.h"
+
 
 namespace SMT {
 
@@ -66,8 +68,7 @@ Common::Error SMTEngine::run() {
 
 	//_pmsf.ReadFile("p3opmv_p3p.pmsf");
 
-	Common::DDSFile _dds("test/DXT5.dds");
-	//ADXFile _adx("test/TEST.ADX");
+	//Format::Graphic::DDSFile _dds("test/DXT5.dds");
 
 	Common::ArchiveMemberList list;
 	SearchMan.listMembers(list);
@@ -98,6 +99,8 @@ Common::Error SMTEngine::run() {
 
 	Format::Graphic::TMX _tmx("test/COIN_C10.TMX");
 	Format::Script::BMD _bmd("test/field.BMD");
+	::Format::Audio::ADX _adx("test/THEME.ADX");
+
 	//TMX _tmx("test/PSMT8.tmx");
 
 

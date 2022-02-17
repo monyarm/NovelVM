@@ -5,65 +5,61 @@
 #include "common/file.h"
 #include "common/fs.h"
 
+#include "audio/audiostream.h"
+#include "audio/decoders/adpcm_intern.h"
 #include "common/str.h"
-#include "graphics/colormasks.h"
-#include "graphics/surface.h"
-#include "graphics/transparent_surface.h"
+#include "common/system.h" 
+#include "audio/mixer.h"
 
 namespace Common {
 
-int16 coefficient[2];
+struct AdxHeaderInfo {
+	int ChannelCount;
+	int SampleRate;
+	int SampleCount;
+	bool HasLoop;
+	int LoopStart;
+	int LoopEnd;
 
-enum class formatEnum : byte {
-	fixed = 2,
-	ADX = 3,
-	ADXexp = 4,
-	AHX = 0x11
+	int BitDepth;
+
+	uint16 Highpass;
+	uint8 FrameSize;
+	int StreamDataOffset;
+
+	int32 Hist1[2];
+	int32 Hist2[2];
+
+	int ReadPosition = 0;
+
+	int SamplesPerBuffer = 0;
+	int32 Coef1;
+	int32 Coef2;
+
+	int32 EncodedBytesPerBuffer;
+
+	int BytesPerSample() const { return (BitDepth / 8) * ChannelCount; }
 };
 
-struct ADXHeader {
-	uint16 dataoffset;
-	formatEnum format;
-	byte blocksize;
-	byte bitsperchannel;
-	byte channelcount;
-	uint32 samplerate;
-	uint32 samplecount;
-	uint16 highpasscutoff;
-	byte loopdatastyle;
-	byte encrypted;
-};
+class ADX_ADPCMStream;
 
-struct ADXLoopData {
-	uint32 loopflag;
-	uint32 loopstartsample;
-	uint32 loopstartbyte;
-	uint32 loopendsample;
-	uint32 loopendbyte;
-};
+class ADX {
 
-struct ADXData {
-	ADXHeader header;
-	ADXLoopData loopdata;
-};
-
-class ADXFile {
 public:
-	ADXFile(const char *path);
-	ADXFile(Common::SeekableReadStream *stream);
-	~ADXFile(){};
+	ADX(const char *path);
+	ADX(Common::SeekableReadStream *stream);
+	~ADX(){};
 
 private:
-	ADXData dat;
-
+	int16 coefficient[2];
+	AdxHeaderInfo info;
 	void readFile(Common::SeekableReadStream *stream);
-
-	void readData(Common::SeekableReadStream *f);
 
 	void readHeader(Common::SeekableReadStream *f);
 
 	void SetCoefficients(double cutoff, double sample_rate);
-	
+
+
 };
 } // namespace Common
 
