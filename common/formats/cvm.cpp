@@ -131,8 +131,8 @@ CVMEntry CVM::ReadISORecord(Common::SeekableReadStream &reader, bool isRoot, Com
 	return record;
 }
 
-bool CVM::hasFile(const Common::String &name) const {
-	return _entries.contains(name);
+bool CVM::hasFile(const Common::Path &name) const {
+	return _entries.contains(name.toString());
 }
 
 int CVM::listMembers(Common::ArchiveMemberList &list) const {
@@ -147,19 +147,19 @@ int CVM::listMembers(Common::ArchiveMemberList &list) const {
 	return matches;
 }
 
-const Common::ArchiveMemberPtr CVM::getMember(const Common::String &name) const {
+const Common::ArchiveMemberPtr CVM::getMember(const Common::Path &name) const {
 	if (!hasFile(name))
 		return Common::ArchiveMemberPtr();
 
-	return Common::ArchiveMemberPtr(new Common::GenericArchiveMember(name, this));
+	return Common::ArchiveMemberPtr(new Common::GenericArchiveMember(name.toString(), this));
 }
 
-Common::SeekableReadStream *CVM::createReadStreamForMember(const Common::String &name) const {
-	if (!_entries.contains(name)) {
+Common::SeekableReadStream *CVM::createReadStreamForMember(const Common::Path &name) const {
+	if (!_entries.contains(name.toString())) {
 		return 0;
 	}
 
-	CVMEntry *hdr = _entries[name].get();
+	CVMEntry *hdr = _entries[name.toString()].get();
 
 	Common::File f;
 	f.open(hdr->cvmFile);

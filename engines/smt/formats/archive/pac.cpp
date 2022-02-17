@@ -35,8 +35,8 @@ void PAC::readFile(Common::SeekableReadStream &stream) {
 
 }
 
-bool PAC::hasFile(const Common::String &name) const {
-	return entries.contains(name);
+bool PAC::hasFile(const Common::Path &name) const {
+	return entries.contains(name.toString());
 }
 
 int PAC::listMembers(Common::ArchiveMemberList &list) const {
@@ -51,19 +51,19 @@ int PAC::listMembers(Common::ArchiveMemberList &list) const {
 	return matches;
 }
 
-const Common::ArchiveMemberPtr PAC::getMember(const Common::String &name) const {
-	if (!hasFile(name))
+const Common::ArchiveMemberPtr PAC::getMember(const Common::Path &name) const {
+	if (!hasFile(name.toString()))
 		return Common::ArchiveMemberPtr();
 
-	return Common::ArchiveMemberPtr(new Common::GenericArchiveMember(name, this));
+	return Common::ArchiveMemberPtr(new Common::GenericArchiveMember(name.toString(), this));
 }
 
-Common::SeekableReadStream *PAC::createReadStreamForMember(const Common::String &name) const {
-	if (!entries.contains(name)) {
+Common::SeekableReadStream *PAC::createReadStreamForMember(const Common::Path &name) const {
+	if (!entries.contains(name.toString())) {
 		return 0;
 	}
 
-	Entry *hdr = entries[name].get();
+	Entry *hdr = entries[name.toString()].get();
 
 	Common::File archiveFile;
 	archiveFile.open(_pakFilename);
@@ -299,7 +299,7 @@ void PAC::ReadEntries(Common::SeekableReadStream &stream) {
 	}
 }
 
-PAC *makePAC(const Common::String &name) {
+PAC *PACFactory(const Common::String &name) {
 	return new PAC(name);
 }
 

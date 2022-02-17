@@ -7,6 +7,7 @@
 #include "common/bufferedstream.h"
 #include "common/debug.h"
 #include "common/file.h"
+#include "common/path.h"
 #include "common/hash-str.h"
 #include "common/memstream.h"
 
@@ -48,10 +49,10 @@ public:
 	CVMEntry ReadISORecord(Common::SeekableReadStream &reader, bool isRoot = false, Common::String parentName = "");
 
 	// Archive implementation
-	bool hasFile(const Common::String &name) const override;
+	bool hasFile(const Common::Path &name) const override;
 	int listMembers(Common::ArchiveMemberList &list) const override;
-	const Common::ArchiveMemberPtr getMember(const Common::String &name) const override;
-	Common::SeekableReadStream *createReadStreamForMember(const Common::String &name) const override;
+	const Common::ArchiveMemberPtr getMember(const Common::Path &name) const override;
+	Common::SeekableReadStream *createReadStreamForMember(const Common::Path &name) const override;
 };
 
 /**

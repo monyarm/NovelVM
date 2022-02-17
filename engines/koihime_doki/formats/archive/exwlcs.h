@@ -5,6 +5,7 @@
 #include "common/str.h"
 
 #include "common/file.h"
+#include "common/path.h"
 #include "common/hash-str.h"
 #include "common/memstream.h"
 #include "common/bufferedstream.h"
@@ -31,10 +32,10 @@ struct LCSHEADER {
   unsigned long unknown;
 };
 
-typedef Common::HashMap<Common::String, Common::ScopedPtr<LCSHEADER>, Common::IgnoreCase_Hash, Common::IgnoreCase_EqualTo> PakHeadersMap;
+typedef Common::HashMap<Common::String, Common::ScopedPtr<LCSHEADER>, Common::IgnoreCase_Hash, Common::IgnoreCase_EqualTo> EXWLCSHeadersMap;
 
 class EXWLCSArchive : public Common::Archive {
-	PakHeadersMap _headers;
+	EXWLCSHeadersMap _headers;
 	Common::String _exwlcsFilename;
 
 public:
@@ -42,10 +43,10 @@ public:
 	~EXWLCSArchive() override;
 
 	// Archive implementation
-	bool hasFile(const Common::String &name) const override;
+	bool hasFile(const Common::Path &name) const override;
 	int listMembers(Common::ArchiveMemberList &list) const override;
-	const Common::ArchiveMemberPtr getMember(const Common::String &name) const override;
-	Common::SeekableReadStream *createReadStreamForMember(const Common::String &name) const override;
+	const Common::ArchiveMemberPtr getMember(const Common::Path &name) const override;
+	Common::SeekableReadStream *createReadStreamForMember(const Common::Path &name) const override;
 private:
   unsigned long entry_count;
 
@@ -63,7 +64,7 @@ void unobfuscate(unsigned char* buff, unsigned long len) const;
  *
  * May return 0 in case of a failure.
  */
-EXWLCSArchive *makeEXWLCSArchive(const Common::String &name);
+EXWLCSArchive *EXWLCSFactory(const Common::String &name);
 
 } // namespace KoihimeDoki::Format::Archive
 

@@ -76,9 +76,9 @@ PAK::~PAK()
 {
 }
 
-bool PAK::hasFile(const Common::String &name) const
+bool PAK::hasFile(const Common::Path &name) const
 {
-    return _headers.contains(name);
+    return _headers.contains(name.toString());
 }
 
 int PAK::listMembers(Common::ArchiveMemberList &list) const
@@ -95,21 +95,21 @@ int PAK::listMembers(Common::ArchiveMemberList &list) const
     return matches;
 }
 
-const Common::ArchiveMemberPtr PAK::getMember(const Common::String &name) const
+const Common::ArchiveMemberPtr PAK::getMember(const Common::Path &name) const
 {
     if (!hasFile(name))
         return Common::ArchiveMemberPtr();
 
-    return Common::ArchiveMemberPtr(new Common::GenericArchiveMember(name, this));
+    return Common::ArchiveMemberPtr(new Common::GenericArchiveMember(name.toString(), this));
 }
 
-Common::SeekableReadStream *PAK::createReadStreamForMember(const Common::String &name) const
+Common::SeekableReadStream *PAK::createReadStreamForMember(const Common::Path &name) const
 {
-    if (!_headers.contains(name)) {
+    if (!_headers.contains(name.toString())) {
 		return 0;
 	}
 
-	PAKHeader *hdr = _headers[name].get();
+	PAKHeader *hdr = _headers[name.toString()].get();
 
 	Common::File archiveFile;
 	archiveFile.open(_pakFilename);
@@ -124,7 +124,7 @@ Common::SeekableReadStream *PAK::createReadStreamForMember(const Common::String 
 	return new Common::MemoryReadStream(data, hdr->size, DisposeAfterUse::YES);
 }
 
-PAK *makePAK(const Common::String &name)
+PAK *PAKFactory(const Common::String &name)
 {
     return new PAK(name);
 }

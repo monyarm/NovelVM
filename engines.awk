@@ -413,7 +413,7 @@ END {
 
 	# Sort engines to place our headline engine at start...
 	# No technical reason, just historical convention
-	headline_engine = "scumm"
+	headline_engine = "smt"
 	sorted_engines[++sorted] = headline_engine
 	for (e = 1; e <= engine_count; e++) {
 		if (engines[e] != headline_engine)

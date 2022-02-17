@@ -128,16 +128,16 @@ EXWLCSArchive::~EXWLCSArchive()
 {
 }
 
-bool EXWLCSArchive::hasFile(const Common::String &name) const
+bool EXWLCSArchive::hasFile(const Common::Path &name) const
 {
-    return _headers.contains(name);
+    return _headers.contains(name.toString());
 }
 
 int EXWLCSArchive::listMembers(Common::ArchiveMemberList &list) const
 {
     int matches = 0;
 
-    PakHeadersMap::const_iterator it = _headers.begin();
+    EXWLCSHeadersMap::const_iterator it = _headers.begin();
     for (; it != _headers.end(); ++it)
     {
         list.push_back(Common::ArchiveMemberList::value_type(new Common::GenericArchiveMember(it->_value->filename, this)));
@@ -147,21 +147,21 @@ int EXWLCSArchive::listMembers(Common::ArchiveMemberList &list) const
     return matches;
 }
 
-const Common::ArchiveMemberPtr EXWLCSArchive::getMember(const Common::String &name) const
+const Common::ArchiveMemberPtr EXWLCSArchive::getMember(const Common::Path &name) const
 {
-    if (!hasFile(name))
+    if (!hasFile(name.toString()))
         return Common::ArchiveMemberPtr();
 
-    return Common::ArchiveMemberPtr(new Common::GenericArchiveMember(name, this));
+    return Common::ArchiveMemberPtr(new Common::GenericArchiveMember(name.toString(), this));
 }
 
-Common::SeekableReadStream *EXWLCSArchive::createReadStreamForMember(const Common::String &name) const
+Common::SeekableReadStream *EXWLCSArchive::createReadStreamForMember(const Common::Path &name) const
 {
-    if (!_headers.contains(name)) {
+    if (!_headers.contains(name.toString())) {
 		return 0;
 	}
 
-	LCSHEADER *hdr = _headers[name].get();
+	LCSHEADER *hdr = _headers[name.toString()].get();
 
 	Common::File archiveFile;
 	archiveFile.open(_exwlcsFilename);
@@ -179,7 +179,7 @@ Common::SeekableReadStream *EXWLCSArchive::createReadStreamForMember(const Commo
 	return new Common::MemoryReadStream(buff, len, DisposeAfterUse::YES);
 }
 
-EXWLCSArchive *makeEXWLCSArchive(const Common::String &name)
+EXWLCSArchive *EXWLCSFactory(const Common::String &name)
 {
     return new EXWLCSArchive(name);
 }

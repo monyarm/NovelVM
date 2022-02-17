@@ -8,6 +8,7 @@
 #include "common/debug.h"
 #include "common/file-format.h"
 #include "common/file.h"
+#include "common/path.h"
 #include "common/hash-str.h"
 #include "common/memstream.h"
 
@@ -35,10 +36,10 @@ public:
 
 	void readFile(Common::SeekableReadStream &stream);
 	// Archive implementation
-	bool hasFile(const Common::String &name) const override;
+	bool hasFile(const Common::Path &name) const override;
 	int listMembers(Common::ArchiveMemberList &list) const override;
-	const Common::ArchiveMemberPtr getMember(const Common::String &name) const override;
-	Common::SeekableReadStream *createReadStreamForMember(const Common::String &name) const override;
+	const Common::ArchiveMemberPtr getMember(const Common::Path &name) const override;
+	Common::SeekableReadStream *createReadStreamForMember(const Common::Path &name) const override;
 
 	//File Format implementation
 
@@ -92,7 +93,7 @@ private:
  *
  * May return 0 in case of a failure.
  */
-PAC *makePAC(const Common::String &name);
+PAC *PACFactory(const Common::String &name);
 
 } // namespace SMT::Format::Archive
 

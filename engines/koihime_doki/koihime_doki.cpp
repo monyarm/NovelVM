@@ -36,9 +36,6 @@ KoihimeDokiEngine::~KoihimeDokiEngine()
 
 	// Dispose your resources here
 	delete _rnd;
-
-	// Remove all of our debug levels here
-	DebugMan.clearAllDebugChannels();
 }
 
 Common::Error KoihimeDokiEngine::run()
@@ -51,7 +48,7 @@ Common::Error KoihimeDokiEngine::run()
 
 	Graphics::PixelFormat format = g_system->getScreenFormat();
 
-	Common::Archive *lcsebody1 = Format::Archive::makeEXWLCSArchive("lcsebody1");
+	Common::Archive *lcsebody1 = Format::Archive::EXWLCSFactory("lcsebody1");
 	_archives["lcsebody1"].reset(lcsebody1);
 
 

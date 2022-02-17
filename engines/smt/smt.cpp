@@ -18,7 +18,8 @@
 namespace SMT {
 
 SMTEngine::SMTEngine(OSystem *syst, const ADGameDescription *desc)
-    : Engine(syst), _gameDescription(desc), _console(nullptr), _gfx(0) {
+    : Engine(syst), _gameDescription(desc), _console(nullptr)//, _gfx(0) 
+	{
 	// Put your engine in a sane state, but do nothing big yet;
 	// in particular, do not load data from files; rather, if you
 	// need to do such things, do them from run().
@@ -29,10 +30,6 @@ SMTEngine::SMTEngine(OSystem *syst, const ADGameDescription *desc)
 	// However this is the place to specify all default directories
 	const Common::FSNode gameDataDir(ConfMan.get("path"));
 	//SearchMan.addSubDirectoryMatching(gameDataDir, "sound/pmsf");
-
-	// Here is the right place to set up the engine specific debug channels
-	DebugMan.addDebugChannel(kSMTDebug, "example", "this is just an example for a engine specific debug channel");
-	DebugMan.addDebugChannel(kSMTDebug2, "example2", "also an example");
 
 	// Don't forget to register your random source
 	_rnd = new Common::RandomSource("smt");
@@ -45,9 +42,6 @@ SMTEngine::~SMTEngine() {
 
 	// Dispose your resources here
 	delete _rnd;
-
-	// Remove all of our debug levels here
-	DebugMan.clearAllDebugChannels();
 }
 
 Common::Error SMTEngine::run() {

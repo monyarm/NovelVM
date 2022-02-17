@@ -20,7 +20,7 @@
 #include "engines/util.h"
 #include "graphics/palette.h"
 #include "graphics/surface.h"
-#include "smt/gfx/gfx.h"
+// #include "smt/gfx/gfx.h"
 
 struct ADGameDescription;
  
@@ -28,14 +28,6 @@ namespace SMT {
  
  
 class Console;
- 
-// our engine debug channels
-enum {
-	kSMTDebug = 1 << 0,
-	kSMTDebug2 = 1 << 1
-	// next new channel must be 1 << 2 (4)
-	// the current limitation is 32 debug channels (1 << 31 is the last one)
-};
  
 class SMTEngine : public Engine {
 public:
@@ -51,7 +43,7 @@ public:
  
 private:
 	Console *_console;
-	Renderer *_gfx;
+	// Renderer *_gfx;
 	Audio::SoundHandle _shandle;
 
 	// We need random numbers

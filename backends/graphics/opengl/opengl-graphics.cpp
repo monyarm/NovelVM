@@ -1397,8 +1397,8 @@ void OpenGLGraphicsManager::osdMessageUpdateSurface() {
 	_osdMessageAlpha = kOSDMessageInitialAlpha;
 	_osdMessageFadeStartTime = g_system->getMillis() + kOSDMessageFadeOutDelay;
 
-	if (ConfMan.hasKey("tts_enabled", "scummvm") &&
-			ConfMan.getBool("tts_enabled", "scummvm")) {
+	if (ConfMan.hasKey("tts_enabled", "novelvm") &&
+	    ConfMan.getBool("tts_enabled", "novelvm")) {
 		Common::TextToSpeechManager *ttsMan = g_system->getTextToSpeechManager();
 		if (ttsMan)
 			ttsMan->say(_osdMessageNextData);

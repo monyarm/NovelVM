@@ -6,13 +6,7 @@ MODULE_OBJS := \
 	metaengine.o \
 	formats/archive/pac.o \
 	formats/graphic/tmx.o \
-	formats/script/bmd.o \
-	gfx/gfx.o \
-	gfx/gfx_tinygl.o \
-	gfx/gfx_tinygl_texture.o \
-	gfx/gfx_opengl.o \
-	gfx/gfx_opengl_texture.o \
-	gfx/gfx_opengl_shaders.o \
+	formats/script/bmd.o 
 
 MODULE_DIRS += \
 	engines/smt
