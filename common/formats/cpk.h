@@ -56,7 +56,7 @@ public:
 	uint64 _uint64;
 	float ufloat;
 	string str;
-	List<byte> data;
+	Common::Array<byte> data;
 	int64 position;
 };
 
@@ -75,7 +75,7 @@ public:
 
 class ROWS {
 public:
-	List<ROW> rows;
+	Common::Array<ROW> rows;
 
 	ROWS(){};
 };
@@ -122,8 +122,8 @@ public:
 		TYPE_MASK = 0x0f,
 	};
 
-	List<COLUMN> columns;
-	List<ROWS> rows;
+	Common::Array<COLUMN> columns;
+	Common::Array<ROWS> rows;
 
 	UTF(){};
 
@@ -145,19 +145,19 @@ public:
 	CPK(const char *path);
 	CPK(Common::SeekableReadStream *ms);
 	bool ReadCPKFile(Common::SeekableReadStream &br);
-	List<FileEntry> fileTable;
+	Common::Array<FileEntry> fileTable;
 	Dictionary<string, object> cpkdata;
 	UTF utf;
 
 	bool isUtfEncrypted;
 	int unk1;
 	int64 utf_size;
-	List<byte> utf_packet;
-	List<byte> CPK_packet;
-	List<byte> TOC_packet;
-	List<byte> ITOC_packet;
-	List<byte> ETOC_packet;
-	List<byte> GTOC_packet;
+	Common::Array<byte> utf_packet;
+	Common::Array<byte> CPK_packet;
+	Common::Array<byte> TOC_packet;
+	Common::Array<byte> ITOC_packet;
+	Common::Array<byte> ETOC_packet;
+	Common::Array<byte> GTOC_packet;
 	uint64 TocOffset, EtocOffset, ItocOffset, GtocOffset, ContentOffset;
 
 	FileEntry CreateFileEntry(string _fileName, uint64 &_fileOffset, Type _fileOffsetType, int64 &_fileOffsetPos, string _tocName, string _fileType, bool encrypted);
@@ -173,13 +173,13 @@ private:
 
 	Type GetColumnType(UTF utf, int row, string pName);
 
-	uint16 get_next_bits(List<byte> input, int &offset_p, byte &bit_pool_p, int &bits_left_p, int bit_count);
+	uint16 get_next_bits(Common::Array<byte> input, int &offset_p, byte &bit_pool_p, int &bits_left_p, int bit_count);
 
-	List<byte> DecompressCRILAYLA(List<byte> input, int USize);
+	Common::Array<byte> DecompressCRILAYLA(Common::Array<byte> input, int USize);
 
-	List<byte> DecompressLegacyCRI(List<byte> input, int USize);
+	Common::Array<byte> DecompressLegacyCRI(Common::Array<byte> input, int USize);
 
-	List<byte> DecryptUTF(List<byte> input);
+	Common::Array<byte> DecryptUTF(Common::Array<byte> input);
 
 	bool ReadGTOC(Common::SeekableReadStream &br, uint64 startoffset);
 

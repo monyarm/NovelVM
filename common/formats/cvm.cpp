@@ -1,6 +1,6 @@
 #include "common/archive.h"
 
-#include "common/formats/archive/cvm.h"
+#include "common/formats/cvm.h"
 
 namespace Common {
 
@@ -10,7 +10,7 @@ CVM::CVM(const Common::String &filename) : _cvmFilename(filename) {
 	Common::ArchiveMemberList list;
 	SearchMan.listMembers(list);
 
-	if (!cvmFile.open(_cvmFilename)) {
+	if (!cvmFile.open(Common::Path(_cvmFilename))) {
 		warning("CVMArchive::CVMArchive(): Could not find the archive file");
 		return;
 	}
@@ -140,7 +140,7 @@ int CVM::listMembers(Common::ArchiveMemberList &list) const {
 
 	CVMEntrysMap::const_iterator it = _entries.begin();
 	for (; it != _entries.end(); ++it) {
-		list.push_back(Common::ArchiveMemberList::value_type(new Common::GenericArchiveMember(it->_value->name, this)));
+		list.push_back(Common::ArchiveMemberList::value_type(new Common::GenericArchiveMember(Common::Path(it->_value->name), *this)));
 		matches++;
 	}
 
@@ -151,7 +151,7 @@ const Common::ArchiveMemberPtr CVM::getMember(const Common::Path &name) const {
 	if (!hasFile(name))
 		return Common::ArchiveMemberPtr();
 
-	return Common::ArchiveMemberPtr(new Common::GenericArchiveMember(name.toString(), this));
+	return Common::ArchiveMemberPtr(new Common::GenericArchiveMember(name, *this));
 }
 
 Common::SeekableReadStream *CVM::createReadStreamForMember(const Common::Path &name) const {
@@ -162,7 +162,7 @@ Common::SeekableReadStream *CVM::createReadStreamForMember(const Common::Path &n
 	CVMEntry *hdr = _entries[name.toString()].get();
 
 	Common::File f;
-	f.open(hdr->cvmFile);
+	f.open(Common::Path(hdr->cvmFile));
 	f.seek(hdr->offset);
 	byte *data = new byte[hdr->size];
 	f.read(data, hdr->size);

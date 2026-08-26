@@ -1,4 +1,4 @@
-#include "common/formats/archive/cpk.h"
+#include "common/formats/cpk.h"
 namespace Common {
 
 CPK::CPK(const char *path) {
@@ -320,7 +320,7 @@ Type CPK::GetColumnType(UTF _utf, int row, string pName)
 	return result;
 }
 
-uint16 CPK::get_next_bits(List<byte> input, int &offset_p, byte &bit_pool_p, int &bits_left_p, int bit_count) {
+uint16 CPK::get_next_bits(Common::Array<byte> input, int &offset_p, byte &bit_pool_p, int &bits_left_p, int bit_count) {
 	uint16 out_bits = 0;
 	int num_bits_produced = 0;
 	int bits_this_round;
@@ -348,8 +348,8 @@ uint16 CPK::get_next_bits(List<byte> input, int &offset_p, byte &bit_pool_p, int
 	return out_bits;
 }
 
-List<byte> CPK::DecompressCRILAYLA(List<byte> input, int USize) {
-	List<byte> result; // = new byte[USize];
+Common::Array<byte> CPK::DecompressCRILAYLA(Common::Array<byte> input, int USize) {
+	Common::Array<byte> result; // = new byte[USize];
 
 	Common::MemoryReadStream br(input.data(), USize); //LE
 
@@ -357,7 +357,7 @@ List<byte> CPK::DecompressCRILAYLA(List<byte> input, int USize) {
 	int uncompressed_size = br.readSint32LE();
 	int uncompressed_header_offset = br.readSint32LE();
 
-	result = List<byte>(uncompressed_size + 0x100);
+	result = Common::Array<byte>(uncompressed_size + 0x100);
 
 	// do some error checks here.........
 
@@ -405,9 +405,9 @@ List<byte> CPK::DecompressCRILAYLA(List<byte> input, int USize) {
 	return result;
 }
 
-List<byte> CPK::DecompressLegacyCRI(List<byte> input, int USize) {
+Common::Array<byte> CPK::DecompressLegacyCRI(Common::Array<byte> input, int USize) {
 
-	List<byte> result; // = new byte[USize];
+	Common::Array<byte> result; // = new byte[USize];
 
 	Common::MemoryReadStream br(input.data(), USize); //LE
 
@@ -415,7 +415,7 @@ List<byte> CPK::DecompressLegacyCRI(List<byte> input, int USize) {
 	int uncompressed_size = br.readSint32LE();
 	/*int uncompressed_header_offset =*/br.readSint32LE();
 
-	result = List<byte>(uncompressed_size + 0x100);
+	result = Common::Array<byte>(uncompressed_size + 0x100);
 
 	int input_end = input.size() - 0x100 - 1;
 	int input_offset = input_end;
@@ -458,8 +458,8 @@ List<byte> CPK::DecompressLegacyCRI(List<byte> input, int USize) {
 	return result;
 }
 
-List<byte> CPK::DecryptUTF(List<byte> input) {
-	List<byte> result(input.size());
+Common::Array<byte> CPK::DecryptUTF(Common::Array<byte> input) {
+	Common::Array<byte> result(input.size());
 
 	int m, t;
 	byte d;
@@ -539,7 +539,7 @@ bool CPK::ReadETOC(Common::SeekableReadStream &br, uint64 startoffset)
 		return false;
 	}
 
-	List<FileEntry> fileEntries;
+	Common::Array<FileEntry> fileEntries;
 	for (const auto &file : fileTable) {
 		if (strcmp(file.FileType.c_str(), "FILE") != 0) {
 			fileEntries.push_back(file);
@@ -562,7 +562,7 @@ void CPK::ReadUTFData(Common::SeekableReadStream &br) {
 
 	unk1 = br.readSint32LE();
 	utf_size = br.readSint64LE();
-	utf_packet = List<byte>(utf_size);
+	utf_packet = Common::Array<byte>(utf_size);
 	br.read(utf_packet.data(), (int)utf_size);
 
 	if (utf_packet[0] != 0x40 && utf_packet[1] != 0x55 && utf_packet[2] != 0x54 && utf_packet[3] != 0x46) //@UTF
@@ -605,10 +605,10 @@ bool CPK::ReadITOC(Common::SeekableReadStream &br, uint64 startoffset, uint64 _c
 		return false;
 	}
 
-	List<byte> DataL = GetColumnData(files, 0, "DataL").getValue.data;
+	Common::Array<byte> DataL = GetColumnData(files, 0, "DataL").getValue.data;
 
 	int64 DataLPos = GetColumnPostion(files, 0, "DataL");
-	List<byte> DataH = GetColumnData(files, 0, "DataH").getValue.data;
+	Common::Array<byte> DataH = GetColumnData(files, 0, "DataH").getValue.data;
 
 	int64 DataHPos = GetColumnPostion(files, 0, "DataH");
 
@@ -619,7 +619,7 @@ bool CPK::ReadITOC(Common::SeekableReadStream &br, uint64 startoffset, uint64 _c
 	Dictionary<int, int64> SizePosTable, CSizePosTable;
 	Dictionary<int, Type> SizeTypeTable, CSizeTypeTable;
 
-	List<int> IDs;
+	Common::Array<int> IDs;
 
 	uint16 ID, size1;
 	uint size2;

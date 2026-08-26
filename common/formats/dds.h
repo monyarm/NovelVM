@@ -11,7 +11,7 @@
 
 #include "graphics/colormasks.h"
 #include "graphics/surface.h"
-#include "graphics/transparent_surface.h"
+#include "graphics/surface.h"
 
 namespace Common {
 
@@ -97,7 +97,7 @@ public:
 		_surface.free();
 	}
 
-	Graphics::TransparentSurface *getSurface();
+	Graphics::Surface *getSurface();
 
 	bool isValid(Common::SeekableReadStream *stream);
 
@@ -105,7 +105,7 @@ public:
 	const Common::Array<Common::String> getFileExtensions();
 
 private:
-	Graphics::TransparentSurface _surface;
+	Graphics::Surface _surface;
 	DDSData dat;
 
 	void readFile(Common::SeekableReadStream *stream);

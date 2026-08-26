@@ -1,4 +1,6 @@
-#include "common/formats/audio/adx.h"
+#include <algorithm>
+
+#include "common/formats/adx.h"
 #include "video/mpegps_decoder.h"
 #include "audio/mixer.h"
 #include "common/endian.h"
@@ -6,6 +8,13 @@
 #include "common/textconsole.h"
 #include "common/types.h"
 #include "common/util.h"
+
+namespace {
+
+const int nibble_to_int[16] = {0, 1, 2, 3, 4, 5, 6, 7,
+                               -8, -7, -6, -5, -4, -3, -2, -1};
+
+} // anonymous namespace
 
 namespace Common {
 
@@ -81,8 +90,6 @@ private:
 	int16 DecodedBuffer[127] = {0};
 	uint8 EncodedBuffer[256] = {0};
 
-	static constexpr const int nibble_to_int[16] = {0, 1, 2, 3, 4, 5, 6, 7,
-	                                -8, -7, -6, -5, -4, -3, -2, -1};
 	static inline int get_high_nibble_signed(uint8 n) {
 		return nibble_to_int[n >> 4];
 	}
@@ -257,17 +264,4 @@ void ADX::readHeader(Common::SeekableReadStream *stream) {
 	stream->seek(info.StreamDataOffset, SEEK_SET);
 }
 
-<<<<<<< HEAD:common/formats/adx.cpp
-void ADXFile::readData(Common::SeekableReadStream *stream) {
-	debug("%i", stream->size());
-	stream->seek(dat.header.dataoffset-2,SEEK_SET);
-	auto cri = stream->readFourCC();
-	debug("%s", cri.c_str());
-	stream->seek(dat.header.dataoffset +4);
-
-
-}
 } // namespace Common
-=======
-} // namespace Format::Audio
->>>>>>> b297e3be743 (forgot to commit these changes):formats/audio/adx.cpp

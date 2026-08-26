@@ -24,8 +24,8 @@ using string = Common::String;
 class Debug
 {
 public:
-    void Print(string s) { debug(s.c_str()); };
-    void Print(const char *c) { debug(c); };
+    void Print(string s) { debug("%s", s.c_str()); };
+    void Print(const char *c) { debug("%s", c); };
 };
 
 enum class Type

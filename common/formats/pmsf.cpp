@@ -1,4 +1,4 @@
-#include "common/formats/video/pmsf.h"
+#include "common/formats/pmsf.h"
 
 namespace Common {
 void PMSFFile::ReadFile(char *path) {

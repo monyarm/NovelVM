@@ -28,7 +28,6 @@ MODULE_OBJS := \
 	platform.o \
 	printman.o \
 	punycode.o \
-	quicktime.o \
 	quicksort.o \
 	random.o \
 	rational.o \

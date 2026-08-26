@@ -83,6 +83,9 @@ class String;
 #define kPlatformZX_VAL                0x24, "\xA4"
 #define kPlatformTI994_VAL             0x25, "\xA5"
 #define kPlatformNintendoSwitch_VAL    0x26, "\xA6"
+#define kPlatformPSP_VAL               0x27, "\xA7"
+#define kPlatformPSVita_VAL            0x28, "\xA8"
+#define kPlatformPS4_VAL               0x29, "\xA9"
 
 /**
  * List of game platforms. Specifying a platform for a target can be used to
@@ -130,6 +133,9 @@ enum Platform : int8 {
 	kPlatformZX = GET_ENUM_VAL(kPlatformZX_VAL),
 	kPlatformTI994 = GET_ENUM_VAL(kPlatformTI994_VAL),
 	kPlatformNintendoSwitch = GET_ENUM_VAL(kPlatformNintendoSwitch_VAL),
+	kPlatformPSP = GET_ENUM_VAL(kPlatformPSP_VAL),
+	kPlatformPSVita = GET_ENUM_VAL(kPlatformPSVita_VAL),
+	kPlatformPS4 = GET_ENUM_VAL(kPlatformPS4_VAL),
 
 	// This is a special case, unknown platform won't be added to gui options string
 	kPlatformUnknown = -1

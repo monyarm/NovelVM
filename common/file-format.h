@@ -9,7 +9,7 @@
 namespace Common {
 class FileFormat {
 public:
-	virtual const Common::Array<String> getFileExtensions() {};
+	virtual const Common::Array<String> getFileExtensions() { return {}; }
 };
 
 }; // namespace Common

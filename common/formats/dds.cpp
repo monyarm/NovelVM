@@ -1,4 +1,4 @@
-#include "common/formats/graphic/dds.h"
+#include "common/formats/dds.h"
 
 namespace Common {
 
@@ -14,7 +14,7 @@ DDSFile::DDSFile(Common::SeekableReadStream *stream) {
 	readFile(stream);
 }
 
-Graphics::TransparentSurface *DDSFile::getSurface() {
+Graphics::Surface *DDSFile::getSurface() {
 	return &_surface;
 }
 
