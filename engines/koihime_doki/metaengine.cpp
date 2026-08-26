@@ -7,7 +7,7 @@ public:
 	
 	const char *getName() const override
 	{
-		return "Koihime Musou";
+		return "KoihimeDoki";
 	}
     
     Common::Error createInstance(OSystem *syst, Engine **engine, const ADGameDescription *desc) const override;

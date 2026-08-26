@@ -6,7 +6,7 @@ public:
 
 	const char *getName() const override
 	{
-		return "Bible Black";
+		return "BibleBlack";
 	}
     
     Common::Error createInstance(OSystem *syst, Engine **engine, const ADGameDescription *desc) const override;
