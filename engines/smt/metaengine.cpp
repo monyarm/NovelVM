@@ -1,7 +1,7 @@
 #include "smt/smt.h"
 #include "engines/advancedDetector.h"
 
-class SMTMetaEngine : public AdvancedMetaEngine {
+class SMTMetaEngine : public AdvancedMetaEngine<ADGameDescription> {
 public:
 	const char *getName() const override
 	{

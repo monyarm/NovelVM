@@ -65,13 +65,13 @@ EXWLCSArchive::EXWLCSArchive(const Common::String &filename) : _exwlcsFilename(f
 
     debug("%s", _exwlcsFilename.c_str());
 
-    if (!exwlcsFile.open(_exwlcsFilename))
+    if (!exwlcsFile.open(Common::Path(_exwlcsFilename)))
     {
         warning("EXWLCSArchive::EXWLCSArchive(): Could not find the archive file");
         return;
     }
 
-    if (!exwlcsLst.open(_exwlcsFilename + ".lst"))
+    if (!exwlcsLst.open(Common::Path(_exwlcsFilename + ".lst")))
     {
         warning("EXWLCSArchive::EXWLCSArchive(): Could not find the list file");
         return;
@@ -140,7 +140,7 @@ int EXWLCSArchive::listMembers(Common::ArchiveMemberList &list) const
     EXWLCSHeadersMap::const_iterator it = _headers.begin();
     for (; it != _headers.end(); ++it)
     {
-        list.push_back(Common::ArchiveMemberList::value_type(new Common::GenericArchiveMember(it->_value->filename, this)));
+        list.push_back(Common::ArchiveMemberList::value_type(new Common::GenericArchiveMember(Common::Path(it->_value->filename), *this)));
         matches++;
     }
 
@@ -149,10 +149,10 @@ int EXWLCSArchive::listMembers(Common::ArchiveMemberList &list) const
 
 const Common::ArchiveMemberPtr EXWLCSArchive::getMember(const Common::Path &name) const
 {
-    if (!hasFile(name.toString()))
+    if (!hasFile(name))
         return Common::ArchiveMemberPtr();
 
-    return Common::ArchiveMemberPtr(new Common::GenericArchiveMember(name.toString(), this));
+    return Common::ArchiveMemberPtr(new Common::GenericArchiveMember(name, *this));
 }
 
 Common::SeekableReadStream *EXWLCSArchive::createReadStreamForMember(const Common::Path &name) const
@@ -164,7 +164,7 @@ Common::SeekableReadStream *EXWLCSArchive::createReadStreamForMember(const Commo
 	LCSHEADER *hdr = _headers[name.toString()].get();
 
 	Common::File archiveFile;
-	archiveFile.open(_exwlcsFilename);
+	archiveFile.open(Common::Path(_exwlcsFilename));
 	archiveFile.seek(hdr->offset);
 
     unsigned char* buff = new unsigned char[hdr->length];

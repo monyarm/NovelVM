@@ -15,7 +15,7 @@ PAK::PAK(const Common::String &filename) : _pakFilename(filename)
 	Common::ArchiveMemberList list;
 	SearchMan.listMembers(list);
 
-    if (!pakFile.open(_pakFilename))
+    if (!pakFile.open(Common::Path(_pakFilename)))
     {
         warning("PAK::PAK(): Could not find the archive file");
         return;
@@ -88,7 +88,7 @@ int PAK::listMembers(Common::ArchiveMemberList &list) const
     PAKHeadersMap::const_iterator it = _headers.begin();
     for (; it != _headers.end(); ++it)
     {
-        list.push_back(Common::ArchiveMemberList::value_type(new Common::GenericArchiveMember(it->_value->name, this)));
+        list.push_back(Common::ArchiveMemberList::value_type(new Common::GenericArchiveMember(Common::Path(it->_value->name), *this)));
         matches++;
     }
 
@@ -100,7 +100,7 @@ const Common::ArchiveMemberPtr PAK::getMember(const Common::Path &name) const
     if (!hasFile(name))
         return Common::ArchiveMemberPtr();
 
-    return Common::ArchiveMemberPtr(new Common::GenericArchiveMember(name.toString(), this));
+    return Common::ArchiveMemberPtr(new Common::GenericArchiveMember(name, *this));
 }
 
 Common::SeekableReadStream *PAK::createReadStreamForMember(const Common::Path &name) const
@@ -112,7 +112,7 @@ Common::SeekableReadStream *PAK::createReadStreamForMember(const Common::Path &n
 	PAKHeader *hdr = _headers[name.toString()].get();
 
 	Common::File archiveFile;
-	archiveFile.open(_pakFilename);
+	archiveFile.open(Common::Path(_pakFilename));
 	archiveFile.seek(hdr->position);
 
 	byte *data = (byte *)malloc(hdr->size);

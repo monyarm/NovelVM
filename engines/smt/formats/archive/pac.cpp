@@ -11,7 +11,7 @@ PAC::PAC() {
 PAC::PAC(const Common::String &filename) : _pakFilename(filename) {
 	Common::File pacFile;
 
-	if (!pacFile.open(_pakFilename)) {
+	if (!pacFile.open(Common::Path(_pakFilename))) {
 		warning("PAC::PAC(): Could not find the archive file");
 		return;
 	}
@@ -44,7 +44,7 @@ int PAC::listMembers(Common::ArchiveMemberList &list) const {
 
 	EntriesMap::const_iterator it = entries.begin();
 	for (; it != entries.end(); ++it) {
-		list.push_back(Common::ArchiveMemberList::value_type(new Common::GenericArchiveMember(it->_value->name, this)));
+		list.push_back(Common::ArchiveMemberList::value_type(new Common::GenericArchiveMember(Common::Path(it->_value->name), *this)));
 		matches++;
 	}
 
@@ -52,10 +52,10 @@ int PAC::listMembers(Common::ArchiveMemberList &list) const {
 }
 
 const Common::ArchiveMemberPtr PAC::getMember(const Common::Path &name) const {
-	if (!hasFile(name.toString()))
+	if (!hasFile(name))
 		return Common::ArchiveMemberPtr();
 
-	return Common::ArchiveMemberPtr(new Common::GenericArchiveMember(name.toString(), this));
+	return Common::ArchiveMemberPtr(new Common::GenericArchiveMember(name, *this));
 }
 
 Common::SeekableReadStream *PAC::createReadStreamForMember(const Common::Path &name) const {
@@ -66,7 +66,7 @@ Common::SeekableReadStream *PAC::createReadStreamForMember(const Common::Path &n
 	Entry *hdr = entries[name.toString()].get();
 
 	Common::File archiveFile;
-	archiveFile.open(_pakFilename);
+	archiveFile.open(Common::Path(_pakFilename));
 	archiveFile.seek(hdr->position);
 
 	byte *data = (byte *)malloc(hdr->size);

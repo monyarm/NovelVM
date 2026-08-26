@@ -7,7 +7,7 @@
 #include "common/debug.h"
 
 #include "graphics/surface.h"
-#include "graphics/transparent_surface.h"
+#include "graphics/surface.h"
 #include "graphics/colormasks.h"
 
 namespace SMT::Format::Graphic {
@@ -108,10 +108,10 @@ public:
 		_surface.free();
 	}
 
-	Graphics::TransparentSurface *getSurface();
+	Graphics::Surface *getSurface();
 
 private:
-	Graphics::TransparentSurface _surface;
+	Graphics::Surface _surface;
 	TMXData dat;
 
 	void readFile(Common::SeekableReadStream *stream);

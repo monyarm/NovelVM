@@ -7,13 +7,13 @@ Common::Platform SMTEngine::getPlatform() const { return _gameDescription->platf
 }
 
 static const PlainGameDescriptor SMTGames[] = {
-	{"P3", "Persona 3", "file_formats", "https://megamitensei.fandom.com/wiki/Persona_3"},
-	{"P3F", "Persona 3 FES", "file_formats", "https://megamitensei.fandom.com/wiki/Persona_3_FES"},
-	{"P4", "Persona 4", "file_formats", "https://megamitensei.fandom.com/wiki/Persona_4"},
-	{"P4G", "Persona 4 Golden", "file_formats","https://megamitensei.fandom.com/wiki/Persona_4_Golden"},
-	{"P5", "Persona 5", "file_formats","https://megamitensei.fandom.com/wiki/Persona_5"},
-	{"P5R", "Persona 5 Royal", "file_formats","https://megamitensei.fandom.com/wiki/Persona_5_Royal"},
-	{"P3P", "P3P: Persona 3 Portable", "file_formats","https://megamitensei.fandom.com/wiki/Persona_3_Portable"},
+	{"P3", "Persona 3", "File Formats", "https://megamitensei.fandom.com/wiki/Persona_3"},
+	{"P3F", "Persona 3 FES", "File Formats", "https://megamitensei.fandom.com/wiki/Persona_3_FES"},
+	{"P4", "Persona 4", "File Formats", "https://megamitensei.fandom.com/wiki/Persona_4"},
+	{"P4G", "Persona 4 Golden", "File Formats","https://megamitensei.fandom.com/wiki/Persona_4_Golden"},
+	{"P5", "Persona 5", "File Formats","https://megamitensei.fandom.com/wiki/Persona_5"},
+	{"P5R", "Persona 5 Royal", "File Formats","https://megamitensei.fandom.com/wiki/Persona_5_Royal"},
+	{"P3P", "P3P: Persona 3 Portable", "File Formats","https://megamitensei.fandom.com/wiki/Persona_3_Portable"},
 	{0, 0, 0, 0}
 };
 
@@ -23,7 +23,7 @@ static const ADGameDescription gameDescriptions[] = {
 	{
 		"P3P",
 		0,
-		AD_ENTRY1s("umd0.cpk", NULL, -1),
+		AD_ENTRY1s("umd0.cpk", nullptr, AD_NO_SIZE),
 		Common::EN_ANY,
 		Common::kPlatformPSP,
 		ADGF_NO_FLAGS,
@@ -32,7 +32,7 @@ static const ADGameDescription gameDescriptions[] = {
 	{
 		"P3",
 		0,
-		AD_ENTRY1s("DATA.CVM", NULL, -1),
+		AD_ENTRY1s("DATA.CVM", nullptr, AD_NO_SIZE),
 		Common::EN_ANY,
 		Common::kPlatformPS2,
 		ADGF_NO_FLAGS,
@@ -41,7 +41,7 @@ static const ADGameDescription gameDescriptions[] = {
 	{
 		"P3F",
 		0,
-		AD_ENTRY1s("DATA.CVM", NULL, -1),
+		AD_ENTRY1s("DATA.CVM", nullptr, AD_NO_SIZE),
 		Common::EN_ANY,
 		Common::kPlatformPS2,
 		ADGF_NO_FLAGS,
@@ -50,7 +50,7 @@ static const ADGameDescription gameDescriptions[] = {
 	{
 		"P4",
 		0,
-		AD_ENTRY1s("DATA.CVM", NULL, -1),
+		AD_ENTRY1s("DATA.CVM", nullptr, AD_NO_SIZE),
 		Common::EN_ANY,
 		Common::kPlatformPS2,
 		ADGF_NO_FLAGS,
@@ -59,7 +59,7 @@ static const ADGameDescription gameDescriptions[] = {
 	{
 		"P4G",
 		0,
-		AD_ENTRY1s("data.cpk", NULL, -1),
+		AD_ENTRY1s("data.cpk", nullptr, AD_NO_SIZE),
 		Common::EN_ANY,
 		Common::kPlatformPSVita,
 		ADGF_NO_FLAGS,
@@ -68,7 +68,7 @@ static const ADGameDescription gameDescriptions[] = {
 	{
 		"P5",
 		0,
-		AD_ENTRY1s("data.cpk", NULL, -1),
+		AD_ENTRY1s("data.cpk", nullptr, AD_NO_SIZE),
 		Common::EN_ANY,
 		Common::kPlatformPSVita,
 		ADGF_NO_FLAGS,
@@ -77,7 +77,7 @@ static const ADGameDescription gameDescriptions[] = {
 	{
 		"P5R",
 		0,
-		AD_ENTRY1s("data.cpk", NULL, -1),
+		AD_ENTRY1s("data.cpk", nullptr, AD_NO_SIZE),
 		Common::EN_ANY,
 		Common::kPlatformPSVita,
 		ADGF_NO_FLAGS,
@@ -89,16 +89,16 @@ static const ADGameDescription gameDescriptions[] = {
 
 } // End of namespace SMT
 
-class SMTMetaEngineDetection : public AdvancedMetaEngineDetection {
+class SMTMetaEngineDetection : public AdvancedMetaEngineDetection<ADGameDescription> {
 public:
-	SMTMetaEngineDetection() : AdvancedMetaEngineDetection(SMT::gameDescriptions, sizeof(ADGameDescription), SMTGames) {
-	}
-
-	const char *getEngineId() const override {
-		return "SMT";
+	SMTMetaEngineDetection() : AdvancedMetaEngineDetection(SMT::gameDescriptions, SMTGames) {
 	}
 
 	const char *getName() const override {
+		return "SMT";
+	}
+
+	const char *getEngineName() const override {
 		return "Shin Megami Tensei";
 	}
 

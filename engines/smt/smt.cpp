@@ -1,12 +1,11 @@
 #include "audio/mixer.h"
 #include "common/list.h"
-#include "common/formats/archive/cpk.h"
-#include "common/formats/archive/cvm.h"
-#include "common/formats/audio/adx.h"
-#include "common/formats/graphic/dds.h"
-#include "common/formats/video/pmsf.h"
-#include "graphics/transform_struct.h"
-#include "graphics/transparent_surface.h"
+#include "common/formats/cpk.h"
+#include "common/formats/cvm.h"
+#include "common/formats/adx.h"
+#include "common/formats/dds.h"
+#include "common/formats/pmsf.h"
+#include "graphics/surface.h"
 #include "smt/formats/archive/pac.h"
 #include "smt/formats/graphic/tmx.h"
 #include "smt/formats/script/bmd.h"
@@ -15,10 +14,65 @@
 #include "util.h"
 
 
+
+namespace {
+
+/**
+ * Alpha-blend a 32-bit RGBA source surface onto the destination surface,
+ * honoring the destination's actual pixel format. Replaces the removed
+ * Graphics::TransparentSurface::blit().
+ */
+void blitAlphaSurface(const Graphics::Surface *src, Graphics::Surface *dst) {
+	if (!src || !dst || !src->getPixels() || !dst->getPixels())
+		return;
+
+	const Graphics::PixelFormat &sf = src->format;
+	const Graphics::PixelFormat &df = dst->format;
+
+	for (uint16 y = 0; y < src->h && y < dst->h; ++y) {
+		const byte *srcRow = (const byte *)src->getBasePtr(0, y);
+		byte *dstRow = (byte *)dst->getBasePtr(0, y);
+
+		for (uint16 x = 0; x < src->w && x < dst->w; ++x) {
+			uint32 spix = 0;
+			memcpy(&spix, srcRow + x * sf.bytesPerPixel, sf.bytesPerPixel);
+
+			uint8 r = ((spix >> sf.rShift) << sf.rLoss) & 0xFF;
+			uint8 g = ((spix >> sf.gShift) << sf.gLoss) & 0xFF;
+			uint8 b = ((spix >> sf.bShift) << sf.bLoss) & 0xFF;
+			uint8 a = sf.aLoss == 8 ? 255 :
+			          (((spix >> sf.aShift) << sf.aLoss) & 0xFF);
+
+			byte *dstPix = dstRow + x * df.bytesPerPixel;
+			if (a >= 255 || df.bytesPerPixel < 2) {
+				uint32 color = df.RGBToColor(r, g, b);
+				memcpy(dstPix, &color, df.bytesPerPixel);
+				continue;
+			}
+			if (a == 0)
+				continue;
+
+			uint32 dpix = 0;
+			memcpy(&dpix, dstPix, df.bytesPerPixel);
+			uint8 dr, dg, db;
+			df.colorToRGB(dpix, dr, dg, db);
+
+			dr = (r * a + dr * (255 - a)) / 255;
+			dg = (g * a + dg * (255 - a)) / 255;
+			db = (b * a + db * (255 - a)) / 255;
+			uint32 color = df.RGBToColor(dr, dg, db);
+			memcpy(dstPix, &color, df.bytesPerPixel);
+		}
+	}
+}
+
+} // anonymous namespace
+
 namespace SMT {
 
+
 SMTEngine::SMTEngine(OSystem *syst, const ADGameDescription *desc)
-    : Engine(syst), _gameDescription(desc), _console(nullptr)//, _gfx(0) 
+    : Engine(syst), _gameDescription(desc), _console(nullptr)//, _gfx(0)
 	{
 	// Put your engine in a sane state, but do nothing big yet;
 	// in particular, do not load data from files; rather, if you
@@ -28,7 +82,7 @@ SMTEngine::SMTEngine(OSystem *syst, const ADGameDescription *desc)
 	// Do not initialize audio devices here
 
 	// However this is the place to specify all default directories
-	const Common::FSNode gameDataDir(ConfMan.get("path"));
+	const Common::FSNode gameDataDir(Common::Path(ConfMan.get("path")));
 	//SearchMan.addSubDirectoryMatching(gameDataDir, "sound/pmsf");
 
 	// Don't forget to register your random source
@@ -93,7 +147,7 @@ Common::Error SMTEngine::run() {
 
 	Format::Graphic::TMX _tmx("test/COIN_C10.TMX");
 	Format::Script::BMD _bmd("test/field.BMD");
-	::Format::Audio::ADX _adx("test/THEME.ADX");
+	Common::ADX _adx("test/THEME.ADX");
 
 	//TMX _tmx("test/PSMT8.tmx");
 
@@ -126,7 +180,7 @@ Common::Error SMTEngine::run() {
 	g_system->getEventManager()->pollEvent(e);
 	g_system->delayMillis(10);
 
-	Graphics::TransparentSurface *surfacetmx = _tmx.getSurface();
+	Graphics::Surface *surfacetmx = _tmx.getSurface();
 	Common::Rect tmxRect = Common::Rect(surfacetmx->w, surfacetmx->h);
 
 	//Graphics::TransparentSurface *surfacedds = _dds.getSurface();
@@ -145,7 +199,7 @@ Common::Error SMTEngine::run() {
 		// _gfx->drawTexturedRect2D(_gfx->viewport(), ddsRect, texturedds, -.5, false);
 		// _gfx->flipBuffer();
 		Graphics::Surface *screen = g_system->lockScreen();
-		surfacetmx->blit(*screen);
+		blitAlphaSurface(surfacetmx, screen);
 		g_system->unlockScreen();
 		g_system->updateScreen();
 		g_system->getEventManager()->pollEvent(e);

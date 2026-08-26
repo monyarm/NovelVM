@@ -20,7 +20,7 @@ namespace KoihimeDoki
 static const ADGameDescription gameDescriptions[] = {
 	{"KM",
 	 0,
-	 AD_ENTRY1s("koihime.ico", NULL, -1),
+	 AD_ENTRY1s("koihime.ico", nullptr, AD_NO_SIZE),
 	 Common::EN_ANY,
 	 Common::kPlatformWindows,
 	 ADGF_NO_FLAGS,
@@ -30,19 +30,19 @@ static const ADGameDescription gameDescriptions[] = {
 
 } // End of namespace KoihimeDoki
 
-class KoihimeDokiMetaEngineDetection : public AdvancedMetaEngineDetection
+class KoihimeDokiMetaEngineDetection : public AdvancedMetaEngineDetection<ADGameDescription>
 {
 public:
-	KoihimeDokiMetaEngineDetection() : AdvancedMetaEngineDetection(KoihimeDoki::gameDescriptions, sizeof(ADGameDescription), KoihimeDokiGames)
+	KoihimeDokiMetaEngineDetection() : AdvancedMetaEngineDetection(KoihimeDoki::gameDescriptions, KoihimeDokiGames)
 	{
 	}
 
-	const char *getEngineId() const override
+	const char *getName() const override
 	{
 		return "KoihimeDoki";
 	}
 
-	const char *getName() const override
+	const char *getEngineName() const override
 	{
 		return "Koihime Musou";
 	}

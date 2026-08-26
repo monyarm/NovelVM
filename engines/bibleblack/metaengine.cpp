@@ -1,7 +1,7 @@
 #include "bibleblack/bibleblack.h"
 #include "engines/advancedDetector.h"
 
-class BibleBlackMetaEngine : public AdvancedMetaEngine {
+class BibleBlackMetaEngine : public AdvancedMetaEngine<ADGameDescription> {
 public:
 
 	const char *getName() const override

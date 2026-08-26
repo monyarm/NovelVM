@@ -19,7 +19,7 @@ BibleBlackEngine::BibleBlackEngine(OSystem *syst, const ADGameDescription *desc)
 	// Do not initialize audio devices here
 
 	// However this is the place to specify all default directories
-	const Common::FSNode gameDataDir(ConfMan.get("path"));
+	const Common::FSNode gameDataDir(Common::Path(ConfMan.get("path")));
 	// Here is the right place to set up the engine specific debug channels
 	DebugMan.addDebugChannel(kBibleBlackDebug, "example", "this is just an example for a engine specific debug channel");
 	DebugMan.addDebugChannel(kBibleBlackDebug2, "example2", "also an example");

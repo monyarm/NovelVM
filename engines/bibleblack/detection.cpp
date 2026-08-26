@@ -21,14 +21,14 @@ namespace BibleBlack
 static const ADGameDescription gameDescriptions[] = {
 	{"BBLNdW",
 	 0,
-	 AD_ENTRY1s("A98SYS.PAK", NULL, -1),
+	 AD_ENTRY1s("A98SYS.PAK", nullptr, AD_NO_SIZE),
 	 Common::EN_ANY,
 	 Common::kPlatformWindows,
 	 ADGF_NO_FLAGS,
 	 GUIO1(GUIO_NONE)},
 	{"BBTI",
 	 0,
-	 AD_ENTRY1s("A98SYS.PAK", NULL, -1),
+	 AD_ENTRY1s("A98SYS.PAK", nullptr, AD_NO_SIZE),
 	 Common::EN_ANY,
 	 Common::kPlatformWindows,
 	 ADGF_NO_FLAGS,
@@ -38,10 +38,10 @@ static const ADGameDescription gameDescriptions[] = {
 
 } // End of namespace BibleBlack
 
-class BibleBlackMetaEngineDetection : public AdvancedMetaEngineDetection
+class BibleBlackMetaEngineDetection : public AdvancedMetaEngineDetection<ADGameDescription>
 {
 public:
-	BibleBlackMetaEngineDetection() : AdvancedMetaEngineDetection(BibleBlack::gameDescriptions, sizeof(ADGameDescription), BibleBlackGames)
+	BibleBlackMetaEngineDetection() : AdvancedMetaEngineDetection(BibleBlack::gameDescriptions, BibleBlackGames)
 	{
 	}
 
@@ -50,12 +50,12 @@ public:
 	{
 		return "";
 	}
-	const char *getEngineId() const override
+	const char *getName() const override
 	{
 		return "BibleBlack";
 	}
 
-	const char *getName() const override
+	const char *getEngineName() const override
 	{
 		return "Bible Black";
 	}

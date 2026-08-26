@@ -14,7 +14,7 @@ TMX::TMX(Common::SeekableReadStream *stream) {
 	readFile(stream);
 }
 
-Graphics::TransparentSurface *TMX::getSurface() {
+Graphics::Surface *TMX::getSurface() {
 	return &_surface;
 }
 

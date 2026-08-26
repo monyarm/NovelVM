@@ -1,7 +1,7 @@
 #include "koihime_doki/koihime_doki.h"
 #include "engines/advancedDetector.h"
 
-class KoihimeDokiMetaEngine : public AdvancedMetaEngine {
+class KoihimeDokiMetaEngine : public AdvancedMetaEngine<ADGameDescription> {
 public:
 
 	
