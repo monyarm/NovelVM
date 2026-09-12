@@ -147,7 +147,7 @@ Platform-specific features outside the GUI
 Keyboard shortcut "CONTROL+ALT+a": immediate aspect ratio correction on/off
 toggle.
 
-"output_rate" in scummvm.ini: sample rate for mixing. Allowed values depend on
+"output_rate" in novelvm.ini: sample rate for mixing. Allowed values depend on
 the hardware connected:
 
   - TT030: 50066, 25033, 12517, 6258 Hz
@@ -166,12 +166,12 @@ systems without an external DSP clock, these frequencies are adjusted to
 the exact value; it will be rounded automatically to the nearest suitable
 value.
 
-"output_channels" in scummvm.ini: mono (1) or stereo (2) mixing. Falcon always
+"output_channels" in novelvm.ini: mono (1) or stereo (2) mixing. Falcon always
 outputs 16-bit stereo however when set to mono, a fast mono-to-stereo
 conversion takes place (so I encourage everyone to use mono when music playback
 is too demanding).
 
-"audio_buffer_size" in scummvm.ini: number of samples to preload. Default is
+"audio_buffer_size" in novelvm.ini: number of samples to preload. Default is
 2048 which equals to about 83ms of audio lag and seems to be about right for
 most games on my CT60@66 MHz.
 
@@ -180,7 +180,7 @@ If you want to play with "audio_buffer_size", the rule of thumb is: (lag in ms)
 the samples value to get rid of stuttering in a heavier game.
 
 Please note that unlike previous versions, these values will never be written
-back to scummvm.ini. This is beneficial if you want to switch between Falcon
+back to novelvm.ini. This is beneficial if you want to switch between Falcon
 and TT or between Falcon with and without external DSP clock (as mentioned,
 DOS/Windows friendly values are automatically converted to a frequency which
 TT/Falcon supports).
@@ -380,7 +380,7 @@ MIDI emulation (synthesis) can easily eat as much as 50% of all used CPU time
 this port uses the MAME OPL emulation (which is said to be fastest but also
 least accurate) but some engines require the DOSBOX one which is even more
 demanding. By the way, you can put "FM_high_quality=true" or
-"FM_medium_quality=true" into scummvm.ini if you want to experiment with a
+"FM_medium_quality=true" into novelvm.ini if you want to experiment with a
 better quality synthesis, otherwise the lowest quality will be used (applies
 for MAME OPL only).
 

@@ -16,9 +16,9 @@ The configuration file saves to different default locations, depending on the pl
 
     .. tab-item:: Windows
 
-        ``%APPDATA%\ScummVM\scummvm.ini``
+        ``%APPDATA%\ScummVM\novelvm.ini``
 
-        For Windows 95/98/ME, the file is at ``C:\WINDOWS\scummvm.ini``
+        For Windows 95/98/ME, the file is at ``C:\WINDOWS\novelvm.ini``
 
 
     .. tab-item:: macOS
@@ -36,9 +36,9 @@ The configuration file saves to different default locations, depending on the pl
 
     .. tab-item:: Linux
 
-        ScummVM follows the XDG Base Directory Specification, so by default the configuration file is found at ``~/.config/scummvm/scummvm.ini``, but its location might vary depending on the value of the ``XDG_CONFIG_HOME`` environment variable.
+        ScummVM follows the XDG Base Directory Specification, so by default the configuration file is found at ``~/.config/novelvm/novelvm.ini``, but its location might vary depending on the value of the ``XDG_CONFIG_HOME`` environment variable.
 
-        If ScummVM was installed using Snap, the configuration file is found at ``~/snap/scummvm/current/.config/scummvm/scummvm.ini``
+        If ScummVM was installed using Snap, the configuration file is found at ``~/snap/novelvm/current/.config/novelvm/novelvm.ini``
 
         .. note::
 

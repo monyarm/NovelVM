@@ -27,7 +27,7 @@ Core will be built for all available android targets by default
 
 ### Data files and themes
 [Data files](https://wiki.scummvm.org/index.php/Datafiles) required for certain games and core functions (e.g. virtual keyboard) and default [ScummVM GUI themes](https://wiki.scummvm.org/index.php/GUI_Themes) are bundled during the build process in `scummvm.zip` file. Libretro core info file is created during build as well.
-Extract `scummvm.zip` and select relevant paths in ScummVM GUI (or modify `scummvm.ini` accordingly) to load properly needed data files/themes in the core.
+Extract `scummvm.zip` and select relevant paths in ScummVM GUI (or modify `novelvm.ini` accordingly) to load properly needed data files/themes in the core.
 
 Note that both datafiles and themes included in `scummvm.zip` need to be consistent with ScummVM version in use, hence need to be generally rebuilt and replaced for each new version.
 
@@ -40,7 +40,7 @@ ScummVM core can accept as content the playlist-provided path to any of the file
 
 The core also supports dedicated per game **hook** plain text files with `.scummvm` extension, which can be used as target path in the playlist. Content of this file shall be a string corresponding to one of the following ScummVM identifiers:
 
-  - **target**: this is the game identifier of each entry in the internal Launcher list, hence corresponding to entries in ScummVM configuration file (e.g. 'scummvm.ini'). In this case the game must be added from ScummVM GUI first, and the hook files can be placed anywhere, as the path for the game files is already part of the target configuration. The game will be launched with the options set in ScummVM
+  - **target**: this is the game identifier of each entry in the internal Launcher list, hence corresponding to entries in ScummVM configuration file (e.g. 'novelvm.ini'). In this case the game must be added from ScummVM GUI first, and the hook files can be placed anywhere, as the path for the game files is already part of the target configuration. The game will be launched with the options set in ScummVM
 
   - **game ID**: this is a unique identifier for any game supported by ScummVM. This identifier is hard coded in each engine source and can be subject to change, hence it is **not a recommended choice**. A list of current game IDs is available [here](https://scummvm.org/compatibility). In this case the game will be launched even if not added in ScummVM Launcher, the hook file must be placed in the game folder and the game will be launched with default ScummVM options
 

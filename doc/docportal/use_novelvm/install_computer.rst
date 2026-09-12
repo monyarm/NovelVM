@@ -28,7 +28,7 @@ This page explains how to install ScummVM on a computer. For all other platforms
 
             Starting with ScummVM 2.6.0, ScummVM offers a portable mode. Instead of storing saved games, icons and screenshots in your user's directory, they are stored in the same folder as the ScummVM executable.
 
-            To run ScummVM in portable mode, create an empty file called ``scummvm.ini`` in the folder where you extracted the ScummVM zipfile.
+            To run ScummVM in portable mode, create an empty file called ``novelvm.ini`` in the folder where you extracted the ScummVM zipfile.
 
     .. tab-item:: macOS
 

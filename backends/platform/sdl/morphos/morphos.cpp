@@ -98,7 +98,7 @@ static Common::Path getProcessDirectoryFile(const char *file) {
 }
 
 Common::Path OSystem_MorphOS::getDefaultConfigFileName() {
-	return getProcessDirectoryFile("scummvm.ini");
+	return getProcessDirectoryFile("novelvm.ini");
 }
 
 static void assureDrawerExists(const Common::Path &path) {

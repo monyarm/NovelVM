@@ -112,7 +112,7 @@ bool OSystem_POSIX::hasFeature(Feature f) {
 }
 
 Common::Path OSystem_POSIX::getDefaultConfigFileName() {
-	const Common::String baseConfigName = "scummvm.ini";
+	const Common::String baseConfigName = "novelvm.ini";
 
 	Common::String configFile;
 
@@ -150,8 +150,8 @@ Common::Path OSystem_POSIX::getDefaultConfigFileName() {
 		prefix = envVar;
 	}
 
-	if (!prefix.empty() && Posix::assureDirectoryExists("scummvm", prefix.c_str())) {
-		prefix += "/scummvm";
+	if (!prefix.empty() && Posix::assureDirectoryExists("novelvm", prefix.c_str())) {
+		prefix += "/novelvm";
 	}
 
 	if (!prefix.empty() && (prefix.size() + 1 + baseConfigName.size()) < MAXPATHLEN) {

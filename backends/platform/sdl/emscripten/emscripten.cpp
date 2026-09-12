@@ -165,7 +165,7 @@ Common::Path OSystem_Emscripten::getDefaultLogFileName() {
 }
 
 Common::Path OSystem_Emscripten::getDefaultConfigFileName() {
-	return Common::Path(Common::String::format("%s/scummvm.ini", getenv("HOME")));
+	return Common::Path(Common::String::format("%s/novelvm.ini", getenv("HOME")));
 }
 
 Common::Path OSystem_Emscripten::getScreenshotsPath() {

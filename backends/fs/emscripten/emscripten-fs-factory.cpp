@@ -36,7 +36,7 @@
 EM_ASYNC_JS(void, _initSettings, (const char *pathPtr), {
 	try {
 		const path = UTF8ToString(pathPtr);
-		const settingsPath = path + "/scummvm.ini";
+		const settingsPath = path + "/novelvm.ini";
 		
 		// Mount the filesystem
 		FS.mount(IDBFS, { autoPersist: true }, path);
@@ -48,7 +48,7 @@ EM_ASYNC_JS(void, _initSettings, (const char *pathPtr), {
 		
 		// Check if settings file exists and download if needed
 		if (!FS.analyzePath(settingsPath).exists) {
-			const response = await fetch("scummvm.ini");
+			const response = await fetch("novelvm.ini");
 			if (response.ok) {
 				const text = await response.text();
 				FS.writeFile(settingsPath, text);

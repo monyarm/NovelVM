@@ -126,7 +126,7 @@ Common::Path OSystem_SDL_Sailfish::getDefaultConfigFileName() {
 
 	Common::Path configFile(prefix);
 	configFile.joinInPlace(configPath);
-	configFile.joinInPlace("scummvm.ini");
+	configFile.joinInPlace("novelvm.ini");
 
 	return configFile;
 }

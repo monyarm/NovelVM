@@ -39,7 +39,7 @@ _scummvm()
             ;;
     esac
 
-    # If it's not an option, try matching a target from the scummvm.init file.
+    # If it's not an option, try matching a target from the novelvm.ini file.
 
     if [[ -z ${opt_name} ]] && [[ ${cur} != -* ]]; then
         local scummvm_config
@@ -49,9 +49,9 @@ _scummvm()
 
         if [[ ! -f ${scummvm_config} ]]; then
             if [[ -n ${XDG_CONFIG_HOME} ]]; then
-                scummvm_config=${XDG_CONFIG_HOME}/scummvm/scummvm.ini
+                scummvm_config=${XDG_CONFIG_HOME}/novelvm/novelvm.ini
             elif [[ -n ${HOME} ]]; then
-                scummvm_config=${HOME}/.config/scummvm/scummvm.ini
+                scummvm_config=${HOME}/.config/novelvm/novelvm.ini
             else
                 return;
             fi
