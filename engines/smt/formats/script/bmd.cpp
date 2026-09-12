@@ -9,6 +9,10 @@
 
 namespace SMT::Format::Script {
 
+constexpr const byte BMD::BMDHeader::MAGIC_V0[4];
+constexpr const byte BMD::BMDHeader::MAGIC_V1[4];
+constexpr const byte BMD::BMDHeader::MAGIC_V1_BE[4];
+
 BMD::BMD(const char *path) {
 
 	Common::File f;
