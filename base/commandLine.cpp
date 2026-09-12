@@ -31,6 +31,7 @@
 #include "base/version.h"
 
 #include "common/config-manager.h"
+#include "common/formats/json.h"
 #include "common/fs.h"
 #include "common/macresman.h"
 #include "common/md5.h"
@@ -404,7 +405,7 @@ void registerDefaults() {
 	ConfMan.registerDefault("grid_items_per_row", 4);
 	ConfMan.registerDefault("gui_kinetic_scrolling", true);
 	// Specify threshold for scanning directories in the launcher
-	// If number of game entries in scummvm.ini exceeds the specified
+	// If number of game entries in novelvm.ini exceeds the specified
 	// number, then skip scanning. -1 = scan always
 	ConfMan.registerDefault("gui_list_max_scan_entries", -1);
 	ConfMan.registerDefault("game", "");
@@ -1080,6 +1081,82 @@ unknownOption:
 	return command;
 }
 
+// Widths of the four NovelVM list-games columns, matching the traditional
+// four-column table. ASCII fields keep their historical alignment.
+static const int kListGameIDWidth = 30;
+static const int kListTitleWidth = 60;
+static const int kListStateWidth = 30;
+static const int kListURLWidth = 60;
+
+/**
+ * Compute the display width in terminal columns of a UTF-8 string.
+ *
+ * East Asian Wide/Fullwidth code points count two columns, every other
+ * printable code point counts one. Malformed UTF-8 is walked one byte at a
+ * time with width 1, so a bad sequence can neither crash nor misalign rows.
+ */
+static int utf8DisplayWidth(const char *s) {
+	int width = 0;
+	const byte *p = (const byte *)s;
+	while (*p) {
+		uint32 cp = *p++;
+		int extra = 0;
+		if (cp >= 0xF0) {
+			cp &= 0x07;
+			extra = 3;
+		} else if (cp >= 0xE0) {
+			cp &= 0x0F;
+			extra = 2;
+		} else if (cp >= 0xC0) {
+			cp &= 0x1F;
+			extra = 1;
+		} else {
+			++width;
+			continue;
+		}
+
+		bool valid = true;
+		for (int i = 0; i < extra; ++i) {
+			if (*p >= 0x80 && *p < 0xC0) {
+				cp = (cp << 6) | (*p++ & 0x3F);
+			} else {
+				valid = false;
+				break;
+			}
+		}
+		if (!valid) {
+			++width;
+			continue;
+		}
+
+		++width;
+		if ((cp >= 0x1100 && cp <= 0x115F) ||   // Hangul Jamo
+		    (cp >= 0x2E80 && cp <= 0x303E) ||   // CJK Radicals .. CJK Symbols
+		    (cp >= 0x3041 && cp <= 0x33FF) ||   // Hiragana .. CJK Compatibility
+		    (cp >= 0x3400 && cp <= 0x4DBF) ||   // CJK Extension A
+		    (cp >= 0x4E00 && cp <= 0x9FFF) ||   // CJK Unified Ideographs
+		    (cp >= 0xAC00 && cp <= 0xD7A3) ||   // Hangul Syllables
+		    (cp >= 0xF900 && cp <= 0xFAFF) ||   // CJK Compatibility Ideographs
+		    (cp >= 0xFE30 && cp <= 0xFE4F) ||   // CJK Compatibility Forms
+		    (cp >= 0xFF00 && cp <= 0xFF60) ||   // Fullwidth Forms
+		    (cp >= 0xFFE0 && cp <= 0xFFE6))     // Fullwidth Signs
+			++width;
+	}
+	return width;
+}
+
+/** Print a UTF-8 string padded to a minimum display width, without truncation. */
+static void printPadded(const char *s, int width) {
+	if (!s)
+		s = "";
+	printf("%s", s);
+	int used = utf8DisplayWidth(s);
+	while (used < width) {
+		printf(" ");
+		++used;
+	}
+}
+
 /** List all available game IDs, i.e. all games which any loaded plugin supports. */
 static void listGames(const Common::String &engineID, bool jsonOutput) {
 	const bool all = engineID.empty();
@@ -1090,11 +1167,35 @@ static void listGames(const Common::String &engineID, bool jsonOutput) {
 	}
 
 	if (jsonOutput) {
-		printf("{");
-	} else {
-		printf("Game ID                        Full Title                                                 \n"
-			"------------------------------ -----------------------------------------------------------\n");
+		Common::JSONObject top;
+		const PluginList &plugins = EngineMan.getPlugins(PLUGIN_TYPE_ENGINE);
+		for (const auto &plugin : plugins) {
+			const Plugin *p = EngineMan.findDetectionPlugin(plugin->getName());
+			/* If for some reason, we can't find the MetaEngineDetection for this Engine, just ignore it */
+			if (!p) {
+				continue;
+			}
+
+			if (all || Common::find(engines.begin(), engines.end(), p->getName()) != engines.end()) {
+				PlainGameList list = p->get<MetaEngineDetection>().getSupportedGames();
+				for (const auto &v : list) {
+					const Common::String &gameId = buildQualifiedGameName(p->get<MetaEngineDetection>().getName(), v.gameId);
+					Common::JSONObject entry;
+					entry.setVal("title", new Common::JSONValue(Common::String(v.description ? v.description : "")));
+					entry.setVal("state", new Common::JSONValue(Common::String(v.state ? v.state : "")));
+					entry.setVal("url", new Common::JSONValue(Common::String(v.url ? v.url : "")));
+					top.setVal(gameId, new Common::JSONValue(entry));
+				}
+			}
+		}
+		Common::JSONValue *root = new Common::JSONValue(top);
+		printf("%s\n", root->stringify(true).c_str());
+		delete root;
+		return;
 	}
+
+	printf("Game ID                        Full Title                                                   State                         URL                                                         \n"
+	       "------------------------------ ------------------------------------------------------------ ----------------------------- ------------------------------------------------------------\n");
 
 	const PluginList &plugins = EngineMan.getPlugins(PLUGIN_TYPE_ENGINE);
 	for (const auto &plugin : plugins) {
@@ -1106,25 +1207,14 @@ static void listGames(const Common::String &engineID, bool jsonOutput) {
 
 		if (all || Common::find(engines.begin(), engines.end(), p->getName()) != engines.end()) {
 			PlainGameList list = p->get<MetaEngineDetection>().getSupportedGames();
-			bool first = true;
 			for (const auto &v : list) {
-				const Common::String &gameId = buildQualifiedGameName(p->get<MetaEngineDetection>().getName(), v.gameId);
-				if (jsonOutput) {
-					if (!first) {
-						printf(",\n");
-					} else {
-						printf("\n");
-					}
-					first = false;
-					printf("  \"%s\": \"%s\"", gameId.c_str(), v.description);
-				} else {
-					printf("%-30s %s\n", gameId.c_str(), v.description);
-				}
+				printPadded(buildQualifiedGameName(p->get<MetaEngineDetection>().getName(), v.gameId).c_str(), kListGameIDWidth);
+				printPadded(v.description, kListTitleWidth);
+				printPadded(v.state, kListStateWidth);
+				printPadded(v.url, kListURLWidth);
+				printf("\n");
 			}
 		}
-	}
-	if (jsonOutput) {
-		printf("\n}\n");
 	}
 }
 
@@ -1137,8 +1227,8 @@ static void listAllGames(const Common::String &engineID) {
 		engines = tokenizer.split();
 	}
 
-	printf("Game ID                        Full Title                                                 \n"
-	       "------------------------------ -----------------------------------------------------------\n");
+	printf("Game ID                        Full Title                                                   State                         URL                                                         \n"
+	       "------------------------------ ------------------------------------------------------------ ----------------------------- ------------------------------------------------------------\n");
 
 	const PluginList &plugins = EngineMan.getPlugins(PLUGIN_TYPE_ENGINE_DETECTION);
 	for (const auto &plugin : plugins) {
@@ -1147,7 +1237,11 @@ static void listAllGames(const Common::String &engineID) {
 		if (any || Common::find(engines.begin(), engines.end(), metaEngine.getName()) != engines.end()) {
 			PlainGameList list = metaEngine.getSupportedGames();
 			for (const auto &v : list) {
-				printf("%-30s %s\n", buildQualifiedGameName(metaEngine.getName(), v.gameId).c_str(), v.description);
+				printPadded(buildQualifiedGameName(metaEngine.getName(), v.gameId).c_str(), kListGameIDWidth);
+				printPadded(v.description, kListTitleWidth);
+				printPadded(v.state, kListStateWidth);
+				printPadded(v.url, kListURLWidth);
+				printf("\n");
 			}
 		}
 	}
