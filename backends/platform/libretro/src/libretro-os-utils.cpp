@@ -63,9 +63,9 @@ void OSystem_libretro::getTimeAndDate(TimeDate &t, bool skipRecord) const {
 
 Common::Path OSystem_libretro::getDefaultConfigFileName() {
 	if (s_systemDir.empty())
-		return Common::Path("scummvm.ini");
+		return Common::Path("novelvm.ini");
 	else
-		return Common::Path(s_systemDir).appendComponent("scummvm.ini");
+		return Common::Path(s_systemDir).appendComponent("novelvm.ini");
 }
 
 void OSystem_libretro::logMessage(LogMessageType::Type type, const char *message) {
@@ -252,7 +252,7 @@ static const char *const helpTabs[] = {
 	    "\n"
 	    "The core also supports dedicated per game **hook** plain text files with **." CORE_EXTENSIONS "** extension, which can be used as target in the playlist to specify one of the following ScummVM identifiers:\n"
 	    "\n"
-	    "  - **target**: this is the game identifier of each entry in the internal Launcher list, hence corresponding to entries in ScummVM configuration file (e.g. 'scummvm.ini'). In this case the game must be added from ScummVM GUI first, and the hook files can be placed anywhere, as the path for the game files is already part of the target configuration. The game will be launched with the options set in ScummVM\n"
+	    "  - **target**: this is the game identifier of each entry in the internal Launcher list, hence corresponding to entries in ScummVM configuration file (e.g. 'novelvm.ini'). In this case the game must be added from ScummVM GUI first, and the hook files can be placed anywhere, as the path for the game files is already part of the target configuration. The game will be launched with the options set in ScummVM\n"
 	    "\n"
 	    "  - **game ID**: this is a unique identifier for any game supported by ScummVM. This identifier is hard coded in each engine source and can be subject to change, hence it is **not a recommended choice**. A list of current game IDs is available [here](https://scummvm.org/compatibility). In this case the game will be launched even if not added in ScummVM Launcher, the hook file must be placed in the game folder and the game will be launched with default ScummVM options\n"
 	    "\n"

@@ -41,7 +41,7 @@ Saved games
 
 Configuration file
 **************************
-``PROGDIR:scummvm.ini``
+``PROGDIR:novelvm.ini``
 
 
 Settings

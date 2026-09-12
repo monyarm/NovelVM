@@ -55,10 +55,10 @@ void OSystem_iOS7::updateStartSettings(const Common::String &executable, Common:
 			return;
 		}
 
-		// If the bundle contains a scummvm.ini, use it as initial config
+		// If the bundle contains a novelvm.ini, use it as initial config
 		NSString *iniPath = [bundle pathForResource:@"scummvm" ofType:@"ini"];
 		if (iniPath && !settings.contains("initial-cfg"))
-			settings["initial-cfg"] = "appbundle:/scummvm.ini";
+			settings["initial-cfg"] = "appbundle:/novelvm.ini";
 
 		// If a command was specified on the command line, do not override it
 		if (!command.empty())

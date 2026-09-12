@@ -57,7 +57,7 @@
 #include "backends/text-to-speech/windows/windows-text-to-speech.h"
 #endif
 
-#define DEFAULT_CONFIG_FILE "scummvm.ini"
+#define DEFAULT_CONFIG_FILE "novelvm.ini"
 
 OSystem_Win32::OSystem_Win32() :
 	_isPortable(false) {

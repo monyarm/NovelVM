@@ -19,19 +19,19 @@ else
 fi
 
 # Initial setup
-if [ ! -f "${XDG_CONFIG_HOME}/scummvm/scummvm.ini" ]; then
+if [ ! -f "${XDG_CONFIG_HOME}/scummvm/novelvm.ini" ]; then
   mkdir -p ${XDG_CONFIG_HOME}/scummvm/
-  echo "[scummvm]\n"                                                                >> ${XDG_CONFIG_HOME}/scummvm/scummvm.ini
-  echo "aspect_ratio=true\n"                                                        >> ${XDG_CONFIG_HOME}/scummvm/scummvm.ini
-  echo "gfx_mode=opengl\n"                                                          >> ${XDG_CONFIG_HOME}/scummvm/scummvm.ini
-  echo "[cloud]\nrootpath=/home/${USER}/snap/scummvm/current/.local/share/scummvm"  >> ${XDG_CONFIG_HOME}/scummvm/scummvm.ini
+  echo "[scummvm]\n"                                                                >> ${XDG_CONFIG_HOME}/scummvm/novelvm.ini
+  echo "aspect_ratio=true\n"                                                        >> ${XDG_CONFIG_HOME}/scummvm/novelvm.ini
+  echo "gfx_mode=opengl\n"                                                          >> ${XDG_CONFIG_HOME}/scummvm/novelvm.ini
+  echo "[cloud]\nrootpath=/home/${USER}/snap/scummvm/current/.local/share/scummvm"  >> ${XDG_CONFIG_HOME}/scummvm/novelvm.ini
 fi
 
 # We need to do this for the user that launches scummvm, so
 # it can't be done on installation
 if [ ! -f "${XDG_CONFIG_HOME}/scummvm/.added-games-bundle" ]; then
   touch ${XDG_CONFIG_HOME}/scummvm/.added-games-bundle
-  if ! grep -E "comi|drascula|dreamweb|lure|myst|queen|sky|sword" ${XDG_CONFIG_HOME}/scummvm/scummvm.ini
+  if ! grep -E "comi|drascula|dreamweb|lure|myst|queen|sky|sword" ${XDG_CONFIG_HOME}/scummvm/novelvm.ini
   then
   # Register the bundled games.
   $SNAP/usr/local/bin/scummvm -p /usr/share/scummvm/ --recursive --add

@@ -1,5 +1,5 @@
-product scummvm
-    id "ScummVM 2026.3.1git"
+product novelvm
+    id "NovelVM 2.3.0git"
     image sw
         id "software"
         version 18
@@ -7,7 +7,7 @@ product scummvm
         subsys eoe default
             id "execution only env"
             replaces self
-            exp scummvm.sw.eoe
+            exp novelvm.sw.eoe
         endsubsys
     endimage
     image man
@@ -15,9 +15,9 @@ product scummvm
         version 18
         order 9999
         subsys readme default
-            id "scummvm documentation"
+            id "novelvm documentation"
             replaces self
-            exp scummvm.man.readme
+            exp novelvm.man.readme
         endsubsys
     endimage
 endproduct

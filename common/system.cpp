@@ -267,7 +267,7 @@ Common::WriteStream *OSystem::createConfigWriteStream() {
 }
 
 Common::Path OSystem::getDefaultConfigFileName() {
-	return "scummvm.ini";
+	return "novelvm.ini";
 }
 
 Common::String OSystem::getSystemLanguage() const {

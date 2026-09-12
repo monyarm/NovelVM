@@ -1,11 +1,11 @@
-.Dd June 13, 2023
-.Dt SCUMMVM 6
+.Dd September 12, 2026
+.Dt NOVELVM 6
 .Os
 .Sh NAME
-.Nm scummvm
+.Nm novelvm
 .Nd adventure and role-playing game interpreter
 .Sh SYNOPSIS
-.Nm scummvm
+.Nm novelvm
 .Op Ar OPTIONS
 .Op Ar GAME
 .Sh DESCRIPTION
@@ -170,7 +170,7 @@ Latvian
 .It Ar lt
 Lithuanian
 .It Ar nb
-Norwegian (Bokm\(oal)
+Norwegian (Bokm\(oa)
 .It Ar fa
 Persian
 .It Ar pl
@@ -205,11 +205,12 @@ Enable script dumping if a directory called
 .Pa dumps
 exists in the current directory.
 .It Fl v | -version
-Display ScummVM version information, and exit.
+Display NovelVM version information, and exit.
 .It Fl x | -save-slot Ns Op = Ns Ar SLOT
 Set the saved game slot to load (default: 0 = autosave).
 .It Fl z | -list-games
 Display list of supported games, and exit.
+The list uses four columns: game ID, full title, state, and URL.
 .It Fl - Ns Oo Cm no- Oc Ns Cm alt-intro
 Toggle alternative intro for CD versions of Beneath a Steel Sky and
 Flight of the Amazon Queen (default: disabled).
@@ -226,9 +227,7 @@ Set the drive to play CD audio from; can either be
 a drive, path, or numeric index
 (default: 0 = best choice drive).
 .It Fl - Ns Oo Cm no- Oc Ns Cm copy-protection
-Enable copy protection in games, when ScummVM disables it by default.
-.It Fl - Ns Oo Cm no- Oc Ns Cm dirtyrects
-Toggle dirty rectangles optimisation in software renderer (default: enabled).
+Enable copy protection in games, when NovelVM disables it by default.
 .It Fl -debug-channels-only
 Show only the specified debug channels.
 .It Fl -debugflags= Ns Ar FLAGS
@@ -241,6 +240,8 @@ without adding it to the configuration file.
 Use
 .Fl -path= Ns Ar PATH
 to specify a directory.
+.It Fl - Ns Oo Cm no- Oc Ns Cm dirtyrects
+Toggle dirty rectangles optimisation in software renderer (default: enabled).
 .It Fl -dump-midi
 Dump MIDI events to
 .Pa dump.mid
@@ -252,6 +253,7 @@ for MIDI playback.
 .It Fl -engine= Ns Ar ID
 In combination with
 .Fl -list-games ,
+.Fl -list-games-json ,
 .Fl -list-all-games ,
 .Fl -list-targets ,
 or
@@ -268,7 +270,7 @@ or
 .Fl -list-engines ,
 toggle opening the launcher instead of exiting.
 .It Fl -extrapath= Ns Ar PATH
-Set the extra path to additional game and ScummVM data.
+Set the extra path to additional game and NovelVM data.
 .It Fl - Ns Oo Cm no- Oc Ns Cm filtering
 Force filtered/unfiltered graphics mode.
 Filtered graphics mode uses bilinear interpolation
@@ -293,6 +295,7 @@ Display list of all engine debugflags, and exit.
 Display list of all detection engines, and exit.
 .It Fl -list-all-games
 Display list of all detected games, and exit.
+The list uses four columns: game ID, full title, state, and URL.
 .It Fl -list-audio-devices
 List all available audio devices, and exit.
 .It Fl -list-debugflags Ns Op = Ns Ar ENGINE
@@ -304,6 +307,11 @@ argument is
 or if it is not specified, list global debugflags.
 .It Fl -list-engines
 Display list of supported engines, and exit.
+.It Fl -list-engines-json
+Display list of supported engines in JSON format, and exit.
+.It Fl -list-games-json
+Display list of supported games, including their state and URL,
+in JSON format, and exit.
 .It Fl -list-saves
 Display a list of saved games for the target specified with
 .Fl -game= Ns Ar TARGET ,
@@ -335,7 +343,7 @@ Only supported by some MIDI drivers.
 .It Fl -multi-midi
 Enable combination of AdLib and native MIDI.
 .It Fl -native-mt32
-Tell ScummVM that the MIDI device is an actual Roland MT-32 or
+Tell NovelVM that the MIDI device is an actual Roland MT-32 or
 compatible device.
 This disables any GM emulation.
 .It Fl -opl-driver= Ns Ar DRIVER
@@ -514,61 +522,64 @@ Open virtual keyboard (if available).
 This can also be triggered by a long press
 of the middle mouse button or wheel
 .It Ctrl-Alt d
-Open the ScummVM debugger
+Open the NovelVM debugger
 .El
 .Pp
 There are many more game-specific hotkeys.
 See:
 .Lk https://wiki.scummvm.org/index.php?title=Category:Supported_Games
 .Sh ENVIRONMENT
-.Bl -tag -width SCUMMVM
-.It Ev SCUMMVM_MIDI
+.Bl -tag -width NOVELVM
+.It Ev NOVELVM_MIDI
 The sequencer device to use with the
 .Ql seq
 MIDI driver.
-.It Ev SCUMMVM_MIDIPORT
+.It Ev NOVELVM_MIDIPORT
 The number of the sequencer to use when using the
 .Ql seq
 MIDI driver.
-.It Ev SCUMMVM_PORT
+.It Ev NOVELVM_PORT
 The ALSA port to open for output when using the
 .Ql alsa
 MIDI driver.
-.It Ev SCUMMVM_SAVEPATH
+.It Ev NOVELVM_SAVEPATH
 Override the default save path (POSIX systems).
 .El
 .Sh FILES
 .Bl -tag -width Ds
-.It Pa $HOME/.config/scummvm/scummvm.ini
+.It Pa $HOME/.config/novelvm/novelvm.ini
 Configuration file on most Unix systems.
 XDG environment variables take precedence, if defined.
-.It Pa "$HOME/Library/Preferences/ScummVM Preferences"
+.It Pa "$HOME/Library/Preferences/NovelVM Preferences"
 Configuration file on macOS.
 .El
 .Sh EXAMPLES
 Running the built-in game launcher:
 .Pp
-.Dl $ scummvm
+.Dl $ novelvm
 .Pp
 Running Day of the Tentacle, specifying the path:
 .Pp
-.Dl $ scummvm -p /usr/local/share/games/tentacle scumm:tentacle
+.Dl $ novelvm -p /usr/local/share/games/tentacle scumm:tentacle
 .Pp
 Running The Dig with advmame2x filter and subtitles
 (with the
 .Ar dig-steam
 target already defined in the configuration file):
 .Pp
-.Dl $ scummvm --scaler=advmame --scale-factor=2 -n dig-steam
+.Dl $ novelvm --scaler=advmame --scale-factor=2 -n dig-steam
 .Pp
 Running the Italian version of Maniac Mansion fullscreen,
 from the content of the current directory:
 .Pp
-.Dl $ scummvm -q it -f scumm:maniac
+.Dl $ novelvm -q it -f scumm:maniac
 .Sh SEE ALSO
-.Lk https://docs.scummvm.org
+More information can be found in the
+.Pa README
+file and on the website
+.Pa https://www.novelvm.org .
 .Sh AUTHORS
-ScummVM was written by the ScummVM team.
+NovelVM was written by the NovelVM team.
 See
 .Pa AUTHORS
 file for more information.

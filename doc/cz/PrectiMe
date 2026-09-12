@@ -1786,22 +1786,22 @@ Použití kmitočtů mezi není doporučeno. Za prvé Vaše zvuková karta ho ne
 Standardně je soubor s nastavením uložen a načítán:
 
     Windows Vista/7:
-    \Users\jméno uživatele\AppData\Roaming\ScummVM\scummvm.ini,
+    \Users\jméno uživatele\AppData\Roaming\ScummVM\novelvm.ini,
 
     Windows 2000/XP:
-    \Documents and Settings\jméno už\Application Data\ScummVM\scummvm.ini
+    \Documents and Settings\jméno už\Application Data\ScummVM\novelvm.ini
 
     Windows NT4:
-    <složkawin>\Profiles\jméno už\Application Data\ScummVM\scummvm.ini,
+    <složkawin>\Profiles\jméno už\Application Data\ScummVM\novelvm.ini,
 
     Windows 95/98/ME:
-    <složkawin>\scummvm.ini,
+    <složkawin>\novelvm.ini,
 
-    Pokud ve Windows nainstalována dřívější verze ScummVM bude ponecháno dřívější umístění '<složkawin>\scummvm.ini'.
+    Pokud ve Windows nainstalována dřívější verze ScummVM bude ponecháno dřívější umístění '<složkawin>\novelvm.ini'.
 
     Unix:
     Řídíme se specifikacemi základního adresáře XDG. To znamená, že naše nastavení lze nalézt v:
-    $XDG_CONFIG_HOME/scummvm/scummvm.ini
+    $XDG_CONFIG_HOME/scummvm/novelvm.ini
 
     Pokud XDG_CONFIG_HOME není nastaven nebo je prázdný, bude, podle pravidel specifikace, použito '~/.config' jako hodnota pro XDG_CONFIG_HOME.
 
@@ -1812,7 +1812,7 @@ Standardně je soubor s nastavením uložen a načítán:
     (zde ~ označuje Vaši domovskou složku)
 
     Další:
-    scummvm.ini v současné složce
+    novelvm.ini v současné složce
 
 Vzorový soubor s nastavením vypadá takto:
 

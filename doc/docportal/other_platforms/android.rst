@@ -225,7 +225,7 @@ To access the internal app folder, use ScummVM's built-in LAN functionality:
 2. Select **/root/Path**.
 3. Use the file browser to **Go up** to the root of the ScummVM file browser.
 4. Select the **ScummVM data (Internal)** folder, and tap **Choose**.
-5. Run the server to access the ``scummvm.ini`` configuration file.
+5. Run the server to access the ``novelvm.ini`` configuration file.
 
 For more information, see the :doc:`../use_scummvm/LAN` page.
 

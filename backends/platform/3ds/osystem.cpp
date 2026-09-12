@@ -185,7 +185,7 @@ void OSystem_3DS::updateConfig() {
 }
 
 Common::Path OSystem_3DS::getDefaultConfigFileName() {
-	return "sdmc:/3ds/scummvm/scummvm.ini";
+	return "sdmc:/3ds/scummvm/novelvm.ini";
 }
 
 Common::Path OSystem_3DS::getDefaultLogFileName() {

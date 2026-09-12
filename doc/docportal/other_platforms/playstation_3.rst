@@ -96,7 +96,7 @@ Saved games
 Configuration file
 **************************
 
-``/hdd0/game/SCUM12000/USRDIR/scummvm.ini``
+``/hdd0/game/SCUM12000/USRDIR/novelvm.ini``
 
 Settings
 ==========

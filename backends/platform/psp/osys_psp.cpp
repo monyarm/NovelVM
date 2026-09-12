@@ -440,5 +440,5 @@ void OSystem_PSP::getTimeAndDate(TimeDate &td, bool skipRecord) const {
 }
 
 Common::Path OSystem_PSP::getDefaultConfigFileName() {
-	return "ms0:/scummvm.ini";
+	return "ms0:/novelvm.ini";
 }

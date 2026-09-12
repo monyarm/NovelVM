@@ -1879,7 +1879,7 @@ Umfangreichere Informationen über die Änderungen des aktuellen Codes findest D
  Windows-Portierung:
    - "Portabler Modus" hinzugefügt, der die von ScummVM erstellten Dateien (Spielstände, Screenshots...)
      nicht wie üblich im Benutzerprofil-Ordner, sondern in dem Verzeichnis ablegt, in welchem sich
-     die ScummVM-Programmdatei befindet, sofern dort eine scummvm.ini-Datei existiert.
+     die ScummVM-Programmdatei befindet, sofern dort eine novelvm.ini-Datei existiert.
    - Die Erkennung des AppData-Verzeichnisses unter Windows 95/98/ME wurde korrigiert.
 
  RISC OS-Portierung:

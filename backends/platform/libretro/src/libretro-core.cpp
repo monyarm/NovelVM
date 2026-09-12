@@ -1218,15 +1218,15 @@ bool retro_load_game(const struct retro_game_info *game) {
 			retro_log_cb(RETRO_LOG_DEBUG, "[scummvm] launch via target id and game dir\n");
 			break;
 		case TEST_GAME_OK_TARGET_FOUND:
-			snprintf(buffer, sizeof(buffer), "%s", target_id);
-			retro_log_cb(RETRO_LOG_DEBUG, "[scummvm] launch via target id and scummvm.ini\n");
+snprintf(buffer, sizeof(buffer), "%s", target_id);
+			retro_log_cb(RETRO_LOG_DEBUG, "[scummvm] launch via target id and novelvm.ini\n");
 			break;
 		case TEST_GAME_OK_ID_AUTODETECTED:
 			snprintf(buffer, sizeof(buffer), "-p \"%s\" --auto-detect", parent_dir.getPath().toString().c_str());
 			retro_log_cb(RETRO_LOG_DEBUG, "[scummvm] launch via autodetect\n");
 			break;
 		case TEST_GAME_KO_MULTIPLE_RESULTS:
-			retro_log_cb(RETRO_LOG_WARN, "[scummvm] Multiple targets found for '%s' in scummvm.ini\n", target_id);
+			retro_log_cb(RETRO_LOG_WARN, "[scummvm] Multiple targets found for '%s' in novelvm.ini\n", target_id);
 			retro_osd_notification("Multiple targets found");
 			break;
 		case TEST_GAME_KO_NOT_FOUND:

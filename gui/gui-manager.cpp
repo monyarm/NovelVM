@@ -993,7 +993,7 @@ void GuiManager::giveFocusToDialog(Dialog *dialog) {
 }
 
 void GuiManager::setLanguageRTL() {
-	if (ConfMan.hasKey("guiRTL")) {		// Put guiRTL = yes to your scummvm.ini to force RTL GUI
+	if (ConfMan.hasKey("guiRTL")) {		// Put guiRTL = yes to your novelvm.ini to force RTL GUI
 		_useRTL = ConfMan.getBool("guiRTL");
 		return;
 	}

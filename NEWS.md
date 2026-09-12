@@ -1924,7 +1924,7 @@ For a more comprehensive changelog of the latest experimental code, see:
 
  Windows port:
    - Added "Portable Mode" in which the executable's directory is used to store
-     application files if a scummvm.ini file is present, instead of the user's
+     application files if a novelvm.ini file is present, instead of the user's
      profile directory.
    - Fixed detection of the Application Data path on Windows 95/98/ME.
 

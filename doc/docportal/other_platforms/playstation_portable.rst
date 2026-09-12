@@ -145,7 +145,7 @@ Saved games
 Configuration file
 ********************
 
-``ms0:/scummvm.ini``
+``ms0:/novelvm.ini``
 
 Known issues
 ==============

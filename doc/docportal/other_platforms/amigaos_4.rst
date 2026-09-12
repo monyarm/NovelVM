@@ -43,7 +43,7 @@ Controls can be manually configured in the :doc:`Keymaps tab <../settings/keymap
 Paths
 =======
 
-See below for the default location of saved games and scummvm.ini.
+See below for the default location of saved games and novelvm.ini.
 They can be changed in the Settings.
 
 Saved games
@@ -52,7 +52,7 @@ Saved games
 
 Configuration file
 **************************
-``Path-to:ScummVM/scummvm.ini``
+``Path-to:ScummVM/novelvm.ini``
 
 Settings
 ==========

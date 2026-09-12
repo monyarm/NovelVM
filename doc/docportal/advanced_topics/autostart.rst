@@ -26,7 +26,7 @@ Use the autostart feature to automatically start or add games. The available fea
 
         A ``scummvm-autorun`` file can also be used to specify command line options to use, with one option per line. The file should be in the  ``ScummVM.app/Contents/Resources/`` folder.
 
-        In addition if a ``scummvm.ini`` file is present in the ``ScummVM.app/Contents/Resources/`` folder, it will be used as initial config file if no ``ScummVM Preferences`` file exists yet. It is the equivalent of using the ``--initial-cfg`` :doc:`command line option <../advanced_topics/command_line>`.
+        In addition if a ``novelvm.ini`` file is present in the ``ScummVM.app/Contents/Resources/`` folder, it will be used as initial config file if no ``ScummVM Preferences`` file exists yet. It is the equivalent of using the ``--initial-cfg`` :doc:`command line option <../advanced_topics/command_line>`.
 
         Finally it can be noted that the bundle name specified in the ``ScummVM.app/Contents/Info.plist`` file is used for the default config file name. For example by default, when the bundle name is ``ScummVM``, the default config file where settings are saved is ``~/Library/Preferences/ScummVM Preferences``. But if you change the bundle name to ``MyGame``, the default config file used is ``~/Library/Preferences/MyGame Preferences``
 
@@ -36,7 +36,7 @@ Use the autostart feature to automatically start or add games. The available fea
         2. Create a MyGame.app/Contents/Resources/game/ folder and copy your game data files to that folder.
         3. Edit the bundle name and bundle display name in the MyGame.app/Contents/Info.plist file.
         4. Create a new icons file in MyGame.app/Contents/Resources/ and edit the icon file in the MyGame.app/Contents/Info.plist file.
-        5. Create a MyGame.app/Contents/Resources/scummvm.ini file with the default settings for your game bundle (for example to set fullscreen to true).
+        5. Create a MyGame.app/Contents/Resources/novelvm.ini file with the default settings for your game bundle (for example to set fullscreen to true).
 
         Note that modifying a signed bundle will invalidate the signature. So the bundle needs to be signed again after for example adding a ``game`` folder inside the ScummVM.app bundle.
 
@@ -48,7 +48,7 @@ Use the autostart feature to automatically start or add games. The available fea
 
         A ``scummvm-autorun`` file can also be used to specify command line options to use, with one option per line. The file should be in the  ``ScummVM.app/`` folder.
 
-        In addition if a ``scummvm.ini`` file is present in the ``ScummVM.app/`` folder, it will be used as initial config file if no config file exists yet. It is the equivalent of using the ``--initial-cfg`` :doc:`command line option <../advanced_topics/command_line>`.
+        In addition if a ``novelvm.ini`` file is present in the ``ScummVM.app/`` folder, it will be used as initial config file if no config file exists yet. It is the equivalent of using the ``--initial-cfg`` :doc:`command line option <../advanced_topics/command_line>`.
 
         Note that modifying a signed bundle will invalidate the signature. So the bundle needs to be signed again after for example adding a ``game`` folder inside the ScummVM.app bundle.
 

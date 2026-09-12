@@ -31,7 +31,7 @@
  * implement the POSIX APIs.
  *
  * For used with paths like these:
- * - 'sdcard:/games/scummvm.ini'
+ * - 'sdcard:/games/novelvm.ini'
  * - 'hdd1:/usr/bin'
  */
 class DrivesPOSIXFilesystemFactory : public FilesystemFactory {

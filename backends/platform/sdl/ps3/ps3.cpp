@@ -112,7 +112,7 @@ void OSystem_PS3::initBackend() {
 }
 
 Common::Path OSystem_PS3::getDefaultConfigFileName() {
-	return PREFIX "/scummvm.ini";
+	return PREFIX "/novelvm.ini";
 }
 
 Common::Path OSystem_PS3::getDefaultLogFileName() {

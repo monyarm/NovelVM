@@ -89,7 +89,7 @@ void OSystem_KolibriOS::initBackend() {
 }
 
 Common::Path OSystem_KolibriOS::getDefaultConfigFileName() {
-	return _writablePath.join("scummvm.ini");
+	return _writablePath.join("novelvm.ini");
 }
 
 Common::Path OSystem_KolibriOS::getDefaultIconsPath() {

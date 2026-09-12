@@ -170,7 +170,7 @@ Saved games
 
 Configuration file
 **************************
-``ux0:/data/scummvm/scummvm.ini``
+``ux0:/data/scummvm/novelvm.ini``
 
 
 Settings

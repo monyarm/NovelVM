@@ -105,7 +105,7 @@ Saved games
 Configuration file
 **************************
 
-``sdmc:/3ds/scummvm/scummvm.ini``
+``sdmc:/3ds/scummvm/novelvm.ini``
 
 
 Settings

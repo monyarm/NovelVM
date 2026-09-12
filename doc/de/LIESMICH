@@ -2671,26 +2671,26 @@ Ausgabefrequenz ein Vielfaches der Originalfrequenz ist.
 Standardmäßig wird die Konfigurationsdatei hier gespeichert und geladen:
 
     Windows Vista/7:
-    \Users\Benutzername\AppData\Roaming\ScummVM\scummvm.ini
+    \Users\Benutzername\AppData\Roaming\ScummVM\novelvm.ini
 
     Windows 2000/XP:
     \Dokumente und Einstellungen\Benutzername\Anwendungsdaten\
-    ScummVM\scummvm.ini
+    ScummVM\novelvm.ini
 
     Windows NT4:
     <Windows-Verzeichnis>\Profiles\Benutzername\
-    Application Data\ScummVM\scummvm.ini
+    Application Data\ScummVM\novelvm.ini
 
     Windows 95/98/ME:
-    <Windows-Verzeichnis>\scummvm.ini
+    <Windows-Verzeichnis>\novelvm.ini
 
     Wenn eine ältere Version von ScummVM unter Windows installiert wurde, wird
-    der frühere Standard-Ort „<Windows-Verzeichnis>\scummvm.ini“ beibehalten.
+    der frühere Standard-Ort „<Windows-Verzeichnis>\novelvm.ini“ beibehalten.
 
     Unix:
     Wir befolgen die Spezifikation XDG Base Directory. Dies bedeutet, dass
     unsere Konfiguration in
-    $XDG_DATA_HOME/scummvm/scummvm.ini
+    $XDG_DATA_HOME/scummvm/novelvm.ini
     gefunden werden kann.
 
     Wenn XDG_DATA_HOME nicht definiert oder leer ist, wird ~/.local/share als
@@ -2705,10 +2705,10 @@ Standardmäßig wird die Konfigurationsdatei hier gespeichert und geladen:
     (Hierbei bezieht sich ~ auf das Benutzerverzeichnis.)
 
     iOS:
-    /var/mobile/Library/ScummVM/scummvm.ini
+    /var/mobile/Library/ScummVM/novelvm.ini
 
     Sonstige:
-    scummvm.ini im aktuellen Verzeichnis
+    novelvm.ini im aktuellen Verzeichnis
 
 Eine beispielhafte Konfigurationsdatei sieht wie folgt aus:
 

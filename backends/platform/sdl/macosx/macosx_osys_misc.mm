@@ -70,7 +70,7 @@ void OSystem_MacOSX::updateStartSettings(const Common::String & executable, Comm
 		return;
 	}
 
-	// If the bundle contains a scummvm.ini, use it as initial config
+	// If the bundle contains a novelvm.ini, use it as initial config
 	NSString *iniPath = [bundle pathForResource:@"scummvm" ofType:@"ini"];
 	if (iniPath && !settings.contains("initial-cfg"))
 		settings["initial-cfg"] = Common::String([iniPath fileSystemRepresentation]);
