@@ -19,7 +19,7 @@
  *
  */
 
-package org.scummvm.scummvm;
+package org.novelvm.novelvm;
 
 import android.os.Build;
 import android.os.Handler;
@@ -42,7 +42,7 @@ import androidx.annotation.RequiresApi;
 
 import java.lang.ref.WeakReference;
 
-public class ScummVMEvents implements
+public class NovelVMEvents implements
 		android.view.View.OnKeyListener,
 		android.view.View.OnTouchListener,
 		android.view.GestureDetector.OnGestureListener,
@@ -106,8 +106,8 @@ public class ScummVMEvents implements
 	private final float[] _repeatingJoystickCenteredAxisValuesArray = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
 	private int _repeatingJoystickAxisIdBitFlags = 0x00;
 
-	final protected ScummVMActivity _activity;
-	final protected ScummVM _scummvm;
+	final protected NovelVMActivity _activity;
+	final protected NovelVM _scummvm;
 	final protected GestureDetector _gd;
 	final protected int _longPressTimeout;
 	final protected MouseHelper _mouseHelper;
@@ -122,16 +122,16 @@ public class ScummVMEvents implements
 	// https://stackoverflow.com/a/27826094
 	public static class ScummVMEventHandler extends Handler {
 
-		private final WeakReference<ScummVMEvents> mListenerReference;
+		private final WeakReference<NovelVMEvents> mListenerReference;
 
-		public ScummVMEventHandler(ScummVMEvents listener) {
+		public ScummVMEventHandler(NovelVMEvents listener) {
 			super(Looper.getMainLooper());
 			mListenerReference = new WeakReference<>(listener);
 		}
 
 		@Override
 		public synchronized void handleMessage(@NonNull Message msg) {
-			ScummVMEvents listener = mListenerReference.get();
+			NovelVMEvents listener = mListenerReference.get();
 			if(listener != null) {
 				switch (msg.what) {
 					case MSG_REPEAT:
@@ -182,10 +182,10 @@ public class ScummVMEvents implements
 				return;
 			}
 
-			//Log.d(ScummVM.LOG_TAG,"Sending back key");
-			ScummVMEvents.this._scummvm.pushEvent(JE_SYS_KEY, KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK,
+			//Log.d(NovelVM.LOG_TAG,"Sending back key");
+			NovelVMEvents.this._scummvm.pushEvent(JE_SYS_KEY, KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK,
 				0, 0, 0, 0);
-			ScummVMEvents.this._scummvm.pushEvent(JE_SYS_KEY, KeyEvent.ACTION_UP, KeyEvent.KEYCODE_BACK,
+			NovelVMEvents.this._scummvm.pushEvent(JE_SYS_KEY, KeyEvent.ACTION_UP, KeyEvent.KEYCODE_BACK,
 					0, 0, 0, 0);
 		}
 	}
@@ -202,7 +202,7 @@ public class ScummVMEvents implements
 //		return new ScummVMEventHandler(this);
 //	}
 
-	public ScummVMEvents(ScummVMActivity activity, ScummVM scummvm, MouseHelper mouseHelper) {
+	public NovelVMEvents(NovelVMActivity activity, NovelVM scummvm, MouseHelper mouseHelper) {
 		_activity = activity;
 		_scummvm = scummvm;
 		// Careful, _mouseHelper can be null (if HoverListener is not available for the device API -- old devices, API < 9)
@@ -236,7 +236,7 @@ public class ScummVMEvents implements
 
 	private void handleEVHMessage(final Message msg) {
 		if (msg.what == MSG_SMENU_LONG_PRESS) {
-			// this toggles the android keyboard (see showVirtualKeyboard() in ScummVMActivity.java)
+			// this toggles the android keyboard (see showVirtualKeyboard() in NovelVMActivity.java)
 			// when menu key is long-pressed
 //			InputMethodManager imm = (InputMethodManager)
 //				_activity.getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -308,7 +308,7 @@ public class ScummVMEvents implements
 	}
 
 	public boolean onTrackballEvent(MotionEvent e) {
-//		Log.d(ScummVM.LOG_TAG, "SCUMMV-EVENTS-BASE - onTrackballEvent");
+//		Log.d(NovelVM.LOG_TAG, "SCUMMV-EVENTS-BASE - onTrackballEvent");
 		_scummvm.pushEvent(JE_BALL, e.getAction(),
 			(int)(e.getX() * e.getXPrecision() * 100),
 			(int)(e.getY() * e.getYPrecision() * 100),
@@ -324,7 +324,7 @@ public class ScummVMEvents implements
 			switch(event.getActionMasked()) {
 			case MotionEvent.ACTION_MOVE:
 				//InputDevice inputDevice = event.getDevice();
-				//Log.d(ScummVM.LOG_TAG, "JOYSTICK GENERIC MOTION: MOVE, Devname=" + inputDevice.getName() + " pid=" + inputDevice.getProductId() + " vid=" + inputDevice.getVendorId());
+				//Log.d(NovelVM.LOG_TAG, "JOYSTICK GENERIC MOTION: MOVE, Devname=" + inputDevice.getName() + " pid=" + inputDevice.getProductId() + " vid=" + inputDevice.getVendorId());
 				// NOTE In Android 12 (on some early version patch) support for PS5's DualSense broke, and the key mappings are messed up.
 				// This was fixed in another Android 12 patch, but not all devices got that. (eg Redmi 9 Pro does not have this update)
 				// Details about this here: https://stackoverflow.com/questions/68190869/dualshock-5-and-android
@@ -337,12 +337,12 @@ public class ScummVMEvents implements
 				// earliest historical position in the batch
 				for (int i = 0; i < historySize; ++i) {
 					// Process the event at historical position i
-					//Log.d(ScummVM.LOG_TAG, "JOYSTICK - onGenericMotionEvent(m) hist: ");
+					//Log.d(NovelVM.LOG_TAG, "JOYSTICK - onGenericMotionEvent(m) hist: ");
 					processJoystickInput(event, i);
 				}
 
 				// Process the current movement sample in the batch (position -1)
-				//Log.d(ScummVM.LOG_TAG, "JOYSTICK - onGenericMotionEvent(m): "  );
+				//Log.d(NovelVM.LOG_TAG, "JOYSTICK - onGenericMotionEvent(m): "  );
 				processJoystickInput(event, -1);
 				return true;
 
@@ -350,7 +350,7 @@ public class ScummVMEvents implements
 				break;
 			}
 		} else if ((event.getSource() & InputDevice.SOURCE_CLASS_POINTER) != 0) {
-			//Log.d(ScummVM.LOG_TAG, "MOUSE PHYSICAL POINTER - onGenericMotionEvent(m) ");
+			//Log.d(NovelVM.LOG_TAG, "MOUSE PHYSICAL POINTER - onGenericMotionEvent(m) ");
 			//
 			// Check that the event might be a mouse scroll wheel (ACTION_SCROLL)
 			// Code inspired from https://stackoverflow.com/a/33086042
@@ -360,7 +360,7 @@ public class ScummVMEvents implements
 			// in MouseHelper's onMouseEvent() called from onTouch().
 			switch (event.getActionMasked()) {
 			case MotionEvent.ACTION_SCROLL:
-				//Log.d(ScummVM.LOG_TAG, "MOUSE PHYSICAL POINTER - ACTION SCROLL");
+				//Log.d(NovelVM.LOG_TAG, "MOUSE PHYSICAL POINTER - ACTION SCROLL");
 				// This action is not a touch event so it is delivered to
 				// View#onGenericMotionEvent(MotionEvent) rather than View#onTouchEvent(MotionEvent).
 				if (_mouseHelper != null) {
@@ -372,7 +372,7 @@ public class ScummVMEvents implements
 				break;
 			}
 		}
-		//Log.d(ScummVM.LOG_TAG, "MOTION NOT HANDLED, source: " + event.getSource() + " event: "+ event.getActionMasked());
+		//Log.d(NovelVM.LOG_TAG, "MOTION NOT HANDLED, source: " + event.getSource() + " event: "+ event.getActionMasked());
 		return false;
 	}
 
@@ -395,7 +395,7 @@ public class ScummVMEvents implements
 //					actionStr = e.toString();
 //				}
 //		}
-//		Log.d(ScummVM.LOG_TAG, "SCUMMV-EVENTS-BASE - onKEY:::" + keyCode + " Action::" + actionStr); // Called
+//		Log.d(NovelVM.LOG_TAG, "SCUMMV-EVENTS-BASE - onKEY:::" + keyCode + " Action::" + actionStr); // Called
 
 		_currentView = v;
 		final int action = e.getAction();
@@ -486,7 +486,7 @@ public class ScummVMEvents implements
 				}
 
 				// It's still necessary to send a key down event to the backend.
-//				Log.d(ScummVM.LOG_TAG, "JE_SYS_KEY");
+//				Log.d(NovelVM.LOG_TAG, "JE_SYS_KEY");
 				_scummvm.pushEvent(JE_SYS_KEY,
 				                   KeyEvent.ACTION_DOWN,
 				                   keyCode,
@@ -526,7 +526,7 @@ public class ScummVMEvents implements
 			// NOTE 1 For now, we're handling DPAD keys as JE_GAMEPAD events, regardless the source InputDevice
 			//        EXCEPT for the case where the event comes from our virtual keyboard (currently applicable for UP/DOWN/LEFT/RIGHT arrows, not CENTER)
 			//
-			//        We delegate these keypresses to ScummVM's keymapper as JOYSTICK_BUTTON_DPAD presses.
+			//        We delegate these keypresses to NovelVM's keymapper as JOYSTICK_BUTTON_DPAD presses.
 			//        (JOYSTICK_BUTTON_DPAD_UP, JOYSTICK_BUTTON_DPAD_DOWN, JOYSTICK_BUTTON_DPAD_LEFT, JOYSTICK_BUTTON_DPAD_RIGHT and JOYSTICK_BUTTON_DPAD_CENTER)
 			//        By default mapped to virtual mouse (VMOUSE).
 			//        As virtual mouse, cursor may be too fast/hard to control, so it's recommended to set and use a VMOUSESLOW binding too,
@@ -581,8 +581,8 @@ public class ScummVMEvents implements
 
 		//_scummvm.displayMessageOnOSD("GetKey: " + keyCode + " unic=" + eventUnicodeChar+ " arg3= " + (eventUnicodeChar& KeyCharacterMap.COMBINING_ACCENT_MASK) + " meta: " + e.getMetaState());
 		//_scummvm.displayMessageOnOSD("GetKey: " + keyCode + " type=" + type + " source=" + e.getSource() + " action= " + action + " arg5= " + e.getRepeatCount());
-		//Log.d(ScummVM.LOG_TAG,"GetKey: " + keyCode + " unic=" + eventUnicodeChar+ " arg3= " + (eventUnicodeChar& KeyCharacterMap.COMBINING_ACCENT_MASK) + " meta: " + e.getMetaState());
-		//Log.d(ScummVM.LOG_TAG,"GetKey: " + keyCode + " type=" + type + " source=" + e.getSource() + " flags=" + e.getFlags() + " action= " + action + " arg5= " + e.getRepeatCount());
+		//Log.d(NovelVM.LOG_TAG,"GetKey: " + keyCode + " unic=" + eventUnicodeChar+ " arg3= " + (eventUnicodeChar& KeyCharacterMap.COMBINING_ACCENT_MASK) + " meta: " + e.getMetaState());
+		//Log.d(NovelVM.LOG_TAG,"GetKey: " + keyCode + " type=" + type + " source=" + e.getSource() + " flags=" + e.getFlags() + " action= " + action + " arg5= " + e.getRepeatCount());
 
 		// look in events.cpp for how this is handled
 		_scummvm.pushEvent(type,
@@ -693,10 +693,10 @@ public class ScummVMEvents implements
 //		if (event.getPointerCount() > 1) {
 //			// The coordinates of the current screen contact, relative to
 //			// the responding View or Activity.
-//			Log.d(ScummVM.LOG_TAG,prefixDBGMsg + "Multitouch event (" + event.getPointerCount() + "):: x:" + xPos + " y: " + yPos);
+//			Log.d(NovelVM.LOG_TAG,prefixDBGMsg + "Multitouch event (" + event.getPointerCount() + "):: x:" + xPos + " y: " + yPos);
 //		} else {
 //			// Single touch event
-//			Log.d(ScummVM.LOG_TAG,prefixDBGMsg + "Single touch event:: x: " + xPos + " y: " + yPos);
+//			Log.d(NovelVM.LOG_TAG,prefixDBGMsg + "Single touch event:: x: " + xPos + " y: " + yPos);
 //		}
 
 		if (_activity.isKeyboardOverlayShown()
@@ -744,7 +744,7 @@ public class ScummVMEvents implements
 			//return _gd.onTouchEvent(event);
 			return true;
 		} else {
-			// Deal with LINT warning "ScummVMEvents#onTouch should call View#performClick when a click is detected"
+			// Deal with LINT warning "NovelVMEvents#onTouch should call View#performClick when a click is detected"
 			switch (action) {
 				case MotionEvent.ACTION_UP:
 					_handler.removeMessages(MSG_LONG_TOUCH_EVENT);
@@ -769,7 +769,7 @@ public class ScummVMEvents implements
 	// OnGestureListener
 	@Override
 	final public boolean onDown(@NonNull MotionEvent e) {
-//		Log.d(ScummVM.LOG_TAG, "SCUMMV-EVENTS-BASE - onDOWN MotionEvent");
+//		Log.d(NovelVM.LOG_TAG, "SCUMMV-EVENTS-BASE - onDOWN MotionEvent");
 		if (_touchMode != TOUCH_MODE_GAMEPAD) {
 			_scummvm.pushEvent(JE_DOWN, (int)e.getX(), (int)e.getY(), 0, 0, 0, 0);
 		}
@@ -779,11 +779,11 @@ public class ScummVMEvents implements
 	@Override
 	final public boolean onFling(MotionEvent e1, @NonNull MotionEvent e2,
 									float velocityX, float velocityY) {
-		//Log.d(ScummVM.LOG_TAG, String.format(Locale.ROOT, "onFling: %s -> %s (%.3f %.3f)",
+		//Log.d(NovelVM.LOG_TAG, String.format(Locale.ROOT, "onFling: %s -> %s (%.3f %.3f)",
 		//										e1.toString(), e2.toString(),
 		//										velocityX, velocityY));
 
-//		Log.d(ScummVM.LOG_TAG, "onFling");
+//		Log.d(NovelVM.LOG_TAG, "onFling");
 		_handler.removeMessages(MSG_LONG_TOUCH_EVENT);
 		return true;
 	}
@@ -797,7 +797,7 @@ public class ScummVMEvents implements
 	final public boolean onScroll(MotionEvent e1, @NonNull MotionEvent e2,
 									float distanceX, float distanceY) {
 		_handler.removeMessages(MSG_LONG_TOUCH_EVENT);
-//		Log.d(ScummVM.LOG_TAG, "onScroll");
+//		Log.d(NovelVM.LOG_TAG, "onScroll");
 		if (_touchMode != TOUCH_MODE_GAMEPAD && e1 != null) {
 			// typical use:
 			// - move mouse cursor around (most traditional point and click games)
@@ -810,7 +810,7 @@ public class ScummVMEvents implements
 
 	@Override
 	final public void onShowPress(@NonNull MotionEvent e) {
-//		Log.d(ScummVM.LOG_TAG, "onShowPress");
+//		Log.d(NovelVM.LOG_TAG, "onShowPress");
 		_handler.removeMessages(MSG_LONG_TOUCH_EVENT);
 		if (_touchMode != TOUCH_MODE_GAMEPAD && !_doubleTapMode) {
 			// Schedule a Right click notification
@@ -822,7 +822,7 @@ public class ScummVMEvents implements
 
 	@Override
 	final public boolean onSingleTapUp(@NonNull MotionEvent e) {
-//		Log.d(ScummVM.LOG_TAG, "onSingleTapUp");
+//		Log.d(NovelVM.LOG_TAG, "onSingleTapUp");
 		_handler.removeMessages(MSG_LONG_TOUCH_EVENT);
 		if (_touchMode != TOUCH_MODE_GAMEPAD) {
 			_scummvm.pushEvent(JE_TAP, (int)e.getX(), (int)e.getY(),
@@ -834,7 +834,7 @@ public class ScummVMEvents implements
 	// OnDoubleTapListener
 	@Override
 	final public boolean onDoubleTap(@NonNull MotionEvent e) {
-//		Log.d(ScummVM.LOG_TAG, "onDoubleTap");
+//		Log.d(NovelVM.LOG_TAG, "onDoubleTap");
 		_doubleTapMode = true;
 		_handler.removeMessages(MSG_LONG_TOUCH_EVENT);
 		return true;
@@ -845,21 +845,21 @@ public class ScummVMEvents implements
 		switch (e.getAction()) {
 			case MotionEvent.ACTION_MOVE:
 				//if the second tap hadn't been released and it's being moved
-//				Log.d(ScummVM.LOG_TAG, "onDoubleTapEvent Moving X: " + Float.toString(e.getRawX()) + " Y: " + Float.toString(e.getRawY()));
+//				Log.d(NovelVM.LOG_TAG, "onDoubleTapEvent Moving X: " + Float.toString(e.getRawX()) + " Y: " + Float.toString(e.getRawY()));
 				break;
 
 			case MotionEvent.ACTION_UP:
-//				Log.d(ScummVM.LOG_TAG, "onDoubleTapEvent Release!");
+//				Log.d(NovelVM.LOG_TAG, "onDoubleTapEvent Release!");
 				//user released the screen
 				_doubleTapMode = false;
 				break;
 
 			case MotionEvent.ACTION_DOWN:
-//				Log.d(ScummVM.LOG_TAG, "onDoubleTapEvent DOWN!");
+//				Log.d(NovelVM.LOG_TAG, "onDoubleTapEvent DOWN!");
 				break;
 
 			default:
-//				Log.d(ScummVM.LOG_TAG, "onDoubleTapEvent UNKNOWN!");
+//				Log.d(NovelVM.LOG_TAG, "onDoubleTapEvent UNKNOWN!");
 				break;
 		}
 
@@ -873,7 +873,7 @@ public class ScummVMEvents implements
 	final public boolean onSingleTapConfirmed(@NonNull MotionEvent e) {
 		// Note, timing thresholds for double tap detection seem to be hardcoded in the framework
 		// as ViewConfiguration.getDoubleTapTimeout()
-//		Log.d(ScummVM.LOG_TAG, "onSingleTapConfirmed - double tap failed");
+//		Log.d(NovelVM.LOG_TAG, "onSingleTapConfirmed - double tap failed");
 		return true;
 	}
 
@@ -891,16 +891,16 @@ public class ScummVMEvents implements
 			// Ignore axis values that are within the 'flat' region of the
 			// joystick axis center.
 			if (Math.abs(axisVal) > axisFlat) {
-//				Log.d(ScummVM.LOG_TAG, "JOYSTICK axis: " + MotionEvent.axisToString(axisId) + " id: " + axisId + " - Math.abs(" + value + ") > " + axisFlat + " (flat) - raw val=" + axisVal);
+//				Log.d(NovelVM.LOG_TAG, "JOYSTICK axis: " + MotionEvent.axisToString(axisId) + " id: " + axisId + " - Math.abs(" + value + ") > " + axisFlat + " (flat) - raw val=" + axisVal);
 				// This value is already normalized in [-1.0, 1.0] (for sticks and "hats") or [0.0, 1.0] (for triggers)
 				return axisVal;
 			}
 //			else {
-//				Log.d(ScummVM.LOG_TAG, "JOYSTICK axis: " + MotionEvent.axisToString(axisId) + " id: " + axisId + " - Math.abs(" + value + ") <= " + axisFlat  + "(flat) - raw val=" + axisVal);
+//				Log.d(NovelVM.LOG_TAG, "JOYSTICK axis: " + MotionEvent.axisToString(axisId) + " id: " + axisId + " - Math.abs(" + value + ") <= " + axisFlat  + "(flat) - raw val=" + axisVal);
 //			}
 		}
 //		else {
-//			Log.d(ScummVM.LOG_TAG, "JOYSTICK axis: " + MotionEvent.axisToString(axisId) + " id: " + axisId + "- getCenteredAxis() range was null!");
+//			Log.d(NovelVM.LOG_TAG, "JOYSTICK axis: " + MotionEvent.axisToString(axisId) + " id: " + axisId + "- getCenteredAxis() range was null!");
 //		}
 		return 0;
 	}
@@ -947,7 +947,7 @@ public class ScummVMEvents implements
 //		for (int i = 0; i < allAxisIdArray.length; ++i) {
 //			float axisVal = event.getAxisValue(allAxisIdArray[i], actionPointerIndex);
 //			if (Math.abs(axisVal) > 0.0f) {
-//				Log.d(ScummVM.LOG_TAG, "JOYSTICK MOTION ON AXIS: " + MotionEvent.axisToString(allAxisIdArray[i]) + " id: " + allAxisIdArray[i] + " for (raw): " + axisVal);
+//				Log.d(NovelVM.LOG_TAG, "JOYSTICK MOTION ON AXIS: " + MotionEvent.axisToString(allAxisIdArray[i]) + " id: " + allAxisIdArray[i] + " for (raw): " + axisVal);
 //			}
 //		}
 //		// END OF DEBUG LOGGING CODE
@@ -1000,9 +1000,9 @@ public class ScummVMEvents implements
 				if ((prevRepeatingAxisIdBitFlags & (0x01 <<  i)) != 0
 				    || (i < 5 && (prevRepeatingAxisIdBitFlags & (0x01 << (i+1))) != 0)) {
 //					if (i < 5) {
-//						Log.d(ScummVM.LOG_TAG, "JOYSTICK " + axisBitFlagIndexToString[i] + ", " + axisBitFlagIndexToString[i+1] + "- pushEvent(): STOPPED: x=" + (int)(currX * 100) + " y=" + (int)(currY * 100));
+//						Log.d(NovelVM.LOG_TAG, "JOYSTICK " + axisBitFlagIndexToString[i] + ", " + axisBitFlagIndexToString[i+1] + "- pushEvent(): STOPPED: x=" + (int)(currX * 100) + " y=" + (int)(currY * 100));
 //					} else {
-//						Log.d(ScummVM.LOG_TAG, "JOYSTICK " + axisBitFlagIndexToString[i] + "- pushEvent(): STOPPED: x=" + (int)(currX * 100));
+//						Log.d(NovelVM.LOG_TAG, "JOYSTICK " + axisBitFlagIndexToString[i] + "- pushEvent(): STOPPED: x=" + (int)(currX * 100));
 //					}
 					// do the move, then signal the joystick has returned to center pos
 					stoppingMovementAxisIdBitFlags = 0;
@@ -1026,9 +1026,9 @@ public class ScummVMEvents implements
 			} else {
 				// Here we have significant movement on at least one of the axis for the current control (or the only axis).
 //				if (i < 5) {
-//					Log.d(ScummVM.LOG_TAG, "JOYSTICK " + axisBitFlagIndexToString[i] + ", " + axisBitFlagIndexToString[i+1] + "- update movement: x= " + (int)(currX * 100) + " y= " + (int)(currY * 100));
+//					Log.d(NovelVM.LOG_TAG, "JOYSTICK " + axisBitFlagIndexToString[i] + ", " + axisBitFlagIndexToString[i+1] + "- update movement: x= " + (int)(currX * 100) + " y= " + (int)(currY * 100));
 //				} else {
-//					Log.d(ScummVM.LOG_TAG, "JOYSTICK " + axisBitFlagIndexToString[i] + "- update movement: x= " + (int)(currX * 100));
+//					Log.d(NovelVM.LOG_TAG, "JOYSTICK " + axisBitFlagIndexToString[i] + "- update movement: x= " + (int)(currX * 100));
 //				}
 				// We update the axis values (for controls like sticks or hats we update both pertinent axis values here)
 				// and set the respective repetition bit flag(s).

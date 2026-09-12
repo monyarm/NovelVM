@@ -19,7 +19,7 @@
  *
  */
 
-package org.scummvm.scummvm.net;
+package org.novelvm.novelvm.net;
 
 /*
  * Customized from https://blog.dev-area.net/2015/08/13/android-4-1-enable-tls-1-1-and-tls-1-2/

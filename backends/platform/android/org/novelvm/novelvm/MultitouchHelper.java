@@ -19,11 +19,11 @@
  *
  */
 
-package org.scummvm.scummvm;
+package org.novelvm.novelvm;
 
-import static org.scummvm.scummvm.ScummVMEvents.JE_MOUSE_WHEEL_DOWN;
-import static org.scummvm.scummvm.ScummVMEvents.JE_MOUSE_WHEEL_UP;
-import static org.scummvm.scummvm.ScummVMEvents.JE_MULTI;
+import static org.novelvm.novelvm.NovelVMEvents.JE_MOUSE_WHEEL_DOWN;
+import static org.novelvm.novelvm.NovelVMEvents.JE_MOUSE_WHEEL_UP;
+import static org.novelvm.novelvm.NovelVMEvents.JE_MULTI;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -35,7 +35,7 @@ import androidx.annotation.NonNull;
 import java.lang.ref.WeakReference;
 
 public class MultitouchHelper {
-	private final ScummVM _scummvm;
+	private final NovelVM _scummvm;
 
 	private boolean _candidateStartOfMultitouchSession;
 	// a flag indicating whether we are in multitouch mode (more than one fingers down)
@@ -101,7 +101,7 @@ public class MultitouchHelper {
 	private int _touchMouseWheelDecisionLevel;
 
 	// constructor
-	public MultitouchHelper(ScummVM scummvm) {
+	public MultitouchHelper(NovelVM scummvm) {
 		_scummvm = scummvm;
 
 		_multitouchMode = false;
@@ -325,7 +325,7 @@ public class MultitouchHelper {
 				}
 
 //				if (pointerIndex == -1) {
-//					Log.d(ScummVM.LOG_TAG,"Warning: pointerIndex == -1 and getPointerCount = " + event.getPointerCount());
+//					Log.d(NovelVM.LOG_TAG,"Warning: pointerIndex == -1 and getPointerCount = " + event.getPointerCount());
 //				}
 
 				if (pointerIndex != -1) {

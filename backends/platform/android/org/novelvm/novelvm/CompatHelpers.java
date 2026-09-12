@@ -19,7 +19,7 @@
  *
  */
 
-package org.scummvm.scummvm;
+package org.novelvm.novelvm;
 
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;

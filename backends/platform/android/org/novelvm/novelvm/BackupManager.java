@@ -19,7 +19,7 @@
  *
  */
 
-package org.scummvm.scummvm;
+package org.novelvm.novelvm;
 
 import android.content.Context;
 import android.net.Uri;
@@ -46,7 +46,7 @@ import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import org.scummvm.scummvm.zip.ZipFile;
+import org.novelvm.novelvm.zip.ZipFile;
 
 public class BackupManager {
 	public static final int ERROR_CANCELLED = 1;
@@ -77,7 +77,7 @@ public class BackupManager {
 	}
 
 	@RequiresApi(api = Build.VERSION_CODES.N)
-	public static int importBackup(ScummVMActivity context, Uri input) {
+	public static int importBackup(NovelVMActivity context, Uri input) {
 		try (ParcelFileDescriptor pfd = context.getContentResolver().openFileDescriptor(input, "r")) {
 			if (pfd == null) {
 				return ERROR_INVALID_BACKUP;
@@ -90,7 +90,7 @@ public class BackupManager {
 		}
 	}
 
-	public static int importBackup(ScummVMActivity context, File input) {
+	public static int importBackup(NovelVMActivity context, File input) {
 		try {
 			return importBackup(context, new FileInputStream(input));
 		} catch(FileNotFoundException ignored) {
@@ -99,7 +99,7 @@ public class BackupManager {
 	}
 
 	private static int exportBackup(Context context, FileOutputStream output) {
-		File configuration = new File(context.getFilesDir(), "scummvm.ini");
+		File configuration = new File(context.getFilesDir(), "novelvm.ini");
 
 		Map<String, Map<String, String>> parsedIniMap;
 		try (FileReader reader = new FileReader(configuration)) {
@@ -117,7 +117,7 @@ public class BackupManager {
 		ZipOutputStream zos = new ZipOutputStream(output);
 
 		try (FileInputStream stream = new FileInputStream(configuration)) {
-			ZipEntry entry = new ZipEntry("scummvm.ini");
+			ZipEntry entry = new ZipEntry("novelvm.ini");
 			entry.setSize(configuration.length());
 			entry.setTime(configuration.lastModified());
 
@@ -293,7 +293,7 @@ public class BackupManager {
 		return true;
 	}
 
-	private static int importBackup(ScummVMActivity context, FileInputStream input) {
+	private static int importBackup(NovelVMActivity context, FileInputStream input) {
 		ZipFile zf;
 		try {
 			zf = new ZipFile(input);
@@ -302,14 +302,14 @@ public class BackupManager {
 		}
 
 		// Load configuration
-		org.scummvm.scummvm.zip.ZipEntry ze = zf.getEntry("scummvm.ini");
+		org.novelvm.novelvm.zip.ZipEntry ze = zf.getEntry("novelvm.ini");
 		if (ze == null) {
 			// No configuration file, not a backup
 			return ERROR_INVALID_BACKUP;
 		}
 
 		// Avoid using tmp suffix as it's used by atomic file support
-		File configurationTmp = new File(context.getFilesDir(), "scummvm.ini.tmp2");
+		File configurationTmp = new File(context.getFilesDir(), "novelvm.ini.tmp2");
 
 		try (FileOutputStream os = new FileOutputStream(configurationTmp);
 			InputStream is = zf.getInputStream(ze)) {
@@ -358,8 +358,8 @@ public class BackupManager {
 		}
 
 		// Move the configuration back now that we know it's parsable and that SAF is set up
-		Log.i(ScummVM.LOG_TAG, "Writing new ScummVM configuration");
-		File configuration = new File(context.getFilesDir(), "scummvm.ini");
+		Log.i(NovelVM.LOG_TAG, "Writing new NovelVM configuration");
+		File configuration = new File(context.getFilesDir(), "novelvm.ini");
 		if (!configurationTmp.renameTo(configuration)) {
 			try (FileOutputStream os = new FileOutputStream(configuration);
 				FileInputStream is = new FileInputStream(configurationTmp)) {
@@ -421,7 +421,7 @@ public class BackupManager {
 	}
 
 	@RequiresApi(api = Build.VERSION_CODES.N)
-	static private int importTrees(ScummVMActivity context, InputStream is) throws IOException, ClassNotFoundException {
+	static private int importTrees(NovelVMActivity context, InputStream is) throws IOException, ClassNotFoundException {
 		boolean failed = false;
 
 		ObjectInputStream ois = new ObjectInputStream(is);
@@ -470,9 +470,9 @@ public class BackupManager {
 				return false;
 			}
 
-			Enumeration<? extends org.scummvm.scummvm.zip.ZipEntry> entries = zf.entries();
+			Enumeration<? extends org.novelvm.novelvm.zip.ZipEntry> entries = zf.entries();
 			while (entries.hasMoreElements()) {
-				org.scummvm.scummvm.zip.ZipEntry entry = entries.nextElement();
+				org.novelvm.novelvm.zip.ZipEntry entry = entries.nextElement();
 				String name = entry.getName();
 				if (!name.startsWith(folderName)) {
 					continue;
@@ -498,9 +498,9 @@ public class BackupManager {
 		}
 
 		// This is a SAF fake mount point
-		Enumeration<? extends org.scummvm.scummvm.zip.ZipEntry> entries = zf.entries();
+		Enumeration<? extends org.novelvm.novelvm.zip.ZipEntry> entries = zf.entries();
 		while (entries.hasMoreElements()) {
-			org.scummvm.scummvm.zip.ZipEntry entry = entries.nextElement();
+			org.novelvm.novelvm.zip.ZipEntry entry = entries.nextElement();
 			String name = entry.getName();
 			if (!name.startsWith(folderName)) {
 				continue;

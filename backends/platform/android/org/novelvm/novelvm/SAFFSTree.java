@@ -19,7 +19,7 @@
  *
  */
 
-package org.scummvm.scummvm;
+package org.novelvm.novelvm;
 
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
@@ -109,7 +109,7 @@ public class SAFFSTree {
 		Iterator<IOTime> it = _lastIOs.iterator();
 		while (it.hasNext()) {
 			entry = it.next();
-			//Log.d(ScummVM.LOG_TAG, "ENTRY <" + Long.toString(entry.start) + " " + Long.toString(entry.end) + " " + Long.toString(entry.duration) + ">");
+			//Log.d(NovelVM.LOG_TAG, "ENTRY <" + Long.toString(entry.start) + " " + Long.toString(entry.end) + " " + Long.toString(entry.duration) + ">");
 			if (entry.end <= deadline) {
 				// entry is too old
 				it.remove();
@@ -120,7 +120,7 @@ public class SAFFSTree {
 				duration += entry.duration;
 			}
 		}
-		//Log.d(ScummVM.LOG_TAG, "SUM: " + Long.toString(duration) + " DEADLINE WAS: " + Long.toString(deadline));
+		//Log.d(NovelVM.LOG_TAG, "SUM: " + Long.toString(duration) + " DEADLINE WAS: " + Long.toString(deadline));
 
 		if (duration >= IO_BUSINESS_THRESHOLD && _listener != null) {
 			_listener.onIOBusy((float)duration / IO_BUSINESS_TIMESPAN);
@@ -183,7 +183,7 @@ public class SAFFSTree {
 	}
 
 	/**
-	 * Resolves a ScummVM virtual path to SAF objects if it's in the SAF domain.
+	 * Resolves a NovelVM virtual path to SAF objects if it's in the SAF domain.
 	 * Returns null otherwise and throws a FileNotFoundException if the SAF path doesn't exist.
 	 */
 	@SuppressLint("ObsoleteSdkInt")
@@ -474,7 +474,7 @@ public class SAFFSTree {
 			try {
 				results = fetchChildren(node);
 			} catch (Exception e) {
-				Log.w(ScummVM.LOG_TAG, "Failed to get children: " + e);
+				Log.w(NovelVM.LOG_TAG, "Failed to get children: " + e);
 				return null;
 			}
 		}
@@ -567,7 +567,7 @@ public class SAFFSTree {
 				//noinspection UnusedAssignment
 				children = fetchChildren(node);
 			} catch (Exception e) {
-				Log.w(ScummVM.LOG_TAG, "Failed to get children: " + e);
+				Log.w(NovelVM.LOG_TAG, "Failed to get children: " + e);
 				return null;
 			}
 		}
@@ -587,7 +587,7 @@ public class SAFFSTree {
 			//noinspection UnusedAssignment
 			children = fetchChildren(node);
 		} catch (Exception e) {
-			Log.w(ScummVM.LOG_TAG, "Failed to get children: " + e);
+			Log.w(NovelVM.LOG_TAG, "Failed to get children: " + e);
 			return null;
 		}
 
@@ -598,7 +598,7 @@ public class SAFFSTree {
 
 		newnode = ref.get();
 		if (newnode == null) {
-			Log.e(ScummVM.LOG_TAG, "Failed to keep a reference on object");
+			Log.e(NovelVM.LOG_TAG, "Failed to keep a reference on object");
 		}
 
 		return newnode;
@@ -756,7 +756,7 @@ public class SAFFSTree {
 			try {
 				fetchChildren(node);
 			} catch (Exception e) {
-				Log.w(ScummVM.LOG_TAG, "Failed to get children: " + e);
+				Log.w(NovelVM.LOG_TAG, "Failed to get children: " + e);
 				return null;
 			}
 		}
@@ -857,7 +857,7 @@ public class SAFFSTree {
 				return displayName;
 			}
 		} catch (Exception e) {
-			Log.w(ScummVM.LOG_TAG, "Failed query: " + e);
+			Log.w(NovelVM.LOG_TAG, "Failed query: " + e);
 		} finally {
 			if (c != null) {
 				try {

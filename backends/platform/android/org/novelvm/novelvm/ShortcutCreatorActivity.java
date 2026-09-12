@@ -19,7 +19,7 @@
  *
  */
 
-package org.scummvm.scummvm;
+package org.novelvm.novelvm;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -54,8 +54,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import org.scummvm.scummvm.zip.ZipEntry;
-import org.scummvm.scummvm.zip.ZipFile;
+import org.novelvm.novelvm.zip.ZipEntry;
+import org.novelvm.novelvm.zip.ZipFile;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -79,7 +79,7 @@ public class ShortcutCreatorActivity extends Activity implements CompatHelpers.S
 
 	static void pushShortcut(Context context, String gameId, Intent intent) {
 		Map<String, Map<String, String>> parsedIniMap;
-		try (FileReader reader = new FileReader(new File(context.getFilesDir(), "scummvm.ini"))) {
+		try (FileReader reader = new FileReader(new File(context.getFilesDir(), "novelvm.ini"))) {
 			parsedIniMap = INIParser.parse(reader);
 		} catch(FileNotFoundException ignored) {
 			parsedIniMap = null;
@@ -123,7 +123,7 @@ public class ShortcutCreatorActivity extends Activity implements CompatHelpers.S
 
 		List<Game> games;
 		Map<String, Map<String, String>> parsedIniMap;
-		try (FileReader reader = new FileReader(new File(getFilesDir(), "scummvm.ini"))) {
+		try (FileReader reader = new FileReader(new File(getFilesDir(), "novelvm.ini"))) {
 			parsedIniMap = INIParser.parse(reader);
 		} catch(FileNotFoundException ignored) {
 			parsedIniMap = null;

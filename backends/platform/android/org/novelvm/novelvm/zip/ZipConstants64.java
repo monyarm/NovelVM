@@ -23,7 +23,7 @@
  * questions.
  */
 
-package org.scummvm.scummvm.zip;
+package org.novelvm.novelvm.zip;
 
 /*
  * This class defines the constants that are used by the classes

@@ -19,7 +19,7 @@
  *
  */
 
-package org.scummvm.scummvm.net;
+package org.novelvm.novelvm.net;
 
 import android.annotation.SuppressLint;
 import android.util.Base64;

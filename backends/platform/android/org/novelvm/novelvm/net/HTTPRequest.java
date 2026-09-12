@@ -19,7 +19,7 @@
  *
  */
 
-package org.scummvm.scummvm.net;
+package org.novelvm.novelvm.net;
 
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
@@ -27,7 +27,7 @@ import android.util.Log;
 
 import androidx.annotation.Keep;
 
-import org.scummvm.scummvm.SAFFSTree;
+import org.novelvm.novelvm.SAFFSTree;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -51,7 +51,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class HTTPRequest implements Runnable {
-	final static String LOG_TAG = "ScummVM.HTTP";
+	final static String LOG_TAG = "NovelVM.HTTP";
 	private static final int DEFAULT_BUFFER_SIZE = 16384;
 
 	HTTPManager _manager;
@@ -137,7 +137,7 @@ public class HTTPRequest implements Runnable {
 		}
 
 		SecureRandom rnd = new SecureRandom();
-		String boundary = "ScummVM-Boundary-" + (new BigInteger(128, rnd)).toString(10);
+		String boundary = "NovelVM-Boundary-" + (new BigInteger(128, rnd)).toString(10);
 
 		int contentLength = 0;
 		Vector<InputStream> bodyParts = new Vector<>(formFiles.length * 2 + 2);

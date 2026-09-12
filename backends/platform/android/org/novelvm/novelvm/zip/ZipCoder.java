@@ -23,7 +23,7 @@
  * questions.
  */
 
-package org.scummvm.scummvm.zip;
+package org.novelvm.novelvm.zip;
 
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
@@ -47,13 +47,13 @@ class ZipCoder {
     // Encoding/decoding is stateless, so make it singleton.
     // Android-changed: use StandardCharsets.
     // static final UTF8ZipCoder UTF8 = new UTF8ZipCoder(UTF_8.INSTANCE);
-    // ScummVM-changed: use ZipUtils.
+    // NovelVM-changed: use ZipUtils.
     static final UTF8ZipCoder UTF8 = new UTF8ZipCoder(ZipUtils.UTF_8);
 
     public static ZipCoder get(Charset charset) {
         // Android-changed: use equals method, not reference comparison.
         // if (charset == UTF_8.INSTANCE) {
-        // ScummVM-changed: use ZipUtils.
+        // NovelVM-changed: use ZipUtils.
         if (ZipUtils.UTF_8.equals(charset)) {
             return UTF8;
         }
@@ -142,7 +142,7 @@ class ZipCoder {
     boolean hasTrailingSlash(byte[] a, int end) {
         byte[] slashBytes = slashBytes();
         return end >= slashBytes.length &&
-            // ScummVM-changed: improve compatibility.
+            // NovelVM-changed: improve compatibility.
             /*
             Arrays.mismatch(a, end - slashBytes.length, end, slashBytes, 0, slashBytes.length) == -1;
             */
@@ -208,7 +208,7 @@ class ZipCoder {
         String toString(byte[] ba, int off, int length) {
             // Android-changed: JLA is not yet available.
             // return JLA.newStringUTF8NoRepl(ba, off, length);
-            // ScummVM-changed: use ZipUtils.
+            // NovelVM-changed: use ZipUtils.
             return new String(ba, off, length, ZipUtils.UTF_8);
         }
 
@@ -216,7 +216,7 @@ class ZipCoder {
         byte[] getBytes(String s) {
             // Android-changed: JLA is not yet available.
             // return JLA.getBytesUTF8NoRepl(s);
-            // ScummVM-changed: use ZipUtils.
+            // NovelVM-changed: use ZipUtils.
             return s.getBytes(ZipUtils.UTF_8);
         }
 
@@ -242,7 +242,7 @@ class ZipCoder {
                     // exceptions eagerly when opening ZipFiles
                     // Android-changed: JLA is not yet available.
                     // return hash(JLA.newStringUTF8NoRepl(a, end - len, len));
-                    // ScummVM-changed: use ZipUtils.
+                    // NovelVM-changed: use ZipUtils.
                     return hash(new String(a, end - len, len, ZipUtils.UTF_8));
                 }
             }

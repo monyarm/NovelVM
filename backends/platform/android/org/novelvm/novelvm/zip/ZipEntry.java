@@ -24,9 +24,9 @@
  * questions.
  */
 
-package org.scummvm.scummvm.zip;
+package org.novelvm.novelvm.zip;
 
-import static org.scummvm.scummvm.zip.ZipUtils.*;
+import static org.novelvm.novelvm.zip.ZipUtils.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.attribute.FileTime;
 import java.util.Objects;
@@ -35,7 +35,7 @@ import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.time.ZoneId;
 
-import static org.scummvm.scummvm.zip.ZipConstants64.*;
+import static org.novelvm.novelvm.zip.ZipConstants64.*;
 
 /**
  * This class is used to represent a ZIP file entry.
@@ -49,7 +49,7 @@ public class ZipEntry implements ZipConstants, Cloneable {
     long xdostime = -1; // last modification time (in extended DOS time,
                         // where milliseconds lost in conversion might
                         // be encoded into the upper half)
-    // ScummVM-changed: Don't use FileTime to improve compatibility.
+    // NovelVM-changed: Don't use FileTime to improve compatibility.
     /*
     FileTime mtime;     // last modification time, from extra field data
     FileTime atime;     // last access time, from extra field data
@@ -135,7 +135,7 @@ public class ZipEntry implements ZipConstants, Cloneable {
         // if (name.length() > 0xFFFF) {
         //     throw new IllegalArgumentException("entry name too long");
         // }
-        // ScummVM-changed: use ZipUtils.
+        // NovelVM-changed: use ZipUtils.
         if (name.getBytes(ZipUtils.UTF_8).length > 0xffff) {
             throw new IllegalArgumentException(name + " too long: " +
                     name.getBytes(ZipUtils.UTF_8).length);
@@ -156,7 +156,7 @@ public class ZipEntry implements ZipConstants, Cloneable {
         Objects.requireNonNull(e, "entry");
         name = e.name;
         xdostime = e.xdostime;
-        // ScummVM-changed: Don't use FileTime.
+        // NovelVM-changed: Don't use FileTime.
         /*
         mtime = e.mtime;
         atime = e.atime;
@@ -212,7 +212,7 @@ public class ZipEntry implements ZipConstants, Cloneable {
      * @see #getTime()
      * @see #getLastModifiedTime()
      */
-    // ScummVM-changed: Don't use FileTime.
+    // NovelVM-changed: Don't use FileTime.
     /*
     public void setTime(long time) {
         this.xdostime = javaToExtendedDosTime(time);
@@ -248,7 +248,7 @@ public class ZipEntry implements ZipConstants, Cloneable {
      * //@see #setLastModifiedTime(FileTime)
      */
     public long getTime() {
-        // ScummVM-changed: Don't use FileTime.
+        // NovelVM-changed: Don't use FileTime.
         /*
         if (mtime != null) {
             return mtime.toMillis();
@@ -282,7 +282,7 @@ public class ZipEntry implements ZipConstants, Cloneable {
      * @see #getTimeLocal()
      * @since 9
      */
-    // ScummVM-changed: Don't use FileTime.
+    // NovelVM-changed: Don't use FileTime.
     /*
     public void setTimeLocal(LocalDateTime time) {
         int year = time.getYear() - 1980;
@@ -324,7 +324,7 @@ public class ZipEntry implements ZipConstants, Cloneable {
      * @see #setTimeLocal(LocalDateTime)
      * @since 9
      */
-    // ScummVM-changed: Don't use LocalDateTime.
+    // NovelVM-changed: Don't use LocalDateTime.
     /*
     public LocalDateTime getTimeLocal() {
         if (mtime != null) {
@@ -360,7 +360,7 @@ public class ZipEntry implements ZipConstants, Cloneable {
      * @see #getLastModifiedTime()
      * @since 1.8
      */
-    // ScummVM-changed: Don't use FileTime.
+    // NovelVM-changed: Don't use FileTime.
     /*
     public ZipEntry setLastModifiedTime(FileTime time) {
         this.mtime = Objects.requireNonNull(time, "lastModifiedTime");
@@ -385,7 +385,7 @@ public class ZipEntry implements ZipConstants, Cloneable {
      * @see #setLastModifiedTime(FileTime)
      * @since 1.8
      */
-    // ScummVM-changed: Don't use FileTime.
+    // NovelVM-changed: Don't use FileTime.
     /*
     public FileTime getLastModifiedTime() {
         if (mtime != null)
@@ -412,7 +412,7 @@ public class ZipEntry implements ZipConstants, Cloneable {
      * @see #getLastAccessTime()
      * @since 1.8
      */
-    // ScummVM-changed: Don't use FileTime.
+    // NovelVM-changed: Don't use FileTime.
     /*
     public ZipEntry setLastAccessTime(FileTime time) {
         this.atime = Objects.requireNonNull(time, "lastAccessTime");
@@ -431,7 +431,7 @@ public class ZipEntry implements ZipConstants, Cloneable {
      * @see #setLastAccessTime(FileTime)
      * @since 1.8
      */
-    // ScummVM-changed: Don't use FileTime.
+    // NovelVM-changed: Don't use FileTime.
     /*
     public FileTime getLastAccessTime() {
         return atime;
@@ -454,7 +454,7 @@ public class ZipEntry implements ZipConstants, Cloneable {
      * @see #getCreationTime()
      * @since 1.8
      */
-    // ScummVM-changed: Don't use FileTime.
+    // NovelVM-changed: Don't use FileTime.
     /*
     public ZipEntry setCreationTime(FileTime time) {
         this.ctime = Objects.requireNonNull(time, "creationTime");
@@ -473,7 +473,7 @@ public class ZipEntry implements ZipConstants, Cloneable {
      * @see #setCreationTime(FileTime)
      * @since 1.8
      */
-    // ScummVM-changed: Don't use FileTime.
+    // NovelVM-changed: Don't use FileTime.
     /*
     public FileTime getCreationTime() {
         return ctime;
@@ -663,7 +663,7 @@ public class ZipEntry implements ZipConstants, Cloneable {
                         }
                     }
                     break;
-                // ScummVM-changed: Don't use FileTime.
+                // NovelVM-changed: Don't use FileTime.
                 /*
                 case EXTID_NTFS:
                     if (sz < 32) // reserved  4 bytes + tag 2 bytes + size 2 bytes
@@ -737,7 +737,7 @@ public class ZipEntry implements ZipConstants, Cloneable {
      */
     public void setComment(String comment) {
         // BEGIN Android-added: Explicitly use UTF_8 instead of the default charset.
-        // ScummVM-changed: use ZipUtils.
+        // NovelVM-changed: use ZipUtils.
         if (comment != null && comment.getBytes(ZipUtils.UTF_8).length > 0xffff) {
             throw new IllegalArgumentException(comment + " too long: " +
                     comment.getBytes(ZipUtils.UTF_8).length);
@@ -792,7 +792,7 @@ public class ZipEntry implements ZipConstants, Cloneable {
         } catch (CloneNotSupportedException e) {
             // This should never happen, since we are Cloneable
             //throw new InternalError(e);
-            // ScummVM-changed: Don't use InternalError to improve compatibility.
+            // NovelVM-changed: Don't use InternalError to improve compatibility.
             throw new RuntimeException(e);
         }
     }

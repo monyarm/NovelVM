@@ -19,7 +19,7 @@
  *
  */
 
-package org.scummvm.scummvm.net;
+package org.novelvm.novelvm.net;
 
 import android.util.Log;
 
@@ -49,7 +49,7 @@ import javax.net.ssl.SSLSocketFactory;
  * Used from JNI
  */
 public class SSocket {
-	final static String LOG_TAG = "ScummVM";
+	final static String LOG_TAG = "NovelVM";
 
 	protected Socket _socket;
 

@@ -19,7 +19,7 @@
  *
  */
 
-package org.scummvm.scummvm.net;
+package org.novelvm.novelvm.net;
 
 import androidx.annotation.Keep;
 
@@ -31,13 +31,13 @@ public class HTTPManager {
 	protected ExecutorService _executor;
 	protected ArrayBlockingQueue<Runnable> _queue;
 	/** @noinspection unused
-	 * Read from JNI (timer ScummVM thread)
+	 * Read from JNI (timer NovelVM thread)
 	 */
 	@Keep
 	protected boolean _empty;
 
 	/** @noinspection unused
-	 * Called from JNI (main ScummVM thread)
+	 * Called from JNI (main NovelVM thread)
 	 */
 	@Keep
 	public HTTPManager() {
@@ -50,7 +50,7 @@ public class HTTPManager {
 	}
 
 	/** @noinspection unused
-	 * Called from JNI (main ScummVM thread)
+	 * Called from JNI (main NovelVM thread)
 	 */
 	@Keep
 	public void startRequest(HTTPRequest request) {
@@ -59,7 +59,7 @@ public class HTTPManager {
 	}
 
 	/** @noinspection unused
-	 * Called from JNI (main ScummVM thread)
+	 * Called from JNI (main NovelVM thread)
 	 */
 	@Keep
 	public void poll() {

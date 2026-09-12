@@ -23,12 +23,12 @@
  * questions.
  */
 
-package org.scummvm.scummvm.zip;
+package org.novelvm.novelvm.zip;
 
-// ScummVM-changed: improve compatibility.
+// NovelVM-changed: improve compatibility.
 import java.io.IOException;
 import java.nio.ByteBuffer;
-// BEGIN ScummVM-changed: improve compatibility.
+// BEGIN NovelVM-changed: improve compatibility.
 import java.nio.charset.Charset;
 /*
 import java.nio.file.attribute.FileTime;
@@ -42,16 +42,16 @@ import java.util.Date;
 import java.util.concurrent.TimeUnit;
 */
 import java.util.GregorianCalendar;
-// END ScummVM-changed: improve compatibility.
+// END NovelVM-changed: improve compatibility.
 
-import static org.scummvm.scummvm.zip.ZipConstants.ENDHDR;
+import static org.novelvm.novelvm.zip.ZipConstants.ENDHDR;
 
-// ScummVM-changed: don't use internal APIs.
+// NovelVM-changed: don't use internal APIs.
 //import jdk.internal.misc.Unsafe;
 
 class ZipUtils {
 
-    // ScummVM-changed: improve compatibility.
+    // NovelVM-changed: improve compatibility.
     static final Charset UTF_8 = Charset.defaultCharset();
 
     // used to adjust values between Windows and java epoch
@@ -66,7 +66,7 @@ class ZipUtils {
     /**
      * Converts Windows time (in microseconds, UTC/GMT) time to FileTime.
      */
-    // ScummVM-changed: improve compatibility.
+    // NovelVM-changed: improve compatibility.
     /*
     public static final FileTime winTimeToFileTime(long wtime) {
         return FileTime.from(wtime / 10 + WINDOWS_EPOCH_IN_MICROSECONDS,
@@ -77,7 +77,7 @@ class ZipUtils {
     /**
      * Converts FileTime to Windows time.
      */
-    // ScummVM-changed: improve compatibility.
+    // NovelVM-changed: improve compatibility.
     /*
     public static final long fileTimeToWinTime(FileTime ftime) {
         return (ftime.to(TimeUnit.MICROSECONDS) - WINDOWS_EPOCH_IN_MICROSECONDS) * 10;
@@ -92,7 +92,7 @@ class ZipUtils {
     /**
      * Converts "standard Unix time"(in seconds, UTC/GMT) to FileTime
      */
-    // ScummVM-changed: improve compatibility.
+    // NovelVM-changed: improve compatibility.
     /*
     public static final FileTime unixTimeToFileTime(long utime) {
         return FileTime.from(utime, TimeUnit.SECONDS);
@@ -102,7 +102,7 @@ class ZipUtils {
     /**
      * Converts FileTime to "standard Unix time".
      */
-    // ScummVM-changed: improve compatibility.
+    // NovelVM-changed: improve compatibility.
     /*
     public static final long fileTimeToUnixTime(FileTime ftime) {
         return ftime.to(TimeUnit.SECONDS);
@@ -121,7 +121,7 @@ class ZipUtils {
         int second = (int) ((dtime << 1) & 0x3e);
 
         if (month > 0 && month < 13 && day > 0 && hour < 24 && minute < 60 && second < 60) {
-            // ScummVM-changed: improve compatibility.
+            // NovelVM-changed: improve compatibility.
             /*
             try {
                 LocalDateTime ldt = LocalDateTime.of(year, month, day, hour, minute, second);
@@ -161,7 +161,7 @@ class ZipUtils {
     /**
      * Converts Java time to DOS time.
      */
-    // ScummVM-changed: improve compatibility.
+    // NovelVM-changed: improve compatibility.
     /*
     private static long javaToDosTime(LocalDateTime ldt) {
         int year = ldt.getYear() - 1980;
@@ -181,7 +181,7 @@ class ZipUtils {
      * @param time milliseconds since epoch
      * @return DOS time with 2s remainder encoded into upper half
      */
-    // ScummVM-changed: improve compatibility.
+    // NovelVM-changed: improve compatibility.
     /*
     static long javaToExtendedDosTime(long time) {
         LocalDateTime ldt = javaEpochToLocalDateTime(time);
@@ -327,7 +327,7 @@ class ZipUtils {
     }
     */
 
-    // ScummVM-changed: don't use internal APIs.
+    // NovelVM-changed: don't use internal APIs.
     /*
     private static final Unsafe unsafe = Unsafe.getUnsafe();
 
@@ -343,7 +343,7 @@ class ZipUtils {
     }
     */
 
-    // ScummVM-changed: improve compatibility.
+    // NovelVM-changed: improve compatibility.
     static class UncheckedIOException extends RuntimeException {
         UncheckedIOException(IOException ioe) {
             super(ioe);

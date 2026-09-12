@@ -1,4 +1,4 @@
-package org.scummvm.scummvm;
+package org.novelvm.novelvm;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -343,7 +343,7 @@ public class TextToSpeechManager extends UtteranceProgressListener implements Te
 	// UtteranceProgressListener API
 	@Override
 	public void onStart(String utteranceId) {
-		//Log.d(ScummVM.LOG_TAG, "TTS: onStart " + utteranceId);
+		//Log.d(NovelVM.LOG_TAG, "TTS: onStart " + utteranceId);
 		// Nothing to do
 		Utterance utterance = _currentUtterance.get();
 		assert(utterance != null && utterance.id.equals(utteranceId));
@@ -351,7 +351,7 @@ public class TextToSpeechManager extends UtteranceProgressListener implements Te
 
 	@Override
 	public void onDone(String utteranceId) {
-		//Log.d(ScummVM.LOG_TAG, "TTS: onDone " + utteranceId);
+		//Log.d(NovelVM.LOG_TAG, "TTS: onDone " + utteranceId);
 		Utterance utterance = _currentUtterance.get();
 		assert(utterance.id.equals(utteranceId));
 		boolean reset = _currentUtterance.compareAndSet(utterance, null);
@@ -362,14 +362,14 @@ public class TextToSpeechManager extends UtteranceProgressListener implements Te
 	@SuppressWarnings({"deprecation", "RedundantSuppression"})
 	@Override
 	public void onError(String utteranceId) {
-		//Log.d(ScummVM.LOG_TAG, "TTS: onError " + utteranceId);
+		//Log.d(NovelVM.LOG_TAG, "TTS: onError " + utteranceId);
 		onDone(utteranceId);
 	}
 
 	@RequiresApi(api = android.os.Build.VERSION_CODES.M)
 	@Override
 	public void onStop(String utteranceId, boolean interrupted) {
-		//Log.d(ScummVM.LOG_TAG, "TTS: onStop " + utteranceId + " " + interrupted);
+		//Log.d(NovelVM.LOG_TAG, "TTS: onStop " + utteranceId + " " + interrupted);
 		// On Android M and above, onStop is called instead of onDone if it has been stopped
 		onDone(utteranceId);
 	}

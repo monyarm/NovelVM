@@ -172,7 +172,7 @@ jint JNI::onLoad(JavaVM *vm) {
 		return JNI_ERR;
 	}
 
-	jclass cls = env->FindClass("org/scummvm/scummvm/ScummVM");
+	jclass cls = env->FindClass("org/novelvm/novelvm/NovelVM");
 	if (cls == 0)
 		return JNI_ERR;
 
@@ -487,7 +487,7 @@ Common::String JNI::getScummVMBasePath() {
 	jstring pathObj = (jstring)env->CallObjectMethod(_jobj, _MID_getScummVMBasePath);
 
 	if (env->ExceptionCheck()) {
-		LOGE("Failed to get ScummVM base folder path");
+		LOGE("Failed to get NovelVM base folder path");
 
 		env->ExceptionDescribe();
 		env->ExceptionClear();
@@ -521,7 +521,7 @@ Common::String JNI::getScummVMConfigPath() {
 	jstring pathObj = (jstring)env->CallObjectMethod(_jobj, _MID_getScummVMConfigPath);
 
 	if (env->ExceptionCheck()) {
-		LOGE("Failed to get ScummVM config file path");
+		LOGE("Failed to get NovelVM config file path");
 
 		env->ExceptionDescribe();
 		env->ExceptionClear();
@@ -546,7 +546,7 @@ Common::String JNI::getScummVMLogPath() {
 	jstring pathObj = (jstring)env->CallObjectMethod(_jobj, _MID_getScummVMLogPath);
 
 	if (env->ExceptionCheck()) {
-		LOGE("Failed to get ScummVM log file path");
+		LOGE("Failed to get NovelVM log file path");
 
 		env->ExceptionDescribe();
 		env->ExceptionClear();
@@ -675,11 +675,11 @@ jobject JNI::openMIDIDevice(int device, int32_t *portId) {
 // The following adds assets folder to search set.
 // However searching and retrieving from "assets" on Android this is slow
 // so we also make sure to add the base directory, with a higher priority
-// This is done via a call to ScummVMActivity's (java) getSysArchives
+// This is done via a call to NovelVMActivity's (java) getSysArchives
 void JNI::addSysArchivesToSearchSet(Common::SearchSet &s, int priority) {
 	JNIEnv *env = JNI::getEnv();
 
-	// get any additional specified paths (from ScummVMActivity code)
+	// get any additional specified paths (from NovelVMActivity code)
 	// Insert them with "priority" priority.
 	jobjectArray array =
 		(jobjectArray)env->CallObjectMethod(_jobj, _MID_getSysArchives);
@@ -815,7 +815,7 @@ void JNI::create(JNIEnv *env, jobject self, jobject asset_manager,
 	FIND_METHOD(, getScummVMLogPath, "()Ljava/lang/String;");
 	FIND_METHOD(, setCurrentGame, "(Ljava/lang/String;)V");
 	FIND_METHOD(, notifyHTTPService, "(IZ)V");
-	FIND_METHOD(, getTTSManager, "()Lorg/scummvm/scummvm/TextToSpeechManager;");
+FIND_METHOD(, getTTSManager, "()Lorg/novelvm/novelvm/TextToSpeechManager;");
 	FIND_METHOD(, getMIDIDevices, "()[Ljava/lang/String;");
 	FIND_METHOD(, openMIDIDevice, "(I[I)Landroid/media/midi/MidiDevice;");
 	FIND_METHOD(, getSysArchives, "()[Ljava/lang/String;");
@@ -824,9 +824,9 @@ void JNI::create(JNIEnv *env, jobject self, jobject asset_manager,
 	FIND_METHOD(, deinitSurface, "()V");
 	FIND_METHOD(, eglVersion, "()I");
 	FIND_METHOD(, getNewSAFTree,
-	            "(ZLjava/lang/String;Ljava/lang/String;)Lorg/scummvm/scummvm/SAFFSTree;");
-	FIND_METHOD(, getSAFTrees, "()[Lorg/scummvm/scummvm/SAFFSTree;");
-	FIND_METHOD(, findSAFTree, "(Ljava/lang/String;)Lorg/scummvm/scummvm/SAFFSTree;");
+	            "(ZLjava/lang/String;Ljava/lang/String;)Lorg/novelvm/novelvm/SAFFSTree;");
+	FIND_METHOD(, getSAFTrees, "()[Lorg/novelvm/novelvm/SAFFSTree;");
+	FIND_METHOD(, findSAFTree, "(Ljava/lang/String;)Lorg/novelvm/novelvm/SAFFSTree;");
 	FIND_METHOD(, exportBackup, "(Ljava/lang/String;)I");
 	FIND_METHOD(, importBackup, "(Ljava/lang/String;Ljava/lang/String;)I");
 

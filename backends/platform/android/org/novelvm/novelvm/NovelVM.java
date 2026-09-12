@@ -19,7 +19,7 @@
  *
  */
 
-package org.scummvm.scummvm;
+package org.novelvm.novelvm;
 
 import android.content.res.AssetManager;
 import android.graphics.PixelFormat;
@@ -41,12 +41,12 @@ import javax.microedition.khronos.egl.EGLDisplay;
 import javax.microedition.khronos.egl.EGLSurface;
 import javax.microedition.khronos.opengles.GL10;
 
-public abstract class ScummVM implements SurfaceHolder.Callback,
+public abstract class NovelVM implements SurfaceHolder.Callback,
 	   CompatHelpers.SystemInsets.SystemInsetsListener, Runnable {
 	public static final int SHOW_ON_SCREEN_MENU = 1;
 	public static final int SHOW_ON_SCREEN_INPUT_MODE = 2;
 
-	final protected static String LOG_TAG = "ScummVM";
+	final protected static String LOG_TAG = "NovelVM";
 	final private AssetManager _asset_manager;
 	final private Object _sem_surface;
 	final private MyScummVMDestroyedCallback _svm_destroyed_callback;
@@ -74,7 +74,7 @@ public abstract class ScummVM implements SurfaceHolder.Callback,
 
 	// pause the engine and all native threads
 	final public native void setPause(boolean pause);
-	// Feed an event to ScummVM.  Safe to call from other threads.
+	// Feed an event to NovelVM.  Safe to call from other threads.
 	final public native void pushEvent(int type, int arg1, int arg2, int arg3,
 										int arg4, int arg5, int arg6);
 	// Update the 3D touch controls
@@ -151,7 +151,7 @@ public abstract class ScummVM implements SurfaceHolder.Callback,
 	abstract protected int importBackup(String prompt, String path);
 
 	@SuppressWarnings("ClassEscapesDefinedScope")
-	public ScummVM(AssetManager asset_manager, SurfaceHolder holder, final MyScummVMDestroyedCallback scummVMDestroyedCallback) {
+	public NovelVM(AssetManager asset_manager, SurfaceHolder holder, final MyScummVMDestroyedCallback scummVMDestroyedCallback) {
 		_asset_manager = asset_manager;
 		_sem_surface = new Object();
 		_svm_destroyed_callback = scummVMDestroyedCallback;
@@ -228,7 +228,7 @@ public abstract class ScummVM implements SurfaceHolder.Callback,
 		} catch (Exception e) {
 			deinitEGL();
 
-			throw new RuntimeException("Error preparing the ScummVM thread", e);
+			throw new RuntimeException("Error preparing the NovelVM thread", e);
 		}
 
 		create(_asset_manager, _egl, _egl_display,

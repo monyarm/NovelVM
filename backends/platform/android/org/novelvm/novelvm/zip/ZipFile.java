@@ -24,10 +24,10 @@
  * questions.
  */
 
-package org.scummvm.scummvm.zip;
+package org.novelvm.novelvm.zip;
 
 import java.io.Closeable;
-// ScummVM-changed: use FileInputStream.
+// NovelVM-changed: use FileInputStream.
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.IOException;
@@ -37,7 +37,7 @@ import java.io.FileNotFoundException;
 import java.io.RandomAccessFile;
 import java.io.UncheckedIOException;
 import java.lang.ref.Cleaner.Cleanable;
-// ScummVM-changed: use ByteBuffer
+// NovelVM-changed: use ByteBuffer
 import java.nio.ByteBuffer;
 import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
@@ -69,12 +69,12 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-// ScummVM-changed: import original classes.
+// NovelVM-changed: import original classes.
 import java.util.zip.Inflater;
 import java.util.zip.InflaterInputStream;
 import java.util.zip.ZipException;
 
-// ScummVM-changed: don't use internal APIs.
+// NovelVM-changed: don't use internal APIs.
 /*
 import jdk.internal.access.SharedSecrets;
 import jdk.internal.misc.VM;
@@ -86,8 +86,8 @@ import dalvik.system.CloseGuard;
 import dalvik.system.ZipPathValidator;
 */
 
-import static org.scummvm.scummvm.zip.ZipConstants64.*;
-import static org.scummvm.scummvm.zip.ZipUtils.*;
+import static org.novelvm.novelvm.zip.ZipConstants64.*;
+import static org.novelvm.novelvm.zip.ZipUtils.*;
 
 /**
  * This class is used to read entries from a zip file.
@@ -109,7 +109,7 @@ import static org.scummvm.scummvm.zip.ZipUtils.*;
  */
 public class ZipFile implements ZipConstants, Closeable {
 
-    // ScummVM-changed: FileInputStream has no name.
+    // NovelVM-changed: FileInputStream has no name.
     //private final String name;     // zip file name
     private volatile boolean closeRequested;
 
@@ -118,7 +118,7 @@ public class ZipFile implements ZipConstants, Closeable {
     // a) the input streams that need to be closed
     // b) the list of cached Inflater objects
     // c) the "native" source of this zip file.
-    // ScummVM-changed: don't use internal APIs.
+    // NovelVM-changed: don't use internal APIs.
     private final /*@Stable*/ CleanableResource res;
 
     /*
@@ -168,7 +168,7 @@ public class ZipFile implements ZipConstants, Closeable {
      *
      * @see SecurityManager#checkRead(java.lang.String)
      */
-    // ScummVM-changed: use FileInputStream.
+    // NovelVM-changed: use FileInputStream.
     /*
     public ZipFile(String name) throws IOException {
         this(new File(name), OPEN_READ);
@@ -200,11 +200,11 @@ public class ZipFile implements ZipConstants, Closeable {
      * @see SecurityManager#checkRead(java.lang.String)
      * @since 1.3
      */
-    // ScummVM-changed: use FileInputStream.
+    // NovelVM-changed: use FileInputStream.
     public ZipFile(/*File*/FileInputStream file, int mode) throws IOException {
         // Android-changed: Use StandardCharsets.UTF_8.
         // this(file, mode, UTF_8.INSTANCE);
-        // ScummVM-changed: use ZipUtils.
+        // NovelVM-changed: use ZipUtils.
         this(file, mode, ZipUtils.UTF_8);
     }
 
@@ -218,7 +218,7 @@ public class ZipFile implements ZipConstants, Closeable {
      * @throws ZipException if a ZIP format error has occurred
      * @throws IOException if an I/O error has occurred
      */
-    // ScummVM-changed: use FileInputStream.
+    // NovelVM-changed: use FileInputStream.
     public ZipFile(/*File*/FileInputStream file) throws ZipException, IOException {
         this(file, OPEN_READ);
     }
@@ -256,7 +256,7 @@ public class ZipFile implements ZipConstants, Closeable {
      *
      * @since 1.7
      */
-    // ScummVM-changed: use FileInputStream.
+    // NovelVM-changed: use FileInputStream.
     public ZipFile(/*File*/FileInputStream file, int mode, Charset charset) throws IOException
     {
         this(file, mode, charset, /* enableZipPathValidator */ true);
@@ -264,9 +264,9 @@ public class ZipFile implements ZipConstants, Closeable {
 
     // Android-added: New hidden constructor with an argument for zip path validation.
     /** @hide */
-    // ScummVM-changed: use FileInputStream.
+    // NovelVM-changed: use FileInputStream.
     public ZipFile(/*File*/FileInputStream file, int mode, boolean enableZipPathValidator) throws IOException {
-        // ScummVM-changed: use ZipUtils.
+        // NovelVM-changed: use ZipUtils.
         this(file, mode, ZipUtils.UTF_8, enableZipPathValidator);
     }
 
@@ -274,7 +274,7 @@ public class ZipFile implements ZipConstants, Closeable {
     // to have a new argument enableZipPathValidator in order to set the isZipPathValidatorEnabled
     // variable before calling the native method open().
     /** @hide */
-    // ScummVM-changed: use FileInputStream.
+    // NovelVM-changed: use FileInputStream.
     public ZipFile(/*File*/FileInputStream file, int mode, Charset charset, boolean enableZipPathValidator)
             throws IOException {
         if (((mode & OPEN_READ) == 0) ||
@@ -282,7 +282,7 @@ public class ZipFile implements ZipConstants, Closeable {
             throw new IllegalArgumentException("Illegal mode: 0x"+
                                                Integer.toHexString(mode));
         }
-        // ScummVM-changed: use FileInputStream.
+        // NovelVM-changed: use FileInputStream.
         /*
         String name = file.getPath();
         file = new File(name);
@@ -301,7 +301,7 @@ public class ZipFile implements ZipConstants, Closeable {
 
         Objects.requireNonNull(charset, "charset");
 
-        // ScummVM-changed: FileInputStream has no name.
+        // NovelVM-changed: FileInputStream has no name.
         /*
         this.name = name;
         */
@@ -310,7 +310,7 @@ public class ZipFile implements ZipConstants, Closeable {
 
         // Android-changed: pass isZipPathValidatorEnabled flag.
         // this.res = new CleanableResource(this, ZipCoder.get(charset), file, mode);
-        // ScummVM-changed: don't use internal APIs.
+        // NovelVM-changed: don't use internal APIs.
         /*
         boolean isZipPathValidatorEnabled = enableZipPathValidator && !ZipPathValidator.isClear();
         this.res = new CleanableResource(
@@ -347,7 +347,7 @@ public class ZipFile implements ZipConstants, Closeable {
      *
      * @since 1.7
      */
-    // ScummVM-changed: use FileInputStream.
+    // NovelVM-changed: use FileInputStream.
     /*
     public ZipFile(String name, Charset charset) throws IOException
     {
@@ -371,7 +371,7 @@ public class ZipFile implements ZipConstants, Closeable {
      *
      * @since 1.7
      */
-    // ScummVM-changed: use FileInputStream.
+    // NovelVM-changed: use FileInputStream.
     public ZipFile(/*File*/FileInputStream file, Charset charset) throws IOException
     {
         this(file, OPEN_READ, charset);
@@ -478,7 +478,7 @@ public class ZipFile implements ZipConstants, Closeable {
         }
     }
 
-    // ScummVM-changed: don't use Cleanable to improve compatibility.
+    // NovelVM-changed: don't use Cleanable to improve compatibility.
     /*
     private static class InflaterCleanupAction implements Runnable {
         private final Inflater inf;
@@ -499,7 +499,7 @@ public class ZipFile implements ZipConstants, Closeable {
     private class ZipFileInflaterInputStream extends InflaterInputStream {
         private volatile boolean closeRequested;
         private boolean eof = false;
-        // ScummVM-changed: don't use Cleanable to improve compatibility.
+        // NovelVM-changed: don't use Cleanable to improve compatibility.
         /*
         private final Cleanable cleanable;
         */
@@ -521,7 +521,7 @@ public class ZipFile implements ZipConstants, Closeable {
             this.cleanable = CleanerFactory.cleaner().register(this,
                     new InflaterCleanupAction(inf, res));
             */
-            // ScummVM-changed: don't use Cleanable to improve compatibility.
+            // NovelVM-changed: don't use Cleanable to improve compatibility.
             super(zfin, inf, size);
             this.res = res;
         }
@@ -530,7 +530,7 @@ public class ZipFile implements ZipConstants, Closeable {
             if (closeRequested)
                 return;
             closeRequested = true;
-            /* ScummVM-changed:
+            /* NovelVM-changed:
                 don't call InflaterInputStream.close as it closes the Inflater.
                 This doesn't happen in Android because they pass ownsInflater to false but this
                 function is hidden to us.
@@ -541,7 +541,7 @@ public class ZipFile implements ZipConstants, Closeable {
             synchronized (res.istreams) {
                 res.istreams.remove(this);
             }
-            // ScummVM-changed: don't use Cleanable to improve compatibility.
+            // NovelVM-changed: don't use Cleanable to improve compatibility.
             //cleanable.clean();
             res.releaseInflater(inf);
         }
@@ -570,7 +570,7 @@ public class ZipFile implements ZipConstants, Closeable {
                     Integer.MAX_VALUE : (int) avail);
         }
 
-        // ScummVM-changed: don't use Cleanable to improve compatibility.
+        // NovelVM-changed: don't use Cleanable to improve compatibility.
         @SuppressWarnings("deprecation")
         protected void finalize() throws Throwable {
             close();
@@ -581,7 +581,7 @@ public class ZipFile implements ZipConstants, Closeable {
      * Returns the path name of the ZIP file.
      * @return the path name of the ZIP file
      */
-    // ScummVM-changed: FileInputStream has no name.
+    // NovelVM-changed: FileInputStream has no name.
     /*
     public String getName() {
         return name;
@@ -631,7 +631,7 @@ public class ZipFile implements ZipConstants, Closeable {
             }
         }
 
-        // ScummVM-changed: Improve compatibility
+        // NovelVM-changed: Improve compatibility
         /*
         @Override
         public Iterator<T> asIterator() {
@@ -652,7 +652,7 @@ public class ZipFile implements ZipConstants, Closeable {
         }
     }
 
-    // ScummVM-changed: Don't support JAR
+    // NovelVM-changed: Don't support JAR
     /*
     private Enumeration<JarEntry> jarEntries() {
         synchronized (this) {
@@ -662,7 +662,7 @@ public class ZipFile implements ZipConstants, Closeable {
     }
     */
 
-    // ScummVM-changed: Improve compatibility
+    // NovelVM-changed: Improve compatibility
     /*
     private class EntrySpliterator<T> extends Spliterators.AbstractSpliterator<T> {
         private int index;
@@ -704,7 +704,7 @@ public class ZipFile implements ZipConstants, Closeable {
      * @throws IllegalStateException if the zip file has been closed
      * @since 1.8
      */
-    // ScummVM-changed: Improve compatibility
+    // NovelVM-changed: Improve compatibility
     /*
     public Stream<? extends ZipEntry> stream() {
         synchronized (this) {
@@ -732,7 +732,7 @@ public class ZipFile implements ZipConstants, Closeable {
      * @throws IllegalStateException if the zip file has been closed
      * @since 10
      */
-    // ScummVM-changed: Improve compatibility
+    // NovelVM-changed: Improve compatibility
     /*
     private Stream<String> entryNameStream() {
         synchronized (this) {
@@ -753,7 +753,7 @@ public class ZipFile implements ZipConstants, Closeable {
      * @throws IllegalStateException if the zip file has been closed
      * @since 10
      */
-    // ScummVM-changed: Improve compatibility
+    // NovelVM-changed: Improve compatibility
     /*
     private Stream<JarEntry> jarStream() {
         synchronized (this) {
@@ -789,7 +789,7 @@ public class ZipFile implements ZipConstants, Closeable {
             name = zc.toString(cen, pos + CENHDR, nlen);
         }
         ZipEntry e;
-        // ScummVM-changed: Don't support JAR
+        // NovelVM-changed: Don't support JAR
         /*
         if (this instanceof JarFile) {
             // Android-changed: access method directly.
@@ -844,23 +844,23 @@ public class ZipFile implements ZipConstants, Closeable {
         // List of cached Inflater objects for decompression
         Deque<Inflater> inflaterCache;
 
-        // ScummVM-changed: don't use Cleanable to improve compatibility.
+        // NovelVM-changed: don't use Cleanable to improve compatibility.
         /*
         final Cleanable cleanable;
         */
 
         Source zsrc;
 
-        // ScummVM-changed: use FileInputStream.
+        // NovelVM-changed: use FileInputStream.
         CleanableResource(ZipFile zf, ZipCoder zc, /*File*/FileInputStream file, int mode) throws IOException {
             this(zf, zc, file, mode, false);
         }
 
         // Android-added: added extra enableZipPathValidator argument.
-        // ScummVM-changed: use FileInputStream.
+        // NovelVM-changed: use FileInputStream.
         CleanableResource(ZipFile zf, ZipCoder zc, /*File*/FileInputStream file,
                 int mode, boolean enableZipPathValidator) throws IOException {
-            // ScummVM-changed: don't use Cleanable to improve compatibility.
+            // NovelVM-changed: don't use Cleanable to improve compatibility.
             //this.cleanable = CleanerFactory.cleaner().register(zf, this);
             this.istreams = Collections.newSetFromMap(new WeakHashMap<>());
             this.inflaterCache = new ArrayDeque<>();
@@ -868,7 +868,7 @@ public class ZipFile implements ZipConstants, Closeable {
         }
 
         void clean() {
-            // ScummVM-changed: don't use Cleanable to improve compatibility, run clean ourselves.
+            // NovelVM-changed: don't use Cleanable to improve compatibility, run clean ourselves.
             /*
             cleanable.clean();
             */
@@ -957,7 +957,7 @@ public class ZipFile implements ZipConstants, Closeable {
                 }
             }
             if (ioe != null) {
-                // ScummVM-changed: use ZipUtils.
+                // NovelVM-changed: use ZipUtils.
                 /*
                 throw new UncheckedIOException(ioe);
                 */
@@ -980,7 +980,7 @@ public class ZipFile implements ZipConstants, Closeable {
             return;
         }
         // Android-added: CloseGuard support.
-        // ScummVM-changed: don't use internal APIs.
+        // NovelVM-changed: don't use internal APIs.
         /*
         if (guard != null) {
             guard.close();
@@ -993,7 +993,7 @@ public class ZipFile implements ZipConstants, Closeable {
             // and release zip source
             try {
                 res.clean();
-            // ScummVM-changed: use ZipUtils.
+            // NovelVM-changed: use ZipUtils.
             } catch (ZipUtils.UncheckedIOException ioe) {
                 throw ioe.getCause();
             }
@@ -1198,7 +1198,7 @@ public class ZipFile implements ZipConstants, Closeable {
      * JarFile, via SharedSecrets, as an optimization.
      * @hide
      */
-    // ScummVM-changed: Don't support JAR
+    // NovelVM-changed: Don't support JAR
     /*
     protected List<String> getManifestAndSignatureRelatedFiles() {
         synchronized (this) {
@@ -1228,7 +1228,7 @@ public class ZipFile implements ZipConstants, Closeable {
      * When this number is greater than 1, JarVerifier will treat a file as
      * unsigned.
      */
-    // ScummVM-changed: Don't support JAR
+    // NovelVM-changed: Don't support JAR
     /*
     private int getManifestNum() {
         synchronized (this) {
@@ -1247,7 +1247,7 @@ public class ZipFile implements ZipConstants, Closeable {
      * when looking up the manifest file.
      * @hide
      */
-    // ScummVM-changed: Don't support JAR
+    // NovelVM-changed: Don't support JAR
     /*
     protected String getManifestName(boolean onlyIfSignatureRelatedFiles) {
         synchronized (this) {
@@ -1269,7 +1269,7 @@ public class ZipFile implements ZipConstants, Closeable {
      * optimization when looking up potentially versioned entries.
      * Returns an empty array if no versioned entries exist.
      */
-    // ScummVM-changed: Don't support JAR
+    // NovelVM-changed: Don't support JAR
     /*
     private int[] getMetaInfVersions() {
         synchronized (this) {
@@ -1343,12 +1343,12 @@ public class ZipFile implements ZipConstants, Closeable {
         private static final int[] EMPTY_META_VERSIONS = new int[0];
 
         private final Key key;               // the key in files
-        // ScummVM-changed: don't use internal APIs.
+        // NovelVM-changed: don't use internal APIs.
         private final /*@Stable*/ ZipCoder zc;   // zip coder used to decode/encode
 
         private int refs = 1;
 
-        // ScummVM-changed: use FileInputStream.
+        // NovelVM-changed: use FileInputStream.
         /*
         private RandomAccessFile zfile;      // zfile of the underlying zip file
         */
@@ -1356,7 +1356,7 @@ public class ZipFile implements ZipConstants, Closeable {
         private byte[] cen;                  // CEN & ENDHDR
         private long locpos;                 // position of first LOC header (usually 0)
         private byte[] comment;              // zip file comment
-        // ScummVM-changed: Don't support JAR
+        // NovelVM-changed: Don't support JAR
         /*
                                              // list of meta entries in META-INF dir
         private int   manifestPos = -1;      // position of the META-INF/MANIFEST.MF, if exists
@@ -1436,7 +1436,7 @@ public class ZipFile implements ZipConstants, Closeable {
         // files HashMap, so not including it could lead to opening ZipFile w/o entry names
         // validation.
         private static class Key {
-            // BEGIN ScummVM-changed: use FileInputStream.
+            // BEGIN NovelVM-changed: use FileInputStream.
             /*
             final BasicFileAttributes attrs;
             File file;
@@ -1507,18 +1507,18 @@ public class ZipFile implements ZipConstants, Closeable {
                 Key okey = (Key)obj;
                 return fis.equals(okey.fis);
             }
-            // END ScummVM-changed: use FileInputStream.
+            // END NovelVM-changed: use FileInputStream.
         }
         private static final HashMap<Key, Source> files = new HashMap<>();
 
 
         // Android-changed: pass izZipFilePathValidatorEnabled argument.
         // static Source get(File file, boolean toDelete, ZipCoder zc) throws IOException {
-        // ScummVM-changed: use FileInputStream.
+        // NovelVM-changed: use FileInputStream.
         static Source get(/*File*/FileInputStream file, boolean toDelete, ZipCoder zc,
                 boolean isZipPathValidatorEnabled) throws IOException {
             final Key key;
-            // ScummVM-changed: use FileInputStream and don't use internal APIs.
+            // NovelVM-changed: use FileInputStream and don't use internal APIs.
             /*
             try {
                 // BEGIN Android-changed: isZipFilePathValidatorEnabled passed as part of Key.
@@ -1570,7 +1570,7 @@ public class ZipFile implements ZipConstants, Closeable {
         private Source(Key key, boolean toDelete, ZipCoder zc) throws IOException {
             this.zc = zc;
             this.key = key;
-            // ScummVM-changed: use FileInputStream.
+            // NovelVM-changed: use FileInputStream.
             /*
             if (toDelete) {
                 // BEGIN Android-changed: we are not targeting Windows, keep else branch only. Also
@@ -1613,7 +1613,7 @@ public class ZipFile implements ZipConstants, Closeable {
             cen = null;
             entries = null;
             table = null;
-            // ScummVM-changed: Don't support JAR
+            // NovelVM-changed: Don't support JAR
             /*
             manifestPos = -1;
             manifestNum = 0;
@@ -1627,7 +1627,7 @@ public class ZipFile implements ZipConstants, Closeable {
             throws IOException
         {
             synchronized (zfile) {
-                // ScummVM-changed: Don't seek in FileInputStream to allow simultaneous use of it.
+                // NovelVM-changed: Don't seek in FileInputStream to allow simultaneous use of it.
                 /*
                 zfile.seek(pos);
                 int N = len;
@@ -1651,7 +1651,7 @@ public class ZipFile implements ZipConstants, Closeable {
             throws IOException
         {
             synchronized (zfile) {
-                // ScummVM-changed: Don't seek in FileInputStream to allow simultaneous use of it.
+                // NovelVM-changed: Don't seek in FileInputStream to allow simultaneous use of it.
                 /*
                 zfile.seek(pos);
                 return zfile.read(buf, off, len);
@@ -1676,7 +1676,7 @@ public class ZipFile implements ZipConstants, Closeable {
          * was not found or an error occurred.
          */
         private End findEND() throws IOException {
-            // ScummVM-changed: use FileInputStream.
+            // NovelVM-changed: use FileInputStream.
             /*
             long ziplen = zfile.length();
             */
@@ -1816,7 +1816,7 @@ public class ZipFile implements ZipConstants, Closeable {
 
             Arrays.fill(table, ZIP_ENDCHAIN);
 
-            // ScummVM-changed: Don't support JAR
+            // NovelVM-changed: Don't support JAR
             /*
             // list for all meta entries
             ArrayList<Integer> signatureNames = null;
@@ -1829,7 +1829,7 @@ public class ZipFile implements ZipConstants, Closeable {
             int pos = 0;
             int entryPos = CENHDR;
             int limit = cen.length - ENDHDR;
-            // ScummVM-changed: Don't support JAR
+            // NovelVM-changed: Don't support JAR
             /*
             manifestNum = 0;
             */
@@ -1868,7 +1868,7 @@ public class ZipFile implements ZipConstants, Closeable {
                 }
                 // END Android-added: don't allow NUL in entry names.
                 // BEGIN Android-changed: validation of zip entry names.
-                // ScummVM-changed: use FileInputStream and don't use internal APIs.
+                // NovelVM-changed: use FileInputStream and don't use internal APIs.
                 /*
                 if (key.isZipFilePathValidatorEnabled && !ZipPathValidator.isClear()) {
                     ZipPathValidator.getInstance().onZipEntryAccess(name);
@@ -1877,7 +1877,7 @@ public class ZipFile implements ZipConstants, Closeable {
                 // END Android-changed: validation of zip entry names.
                 idx += 3;
 
-                // ScummVM-changed: Don't support JAR
+                // NovelVM-changed: Don't support JAR
                 /*
                 // Adds name to metanames.
                 if (isMetaName(cen, entryPos, nlen)) {
@@ -1912,7 +1912,7 @@ public class ZipFile implements ZipConstants, Closeable {
             // Adjust the total entries
             this.total = idx / 3;
 
-            // ScummVM-changed: Don't support JAR
+            // NovelVM-changed: Don't support JAR
             /*
             if (signatureNames != null) {
                 int len = signatureNames.size();
@@ -2037,7 +2037,7 @@ public class ZipFile implements ZipConstants, Closeable {
                     && (name[off]   | 0x20) == 'f');
         }
 
-        // ScummVM-changed: Don't support JAR
+        // NovelVM-changed: Don't support JAR
         /*
         private boolean isSignatureRelated(int off, int len) {
             // Only called when isMetaName(name, off, len) is true, which means

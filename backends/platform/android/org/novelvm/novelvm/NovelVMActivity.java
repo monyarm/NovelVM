@@ -19,7 +19,7 @@
  *
  */
 
-package org.scummvm.scummvm;
+package org.novelvm.novelvm;
 
 import android.Manifest;
 import android.app.Activity;
@@ -97,7 +97,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TreeSet;
 
-public class ScummVMActivity extends Activity {
+public class NovelVMActivity extends Activity {
 	/* Establish whether the hover events are available */
 	private static boolean _hoverAvailable;
 
@@ -214,7 +214,7 @@ public class ScummVMActivity extends Activity {
 				keyboardWithoutTextInputShown = true;
 				runOnUiThread(new Runnable() {
 					public void run() {
-						//Log.d(ScummVM.LOG_TAG, "showScreenKeyboardWithoutTextInputField - captureMouse(false)");
+						//Log.d(NovelVM.LOG_TAG, "showScreenKeyboardWithoutTextInputField - captureMouse(false)");
 						_main_surface.captureMouse(false);
 						//_main_surface.showSystemMouseCursor(true);
 						if (keyboard == 0) {
@@ -249,12 +249,12 @@ public class ScummVMActivity extends Activity {
 								}
 
 								public boolean onKeyDown(int key, final KeyEvent event) {
-									//Log.d(ScummVM.LOG_TAG, "BuiltInKeyboardView- 001 - onKeyDown()" );
+									//Log.d(NovelVM.LOG_TAG, "BuiltInKeyboardView- 001 - onKeyDown()" );
 									return false;
 								}
 
 								public boolean onKeyUp(int key, final KeyEvent event) {
-									//Log.d(ScummVM.LOG_TAG, "BuiltInKeyboardView - 001 - onKeyUp()" );
+									//Log.d(NovelVM.LOG_TAG, "BuiltInKeyboardView - 001 - onKeyUp()" );
 									return false;
 								}
 
@@ -333,14 +333,14 @@ public class ScummVMActivity extends Activity {
 									// or pressing one of the special keyboard keys that change the layout (eg "123...")
 									//
 									int idx = (shift ? 1 : 0) + (alt ? 2 : 0);
-									setKeyboard(new CustomKeyboard(ScummVMActivity.this, TextInputKeyboardList[idx][keyboard]));
+									setKeyboard(new CustomKeyboard(NovelVMActivity.this, TextInputKeyboardList[idx][keyboard]));
 									setPreviewEnabled(false);
 									setProximityCorrectionEnabled(false);
 
 									// setKeyboard() already invalidates all keys,
 									// here we check for our memory of sticky keys state (and any that changed to on and were added to stickyKeys Set)
 									recheckStickyKeys();
-									//ScummVMActivity.this._scummvm.displayMessageOnOSD ("NEW KEYBOARD LAYOUT: QWERTY"
+									//NovelVMActivity.this._scummvm.displayMessageOnOSD ("NEW KEYBOARD LAYOUT: QWERTY"
 									//	+ (alt ? " ALT " : "") + (shift? " SHIFT" : ""));
 								}
 
@@ -357,7 +357,7 @@ public class ScummVMActivity extends Activity {
 								}
 							}
 
-							final BuiltInKeyboardView builtinKeyboard = new BuiltInKeyboardView(ScummVMActivity.this, null);
+							final BuiltInKeyboardView builtinKeyboard = new BuiltInKeyboardView(NovelVMActivity.this, null);
 							builtinKeyboard.setAlpha(0.7f);
 							builtinKeyboard.ChangeKeyboard();
 							builtinKeyboard.setOnKeyboardActionListener(new CustomKeyboardView.OnKeyboardActionListener() {
@@ -365,7 +365,7 @@ public class ScummVMActivity extends Activity {
 								public void onPress(int key) {
 									builtinKeyboard.resetEventAndTimestamps();
 
-//									Log.d(ScummVM.LOG_TAG, "SHOW KEYBOARD - 001 - onPress key: " + key );
+//									Log.d(NovelVM.LOG_TAG, "SHOW KEYBOARD - 001 - onPress key: " + key );
 									if (key == KeyEvent.KEYCODE_BACK) {
 										return;
 									}
@@ -391,7 +391,7 @@ public class ScummVMActivity extends Activity {
 								}
 
 								public void onRelease(int key) {
-//									Log.d(ScummVM.LOG_TAG, "SHOW KEYBOARD - 001 - onRelease key: " + key );
+//									Log.d(NovelVM.LOG_TAG, "SHOW KEYBOARD - 001 - onRelease key: " + key );
 									if (key == KeyEvent.KEYCODE_BACK) {
 										builtinKeyboard.setOnKeyboardActionListener(null);
 										builtinKeyboard.resetEventAndTimestamps();
@@ -489,22 +489,22 @@ public class ScummVMActivity extends Activity {
 
 								// TODO - "Swipe" behavior does not seem to work currently. Should we support it?
 								public void swipeLeft() {
-//									Log.d(ScummVM.LOG_TAG, "SHOW KEYBOARD - 001 - swipeLeft");
+//									Log.d(NovelVM.LOG_TAG, "SHOW KEYBOARD - 001 - swipeLeft");
 								}
 
 								public void swipeRight() {
-//									Log.d(ScummVM.LOG_TAG, "SHOW KEYBOARD - 001 - swipeRight" );
+//									Log.d(NovelVM.LOG_TAG, "SHOW KEYBOARD - 001 - swipeRight" );
 								}
 
 								public void swipeDown() {
-//									Log.d(ScummVM.LOG_TAG, "SHOW KEYBOARD - 001 - swipeDown" );
+//									Log.d(NovelVM.LOG_TAG, "SHOW KEYBOARD - 001 - swipeDown" );
 								}
 
 								public void swipeUp() {
-//									Log.d(ScummVM.LOG_TAG, "SHOW KEYBOARD - 001 - swipeUp ");
+//									Log.d(NovelVM.LOG_TAG, "SHOW KEYBOARD - 001 - swipeUp ");
 								}
 								public void onKey(int key, int[] keysAround) {
-//									Log.d(ScummVM.LOG_TAG, "SHOW KEYBOARD - 001 - onKey key: " + key );
+//									Log.d(NovelVM.LOG_TAG, "SHOW KEYBOARD - 001 - onKey key: " + key );
 									if (builtinKeyboard.mEventPressTime == -1) {
 										return;
 									}
@@ -562,7 +562,7 @@ public class ScummVMActivity extends Activity {
 						_inputManager.hideSoftInputFromWindow(_main_surface.getWindowToken(), flags);
 
 						CompatHelpers.HideSystemStatusBar.hide(getWindow());
-						//Log.d(ScummVM.LOG_TAG, "showScreenKeyboardWithoutTextInputField - captureMouse(true)");
+						//Log.d(NovelVM.LOG_TAG, "showScreenKeyboardWithoutTextInputField - captureMouse(true)");
 						_main_surface.captureMouse(true);
 						//_main_surface.showSystemMouseCursor(false);
 						_scummvm.syncVirtkeyboardState(false);
@@ -618,13 +618,13 @@ public class ScummVMActivity extends Activity {
 			//noinspection ConstantValue
 			if (bGlobalsCompatibilityHacksTextInputEmulatesHwKeyboard) {
 				showScreenKeyboardWithoutTextInputField(dGlobalsTextInputKeyboard);
-				//Log.d(ScummVM.LOG_TAG, "showScreenKeyboard - captureMouse(false)");
+				//Log.d(NovelVM.LOG_TAG, "showScreenKeyboard - captureMouse(false)");
 				_main_surface.captureMouse(false);
 				//_main_surface.showSystemMouseCursor(true);
 				setupTouchModeBtn(_events.getTouchMode());
 				//return;
 			}
-			//Log.d(ScummVM.LOG_TAG, "showScreenKeyboard: YOU SHOULD NOT SEE ME!!!");
+			//Log.d(NovelVM.LOG_TAG, "showScreenKeyboard: YOU SHOULD NOT SEE ME!!!");
 
 //			// TODO redundant ?
 //			if (_screenKeyboard != null) {
@@ -640,7 +640,7 @@ public class ScummVMActivity extends Activity {
 		if (_main_surface != null) {
 			if (keyboardWithoutTextInputShown) {
 				showScreenKeyboardWithoutTextInputField(dGlobalsTextInputKeyboard);
-				//Log.d(ScummVM.LOG_TAG, "hideScreenKeyboard - captureMouse(true)");
+				//Log.d(NovelVM.LOG_TAG, "hideScreenKeyboard - captureMouse(true)");
 				_main_surface.captureMouse(true);
 				//_main_surface.showSystemMouseCursor(false);
 				setupTouchModeBtn(_events.getTouchMode());
@@ -680,13 +680,13 @@ public class ScummVMActivity extends Activity {
 			resId = R.drawable.ic_action_keyboard;
 		} else {
 			switch(touchMode) {
-			case ScummVMEvents.TOUCH_MODE_TOUCHPAD:
+			case NovelVMEvents.TOUCH_MODE_TOUCHPAD:
 				resId = R.drawable.ic_action_touchpad;
 				break;
-			case ScummVMEvents.TOUCH_MODE_MOUSE:
+			case NovelVMEvents.TOUCH_MODE_MOUSE:
 				resId = R.drawable.ic_action_mouse;
 				break;
-			case ScummVMEvents.TOUCH_MODE_GAMEPAD:
+			case NovelVMEvents.TOUCH_MODE_GAMEPAD:
 				resId = R.drawable.ic_action_gamepad;
 				break;
 			default:
@@ -719,7 +719,7 @@ public class ScummVMActivity extends Activity {
 		@Override
 		public boolean onLongClick(View v) {
 			// On long click, toggle screen keyboard (if there isn't any HW)
-			runOnUiThread(ScummVMActivity.this::toggleScreenKeyboard);
+			runOnUiThread(NovelVMActivity.this::toggleScreenKeyboard);
 			return true;
 		}
 	};
@@ -729,16 +729,16 @@ public class ScummVMActivity extends Activity {
 		public void onClick(View v) {
 			runOnUiThread(new Runnable() {
 				public void run() {
-					_scummvm.pushEvent(ScummVMEvents.JE_MENU, 0, 0, 0, 0, 0, 0);
+					_scummvm.pushEvent(NovelVMEvents.JE_MENU, 0, 0, 0, 0, 0, 0);
 				}
 			});
 		}
 	};
 
-	private class MyScummVM extends ScummVM {
+	private class MyScummVM extends NovelVM {
 
 		public MyScummVM(SurfaceHolder holder, final MyScummVMDestroyedCallback destroyedCallback) {
-			super(ScummVMActivity.this.getAssets(), holder, destroyedCallback);
+			super(NovelVMActivity.this.getAssets(), holder, destroyedCallback);
 		}
 
 		@Override
@@ -765,7 +765,7 @@ public class ScummVMActivity extends Activity {
 			if (msg != null) {
 				runOnUiThread(new Runnable() {
 					public void run() {
-						Toast.makeText(ScummVMActivity.this, msg, Toast.LENGTH_SHORT).show();
+						Toast.makeText(NovelVMActivity.this, msg, Toast.LENGTH_SHORT).show();
 					}
 				});
 			}
@@ -801,7 +801,7 @@ public class ScummVMActivity extends Activity {
 
 		@Override
 		protected boolean setTextInClipboard(String textStr) {
-			final android.content.ClipData clip = android.content.ClipData.newPlainText("ScummVM clip", textStr);
+			final android.content.ClipData clip = android.content.ClipData.newPlainText("NovelVM clip", textStr);
 			_clipboardManager.setPrimaryClip(clip);
 			return true;
 		}
@@ -895,11 +895,11 @@ public class ScummVMActivity extends Activity {
 				data = Uri.fromParts("scummvm", target, null);
 			}
 			Intent intent = new Intent(Intent.ACTION_MAIN, data,
-				ScummVMActivity.this, ScummVMActivity.class);
+				NovelVMActivity.this, NovelVMActivity.class);
 			setIntent(intent);
-			Log.d(ScummVM.LOG_TAG, "Current activity Intent is: " + data);
+			Log.d(NovelVM.LOG_TAG, "Current activity Intent is: " + data);
 			if (target != null) {
-				ShortcutCreatorActivity.pushShortcut(ScummVMActivity.this, target, intent);
+				ShortcutCreatorActivity.pushShortcut(NovelVMActivity.this, target, intent);
 			}
 		}
 
@@ -918,7 +918,7 @@ public class ScummVMActivity extends Activity {
 
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.CINNAMON_BUN &&
 				checkPermission(Manifest.permission.ACCESS_LOCAL_NETWORK, Process.myPid(), Process.myUid()) != PackageManager.PERMISSION_GRANTED) {
-				Log.d(ScummVM.LOG_TAG, "Requesting local network permission");
+				Log.d(NovelVM.LOG_TAG, "Requesting local network permission");
 				final String[] PERMISSIONS = {
 					Manifest.permission.ACCESS_LOCAL_NETWORK,
 				};
@@ -937,22 +937,22 @@ public class ScummVMActivity extends Activity {
 				nsdRegistrationListener = new NsdManager.RegistrationListener() {
 					@Override
 					public void onRegistrationFailed(NsdServiceInfo nsdServiceInfo, int i) {
-						Log.d(ScummVM.LOG_TAG, "HTTP service registration failed: " + i);
+						Log.d(NovelVM.LOG_TAG, "HTTP service registration failed: " + i);
 					}
 
 					@Override
 					public void onServiceRegistered(NsdServiceInfo nsdServiceInfo) {
-						Log.d(ScummVM.LOG_TAG, "HTTP service registered");
+						Log.d(NovelVM.LOG_TAG, "HTTP service registered");
 					}
 
 					@Override
 					public void onServiceUnregistered(NsdServiceInfo nsdServiceInfo) {
-						Log.d(ScummVM.LOG_TAG, "HTTP service unregistered");
+						Log.d(NovelVM.LOG_TAG, "HTTP service unregistered");
 					}
 
 					@Override
 					public void onUnregistrationFailed(NsdServiceInfo nsdServiceInfo, int i) {
-						Log.d(ScummVM.LOG_TAG, "HTTP service unregistration failed: " + i);
+						Log.d(NovelVM.LOG_TAG, "HTTP service unregistration failed: " + i);
 					}
 				};
 
@@ -1009,9 +1009,9 @@ public class ScummVMActivity extends Activity {
 		@Override
 		protected String[] getSysArchives() {
 			File assetsDir = new File(_actualScummVMDataDir, "assets");
-			Log.d(ScummVM.LOG_TAG, "Adding to Search Archive: " + assetsDir.getPath());
+			Log.d(NovelVM.LOG_TAG, "Adding to Search Archive: " + assetsDir.getPath());
 			if (_externalPathAvailableForReadAccess && _possibleExternalScummVMDir != null) {
-				Log.d(ScummVM.LOG_TAG, "Adding to Search Archive: " + _possibleExternalScummVMDir.getPath());
+				Log.d(NovelVM.LOG_TAG, "Adding to Search Archive: " + _possibleExternalScummVMDir.getPath());
 				return new String[]{assetsDir.getPath(), _possibleExternalScummVMDir.getPath()};
 			} else {
 				return new String[]{assetsDir.getPath()};
@@ -1054,37 +1054,37 @@ public class ScummVMActivity extends Activity {
 				return null;
 			}
 
-			return SAFFSTree.newTree(ScummVMActivity.this, uri);
+			return SAFFSTree.newTree(NovelVMActivity.this, uri);
 		}
 
 		@Override
 		@RequiresApi(api = Build.VERSION_CODES.N)
 		protected SAFFSTree[] getSAFTrees() {
-			return SAFFSTree.getTrees(ScummVMActivity.this);
+			return SAFFSTree.getTrees(NovelVMActivity.this);
 		}
 
 		@Override
 		@RequiresApi(api = Build.VERSION_CODES.N)
 		protected SAFFSTree findSAFTree(String name) {
-			return SAFFSTree.findTree(ScummVMActivity.this, name);
+			return SAFFSTree.findTree(NovelVMActivity.this, name);
 		}
 
 		@Override
 		protected int exportBackup(String prompt) {
-			String filename = (new SimpleDateFormat("'ScummVM backup 'yyyyMMdd-HHmmss'.zip'", Locale.ROOT)).format(new Date());
+			String filename = (new SimpleDateFormat("'NovelVM backup 'yyyyMMdd-HHmmss'.zip'", Locale.ROOT)).format(new Date());
 			int ret;
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
 				Uri uri = selectWithNativeUI(false, true, null, prompt, "application/zip", filename);
 				if (uri == null) {
 					return BackupManager.ERROR_CANCELLED;
 				}
-				ret = BackupManager.exportBackup(ScummVMActivity.this, uri);
+				ret = BackupManager.exportBackup(NovelVMActivity.this, uri);
 				getContentResolver().releasePersistableUriPermission(uri,
 					Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 			} else {
 				File path = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
 						filename);
-				ret = BackupManager.exportBackup(ScummVMActivity.this, path);
+				ret = BackupManager.exportBackup(NovelVMActivity.this, path);
 			}
 			return ret;
 		}
@@ -1097,11 +1097,11 @@ public class ScummVMActivity extends Activity {
 				if (uri == null) {
 					return BackupManager.ERROR_CANCELLED;
 				}
-				ret = BackupManager.importBackup(ScummVMActivity.this, uri);
+				ret = BackupManager.importBackup(NovelVMActivity.this, uri);
 				getContentResolver().releasePersistableUriPermission(uri,
 					Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 			} else if (path != null) {
-				ret = BackupManager.importBackup(ScummVMActivity.this, new File(path));
+				ret = BackupManager.importBackup(NovelVMActivity.this, new File(path));
 			} else {
 				return BackupManager.ERROR_CANCELLED;
 			}
@@ -1111,10 +1111,10 @@ public class ScummVMActivity extends Activity {
 				new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
 					@Override
 					public void run() {
-						Intent restartIntent = Intent.makeRestartActivityTask(new ComponentName(ScummVMActivity.this, SplashActivity.class));
+						Intent restartIntent = Intent.makeRestartActivityTask(new ComponentName(NovelVMActivity.this, SplashActivity.class));
 						restartIntent.setPackage(getPackageName());
 
-						ScummVMActivity.this.startActivity(restartIntent);
+						NovelVMActivity.this.startActivity(restartIntent);
 
 						// Kill us to make sure we start from a clean state
 						System.exit(0);
@@ -1126,12 +1126,12 @@ public class ScummVMActivity extends Activity {
 	}
 
 	private MyScummVM _scummvm;
-	private ScummVMEvents _events;
+	private NovelVMEvents _events;
 	private Thread _scummvm_thread;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-//		Log.d(ScummVM.LOG_TAG, "onCreate: " + getIntent().getData());
+//		Log.d(NovelVM.LOG_TAG, "onCreate: " + getIntent().getData());
 
 		super.onCreate(savedInstanceState);
 
@@ -1155,7 +1155,7 @@ public class ScummVMActivity extends Activity {
 
 		_main_surface.requestFocus();
 
-		//Log.d(ScummVM.LOG_TAG, "onCreate - captureMouse(true)");
+		//Log.d(NovelVM.LOG_TAG, "onCreate - captureMouse(true)");
 		//_main_surface.captureMouse(true, true);
 		//_main_surface.showSystemMouseCursor(false);
 
@@ -1172,7 +1172,7 @@ public class ScummVMActivity extends Activity {
 
 		// REMOVED: Since getFilesDir() is guaranteed to exist, getFilesDir().mkdirs() might be related to crashes in Android version 9+ (Pie or above, API 28+)!
 
-		// REMOVED: Setting savePath to Environment.getExternalStorageDirectory() + "/ScummVM/Saves/"
+		// REMOVED: Setting savePath to Environment.getExternalStorageDirectory() + "/NovelVM/Saves/"
 		//                            so that it will be in persistent external storage and not deleted on uninstall
 		//                            This has the issue for external storage being unavailable on some devices
 		//                            Is this persistence really important considering that Android does not really support it anymore
@@ -1193,7 +1193,7 @@ public class ScummVMActivity extends Activity {
 		_scummvm = new MyScummVM(main_surface_holder, new MyScummVMDestroyedCallback() {
 		                                                        @Override
 		                                                        public void handle(int exitResult) {
-		                                                        	Log.d(ScummVM.LOG_TAG, "Via callback: ScummVM native terminated with code: " + exitResult);
+		                                                        	Log.d(NovelVM.LOG_TAG, "Via callback: NovelVM native terminated with code: " + exitResult);
 		                                                        	// call onDestroy() only we we aren't already in it
 		                                                        	if (!_finishing) finish();
 		                                                        }
@@ -1204,17 +1204,17 @@ public class ScummVMActivity extends Activity {
 
 		float[] dpiValues = new float[] { 0.0f, 0.0f, 0.0f };
 		_scummvm.getDPI(dpiValues);
-		Log.d(ScummVM.LOG_TAG, "Current xdpi: " + dpiValues[0] + ", ydpi: " + dpiValues[1] + " and density: " + dpiValues[2]);
+		Log.d(NovelVM.LOG_TAG, "Current xdpi: " + dpiValues[0] + ", ydpi: " + dpiValues[1] + " and density: " + dpiValues[2]);
 
 		// Currently in release builds version string does not contain the revision info
 		// but in debug builds (daily builds) this should be there (see base/internal_version_h)
 		Version currentScummVMVersion = new Version(_scummvm.getInstallingScummVMVersionInfo());
-		Log.d(ScummVM.LOG_TAG, "Current ScummVM version launching is: " + currentScummVMVersion.getDescription() + " (" + currentScummVMVersion.get() + ")");
+		Log.d(NovelVM.LOG_TAG, "Current NovelVM version launching is: " + currentScummVMVersion.getDescription() + " (" + currentScummVMVersion.get() + ")");
 		//
 		// seekAndInitScummvmConfiguration() returns false if something went wrong
-		// when initializing configuration (or when seeking and trying to use an existing ini file) for ScummVM
+		// when initializing configuration (or when seeking and trying to use an existing ini file) for NovelVM
 		if (!seekAndInitScummvmConfiguration()) {
-			Log.e(ScummVM.LOG_TAG, "Error while trying to find and/or initialize ScummVM configuration file!");
+			Log.e(NovelVM.LOG_TAG, "Error while trying to find and/or initialize NovelVM configuration file!");
 			// in fact in all the cases where we return false, we also called finish()
 			return;
 		}
@@ -1222,29 +1222,29 @@ public class ScummVMActivity extends Activity {
 
 		// We should have a valid path to a configuration file here
 
-		// Start ScummVM
+		// Start NovelVM
 		final Uri intentData = getIntent().getData();
 		String[] args;
 		if (intentData == null) {
 			args = new String[]{
-				"ScummVM"
+				"NovelVM"
 			};
 		} else {
 			args = new String[]{
-				"ScummVM",
+				"NovelVM",
 				intentData.getSchemeSpecificPart()
 			};
 		}
 		_scummvm.setArgs(args);
 
-		Log.d(ScummVM.LOG_TAG, "Hover available: " + _hoverAvailable);
+		Log.d(NovelVM.LOG_TAG, "Hover available: " + _hoverAvailable);
 		MouseHelper mouseHelper = null;
 		if (_hoverAvailable) {
 			mouseHelper = new MouseHelper(_scummvm);
 			//mouseHelper.attach(_main_surface);
 		}
 
-		_events = new ScummVMEvents(this, _scummvm, mouseHelper);
+		_events = new NovelVMEvents(this, _scummvm, mouseHelper);
 
 		setupTouchModeBtn(_events.getTouchMode());
 
@@ -1275,20 +1275,20 @@ public class ScummVMActivity extends Activity {
 			}
 		});
 
-		_scummvm_thread = new Thread(null, _scummvm, "ScummVM", 8388608); // 8MB
+		_scummvm_thread = new Thread(null, _scummvm, "NovelVM", 8388608); // 8MB
 		_scummvm_thread.start();
 	}
 
 	@Override
 	public void onStart() {
-//		Log.d(ScummVM.LOG_TAG, "onStart");
+//		Log.d(NovelVM.LOG_TAG, "onStart");
 
 		super.onStart();
 	}
 
 	@Override
 	protected void onNewIntent(Intent intent) {
-//		Log.d(ScummVM.LOG_TAG, "onNewIntent: " + intent.getData());
+//		Log.d(NovelVM.LOG_TAG, "onNewIntent: " + intent.getData());
 
 		super.onNewIntent(intent);
 
@@ -1324,10 +1324,10 @@ public class ScummVMActivity extends Activity {
 			// 2s timeout
 			_scummvm_thread.join(2000);
 		} catch (InterruptedException e) {
-			Log.i(ScummVM.LOG_TAG, "Error while joining ScummVM thread", e);
+			Log.i(NovelVM.LOG_TAG, "Error while joining NovelVM thread", e);
 		}
 
-		// Our join failed: kill ourselves to not have two ScummVM running at the same time
+		// Our join failed: kill ourselves to not have two NovelVM running at the same time
 		if (_scummvm_thread.isAlive()) {
 			Process.killProcess(Process.myPid());
 		}
@@ -1335,18 +1335,18 @@ public class ScummVMActivity extends Activity {
 		_finishing = false;
 
 		String[] args = new String[]{
-			"ScummVM",
+			"NovelVM",
 			intentData.getSchemeSpecificPart()
 		};
 		_scummvm.setArgs(args);
 
-		_scummvm_thread = new Thread(_scummvm, "ScummVM");
+		_scummvm_thread = new Thread(_scummvm, "NovelVM");
 		_scummvm_thread.start();
 	}
 
 	@Override
 	public void onResume() {
-//		Log.d(ScummVM.LOG_TAG, "onResume");
+//		Log.d(NovelVM.LOG_TAG, "onResume");
 
 //		_isPaused = false;
 
@@ -1357,7 +1357,7 @@ public class ScummVMActivity extends Activity {
 		if (_scummvm != null)
 			_scummvm.setPause(false);
 		//_main_surface.showSystemMouseCursor(false);
-		//Log.d(ScummVM.LOG_TAG, "onResume - captureMouse(true)");
+		//Log.d(NovelVM.LOG_TAG, "onResume - captureMouse(true)");
 		_main_surface.captureMouse(true);
 
 		_pluginBroadcastReceiver.register(this);
@@ -1365,7 +1365,7 @@ public class ScummVMActivity extends Activity {
 
 	@Override
 	public void onPause() {
-//		Log.d(ScummVM.LOG_TAG, "onPause");
+//		Log.d(NovelVM.LOG_TAG, "onPause");
 
 //		_isPaused = true;
 
@@ -1376,14 +1376,14 @@ public class ScummVMActivity extends Activity {
 		if (_scummvm != null)
 			_scummvm.setPause(true);
 		//_main_surface.showSystemMouseCursor(true);
-		//Log.d(ScummVM.LOG_TAG, "onPause - captureMouse(false)");
+		//Log.d(NovelVM.LOG_TAG, "onPause - captureMouse(false)");
 		_main_surface.captureMouse(false);
 
 	}
 
 	@Override
 	public void onStop() {
-//		Log.d(ScummVM.LOG_TAG, "onStop");
+//		Log.d(NovelVM.LOG_TAG, "onStop");
 
 		SAFFSTree.clearCaches();
 		super.onStop();
@@ -1391,7 +1391,7 @@ public class ScummVMActivity extends Activity {
 
 	@Override
 	public void onDestroy() {
-//		Log.d(ScummVM.LOG_TAG, "onDestroy");
+//		Log.d(NovelVM.LOG_TAG, "onDestroy");
 
 		super.onDestroy();
 
@@ -1413,10 +1413,10 @@ public class ScummVMActivity extends Activity {
 				// 2s timeout
 				_scummvm_thread.join(2000);
 			} catch (InterruptedException e) {
-				Log.i(ScummVM.LOG_TAG, "Error while joining ScummVM thread", e);
+				Log.i(NovelVM.LOG_TAG, "Error while joining NovelVM thread", e);
 			}
 
-			// Our join failed: kill ourselves to not have two ScummVM running at the same time
+			// Our join failed: kill ourselves to not have two NovelVM running at the same time
 			if (_scummvm_thread.isAlive()) {
 				Process.killProcess(Process.myPid());
 			}
@@ -1436,10 +1436,10 @@ public class ScummVMActivity extends Activity {
 			// If request is canceled, the result arrays are empty.
 			for (int i = 0; i < grantResults.length; ++i) {
 				if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-					Log.i(ScummVM.LOG_TAG, permissions[i] + " permission was granted at Runtime");
+					Log.i(NovelVM.LOG_TAG, permissions[i] + " permission was granted at Runtime");
 					++numOfReqPermsGranted;
 				} else {
-					Log.i(ScummVM.LOG_TAG, permissions[i] + " permission was denied at Runtime");
+					Log.i(NovelVM.LOG_TAG, permissions[i] + " permission was denied at Runtime");
 				}
 			}
 
@@ -1453,7 +1453,7 @@ public class ScummVMActivity extends Activity {
 			if (grantResults.length > 0
 				&& grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 				// permission was granted
-				Log.i(ScummVM.LOG_TAG, "Read External Storage permission was granted at Runtime");
+				Log.i(NovelVM.LOG_TAG, "Read External Storage permission was granted at Runtime");
 			} else {
 				// permission denied! We won't be able to make use of functionality depending on this permission.
 				Toast.makeText(this, "Until permission is granted, some storage locations may be inaccessible!", Toast.LENGTH_SHORT)
@@ -1464,7 +1464,7 @@ public class ScummVMActivity extends Activity {
 			if (grantResults.length > 0
 				&& grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 				// permission was granted
-				Log.i(ScummVM.LOG_TAG, "Write External Storage permission was granted at Runtime");
+				Log.i(NovelVM.LOG_TAG, "Write External Storage permission was granted at Runtime");
 			} else {
 				// permission denied! We won't be able to make use of functionality depending on this permission.
 				Toast.makeText(this, "Until permission is granted, it might be impossible to write to some locations!", Toast.LENGTH_SHORT)
@@ -1479,10 +1479,10 @@ public class ScummVMActivity extends Activity {
 				}
 			}
 			if (!result) {
-				Log.i(ScummVM.LOG_TAG, "Local network permission denied");
-				Toast.makeText(ScummVMActivity.this, getResources().getString(R.string.local_net_permission_denied), Toast.LENGTH_LONG).show();
+				Log.i(NovelVM.LOG_TAG, "Local network permission denied");
+				Toast.makeText(NovelVMActivity.this, getResources().getString(R.string.local_net_permission_denied), Toast.LENGTH_LONG).show();
 			} else {
-				Log.i(ScummVM.LOG_TAG, "Local network permission granted");
+				Log.i(NovelVM.LOG_TAG, "Local network permission granted");
 			}
 		}
 	}
@@ -1517,15 +1517,15 @@ public class ScummVMActivity extends Activity {
 	}
 
 	private void setLogFile() {
-		// NOTE: our LOG file scummvm.log is created directly inside the ScummVM internal app path
+		// NOTE: our LOG file scummvm.log is created directly inside the NovelVM internal app path
 		_logScummvmFile = new File(getFilesDir(), "scummvm.log");
 		try {
 			if (_logScummvmFile.exists() || !_logScummvmFile.createNewFile()) {
-				Log.d(ScummVM.LOG_TAG, "ScummVM Log file already exists!");
-				Log.d(ScummVM.LOG_TAG, "Existing ScummVM Log: " + _logScummvmFile.getPath());
+				Log.d(NovelVM.LOG_TAG, "NovelVM Log file already exists!");
+				Log.d(NovelVM.LOG_TAG, "Existing NovelVM Log: " + _logScummvmFile.getPath());
 			} else {
-				Log.d(ScummVM.LOG_TAG, "An empty ScummVM log file was created!");
-				Log.d(ScummVM.LOG_TAG, "New ScummVM log: " + _logScummvmFile.getPath());
+				Log.d(NovelVM.LOG_TAG, "An empty NovelVM log file was created!");
+				Log.d(NovelVM.LOG_TAG, "New NovelVM log: " + _logScummvmFile.getPath());
 			}
 		} catch(Exception e) {
 			//noinspection CallToPrintStackTrace
@@ -1582,11 +1582,11 @@ public class ScummVMActivity extends Activity {
 	// Called by the override of showOnScreenControls()
 	private void showToggleOnScreenBtnIcons(int enableMask) {
 		if (_openMenuBtnIcon != null ) {
-			_openMenuBtnIcon.setVisibility((enableMask & ScummVM.SHOW_ON_SCREEN_MENU) != 0 ? View.VISIBLE : View.GONE);
+			_openMenuBtnIcon.setVisibility((enableMask & NovelVM.SHOW_ON_SCREEN_MENU) != 0 ? View.VISIBLE : View.GONE);
 		}
 
 		if (_toggleTouchModeKeyboardBtnIcon != null ) {
-			_toggleTouchModeKeyboardBtnIcon.setVisibility((enableMask & ScummVM.SHOW_ON_SCREEN_INPUT_MODE) != 0 ? View.VISIBLE : View.GONE);
+			_toggleTouchModeKeyboardBtnIcon.setVisibility((enableMask & NovelVM.SHOW_ON_SCREEN_INPUT_MODE) != 0 ? View.VISIBLE : View.GONE);
 		}
 	}
 
@@ -1612,7 +1612,7 @@ public class ScummVMActivity extends Activity {
 				boolean isShown = heightDiff >= estimatedKeyboardHeight;
 
 				if (isShown == alreadyOpen) {
-					Log.i(ScummVM.LOG_TAG, "Keyboard state:: ignoring global layout change...");
+					Log.i(NovelVM.LOG_TAG, "Keyboard state:: ignoring global layout change...");
 					return;
 				}
 				alreadyOpen = isShown;
@@ -1650,10 +1650,10 @@ public class ScummVMActivity extends Activity {
 			audioTrackFramesPerBurst /= 2 * 2; // Convert Stereo 16-bits to frames
 			audioTrackFramesPerBurst /= 4; // AudioTrack tends to buffer a lot
 
-			Log.d(ScummVM.LOG_TAG,  "updateAudioValues:" +
+			Log.d(NovelVM.LOG_TAG,  "updateAudioValues:" +
 				" at=" + audioTrackSampleRate + "/" + audioTrackFramesPerBurst);
 
-			ScummVM.setDefaultAudioValues(audioTrackSampleRate, audioTrackFramesPerBurst);
+			NovelVM.setDefaultAudioValues(audioTrackSampleRate, audioTrackFramesPerBurst);
 			return;
 		}
 
@@ -1663,10 +1663,10 @@ public class ScummVMActivity extends Activity {
 		text = audioManager.getProperty(AudioManager.PROPERTY_OUTPUT_FRAMES_PER_BUFFER);
 		int audioManagerFramesPerBurst = Integer.parseInt(text);
 
-		Log.d(ScummVM.LOG_TAG,  "updateAudioValues:" +
+		Log.d(NovelVM.LOG_TAG,  "updateAudioValues:" +
 			" am=" + audioManagerSampleRate + "/" + audioManagerFramesPerBurst);
 
-		ScummVM.setDefaultAudioValues(audioManagerSampleRate, audioManagerFramesPerBurst);
+		NovelVM.setDefaultAudioValues(audioManagerSampleRate, audioManagerFramesPerBurst);
 	}
 
 	/**
@@ -1709,7 +1709,7 @@ public class ScummVMActivity extends Activity {
 				boolean state = intent.getIntExtra("state", -1) == 1;
 				int newStatus = (micro ? 1 : 0) + (state ? 2 : 0);
 
-				Log.i(ScummVM.LOG_TAG, action +
+				Log.i(NovelVM.LOG_TAG, action +
 					" micro=" + micro +
 					" state=" + state +
 					" status=" + newStatus +
@@ -1729,7 +1729,7 @@ public class ScummVMActivity extends Activity {
 				}
 
 				lastStatus = newStatus;
-				ScummVM.notifyAudioDisconnect();
+				NovelVM.notifyAudioDisconnect();
 			}
 			else if (UsbManager.ACTION_USB_DEVICE_ATTACHED.equals(action) ||
 				UsbManager.ACTION_USB_DEVICE_DETACHED.equals(action)) {
@@ -1741,12 +1741,12 @@ public class ScummVMActivity extends Activity {
 					containsAudioStreamingInterface(device, UsbConstants.USB_DIR_OUT);
 				final boolean hasAudioCapture =
 					containsAudioStreamingInterface(device, UsbConstants.USB_DIR_IN);
-				Log.w(ScummVM.LOG_TAG, action + " device=" + device + " playback=" + hasAudioPlayback + " capture=" + hasAudioCapture);
+				Log.w(NovelVM.LOG_TAG, action + " device=" + device + " playback=" + hasAudioPlayback + " capture=" + hasAudioCapture);
 				if (!hasAudioPlayback) {
 					// We are only interested in playback sinks
 					return;
 				}
-				ScummVM.notifyAudioDisconnect();
+				NovelVM.notifyAudioDisconnect();
 			}
 		}
 
@@ -1862,7 +1862,7 @@ public class ScummVMActivity extends Activity {
 		//
 		// If the dir can't be reached, it will print a warning!
 		//
-		//   Log.w(ScummVM.LOG_TAG, "Failed to ensure directory: " + dir);
+		//   Log.w(NovelVM.LOG_TAG, "Failed to ensure directory: " + dir);
 		//   dir = null;
 		//
 		// So, if your device has two sdcard paths, it will produce two dirs. If one is not available, the warning will come up.
@@ -1889,23 +1889,23 @@ public class ScummVMActivity extends Activity {
 
 		// Unlike getExternalFilesDir, this is guaranteed to ALWAYS be available
 		//
-		// NOTE: It is better to just always use the internal app path anyway for ScummVM, as "_actualScummVMDataDir" that is,
+		// NOTE: It is better to just always use the internal app path anyway for NovelVM, as "_actualScummVMDataDir" that is,
 		//      to avoid issues with unavailable shared / external storage and to be (mostly) compatible with what the older versions did
 		// WARNING: The returned path may change over time if the calling app is moved to an adopted storage device, so only relative paths should be persisted.
 		_actualScummVMDataDir = getFilesDir();
 		// Checking for null _actualScummVMDataDir only makes sense if we were using external storage
 
-		Log.d(ScummVM.LOG_TAG, "Base ScummVM data folder is: " + _actualScummVMDataDir.getPath());
+		Log.d(NovelVM.LOG_TAG, "Base NovelVM data folder is: " + _actualScummVMDataDir.getPath());
 		String smallNodeDesc;
 		File[] extfiles = _actualScummVMDataDir.listFiles();
 		if (extfiles != null) {
-			Log.d(ScummVM.LOG_TAG, "Size: "+ extfiles.length);
+			Log.d(NovelVM.LOG_TAG, "Size: "+ extfiles.length);
 			for (File extfile : extfiles) {
 				smallNodeDesc = "(F)";
 				if (extfile.isDirectory()) {
 					smallNodeDesc = "(D)";
 				}
-				Log.d(ScummVM.LOG_TAG, "Name: " + smallNodeDesc + " " + extfile.getName());
+				Log.d(NovelVM.LOG_TAG, "Name: " + smallNodeDesc + " " + extfile.getName());
 			}
 		}
 
@@ -1914,14 +1914,13 @@ public class ScummVMActivity extends Activity {
 		// it is the same path we store the config file for 2.3+
 		// SDL port was officially on the Play Store for versions 1.9+ up until and including 2.0)
 		// Using LinkedHashMap because the order of searching is important.
-		// We want to re-use the more recent ScummVM old version too
+		// We want to re-use the more recent NovelVM old version too
 		// TODO try getDir too without a path? just "." ??
-		candidateOldLocationsOfScummVMConfigMap.put("(scummvm.ini) (SDL port - B)", new File(_actualScummVMDataDir, "../.config/scummvm/scummvm.ini"));
+		candidateOldLocationsOfScummVMConfigMap.put("(novelvm.ini) (SDL port - B)", new File(_actualScummVMDataDir, "../.config/novelvm/novelvm.ini"));
 		if (_externalPathAvailableForReadAccess && _possibleExternalScummVMDir != null) {
-			candidateOldLocationsOfScummVMConfigMap.put("(scummvm.ini) (SDL port - C)", new File(_possibleExternalScummVMDir, ".config/scummvm/scummvm.ini"));
-			candidateOldLocationsOfScummVMConfigMap.put("(scummvm.ini) (SDL port - D)", new File(_possibleExternalScummVMDir, "../.config/scummvm/scummvm.ini"));
-		}
-		candidateOldLocationsOfScummVMConfigMap.put("(scummvm.ini) (SDL port - E)", new File(Environment.getExternalStorageDirectory(), ".config/scummvm/scummvm.ini"));
+candidateOldLocationsOfScummVMConfigMap.put("(novelvm.ini) (SDL port - C)", new File(_possibleExternalScummVMDir, ".config/novelvm/novelvm.ini"));
+			candidateOldLocationsOfScummVMConfigMap.put("(novelvm.ini) (SDL port - D)", new File(_possibleExternalScummVMDir, "../.config/novelvm/novelvm.ini"));
+			candidateOldLocationsOfScummVMConfigMap.put("(novelvm.ini) (SDL port - E)", new File(Environment.getExternalStorageDirectory(), ".config/novelvm/novelvm.ini"));
 		candidateOldLocationsOfScummVMConfigMap.put("(scummvmrc) (version 1.8.1- or PlayStore 2.1.0) - Internal", new File(_actualScummVMDataDir, "scummvmrc"));
 		if (_externalPathAvailableForReadAccess && _possibleExternalScummVMDir != null) {
 			candidateOldLocationsOfScummVMConfigMap.put("(scummvmrc) (version 1.8.1- or PlayStore 2.1.0) - Ext Emu", new File(_possibleExternalScummVMDir, "scummvmrc"));
@@ -1945,11 +1944,11 @@ public class ScummVMActivity extends Activity {
 				// Possible for Config file locations on top of paths returned by getAllStorageLocationsNoPermissionRequest
 				//
 				candidateOldLocationsOfScummVMConfigMap.put("A-" + (++incKeyId) + "-" + listOfAuxExtStoragePaths[incIndx],
-					new File(listOfAuxExtStoragePaths[incIndx + 1] + "/Android/data/" + getPackageName() + "/files/.config/scummvm/scummvm.ini"));
+					new File(listOfAuxExtStoragePaths[incIndx + 1] + "/Android/data/" + getPackageName() + "/files/.config/novelvm/novelvm.ini"));
 				candidateOldLocationsOfScummVMConfigMap.put("A-" + (++incKeyId) + "-" + listOfAuxExtStoragePaths[incIndx],
-					new File(listOfAuxExtStoragePaths[incIndx + 1] + "/Android/data/" + getPackageName() + "/files/../.config/scummvm/scummvm.ini"));
+					new File(listOfAuxExtStoragePaths[incIndx + 1] + "/Android/data/" + getPackageName() + "/files/../.config/novelvm/novelvm.ini"));
 				candidateOldLocationsOfScummVMConfigMap.put("A-" + (++incKeyId) + "-" + listOfAuxExtStoragePaths[incIndx],
-					new File(listOfAuxExtStoragePaths[incIndx + 1] + "/scummvm.ini"));
+					new File(listOfAuxExtStoragePaths[incIndx + 1] + "/novelvm.ini"));
 
 				candidateOldLocationsOfScummVMConfigMap.put("A-" + (++incKeyId) + "-" + listOfAuxExtStoragePaths[incIndx],
 					new File(listOfAuxExtStoragePaths[incIndx + 1] + "/Android/data/" + getPackageName() + "/files/scummvmrc"));
@@ -1974,34 +1973,34 @@ public class ScummVMActivity extends Activity {
 		final Version version2_2_1_forPatch = new Version("2.2.1"); // patch for 2.2.1 Beta1 purposes
 		boolean existingConfigInScummVMDataDirReplacedOnce = false; // patch for 2.2.1 Beta1 purposes
 
-		// NOTE: our config file scummvm.ini is created directly inside the ScummVM internal app path
+		// NOTE: our config file scummvm.ini is created directly inside the NovelVM internal app path
 		//       It is more user friendly to keep it this way (rather than put it in a subpath ".config/scummvm",
-		//       since it can be directly browsable using the ScummVM's LAN server mode,
+		//       since it can be directly browsable using the NovelVM's LAN server mode,
 		//       and looking in the root of the internal app folder.
 		//       Keep in mind that changing the scummvm.ini config file location would require at the very least:
 		//       - Moving the old scummvm.ini (if upgrading) to the new location and deleting it from the old one
-		//       - Updating the ScummVM documentation about the new location
-		_configScummvmFile = new File(_actualScummVMDataDir, "scummvm.ini");
+		//       - Updating the NovelVM documentation about the new location
+		_configScummvmFile = new File(_actualScummVMDataDir, "novelvm.ini");
 
 		try {
 			if (_configScummvmFile.exists() || !_configScummvmFile.createNewFile()) {
-				Log.d(ScummVM.LOG_TAG, "ScummVM Config file already exists!");
-				Log.d(ScummVM.LOG_TAG, "Existing ScummVM INI: " + _configScummvmFile.getPath());
+				Log.d(NovelVM.LOG_TAG, "NovelVM Config file already exists!");
+				Log.d(NovelVM.LOG_TAG, "Existing NovelVM INI: " + _configScummvmFile.getPath());
 				String existingVersionInfo = getVersionInfoFromScummvmConfiguration(_configScummvmFile.getPath());
 				if (!TextUtils.isEmpty(existingVersionInfo) && !TextUtils.isEmpty(existingVersionInfo) ) {
-					Log.d(ScummVM.LOG_TAG, "Existing ScummVM Version: " + existingVersionInfo);
+					Log.d(NovelVM.LOG_TAG, "Existing NovelVM Version: " + existingVersionInfo);
 					Version tmpOldVersionFound = new Version(existingVersionInfo);
 					if (tmpOldVersionFound.compareTo(maxOldVersionFound) > 0) {
 						maxOldVersionFound = tmpOldVersionFound;
 						existingVersionFoundInScummVMDataDir = tmpOldVersionFound;
 					}
 				} else {
-					Log.d(ScummVM.LOG_TAG, "Could not find info on existing ScummVM version. Unsupported or corrupt file?");
+					Log.d(NovelVM.LOG_TAG, "Could not find info on existing NovelVM version. Unsupported or corrupt file?");
 				}
 				scummVMConfigHandled = true;
 			} else {
-				Log.d(ScummVM.LOG_TAG, "An empty ScummVM config file was created!");
-				Log.d(ScummVM.LOG_TAG, "New ScummVM INI: " + _configScummvmFile.getPath());
+				Log.d(NovelVM.LOG_TAG, "An empty NovelVM config file was created!");
+				Log.d(NovelVM.LOG_TAG, "New NovelVM INI: " + _configScummvmFile.getPath());
 			}
 
 			//
@@ -2013,14 +2012,14 @@ public class ScummVMActivity extends Activity {
 			// - remove them as old remnants and avoid re-checking / re-using them in a subsequent installation
 			for (String oldConfigFileDescription : candidateOldLocationsOfScummVMConfigMap.keySet()) {
 				File oldCandidateScummVMConfig = candidateOldLocationsOfScummVMConfigMap.get(oldConfigFileDescription);
-				Log.d(ScummVM.LOG_TAG, "Looking for old config " + oldConfigFileDescription + " ScummVM file...");
+				Log.d(NovelVM.LOG_TAG, "Looking for old config " + oldConfigFileDescription + " NovelVM file...");
 				if (oldCandidateScummVMConfig != null) {
-					Log.d(ScummVM.LOG_TAG, "at Path: " + oldCandidateScummVMConfig.getPath() + "...");
+					Log.d(NovelVM.LOG_TAG, "at Path: " + oldCandidateScummVMConfig.getPath() + "...");
 					if (oldCandidateScummVMConfig.exists() && oldCandidateScummVMConfig.isFile()) {
-						Log.d(ScummVM.LOG_TAG, "Old config " + oldConfigFileDescription + " ScummVM file was found!");
+						Log.d(NovelVM.LOG_TAG, "Old config " + oldConfigFileDescription + " NovelVM file was found!");
 						String existingVersionInfo = getVersionInfoFromScummvmConfiguration(oldCandidateScummVMConfig.getPath());
 						if (!TextUtils.isEmpty(existingVersionInfo) && !TextUtils.isEmpty(existingVersionInfo.trim())) {
-							Log.d(ScummVM.LOG_TAG, "Old config's ScummVM version: " + existingVersionInfo.trim());
+							Log.d(NovelVM.LOG_TAG, "Old config's NovelVM version: " + existingVersionInfo.trim());
 							Version tmpOldVersionFound = new Version(existingVersionInfo.trim());
 							//
 							// Replace the current config.ini with another recovered,
@@ -2041,29 +2040,29 @@ public class ScummVMActivity extends Activity {
 								scummVMConfigHandled = false; // invalidate the handled flag, since we found a new great(er) version so we should re-use that one
 							}
 						} else {
-							Log.d(ScummVM.LOG_TAG, "Could not find info on the old config's ScummVM version. Unsupported or corrupt file?");
+							Log.d(NovelVM.LOG_TAG, "Could not find info on the old config's NovelVM version. Unsupported or corrupt file?");
 						}
 						if (!scummVMConfigHandled) {
 							// We copy the old file over the new one.
 							// This will happen once during this installation, but on a subsequent one it will again copy that old config file
 							// if we don't remove it
 							copyFileUsingStream(oldCandidateScummVMConfig, _configScummvmFile);
-							Log.d(ScummVM.LOG_TAG, "Old config " + oldConfigFileDescription + " ScummVM file was renamed and overwrote the new (empty) scummvm.ini");
+							Log.d(NovelVM.LOG_TAG, "Old config " + oldConfigFileDescription + " NovelVM file was renamed and overwrote the new (empty) novelvm.ini");
 							scummVMConfigHandled = true;
 							existingConfigInScummVMDataDirReplacedOnce = true;
 						}
 
 						// Here we remove the old config
 						if (oldCandidateScummVMConfig.delete()) {
-							Log.d(ScummVM.LOG_TAG, "The old config " + oldConfigFileDescription + " ScummVM file is now deleted!");
+							Log.d(NovelVM.LOG_TAG, "The old config " + oldConfigFileDescription + " NovelVM file is now deleted!");
 						} else {
-							Log.d(ScummVM.LOG_TAG, "Failed to delete the old config " + oldConfigFileDescription + " ScummVM file!");
+							Log.d(NovelVM.LOG_TAG, "Failed to delete the old config " + oldConfigFileDescription + " NovelVM file!");
 						}
 					} else {
-						Log.d(ScummVM.LOG_TAG, "...not found!");
+						Log.d(NovelVM.LOG_TAG, "...not found!");
 					}
 				} else {
-					Log.d(ScummVM.LOG_TAG, "...not found!");
+					Log.d(NovelVM.LOG_TAG, "...not found!");
 				}
 			}
 		} catch(Exception e) {
@@ -2084,9 +2083,9 @@ public class ScummVMActivity extends Activity {
 		}
 
 		if (maxOldVersionFound.compareTo(new Version("0")) != 0) {
-			Log.d(ScummVM.LOG_TAG, "Maximum ScummVM version found and (re)used is: " + maxOldVersionFound.getDescription() +" (" + maxOldVersionFound.get() +")");
+			Log.d(NovelVM.LOG_TAG, "Maximum NovelVM version found and (re)used is: " + maxOldVersionFound.getDescription() +" (" + maxOldVersionFound.get() +")");
 		} else {
-			Log.d(ScummVM.LOG_TAG, "No viable existing ScummVM config version found");
+			Log.d(NovelVM.LOG_TAG, "No viable existing NovelVM config version found");
 		}
 
 		updateAssetsToInternalMemory();
@@ -2094,14 +2093,14 @@ public class ScummVMActivity extends Activity {
 		//
 		// Set global savepath
 		//
-		// First see in ScummVM if there is a saved "savepath" in the config file
+		// First see in NovelVM if there is a saved "savepath" in the config file
 		// This is the case where the user has set the global save path from the GUI, explicitly to something other than Default
 		//
 		// Main logic:
 		// - Create an internal savepath ANYWAY if it does not exist
 		// - If our internal savepath is empty (and only then):
 		//    a. TODO maybe create a dummy file in it (to skip the process next time)
-		//    b. we search for the largest save folder of a previous ScummVM version
+		//    b. we search for the largest save folder of a previous NovelVM version
 		//       TODO we could take into account which versions tended to save in which locations, so as to prioritize a recent version
 		//            but for now we will go with absolute size as the only comparison criteria
 		//       So we store the path with max num of files (or none if all are empty)
@@ -2125,11 +2124,11 @@ public class ScummVMActivity extends Activity {
 		File defaultScummVMSavesPath = new File(_actualScummVMDataDir, "saves");
 
 		if (defaultScummVMSavesPath.exists() && defaultScummVMSavesPath.isDirectory()) {
-			Log.d(ScummVM.LOG_TAG, "ScummVM default saves path already exists: " + defaultScummVMSavesPath.getPath());
+			Log.d(NovelVM.LOG_TAG, "NovelVM default saves path already exists: " + defaultScummVMSavesPath.getPath());
 		} else if (!defaultScummVMSavesPath.exists() && defaultScummVMSavesPath.mkdirs()) {
-			Log.d(ScummVM.LOG_TAG, "Created ScummVM default saves path: " + defaultScummVMSavesPath.getPath());
+			Log.d(NovelVM.LOG_TAG, "Created NovelVM default saves path: " + defaultScummVMSavesPath.getPath());
 		} else {
-			Log.e(ScummVM.LOG_TAG, "Could not create folder for ScummVM default saves path: " + defaultScummVMSavesPath.getPath());
+			Log.e(NovelVM.LOG_TAG, "Could not create folder for NovelVM default saves path: " + defaultScummVMSavesPath.getPath());
 			new AlertDialog.Builder(this)
 				.setTitle(R.string.no_save_path_title)
 				.setIcon(android.R.drawable.ic_dialog_alert)
@@ -2146,24 +2145,24 @@ public class ScummVMActivity extends Activity {
 
 		File[] defaultSaveDirFiles = defaultScummVMSavesPath.listFiles();
 		if (defaultSaveDirFiles != null) {
-			Log.d(ScummVM.LOG_TAG, "Size: "+ defaultSaveDirFiles.length);
+			Log.d(NovelVM.LOG_TAG, "Size: "+ defaultSaveDirFiles.length);
 			// Commented out listing of files in the default saves folder for debug purposes
 			//if (defaultSaveDirFiles.length > 0) {
-			//	Log.d(ScummVM.LOG_TAG, "Listing ScummVM save files in default saves path...");
+			//	Log.d(NovelVM.LOG_TAG, "Listing NovelVM save files in default saves path...");
 			//	for (File savfile : defaultSaveDirFiles) {
 			//		smallNodeDesc = "(F)";
 			//		if (savfile.isDirectory()) {
 			//			smallNodeDesc = "(D)";
 			//		}
-			//		Log.d(ScummVM.LOG_TAG, "Name: " + smallNodeDesc + " " + savfile.getName());
+			//		Log.d(NovelVM.LOG_TAG, "Name: " + smallNodeDesc + " " + savfile.getName());
 			//	}
 			//}
 
 			// patch for 2.2.1 Beta1: (additional check)
 			//       if defaultSaveDirFiles size (num of files) is not 0
-			//          and there was a config ini in the ScummVM data dir, with version 2.2.1
+			//          and there was a config ini in the NovelVM data dir, with version 2.2.1
 			//          and that config ini was replaced during the above process of recovering another ini
-			//       Then: Scan for previous usable ScummVM folder (it will still only copy the larger one found)
+			//       Then: Scan for previous usable NovelVM folder (it will still only copy the larger one found)
 			boolean scanOnlyInAuxExternalStorage = false;
 			if (defaultSaveDirFiles.length == 0
 			    || (existingConfigInScummVMDataDirReplacedOnce
@@ -2174,7 +2173,7 @@ public class ScummVMActivity extends Activity {
 					scanOnlyInAuxExternalStorage = true;
 				}
 
-				Log.d(ScummVM.LOG_TAG, "Scanning for a previous usable ScummVM Saves folder...");
+				Log.d(NovelVM.LOG_TAG, "Scanning for a previous usable NovelVM Saves folder...");
 				// Note: A directory named "Saves" is NOT the same as "saves" in internal storage.
 				//       ie. paths and filenames in internal storage (including emulated external) are case sensitive!
 				//       BUT: It could be the same in external SD card or other FAT formatted storage
@@ -2191,26 +2190,26 @@ public class ScummVMActivity extends Activity {
 					// due to case sensitivity this is different than "saves"
 					candidateOldLocationsOfScummVMSavesMap.put("A01", new File(_actualScummVMDataDir, "Saves"));
 					// This is a potential one, when internal storage for app was used
-					candidateOldLocationsOfScummVMSavesMap.put("A02", new File(_actualScummVMDataDir, ".local/share/scummvm/saves"));
-					candidateOldLocationsOfScummVMSavesMap.put("A03", new File(_actualScummVMDataDir, ".local/scummvm/saves"));
-					candidateOldLocationsOfScummVMSavesMap.put("A04", new File(_actualScummVMDataDir, "scummvm/saves"));
-					candidateOldLocationsOfScummVMSavesMap.put("A05", new File(_actualScummVMDataDir, "../.local/share/scummvm/saves"));
-					candidateOldLocationsOfScummVMSavesMap.put("A06", new File(_actualScummVMDataDir, "../.local/scummvm/saves"));
+					candidateOldLocationsOfScummVMSavesMap.put("A02", new File(_actualScummVMDataDir, ".local/share/novelvm/saves"));
+					candidateOldLocationsOfScummVMSavesMap.put("A03", new File(_actualScummVMDataDir, ".local/novelvm/saves"));
+					candidateOldLocationsOfScummVMSavesMap.put("A04", new File(_actualScummVMDataDir, "novelvm/saves"));
+					candidateOldLocationsOfScummVMSavesMap.put("A05", new File(_actualScummVMDataDir, "../.local/share/novelvm/saves"));
+					candidateOldLocationsOfScummVMSavesMap.put("A06", new File(_actualScummVMDataDir, "../.local/novelvm/saves"));
 					candidateOldLocationsOfScummVMSavesMap.put("A07", new File(_actualScummVMDataDir, "../saves"));
-					candidateOldLocationsOfScummVMSavesMap.put("A08", new File(_actualScummVMDataDir, "../scummvm/saves"));
+					candidateOldLocationsOfScummVMSavesMap.put("A08", new File(_actualScummVMDataDir, "../novelvm/saves"));
 					if (_externalPathAvailableForReadAccess && _possibleExternalScummVMDir != null) {
 						// this is a popular one
-						candidateOldLocationsOfScummVMSavesMap.put("A09", new File(_possibleExternalScummVMDir, ".local/share/scummvm/saves"));
-						candidateOldLocationsOfScummVMSavesMap.put("A10", new File(_possibleExternalScummVMDir, ".local/scummvm/saves"));
+						candidateOldLocationsOfScummVMSavesMap.put("A09", new File(_possibleExternalScummVMDir, ".local/share/novelvm/saves"));
+						candidateOldLocationsOfScummVMSavesMap.put("A10", new File(_possibleExternalScummVMDir, ".local/novelvm/saves"));
 						candidateOldLocationsOfScummVMSavesMap.put("A11", new File(_possibleExternalScummVMDir, "saves"));
-						candidateOldLocationsOfScummVMSavesMap.put("A12", new File(_possibleExternalScummVMDir, "scummvm/saves"));
-						candidateOldLocationsOfScummVMSavesMap.put("A13", new File(_possibleExternalScummVMDir, "../.local/share/scummvm/saves"));
-						candidateOldLocationsOfScummVMSavesMap.put("A14", new File(_possibleExternalScummVMDir, "../.local/scummvm/saves"));
+						candidateOldLocationsOfScummVMSavesMap.put("A12", new File(_possibleExternalScummVMDir, "novelvm/saves"));
+						candidateOldLocationsOfScummVMSavesMap.put("A13", new File(_possibleExternalScummVMDir, "../.local/share/novelvm/saves"));
+						candidateOldLocationsOfScummVMSavesMap.put("A14", new File(_possibleExternalScummVMDir, "../.local/novelvm/saves"));
 						candidateOldLocationsOfScummVMSavesMap.put("A15", new File(_possibleExternalScummVMDir, "../saves"));
-						candidateOldLocationsOfScummVMSavesMap.put("A16", new File(_possibleExternalScummVMDir, "../scummvm/saves"));
+						candidateOldLocationsOfScummVMSavesMap.put("A16", new File(_possibleExternalScummVMDir, "../novelvm/saves"));
 					}
 					// this was for old Android plain port
-					candidateOldLocationsOfScummVMSavesMap.put("A17", new File(Environment.getExternalStorageDirectory(), "ScummVM/Saves"));
+					candidateOldLocationsOfScummVMSavesMap.put("A17", new File(Environment.getExternalStorageDirectory(), "NovelVM/Saves"));
 				}
 
 				// Add AUX external storage locations
@@ -2224,25 +2223,25 @@ public class ScummVMActivity extends Activity {
 						// Possible for Saves dirs locations on top of paths returned by getAllStorageLocationsNoPermissionRequest
 						//
 						candidateOldLocationsOfScummVMSavesMap.put("A-" + (++incKeyId) + "-" + listOfAuxExtStoragePaths[incIndx],
-							new File(listOfAuxExtStoragePaths[incIndx + 1] + "/ScummVM/Saves"));
+							new File(listOfAuxExtStoragePaths[incIndx + 1] + "/NovelVM/Saves"));
 						candidateOldLocationsOfScummVMSavesMap.put("A-" + (++incKeyId) + "-" + listOfAuxExtStoragePaths[incIndx],
-							new File(listOfAuxExtStoragePaths[incIndx + 1] + "/Android/data/" +  getPackageName() + "/files/.local/share/scummvm/saves"));
+							new File(listOfAuxExtStoragePaths[incIndx + 1] + "/Android/data/" +  getPackageName() + "/files/.local/share/novelvm/saves"));
 						candidateOldLocationsOfScummVMSavesMap.put("A-" + (++incKeyId) + "-" + listOfAuxExtStoragePaths[incIndx],
-							new File(listOfAuxExtStoragePaths[incIndx + 1] + "/Android/data/" +  getPackageName() + "/files/.local/scummvm/saves"));
+							new File(listOfAuxExtStoragePaths[incIndx + 1] + "/Android/data/" +  getPackageName() + "/files/.local/novelvm/saves"));
 
 						candidateOldLocationsOfScummVMSavesMap.put("A-" + (++incKeyId) + "-" + listOfAuxExtStoragePaths[incIndx],
 							new File(listOfAuxExtStoragePaths[incIndx + 1] + "/Android/data/" +  getPackageName() + "/files/saves"));
 						candidateOldLocationsOfScummVMSavesMap.put("A-" + (++incKeyId) + "-" + listOfAuxExtStoragePaths[incIndx],
-							new File(listOfAuxExtStoragePaths[incIndx + 1] + "/Android/data/" +  getPackageName() + "/files/scummvm/saves"));
+							new File(listOfAuxExtStoragePaths[incIndx + 1] + "/Android/data/" +  getPackageName() + "/files/novelvm/saves"));
 						candidateOldLocationsOfScummVMSavesMap.put("A-" + (++incKeyId) + "-" + listOfAuxExtStoragePaths[incIndx],
-							new File(listOfAuxExtStoragePaths[incIndx + 1] + "/Android/data/" +  getPackageName() + "/files/../.local/share/scummvm/saves"));
+							new File(listOfAuxExtStoragePaths[incIndx + 1] + "/Android/data/" +  getPackageName() + "/files/../.local/share/novelvm/saves"));
 						candidateOldLocationsOfScummVMSavesMap.put("A-" + (++incKeyId) + "-" + listOfAuxExtStoragePaths[incIndx],
-							new File(listOfAuxExtStoragePaths[incIndx + 1] + "/Android/data/" +  getPackageName() + "/files/../.local/scummvm/saves"));
+							new File(listOfAuxExtStoragePaths[incIndx + 1] + "/Android/data/" +  getPackageName() + "/files/../.local/novelvm/saves"));
 
 						candidateOldLocationsOfScummVMSavesMap.put("A-" + (++incKeyId) + "-" + listOfAuxExtStoragePaths[incIndx],
 							new File(listOfAuxExtStoragePaths[incIndx + 1] + "/Android/data/" +  getPackageName() + "/files/../saves"));
 						candidateOldLocationsOfScummVMSavesMap.put("A-" + (++incKeyId) + "-" + listOfAuxExtStoragePaths[incIndx],
-							new File(listOfAuxExtStoragePaths[incIndx + 1] + "/Android/data/" +  getPackageName() + "/files/../scummvm/saves"));
+							new File(listOfAuxExtStoragePaths[incIndx + 1] + "/Android/data/" +  getPackageName() + "/files/../novelvm/saves"));
 						candidateOldLocationsOfScummVMSavesMap.put("A-" + (++incKeyId) + "-" + listOfAuxExtStoragePaths[incIndx],
 							new File(listOfAuxExtStoragePaths[incIndx + 1] + "/.scummvmrc"));
 					}
@@ -2250,21 +2249,21 @@ public class ScummVMActivity extends Activity {
 
 				for (String oldSavesPathDescription : candidateOldLocationsOfScummVMSavesMap.keySet()) {
 					File iterCandidateScummVMSavesPath = candidateOldLocationsOfScummVMSavesMap.get(oldSavesPathDescription);
-					Log.d(ScummVM.LOG_TAG, "Looking for old saves path " + oldSavesPathDescription + "...");
+					Log.d(NovelVM.LOG_TAG, "Looking for old saves path " + oldSavesPathDescription + "...");
 					try {
 						if (iterCandidateScummVMSavesPath != null) {
-							Log.d(ScummVM.LOG_TAG, "at Path: " + iterCandidateScummVMSavesPath.getPath() + "...");
+							Log.d(NovelVM.LOG_TAG, "at Path: " + iterCandidateScummVMSavesPath.getPath() + "...");
 
 							if (iterCandidateScummVMSavesPath.exists() && iterCandidateScummVMSavesPath.isDirectory()) {
 								File[] sgfiles = iterCandidateScummVMSavesPath.listFiles();
 								if (sgfiles != null) {
-									Log.d(ScummVM.LOG_TAG, "Size: " + sgfiles.length);
+									Log.d(NovelVM.LOG_TAG, "Size: " + sgfiles.length);
 									for (File sgfile : sgfiles) {
 										smallNodeDesc = "(F)";
 										if (sgfile.isDirectory()) {
 											smallNodeDesc = "(D)";
 										}
-										Log.d(ScummVM.LOG_TAG, "Name: " + smallNodeDesc + " " + sgfile.getName());
+										Log.d(NovelVM.LOG_TAG, "Name: " + smallNodeDesc + " " + sgfile.getName());
 									}
 
 									if (sgfiles.length > maxSavesFolderFoundSize) {
@@ -2273,26 +2272,26 @@ public class ScummVMActivity extends Activity {
 									}
 								}
 							} else {
-								Log.d(ScummVM.LOG_TAG, "...not found.");
+								Log.d(NovelVM.LOG_TAG, "...not found.");
 							}
 						} else {
-							Log.d(ScummVM.LOG_TAG, "...not found.");
+							Log.d(NovelVM.LOG_TAG, "...not found.");
 						}
 
 					} catch (Exception e) {
-						Log.d(ScummVM.LOG_TAG, "ScummVM Saves path exception CAUGHT!");
+						Log.d(NovelVM.LOG_TAG, "NovelVM Saves path exception CAUGHT!");
 					}
 				}
 
 				if (candidateOldScummVMSavesPath != null) {
 					//
-					Log.d(ScummVM.LOG_TAG, "Copying files from old saves folder: " + candidateOldScummVMSavesPath.getPath() + " to: " + defaultScummVMSavesPath.getPath());
+					Log.d(NovelVM.LOG_TAG, "Copying files from old saves folder: " + candidateOldScummVMSavesPath.getPath() + " to: " + defaultScummVMSavesPath.getPath());
 					File[] sgfiles = candidateOldScummVMSavesPath.listFiles();
 					if (sgfiles != null) {
 						for (File sgfile : sgfiles) {
 							String filename = sgfile.getName();
 							if (!sgfile.isDirectory()) {
-								Log.d(ScummVM.LOG_TAG, "Copying: " + filename);
+								Log.d(NovelVM.LOG_TAG, "Copying: " + filename);
 								InputStream in = null;
 								OutputStream out = null;
 								try {
@@ -2301,7 +2300,7 @@ public class ScummVMActivity extends Activity {
 									out = new FileOutputStream(outFile);
 									copyStreamToStream(in, out);
 								} catch (IOException e) {
-									Log.e(ScummVM.LOG_TAG, "Failed to copy save file: " + filename);
+									Log.e(NovelVM.LOG_TAG, "Failed to copy save file: " + filename);
 								} finally {
 									if (in != null) {
 										try {
@@ -2319,7 +2318,7 @@ public class ScummVMActivity extends Activity {
 									}
 								}
 							} else {
-								Log.d(ScummVM.LOG_TAG, "Not copying directory: " + filename);
+								Log.d(NovelVM.LOG_TAG, "Not copying directory: " + filename);
 							}
 						}
 					}
@@ -2331,11 +2330,11 @@ public class ScummVMActivity extends Activity {
 		File defaultScummVMIconsPath = new File(_actualScummVMDataDir, "icons");
 
 		if (defaultScummVMIconsPath.exists() && defaultScummVMIconsPath.isDirectory()) {
-			Log.d(ScummVM.LOG_TAG, "ScummVM default icons/shaders path already exists: " + defaultScummVMIconsPath.getPath());
+			Log.d(NovelVM.LOG_TAG, "NovelVM default icons/shaders path already exists: " + defaultScummVMIconsPath.getPath());
 		} else if (!defaultScummVMIconsPath.exists() && defaultScummVMIconsPath.mkdirs()) {
-			Log.d(ScummVM.LOG_TAG, "Created ScummVM default icons/shaders path: " + defaultScummVMIconsPath.getPath());
+			Log.d(NovelVM.LOG_TAG, "Created NovelVM default icons/shaders path: " + defaultScummVMIconsPath.getPath());
 		} else {
-			Log.e(ScummVM.LOG_TAG, "Could not create folder for ScummVM default icons/shaders path: " + defaultScummVMIconsPath.getPath());
+			Log.e(NovelVM.LOG_TAG, "Could not create folder for NovelVM default icons/shaders path: " + defaultScummVMIconsPath.getPath());
 			new AlertDialog.Builder(this)
 				.setTitle(R.string.no_icons_path_title)
 				.setIcon(android.R.drawable.ic_dialog_alert)
@@ -2366,13 +2365,13 @@ public class ScummVMActivity extends Activity {
 					deleteDir(child);
 				} else {
 					if (!child.delete()) {
-						Log.e(ScummVM.LOG_TAG, "Failed to delete file:" + child.getPath());
+						Log.e(NovelVM.LOG_TAG, "Failed to delete file:" + child.getPath());
 					}
 				}
 			}
 		}
 		if (!dir.delete()) {
-			Log.e(ScummVM.LOG_TAG, "Failed to delete dir:" + dir.getPath());
+			Log.e(NovelVM.LOG_TAG, "Failed to delete dir:" + dir.getPath());
 		}
 	}
 
@@ -2392,7 +2391,7 @@ public class ScummVMActivity extends Activity {
 			return;
 		}
 
-		Log.d(ScummVM.LOG_TAG, "Cleaning up old files in " + dataDir.getPath());
+		Log.d(NovelVM.LOG_TAG, "Cleaning up old files in " + dataDir.getPath());
 		for (File extfile : extfiles) {
 			if (extfile.isDirectory()) {
 				// We never extracted folders before
@@ -2400,13 +2399,13 @@ public class ScummVMActivity extends Activity {
 			}
 			// Skip scummvm.ini, scummvm.log at root
 			String name = extfile.getName();
-			if ((name.compareToIgnoreCase("scummvm.ini") == 0) ||
+			if ((name.compareToIgnoreCase("novelvm.ini") == 0) ||
 				(name.compareToIgnoreCase("scummvm.log") == 0)) {
 					continue;
 			}
-			Log.d(ScummVM.LOG_TAG, "Deleting file:" + extfile.getName());
+			Log.d(NovelVM.LOG_TAG, "Deleting file:" + extfile.getName());
 			if (!extfile.delete()) {
-				Log.e(ScummVM.LOG_TAG, "Failed to delete file:" + extfile.getName());
+				Log.e(NovelVM.LOG_TAG, "Failed to delete file:" + extfile.getName());
 			}
 		}
 	}
@@ -2424,7 +2423,7 @@ public class ScummVMActivity extends Activity {
 			return false;
 		}
 
-		Log.d(ScummVM.LOG_TAG, "Cleaning up files in " + dataDir.getPath());
+		Log.d(NovelVM.LOG_TAG, "Cleaning up files in " + dataDir.getPath());
 		for (File extfile : extfiles) {
 			String name = extfile.getName();
 
@@ -2433,12 +2432,12 @@ public class ScummVMActivity extends Activity {
 			}
 
 			if (extfile.isDirectory()) {
-				Log.d(ScummVM.LOG_TAG, "Deleting folder:" + extfile.getName());
+				Log.d(NovelVM.LOG_TAG, "Deleting folder:" + extfile.getName());
 				deleteDir(extfile);
 			} else {
-				Log.d(ScummVM.LOG_TAG, "Deleting file:" + extfile.getName());
+				Log.d(NovelVM.LOG_TAG, "Deleting file:" + extfile.getName());
 				if (!extfile.delete()) {
-					Log.e(ScummVM.LOG_TAG, "Failed to delete file:" + extfile.getName());
+					Log.e(NovelVM.LOG_TAG, "Failed to delete file:" + extfile.getName());
 					// Ignore error, that will be a leftover
 				}
 			}
@@ -2456,7 +2455,7 @@ public class ScummVMActivity extends Activity {
 		try {
 			files = assetManager.list(assetDir);
 		} catch (IOException e) {
-			Log.e(ScummVM.LOG_TAG, "Failed to get asset file list.", e);
+			Log.e(NovelVM.LOG_TAG, "Failed to get asset file list.", e);
 			throw e;
 		}
 
@@ -2475,7 +2474,7 @@ public class ScummVMActivity extends Activity {
 			// dataDir is a file but we need a folder
 			if (dataDir.exists()) {
 				if (!dataDir.delete()) {
-					Log.e(ScummVM.LOG_TAG, "Failed to delete file:" + dataDir.getName());
+					Log.e(NovelVM.LOG_TAG, "Failed to delete file:" + dataDir.getName());
 					// There is no point on continuing this
 					throw new IOException("Failed to delete file:" + dataDir.getName());
 				}
@@ -2484,7 +2483,7 @@ public class ScummVMActivity extends Activity {
 
 		if (!dataDir.exists()) {
 			if (!dataDir.mkdir()) {
-				Log.e(ScummVM.LOG_TAG, "Failed to create directory: " + dataDir.getPath());
+				Log.e(NovelVM.LOG_TAG, "Failed to create directory: " + dataDir.getPath());
 				// There is no point on continuing this
 				throw new IOException("Failed to create directory:" + dataDir.getName());
 			}
@@ -2503,12 +2502,12 @@ public class ScummVMActivity extends Activity {
 			InputStream in = null;
 			OutputStream out = null;
 			try {
-				Log.d(ScummVM.LOG_TAG, "Copying asset file: " + assetPath);
+				Log.d(NovelVM.LOG_TAG, "Copying asset file: " + assetPath);
 				in = assetManager.open(assetPath);
 				out = new FileOutputStream(dataPath);
 				copyStreamToStream(in, out);
 			} catch (IOException e) {
-				Log.e(ScummVM.LOG_TAG, "Failed to copy asset file: " + assetPath);
+				Log.e(NovelVM.LOG_TAG, "Failed to copy asset file: " + assetPath);
 			} finally {
 				if (in != null) {
 					try {
@@ -2543,7 +2542,7 @@ public class ScummVMActivity extends Activity {
 		// We need to compare MD5SUMS from our assets with what is on disk
 		File md5sumsPath = new File(_actualScummVMDataDir, "MD5SUMS");
 
-		Log.d(ScummVM.LOG_TAG, "Checking status of MD5SUMS");
+		Log.d(NovelVM.LOG_TAG, "Checking status of MD5SUMS");
 		// First: read MD5SUMS from our assets, we will need it
 		byte[] newSums = null;
 		{
@@ -2552,7 +2551,7 @@ public class ScummVMActivity extends Activity {
 				copyStreamToStream(newStreamAsset, newStream);
 				newSums = newStream.toByteArray();
 			} catch (IOException e) {
-				Log.e(ScummVM.LOG_TAG, "Failed to read MD5SUMS asset");
+				Log.e(NovelVM.LOG_TAG, "Failed to read MD5SUMS asset");
 			}
 			// Closing a ByteArrayOutputStream is useless
 		}
@@ -2563,12 +2562,12 @@ public class ScummVMActivity extends Activity {
 				if (oldStream.getChannel().size() == newSums.length &&
 					equalsStreamToStream(new ByteArrayInputStream(newSums), oldStream)) {
 					// The files are identical: nothing to do
-					Log.d(ScummVM.LOG_TAG, "MD5SUMS is already up to date");
+					Log.d(NovelVM.LOG_TAG, "MD5SUMS is already up to date");
 					_assetsUpdated = false;
 					return;
 				}
 			} catch (IOException e) {
-				Log.e(ScummVM.LOG_TAG, "Failed to read MD5SUMS file");
+				Log.e(NovelVM.LOG_TAG, "Failed to read MD5SUMS file");
 			}
 		}
 
@@ -2577,7 +2576,7 @@ public class ScummVMActivity extends Activity {
 			extractAssets(assetManager, "assets", new File(_actualScummVMDataDir, "assets"));
 			extractAssets(assetManager, "doc", new File(_actualScummVMDataDir, "doc"));
 		} catch (IOException e) {
-			Log.e(ScummVM.LOG_TAG, "An error happened while extracting the assets");
+			Log.e(NovelVM.LOG_TAG, "An error happened while extracting the assets");
 			// Don't write the new MD5SUMS: we did not finish our work well
 			return;
 		}
@@ -2588,7 +2587,7 @@ public class ScummVMActivity extends Activity {
 			try (FileOutputStream newStream = new FileOutputStream(md5sumsPath)) {
 				newStream.write(newSums);
 			} catch (IOException e) {
-				Log.e(ScummVM.LOG_TAG, "Failed to write MD5SUMS file");
+				Log.e(NovelVM.LOG_TAG, "Failed to write MD5SUMS file");
 				// If we fail to write MD5SUMS, we will try again at the next startup
 			}
 		}
@@ -2656,7 +2655,7 @@ public class ScummVMActivity extends Activity {
 				try {
 					safSyncObject.wait();
 				} catch (InterruptedException e) {
-					Log.d(ScummVM.LOG_TAG, "Warning: interrupted while waiting for SAF");
+					Log.d(NovelVM.LOG_TAG, "Warning: interrupted while waiting for SAF");
 					return null;
 				}
 			}
@@ -2668,16 +2667,16 @@ public class ScummVMActivity extends Activity {
 		}
 
 		if (resultCode != RESULT_OK) {
-			Log.d(ScummVM.LOG_TAG, "Warning: resultCode NOT OK for SAF selection!");
+			Log.d(NovelVM.LOG_TAG, "Warning: resultCode NOT OK for SAF selection!");
 			return null;
 		}
 
 		if (resultURI == null) {
-			Log.d(ScummVM.LOG_TAG, "Warning: NO selected Folder URI!");
+			Log.d(NovelVM.LOG_TAG, "Warning: NO selected Folder URI!");
 			return null;
 		}
 
-		Log.d(ScummVM.LOG_TAG, "Selected SAF URI: " + resultURI);
+		Log.d(NovelVM.LOG_TAG, "Selected SAF URI: " + resultURI);
 
 		int grant = Intent.FLAG_GRANT_READ_URI_PERMISSION;
 		if (write) {
@@ -2690,9 +2689,9 @@ public class ScummVMActivity extends Activity {
 
 	// endregion
 
-} // end of ScummVMActivity
+} // end of NovelVMActivity
 
-// Used to define the interface for a callback after ScummVM thread has finished
+// Used to define the interface for a callback after NovelVM thread has finished
 interface MyScummVMDestroyedCallback {
 	void handle(int exitResult);
 }

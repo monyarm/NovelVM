@@ -19,7 +19,7 @@
  *
  */
 
-package org.scummvm.scummvm;
+package org.novelvm.novelvm;
 
 import android.Manifest;
 import android.app.Activity;
@@ -61,7 +61,7 @@ public class SplashActivity extends Activity {
 			// and they are automatically denied -- onRequestPermissionsResult() will be called without user's input
 			requestPermissions(MY_PERMISSIONS_STR_LIST, MY_PERMISSION_ALL);
 		} else {
-			Intent next = new Intent(this, ScummVMActivity.class);
+			Intent next = new Intent(this, NovelVMActivity.class);
 			next.fillIn(getIntent(), Intent.FILL_IN_ACTION | Intent.FILL_IN_DATA);
 			startActivity(next);
 			finish();
@@ -81,10 +81,10 @@ public class SplashActivity extends Activity {
 			// If request is canceled, the result arrays are empty.
 			for (int i = 0; i < grantResults.length; ++i) {
 				if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-					Log.i(ScummVM.LOG_TAG, permissions[i] + " permission was granted at Runtime");
+					Log.i(NovelVM.LOG_TAG, permissions[i] + " permission was granted at Runtime");
 					++numOfReqPermsGranted;
 				} else {
-					Log.i(ScummVM.LOG_TAG, permissions[i] + " permission was denied at Runtime");
+					Log.i(NovelVM.LOG_TAG, permissions[i] + " permission was denied at Runtime");
 				}
 			}
 
@@ -94,7 +94,7 @@ public class SplashActivity extends Activity {
 					.show();
 			}
 		}
-		startActivity(new Intent(this, ScummVMActivity.class));
+		startActivity(new Intent(this, NovelVMActivity.class));
 		finish();
 	}
 

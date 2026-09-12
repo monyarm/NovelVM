@@ -1,6 +1,6 @@
-/* ScummVM - Graphic Adventure Engine
+/* NovelVM - Graphic Adventure Engine
  *
- * ScummVM is the legal property of its developers, whose names
+ * NovelVM is the legal property of its developers, whose names
  * are too numerous to list here. Please refer to the COPYRIGHT
  * file distributed with this source distribution.
  *
@@ -88,7 +88,7 @@
 
 #include "graphics/cursorman.h"
 
-const char *android_log_tag = "ScummVM";
+const char *android_log_tag = "NovelVM";
 
 // This replaces the bionic libc assert functions with something that
 // actually prints the assertion failure before aborting.
@@ -298,7 +298,7 @@ void *OSystem_Android::timerThreadFunc(void *arg) {
 }
 
 //
-// When launching ScummVM (from ScummVMActivity) order of business is as follows:
+// When launching NovelVM (from NovelVMActivity) order of business is as follows:
 // 1. scummvm_main() (base/main.cpp)
 // 1.1. call system.initBackend() (from scummvm_main() (base/main.cpp))
 //       According to comments in main.cpp:
@@ -333,14 +333,14 @@ void OSystem_Android::initBackend() {
 		}
 	}
 
-	// Warning: ConfMan.registerDefault() can be used for a Session of ScummVM
+	// Warning: ConfMan.registerDefault() can be used for a Session of NovelVM
 	//          but:
 	//              1. The values will NOT persist to storage
-	//                 ie. they won't get saved to scummvm.ini
+	//                 ie. they won't get saved to novelvm.ini
 	//              2. The values will NOT be reflected on the GUI
 	//                 and they cannot be recovered after exiting scummvm and re-launching
 	//          Also, if after a ConfMan.registerDefault(), we subsequently use ConfMan.hasKey()
-	//          here or anywhere else in ScummVM, it WILL NOT return true.
+	//          here or anywhere else in NovelVM, it WILL NOT return true.
 	//			As noted in ConfigManager::hasKey() implementation: (common/config_manager.cpp)
 	//			// Search the domains in the following order:
 	//              // 1) the transient domain,
@@ -354,7 +354,7 @@ void OSystem_Android::initBackend() {
 	// TODO Maybe the registerDefault only has meaning for "savepath"
 	//      and similar key/values retrieved from "Command Line"
 	//      so that they won't get "nuked"
-	//      and maintained for the duration ScummVM app session (until we exit the app)
+	//      and maintained for the duration NovelVM app session (until we exit the app)
 	ConfMan.registerDefault("fullscreen", true);
 	ConfMan.registerDefault("aspect_ratio", true);
 	ConfMan.registerDefault("filtering", false);
@@ -706,7 +706,7 @@ Common::KeymapperDefaultBindings *OSystem_Android::getKeymapperDefaultBindings()
 	// Note: setDefaultBinding maps a hw input to a keymapId_actionId combo.
 	//
 	// Clarifications/Quote by developer bgK (via Discord, Oct 3, 2020)
-	// bgK: [With the introduction of the ScummVM keymapper we have] "standard actions" defined in "standard-actions.h".
+	// bgK: [With the introduction of the NovelVM keymapper we have] "standard actions" defined in "standard-actions.h".
 	//      The engines use those as much as possible when defining keymaps.
 	//      Then, the backends can override the default bindings to make use of the platform specific keys.
 	//
@@ -746,7 +746,7 @@ Common::KeymapperDefaultBindings *OSystem_Android::getKeymapperDefaultBindings()
 	// If the user wants to remap them, they will be able to navigate to Global Options -> Keymaps and do so.
 	// In some devices (eg. Android TV) with only the remote control as DPAD input, it is impossible to navigate the launcher GUI,
 	// if the DPAD actions are mapped to "UP", "DOWN", "LEFT", "RIGHT" directions (GUI context) and not mouse cursor movement.
-	// TODO If/when full key-based (ie. non-mouse) navigation of the ScummVM GUI is implemented,
+	// TODO If/when full key-based (ie. non-mouse) navigation of the NovelVM GUI is implemented,
 	// we can revert back to the core behavior of DPAD being mapped to "up", "down", "left", "right" directions.
 	keymapperDefaultBindings->addDefaultBinding(Common::kGlobalKeymapName, "VMOUSEUP", "JOY_LEFT_STICK_Y-");
 	keymapperDefaultBindings->addDefaultBinding(Common::kGlobalKeymapName, "VMOUSEUP", "JOY_UP");
@@ -1019,9 +1019,9 @@ _s(
 "\n"
 "1. Select **Add Game...** from the launcher. \n"
 "\n"
-"2. Inside the ScummVM file browser, select **Go Up** until you reach the root folder which has the **<Add a new folder>** option. \n"
+"2. Inside the NovelVM file browser, select **Go Up** until you reach the root folder which has the **<Add a new folder>** option. \n"
 "\n"
-"  ![ScummVM file browser root](browser-root.png \"ScummVM file browser root\"){w=70%,maxw=50em}\n"
+"  ![NovelVM file browser root](browser-root.png \"NovelVM file browser root\"){w=70%,maxw=50em}\n"
 "\n"
 "3. Double-tap **<Add a new folder>**. In your device's file browser, navigate to the folder containing all your game folders. For example, **SD Card > ScummVMgames**. \n"
 "\n"
@@ -1029,11 +1029,11 @@ _s(
 "\n"
 "  ![OS selectable folder](fs-folder.png \"OS selectable folder\"){w=70%,maxw=50em}\n"
 "\n"
-"5. Select **ALLOW** to give ScummVM permission to access the folder. \n"
+"5. Select **ALLOW** to give NovelVM permission to access the folder. \n"
 "\n"
 "  ![OS access permission dialog](fs-permission.png \"OS access permission\"){w=70%,maxw=50em}\n"
 "\n"
-"6. In the ScummVM file browser, double-tap to browse through your added folder. Add a game by selecting the sub-folder containing the game files, then tap **Choose**. \n"
+"6. In the NovelVM file browser, double-tap to browse through your added folder. Add a game by selecting the sub-folder containing the game files, then tap **Choose**. \n"
 "\n"
 "  ![SAF folder added](browser-folder-in-list.png \"SAF folder added\"){w=70%,maxw=50em}\n"
 "\n"
