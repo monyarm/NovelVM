@@ -319,6 +319,10 @@ __pycache__/
 CLAUDE.md
 .claude
 
+# Ignore local agent artifacts
+/.plan/
+/docs/superpowers/
+
 novelvm
 novelvm.*
 vilevn
