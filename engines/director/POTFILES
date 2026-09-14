@@ -1,4 +1,0 @@
-engines/director/events.cpp
-engines/director/metaengine.cpp
-engines/director/lingo/lingo-builtins.cpp
-engines/director/lingo/xlibs/j/jitdraw3.cpp
