@@ -3402,7 +3402,7 @@ EOF
 			embuilder build sdl3
 		fi
 		_pkg_config=yes
-		PKG_CONFIG_LIBDIR="$EMSDK/upstream/emscripten/cache/sysroot/local/lib/pkgconfig:$EMSDK/upstream/emscripten/cache/sysroot/lib/pkgconfig"
+		export PKG_CONFIG_LIBDIR="$EMSDK/upstream/emscripten/cache/sysroot/local/lib/pkgconfig:$EMSDK/upstream/emscripten/cache/sysroot/lib/pkgconfig"
 		_sdlconfig="pkg-config sdl3"
 		_sdlversion=`$_sdlconfig --modversion`
 		append_var SDL_CFLAGS "`$_sdlconfig --cflags | sed 's/[[:space:]]*-Dmain=SDL_main//g'`"
@@ -4326,6 +4326,7 @@ case $_backend in
 		;;
 	ios7)
 		append_var LIBS "-lobjc -framework UIKit -framework CoreGraphics -framework OpenGLES"
+		append_var LIBS "-lbz2"
 		append_var LIBS "-framework QuartzCore -framework CoreFoundation -framework Foundation"
 		append_var LIBS "-framework AudioToolbox -framework CoreAudio -framework SystemConfiguration"
 		append_var LIBS "-framework GameController -framework CoreMIDI"

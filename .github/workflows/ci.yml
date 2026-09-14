@@ -39,12 +39,12 @@ jobs:
           key: ${{ matrix.configFlags }}
           path: |
             dists/emscripten/libs/
-      - name: Build scummvm
+      - name: Build novelvm
         run: |
           dists/emscripten/build.sh make 
   windows:
     name: Windows
-    runs-on: windows-latest
+    runs-on: windows-2022
     strategy:
       fail-fast: false
       matrix:
@@ -92,7 +92,7 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: ${{ github.workspace }}/vcpkg_cache
-          key: vcpkg-${{ env.GIT_VCPKG_COMMIT }}-${{ matrix.triplet }}-${{ hashFiles('vcpkg.json', 'vcpkg_installed/compiler-file-hash-cache.json', 'vcpkg_installed/status') }}
+          key: vcpkg-${{ env.GIT_VCPKG_COMMIT }}-${{ matrix.triplet }}-${{ hashFiles('vcpkg.json') }}
           restore-keys: vcpkg-${{ env.GIT_VCPKG_COMMIT }}-${{ matrix.triplet }}-
       - name: Build create_project
         run: |
@@ -103,10 +103,11 @@ jobs:
           cd ../../../
       - name: Call create_project
         run: |
-          mkdir build-scummvm
-          cd build-scummvm
-          ../devtools/create_project/cmake/Debug/create_project.exe .. --msvc --vcpkg --enable-all-engines ${{ matrix.configFlags }}
-          ls
+          mkdir build-novelvm
+          Push-Location build-novelvm
+          ..\devtools\create_project\cmake\Debug\create_project.exe .. --msvc --vcpkg --enable-all-engines ${{ matrix.configFlags }}
+          Pop-Location
+          ls build-novelvm
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v2
       - name: Install vcpkg packages
@@ -116,31 +117,31 @@ jobs:
         uses: actions/cache/save@v4
         with:
           path: ${{ github.workspace }}/vcpkg_cache
-          key: vcpkg-${{ env.GIT_VCPKG_COMMIT }}-${{ matrix.triplet }}-${{ hashFiles('vcpkg.json', 'vcpkg_installed/compiler-file-hash-cache.json', 'vcpkg_installed/status') }}
-      - name: Build scummvm
+          key: vcpkg-${{ env.GIT_VCPKG_COMMIT }}-${{ matrix.triplet }}-${{ hashFiles('vcpkg.json') }}
+      - name: Build novelvm
         run: |
-          cd build-scummvm
+          cd build-novelvm
           ls
-          msbuild scummvm.sln /m /p:VcpkgEnableManifest=true /p:BuildInParallel=true /p:Configuration=${{ env.CONFIGURATION }} /p:PreferredToolArchitecture=x64 /p:Platform=${{ matrix.platform }} /v:minimal
-      - name: Upload scummvm
+          $env:CL = "/std:c++17"
+          msbuild novelvm.sln /m /p:VcpkgEnableManifest=true /p:BuildInParallel=true /p:Configuration=${{ env.CONFIGURATION }} /p:PreferredToolArchitecture=x64 /p:Platform=${{ matrix.platform }} /v:minimal
+      - name: Upload novelvm
         uses: actions/upload-artifact@v4
         if: matrix.buildArtifacts == 'true'
         with:
-          name: scummvm-${{ matrix.arch }}
-          path: build-scummvm/${{ env.CONFIGURATION }}${{ matrix.arch }}/*.exe
-      - name: Upload scummvm libs
+          name: novelvm-${{ matrix.arch }}
+          path: build-novelvm/${{ env.CONFIGURATION }}${{ matrix.arch }}/*.exe
+      - name: Upload novelvm libs
         uses: actions/upload-artifact@v4
         if: matrix.buildArtifacts == 'true'
         with:
           name: libs-${{ matrix.arch }}
           path: ${{ env.VCPKG_INSTALLED_DIR }}\\${{ matrix.triplet }}\\bin\\*.dll
-      - name: Upload scummvm symbols
+      - name: Upload novelvm symbols
         uses: actions/upload-artifact@v4
         if: matrix.buildArtifacts == 'true' && env.CONFIGURATION == 'Debug'
         with:
           name: symbols-${{ matrix.arch }}
-          path: build-scummvm/${{ env.CONFIGURATION }}${{ matrix.arch }}/*.pdb
-      - name: Upload scummvm libs symbols
+      - name: Upload novelvm libs symbols
         uses: actions/upload-artifact@v4
         if: matrix.buildArtifacts == 'true' && env.CONFIGURATION == 'Debug'
         with:
@@ -154,11 +155,11 @@ jobs:
       matrix:
         include:
           - platform: macosx
-            buildFlags: -scheme ScummVM-macOS -destination 'platform=macOS,arch=x86_64'
+            buildFlags: -scheme NovelVM-macOS -destination 'platform=macOS,arch=x86_64'
             configFlags: --enable-faad --enable-gif --enable-mikmod --enable-mpeg2 --enable-vpx
             brewPackages: a52dec faad2 flac fluid-synth freetype fribidi giflib jpeg mad libmikmod libmpeg2 libogg libpng libvorbis libvpx sdl2 sdl2_net theora
           - platform: ios7
-            buildFlags: -scheme ScummVM-iOS CODE_SIGN_IDENTITY="" CODE_SIGNING_ALLOWED=NO
+            buildFlags: -scheme NovelVM-iOS CODE_SIGN_IDENTITY="" CODE_SIGNING_ALLOWED=NO
             configFlags: --ios --use-xcframework --enable-faad --enable-gif --enable-mikmod --enable-vpx --enable-mpc --enable-a52 --disable-taskbar --disable-tts
             packagesUrl: https://downloads.scummvm.org/frs/build/scummvm-ios7-libs-v4.zip
     defaults:
@@ -185,7 +186,7 @@ jobs:
           cd ../../../
       - name: Call create_project
         run: |
-          ./devtools/create_project/xcode/build/Release/create_project . --xcode --enable-all-engines ${{ matrix.configFlags }}
+          ./devtools/create_project/xcode/build/Release/create_project "$GITHUB_WORKSPACE" --output-dir "$GITHUB_WORKSPACE" --xcode --enable-all-engines ${{ matrix.configFlags }}
           ls
       - name: Build cache
         uses: hendrikmuhs/ccache-action@v1.2
@@ -193,9 +194,9 @@ jobs:
           key: ${{ matrix.platform }}
           max-size: 1G
           create-symlink: true
-      - name: Build scummvm
+      - name: Build novelvm
         run: |
-          xcodebuild CC=clang CPLUSPLUS=clang++ LD=clang LDPLUSPLUS=clang++ build -project scummvm.xcodeproj ${{ matrix.buildFlags }} | awk '$1 !~ /^(export|cd|clang++)/'
+          xcodebuild CC=clang CPLUSPLUS=clang++ LD=clang LDPLUSPLUS=clang++ build -project "$GITHUB_WORKSPACE/novelvm.xcodeproj" ${{ matrix.buildFlags }} | awk '$1 !~ /^(export|cd|clang++)/'
           ls
   ubuntu:
     name: Ubuntu
@@ -211,7 +212,7 @@ jobs:
             configFlags: --enable-discord --with-discord-prefix=/usr/local
           - platform: ubuntu-22.04
             sdlConfig: sdl-config
-            cxx: ccache g++-4.8
+            cxx: ccache g++ -std=c++17
             aptPackages: 'g++-4.8 liba52-dev libcurl4-openssl-dev libfaad-dev libflac-dev libfluidsynth-dev libfreetype6-dev libfribidi-dev libgif-dev libgtk-3-dev libjpeg-turbo8-dev libmad0-dev libmikmod-dev libmpeg2-4-dev libogg-dev libpng-dev libsdl-net1.2-dev libsdl1.2-dev libsndio-dev libspeechd-dev libtheora-dev libunity-dev libvorbis-dev libvpx-dev zlib1g-dev'
             configFlags: --enable-discord --with-discord-prefix=/usr/local
     env:
@@ -236,7 +237,7 @@ jobs:
           sudo apt-get install ${{ matrix.aptPackages }}
       - name: Download and install Discord RPC libraries
         run: |
-          curl -L -o discord-rpc-linux.zip https://github.com/discord/discord-rpc/releases/download/v3.4.0/discord-rpc-linux.zip
+          curl --fail --location --retry 5 --retry-all-errors --retry-delay 5 --output discord-rpc-linux.zip https://github.com/discord/discord-rpc/releases/download/v3.4.0/discord-rpc-linux.zip
           echo 'dac1f5dc6bedaeab1cc3c2c7fd4261e00838c81619c3ee325f3723c3d55ee03a discord-rpc-linux.zip' | sha256sum --check && unzip discord-rpc-linux.zip
           sudo cp -v -pR discord-rpc/linux-dynamic/include/*.* /usr/local/include/
           sudo cp -v -pR discord-rpc/linux-dynamic/lib/*.* /usr/local/lib/
@@ -248,7 +249,7 @@ jobs:
       - name: Call configure
         run: |
           CXX='${{ matrix.cxx }}' ./configure --enable-all-engines ${{ matrix.configFlags }}
-      - name: Build scummvm
+      - name: Build novelvm
         run: |
           make -j2
       - name: Build tests

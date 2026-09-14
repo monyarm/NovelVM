@@ -17,7 +17,7 @@ CPK::CPK(const char *path) {
 bool CPK::ReadCPKFile(Common::SeekableReadStream &br) {
 
 	//uint Files;
-	ushort Align;
+	uint16 Align;
 
 	char cpkMagic[5];
 	br.read(cpkMagic, 4);

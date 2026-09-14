@@ -226,7 +226,7 @@ fi
 
 echo_n "Checking Release Notes..."
 
-VERSION=`grep SCUMMVM_VERSION base/internal_version.h | awk -F\" '{ print $2 }'`
+VERSION=`grep NOVELVM_VERSION base/internal_version.h | awk -F\" '{ print $2 }'`
 
 if curl -s -I https://downloads.scummvm.org/frs/scummvm/${VERSION}/ReleaseNotes | head -n 1 | grep 404 >/dev/null; then
   echo -e "missing. ${RED}Upload to https://downloads.scummvm.org/frs/scummvm/${VERSION}/ReleaseNotes${NC}"

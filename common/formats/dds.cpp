@@ -301,7 +301,7 @@ void DDSFile::DecompressBlockDXT5(unsigned long x, unsigned long y, unsigned lon
 
 			unsigned char colorCode = (code >> 2 * (4 * j + i)) & 0x03;
 
-			unsigned long finalColor;
+			unsigned long finalColor = 0;
 			switch (colorCode) {
 			case 0:
 				finalColor = PackRGBA(r0, g0, b0, finalAlpha);

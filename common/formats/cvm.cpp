@@ -57,18 +57,18 @@ CVMEntry CVM::ReadISORecord(Common::SeekableReadStream &reader, bool isRoot, Com
 	reader.seek(0x06, SEEK_CUR); // unit size + interleave gap + volume seq number
 
 	byte nameLength = reader.readByte();
-	byte nameBytes[nameLength];
-	reader.read(nameBytes, nameLength);
+	Common::Array<byte> nameBytes(nameLength);
+	reader.read(nameBytes.data(), nameLength);
 
 	Common::String mName;
 
-	if (sizeof(nameBytes) == 1) {
+	if (nameBytes.size() == 1) {
 		if (nameBytes[0] == 0)
 			mName = ".";
 		else if (nameBytes[0] == 1)
 			mName = "..";
 	} else {
-		mName = Common::String((char *)nameBytes, (char *)nameBytes + sizeof(nameBytes));
+		mName = Common::String((const char *)nameBytes.data(), nameBytes.size());
 		if (parentName != "") {
 			mName = parentName + '/' + mName.substr(0, mName.findFirstOf(';'));
 		} else {

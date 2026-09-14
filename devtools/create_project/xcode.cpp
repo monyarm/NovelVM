@@ -483,6 +483,7 @@ void XcodeProvider::setupFrameworksBuildPhase(const BuildSetup &setup) {
 	if (CONTAINS_DEFINE(setup.defines, "USE_FREETYPE2")) {
 		DEF_LOCALLIB_STATIC("libfreetype");
 		DEF_LOCALXCFRAMEWORK("freetype", projectOutputDirectory);
+		DEF_LOCALXCFRAMEWORK("bz2", projectOutputDirectory);
 	}
 	if (CONTAINS_DEFINE(setup.defines, "USE_JPEG")) {
 		DEF_LOCALLIB_STATIC("libjpeg");
@@ -747,6 +748,7 @@ void XcodeProvider::setupFrameworksBuildPhase(const BuildSetup &setup) {
 		}
 		if (CONTAINS_DEFINE(setup.defines, "USE_FREETYPE2")) {
 			frameworks_iOS.push_back(getLibString("freetype", setup.useXCFramework));
+			frameworks_iOS.push_back(getLibString("bz2", setup.useXCFramework));
 		}
 		if (CONTAINS_DEFINE(setup.defines, "USE_JPEG")) {
 			frameworks_iOS.push_back(getLibString("jpeg", setup.useXCFramework));

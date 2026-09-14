@@ -11,7 +11,7 @@ MODULE_OBJS := \
 	ios7_options.o \
 	ios7_video.o \
 	ios7_keyboard.o \
-	ios7_scummvm_view_controller.o \
+	ios7_novelvm_view_controller.o \
 	ios7_app_delegate.o \
 	ios7_game_controller.o \
 	ios7_touch_controller.o \
