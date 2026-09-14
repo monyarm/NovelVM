@@ -1,0 +1,71 @@
+name: Engine request
+description: Request support for a new game engine or engine family
+title: "Support [engine] engine"
+labels:
+  - game support
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form to request support for an engine or engine family.
+        Please provide links to research and tools where possible.
+  - type: input
+    id: engine
+    attributes:
+      label: Engine
+      description: Name the engine or engine family.
+      placeholder: e.g. RealLive
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Describe the engine and the requested support.
+      placeholder: Explain what should be implemented and whether this targets an engine family or a specific game.
+    validations:
+      required: true
+  - type: textarea
+    id: games
+    attributes:
+      label: Games
+      description: List representative games or titles using this engine. VNDB links are preferred.
+      placeholder: |
+        - Game title
+        - Another game title
+    validations:
+      required: true
+  - type: textarea
+    id: repositories
+    attributes:
+      label: Repository URLs
+      description: Link to open-source implementations, tools, or related repositories.
+      placeholder: |
+        - https://github.com/example/project
+  - type: textarea
+    id: research
+    attributes:
+      label: Reverse-engineering documentation
+      description: Link to format specifications, research, wikis, or other technical documentation.
+      placeholder: |
+        - None known
+  - type: textarea
+    id: activity
+    attributes:
+      label: Forks and activity
+      description: Summarize active forks, recent development, or repository status.
+      placeholder: Include relevant activity dates or note if no active project is known.
+  - type: textarea
+    id: licensing
+    attributes:
+      label: Licensing
+      description: Note relevant licenses and any compatibility or provenance concerns.
+      placeholder: Describe licenses for code or documentation that may be used as references.
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: List the behavior or coverage needed for this request to be considered complete.
+      placeholder: |
+        - Detect and launch a representative game
+        - Document sources and licensing

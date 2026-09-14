@@ -1,0 +1,55 @@
+name: Bug report
+description: Report a reproducible problem in NovelVM
+title: ""
+labels:
+  - bug
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What went wrong?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: Provide the smallest set of steps that reproduces the problem.
+      placeholder: |
+        1. Run ...
+        2. Open ...
+        3. Observe ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What did you expect to happen?
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: What happened instead? Include exact error messages.
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Include NovelVM revision, operating system, platform, and relevant engine or game.
+      placeholder: |
+        - NovelVM revision:
+        - OS:
+        - Platform:
+        - Engine/game:
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs and screenshots
+      description: Add relevant logs, crash output, screenshots, or save files. Remove sensitive data first.
