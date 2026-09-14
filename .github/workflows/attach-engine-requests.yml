@@ -1,0 +1,76 @@
+name: Maintain engine request index
+
+on:
+  issues:
+    types:
+      - opened
+      - labeled
+      - unlabeled
+      - closed
+      - reopened
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  update-index:
+    if: github.repository == 'monyarm/NovelVM'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Refresh Engine Requests checklist
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const parentNumber = 43;
+            const { owner, repo } = context.repo;
+            const parent = await github.rest.issues.get({
+              owner,
+              repo,
+              issue_number: parentNumber,
+            });
+
+            const engineIssues = await github.paginate(
+              github.rest.issues.listForRepo,
+              {
+                owner,
+                repo,
+                labels: 'game support',
+                state: 'all',
+                per_page: 100,
+              }
+            );
+
+            const checklist = engineIssues
+              .filter((issue) => issue.number !== parentNumber && !issue.pull_request)
+              .sort((left, right) => left.number - right.number)
+              .map((issue) => {
+                const checked = issue.state === 'closed' ? 'x' : ' ';
+                return `- [${checked}] #${issue.number}`;
+              })
+              .join('\n');
+
+            const startMarker = '<!-- engine-request-list:start -->';
+            const endMarker = '<!-- engine-request-list:end -->';
+            const currentBody = parent.data.body || '';
+            const generatedSection = `${startMarker}\n${checklist}\n${endMarker}`;
+            const markerPattern = new RegExp(
+              `${startMarker}[^]*?${endMarker}`,
+              'm'
+            );
+            const body = markerPattern.test(currentBody)
+              ? currentBody.replace(markerPattern, generatedSection)
+              : `${currentBody.trim()}\n\n${generatedSection}`;
+
+            if (body === currentBody) {
+              return;
+            }
+
+            await github.rest.issues.update({
+              owner,
+              repo,
+              issue_number: parentNumber,
+              body,
+            });
+
+            core.info(`Updated Engine Requests #${parentNumber} with ${engineIssues.length} game-support issues`);
