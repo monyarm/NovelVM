@@ -21,7 +21,7 @@
 
 #define FORBIDDEN_SYMBOL_ALLOW_ALL
 #include "backends/platform/ios7/ios7_app_delegate.h"
-#include "backends/platform/ios7/ios7_scummvm_view_controller.h"
+#include "backends/platform/ios7/ios7_novelvm_view_controller.h"
 #include "backends/platform/ios7/ios7_video.h"
 
 @implementation iOS7AppDelegate {

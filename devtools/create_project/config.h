@@ -22,14 +22,14 @@
 #ifndef TOOLS_CREATE_PROJECT_CONFIG_H
 #define TOOLS_CREATE_PROJECT_CONFIG_H
 
-#define PROJECT_DESCRIPTION "ScummVM"    // Used in console output and build configuration
-#define PROJECT_NAME "scummvm"           // Used for folders, icons, resources and project/solution name
+#define PROJECT_DESCRIPTION "NovelVM"    // Used in console output and build configuration
+#define PROJECT_NAME "novelvm"           // Used for folders, icons, resources and project/solution name
 #define LIBS_DEFINE "SCUMMVM_LIBS"       // Name of the include environment variable
 #define REVISION_DEFINE "SCUMMVM_INTERNAL_REVISION"
 #define FIRST_ENGINE "scumm"             // Name of the engine which should be sorted as first element
 
 #define ENABLE_LANGUAGE_EXTENSIONS ""    // Comma separated list of projects that need language extensions
-#define DISABLE_EDIT_AND_CONTINUE "tinsel,tony,scummvm"     // Comma separated list of projects that need Edit&Continue to be disabled for co-routine support (the main project is automatically added)
+#define DISABLE_EDIT_AND_CONTINUE "tinsel,tony,novelvm"     // Comma separated list of projects that need Edit&Continue to be disabled for co-routine support (the main project is automatically added)
 
 #define NEEDS_RTTI 1                     // Enable RTTI globally
 

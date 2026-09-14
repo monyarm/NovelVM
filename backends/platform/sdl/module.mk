@@ -24,7 +24,7 @@ MODULE_OBJS += \
 	macosx/macosx-window.o \
 	macosx/macosx_wrapper.o \
 	macosx/macosx_osys_misc.o \
-	macosx/appmenu_osx.o
+	macosx/appMenu_osx.o
 endif
 
 ifdef WIN32

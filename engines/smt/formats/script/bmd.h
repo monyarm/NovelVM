@@ -67,7 +67,7 @@ class BMD {
 	struct BinaryMessageDialog {
 		Common::String Name;
 		short PageCount;
-		ushort SpeakerId;
+		uint16 SpeakerId;
 		Common::Array<int32> PageStartAddresses;
 		int TextBufferSize;
 		Common::Array<byte> TextBuffer;

@@ -45,7 +45,7 @@
 #include <retro_miscellaneous.h> // PATH_MAX_LENGTH
 
 /**
- * Include base/internal_version.h to allow access to SCUMMVM_VERSION.
+ * Include base/internal_version.h to allow access to NOVELVM_VERSION.
  * @see retro_get_system_info()
  */
 #define INCLUDED_FROM_BASE_VERSION_CPP
@@ -892,7 +892,7 @@ void retro_get_system_info(struct retro_system_info *info) {
 #if defined GIT_TAG
 #define __GIT_VERSION GIT_TAG
 #elif defined GIT_HASH
-#define __GIT_VERSION GIT_HASH "-" SCUMMVM_VERSION
+#define __GIT_VERSION GIT_HASH "-" NOVELVM_VERSION
 #else
 #define __GIT_VERSION ""
 #endif

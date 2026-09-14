@@ -123,7 +123,7 @@ corename = "$NICE_NAME"
 categories = "Game"
 license = "GPLv3"
 permissions = ""
-display_version = $(cat $SCUMMVM_PATH/base/internal_version.h 2>/dev/null | grep SCUMMVM_VERSION | sed "s|^.*SCUMMVM_VERSION *||g")
+display_version = $(cat $SCUMMVM_PATH/base/internal_version.h 2>/dev/null | grep NOVELVM_VERSION | sed "s|^.*NOVELVM_VERSION *||g")
 
 # Hardware Information
 manufacturer = "Various"
