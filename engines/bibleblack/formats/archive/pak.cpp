@@ -129,4 +129,4 @@ PAK *PAKFactory(const Common::String &name)
     return new PAK(name);
 }
 
-} // namespace BibleBlackKoihimeDoki::Format::Archive
+} // namespace BibleBlack::Format::Archive
