@@ -57,6 +57,11 @@ ifeq ($(ENABLE_TWINE), STATIC_PLUGIN)
 	TEST_LIBS += engines/twine/libtwine.a
 endif
 
+ifeq ($(ENABLE_IKURA), STATIC_PLUGIN)
+	TESTS += $(srcdir)/test/engines/ikura/*.h
+	TEST_LIBS += engines/ikura/libikura.a
+endif
+
 # Engine test libs above can need symbols from the shared libs listed
 # earlier (e.g. an image codec test needing image/libimage.a); ld only
 # scans each archive once, left to right, so repeat them here.

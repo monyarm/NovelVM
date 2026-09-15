@@ -8,9 +8,6 @@
 
 namespace Ikura {
 
-const char *IkuraEngine::getGameId() const { return _gameDescription->gameId; }
-Common::Platform IkuraEngine::getPlatform() const { return _gameDescription->platform; }
-
 IkuraEngine::IkuraEngine(OSystem *syst, const ADGameDescription *gameDesc)
 	: Engine(syst), _gameDescription(gameDesc), _console(nullptr), _rnd("ikura") {
 	// Keep the constructor free of file I/O and device initialization;

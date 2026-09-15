@@ -2,7 +2,8 @@ MODULE := engines/ikura
 
 MODULE_OBJS := \
 	ikura.o \
-	metaengine.o
+	metaengine.o \
+	formats/archive/cabinet.o
 
 MODULE_DIRS += \
 	engines/ikura
