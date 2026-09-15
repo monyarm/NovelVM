@@ -28,6 +28,10 @@ enum : byte {
 	kOpVarSetGroup = 0x45,
 	kOpVarTransfer = 0x46,
 	kOpIf = 0x47,
+	kOpSystemSet = 0x37,   // IOP_STS
+	kOpExtraSet = 0x49,    // IOP_EXS - no-op in the reference
+	kOpExtraSecure = 0x4A, // IOP_EXC - no-op in the reference
+	kOpSystemCopy = 0x4C,  // IOP_SSP
 };
 
 uint32 readWord(const byte *data) { return data[0] | (data[1] << 8); }
@@ -215,15 +219,29 @@ StepResult step(Context &ctx, byte &lastOpcode) {
 	case kOpIf:
 		return stepIf(ctx, data, length);
 
-	// No-ops in the reference too: IOP_EC/IOP_ES/IOP_FT's handler bodies
-	// don't do anything observable, and IOP_HLN has no case in
-	// EventGameProcess's dispatch switch at all (falls into its shared
-	// empty-break block alongside several other "misc unsupported"
+	case kOpSystemSet:
+		if (length != 2)
+			return StepResult::kMalformedOpcode;
+		ctx.setSystem(data[0], data[1] != 0);
+		return StepResult::kOk;
+
+	case kOpSystemCopy:
+		if (length != 3)
+			return StepResult::kMalformedOpcode;
+		ctx.setSystem(data[2], readWord(data) != 0);
+		return StepResult::kOk;
+
+	// No-ops in the reference too: IOP_EC/IOP_ES/IOP_FT/IOP_EXS/IOP_EXC's
+	// handler bodies don't do anything observable, and IOP_HLN has no
+	// case in EventGameProcess's dispatch switch at all (falls into its
+	// shared empty-break block alongside several other "misc unsupported"
 	// opcodes).
 	case kOpFlagSave:
 	case kOpFlagLoad:
 	case kOpFlagTransfer:
 	case kOpVarSetCount:
+	case kOpExtraSet:
+	case kOpExtraSecure:
 		return StepResult::kOk;
 
 	default:

@@ -29,10 +29,17 @@ public:
 	bool getFlag(uint32 position) const;
 	void setFlag(uint32 position, bool value);
 
+	// System flags: a second, separate flag bank (VileVN reference:
+	// IParser::System) for engine settings (message skip, automode, BGM
+	// disable, etc.) rather than story state.
+	bool getSystem(uint32 position) const;
+	void setSystem(uint32 position, bool value);
+
 private:
 	Format::Script::Script *_script;
 	Common::Array<uint32> _variables;
 	Common::Array<bool> _flags;
+	Common::Array<bool> _system;
 };
 
 } // End of namespace Ikura::VM

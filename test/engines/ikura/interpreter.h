@@ -195,4 +195,48 @@ public:
 		TS_ASSERT_EQUALS((int)Ikura::VM::step(*ctx, opcode), (int)Ikura::VM::StepResult::kMalformedOpcode);
 		delete ctx;
 	}
+
+	void test_sts_sets_system_flag() {
+		static const byte kStsFixture[] = {
+			0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xDC, 0x10, 0x14, 0x04,
+		};
+		Ikura::VM::Context *ctx = load(kStsFixture, sizeof(kStsFixture));
+		TS_ASSERT(ctx != nullptr);
+		if (!ctx)
+			return;
+		TS_ASSERT(!ctx->getSystem(5));
+		byte opcode;
+		TS_ASSERT_EQUALS((int)Ikura::VM::step(*ctx, opcode), (int)Ikura::VM::StepResult::kOk);
+		TS_ASSERT(ctx->getSystem(5));
+		delete ctx;
+	}
+
+	void test_ssp_sets_system_flag() {
+		static const byte kSspFixture[] = {
+			0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x31, 0x14, 0x1C, 0x00,
+			0x24,
+		};
+		Ikura::VM::Context *ctx = load(kSspFixture, sizeof(kSspFixture));
+		TS_ASSERT(ctx != nullptr);
+		if (!ctx)
+			return;
+		byte opcode;
+		TS_ASSERT_EQUALS((int)Ikura::VM::step(*ctx, opcode), (int)Ikura::VM::StepResult::kOk);
+		TS_ASSERT(ctx->getSystem(9));
+		delete ctx;
+	}
+
+	void test_exc_exs_are_noops() {
+		static const byte kExcExsFixture[] = {
+			0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x29, 0x08, 0x25, 0x08,
+		};
+		Ikura::VM::Context *ctx = load(kExcExsFixture, sizeof(kExcExsFixture));
+		TS_ASSERT(ctx != nullptr);
+		if (!ctx)
+			return;
+		byte opcode;
+		TS_ASSERT_EQUALS((int)Ikura::VM::step(*ctx, opcode), (int)Ikura::VM::StepResult::kOk);
+		TS_ASSERT_EQUALS((int)Ikura::VM::step(*ctx, opcode), (int)Ikura::VM::StepResult::kOk);
+		delete ctx;
+	}
 };

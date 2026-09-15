@@ -33,4 +33,14 @@ void Context::setFlag(uint32 position, bool value) {
 	_flags[position] = value;
 }
 
+bool Context::getSystem(uint32 position) const {
+	return position < _system.size() && _system[position];
+}
+
+void Context::setSystem(uint32 position, bool value) {
+	if (position >= _system.size())
+		_system.resize(position + 1, false);
+	_system[position] = value;
+}
+
 } // End of namespace Ikura::VM
