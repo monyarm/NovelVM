@@ -3,9 +3,7 @@
 #include "common/array.h"
 #include "common/memstream.h"
 
-namespace Ikura {
-namespace Format {
-namespace Archive {
+namespace Ikura::Format::Archive {
 
 Cabinet::Cabinet(Common::SeekableReadStream *stream) : _stream(stream) {
 }
@@ -165,6 +163,4 @@ Common::SeekableReadStream *Cabinet::createReadStreamForMember(const Common::Pat
 	return new Common::MemoryReadStream(data, entry.size, DisposeAfterUse::YES);
 }
 
-} // End of namespace Archive
-} // End of namespace Format
-} // End of namespace Ikura
+} // End of namespace Ikura::Format::Archive

@@ -3,7 +3,12 @@ MODULE := engines/ikura
 MODULE_OBJS := \
 	ikura.o \
 	metaengine.o \
-	formats/archive/cabinet.o
+	formats/archive/cabinet.o \
+	formats/graphic/ggp.o \
+	formats/graphic/ggd24.o \
+	formats/graphic/ggd8.o \
+	formats/graphic/gga.o \
+	formats/graphic/gan.o
 
 MODULE_DIRS += \
 	engines/ikura

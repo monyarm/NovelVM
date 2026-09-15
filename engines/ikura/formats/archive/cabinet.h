@@ -6,9 +6,7 @@
 #include "common/hashmap.h"
 #include "common/str.h"
 
-namespace Ikura {
-namespace Format {
-namespace Archive {
+namespace Ikura::Format::Archive {
 
 // Ikura/GDL resource cabinet (ArchiveIkura in the VileVN reference,
 // res/archives/aikura.cpp).
@@ -43,8 +41,6 @@ private:
 	EntryMap _entries;
 };
 
-} // End of namespace Archive
-} // End of namespace Format
-} // End of namespace Ikura
+} // End of namespace Ikura::Format::Archive
 
 #endif
