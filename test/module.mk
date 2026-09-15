@@ -57,6 +57,11 @@ ifeq ($(ENABLE_TWINE), STATIC_PLUGIN)
 	TEST_LIBS += engines/twine/libtwine.a
 endif
 
+# Engine test libs above can need symbols from the shared libs listed
+# earlier (e.g. an image codec test needing image/libimage.a); ld only
+# scans each archive once, left to right, so repeat them here.
+TEST_LIBS += audio/libaudio.a math/libmath.a common/libcommon.a common/formats/libformats.a common/compression/libcompression.a common/libcommon.a image/libimage.a graphics/libgraphics.a
+
 #
 TEST_FLAGS   := --runner=StdioPrinter --no-std --no-eh
 TEST_CFLAGS  := $(CFLAGS) -I$(srcdir)/test/cxxtest
