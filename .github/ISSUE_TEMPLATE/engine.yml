@@ -29,7 +29,7 @@ body:
     id: games
     attributes:
       label: Games
-      description: List representative games or titles using this engine. VNDB links are preferred.
+      description: List representative games or titles using this engine. Use markdown links, e.g. `[Title](https://vndb.org/vN)`.
       placeholder: |
         - Game title
         - Another game title
@@ -61,11 +61,3 @@ body:
       label: Licensing
       description: Note relevant licenses and any compatibility or provenance concerns.
       placeholder: Describe licenses for code or documentation that may be used as references.
-  - type: textarea
-    id: acceptance
-    attributes:
-      label: Acceptance criteria
-      description: List the behavior or coverage needed for this request to be considered complete.
-      placeholder: |
-        - Detect and launch a representative game
-        - Document sources and licensing
