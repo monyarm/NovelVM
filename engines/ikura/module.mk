@@ -8,7 +8,8 @@ MODULE_OBJS := \
 	formats/graphic/ggd24.o \
 	formats/graphic/ggd8.o \
 	formats/graphic/gga.o \
-	formats/graphic/gan.o
+	formats/graphic/gan.o \
+	formats/script/script.o
 
 MODULE_DIRS += \
 	engines/ikura
