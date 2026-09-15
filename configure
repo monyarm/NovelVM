@@ -2398,19 +2398,19 @@ fi
 LD=$CXX
 
 #
-# Check whether the compiler supports C++11
+# Check whether the compiler supports C++17
 #
-echo_n "Checking if compiler supports C++11... "
-have_cxx11=no
+echo_n "Checking if compiler supports C++17... "
+have_cxx17=no
 cat > $TMPC << EOF
 int main(int argc, char *argv[]) { if (argv == nullptr) return -1; else return 0; }
 EOF
-cc_check -std=c++11 && have_cxx11=yes
-echo $have_cxx11
+cc_check -std=c++17 && have_cxx17=yes
+echo $have_cxx17
 
-if test "$have_cxx11" = "no" ; then
+if test "$have_cxx17" = "no" ; then
 	echo
-	echo "ScummVM requires C++11 compiler support. Please ensure your compiler supports it"
+	echo "NovelVM requires C++17 compiler support. Please ensure your compiler supports it"
 	exit 1
 fi
 
@@ -2597,9 +2597,9 @@ elif test "$have_icc" = yes ; then
 fi
 
 #
-# Set status about C++11 mode
+# Set status about C++17 mode
 #
-append_var CXXFLAGS "-std=${std_variant}11"
+append_var CXXFLAGS "-std=${std_variant}17"
 
 if test "$pedantic" = yes ; then
 	append_var CXXFLAGS "-pedantic"
