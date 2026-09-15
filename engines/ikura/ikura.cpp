@@ -10,8 +10,6 @@ namespace Ikura {
 
 IkuraEngine::IkuraEngine(OSystem *syst, const ADGameDescription *gameDesc)
 	: Engine(syst), _gameDescription(gameDesc), _console(nullptr), _rnd("ikura") {
-	// Keep the constructor free of file I/O and device initialization;
-	// resource loading belongs in run(), once graphics/audio are up.
 }
 
 IkuraEngine::~IkuraEngine() {
@@ -19,9 +17,8 @@ IkuraEngine::~IkuraEngine() {
 }
 
 Common::Error IkuraEngine::run() {
-	// The 8 ikura games run at 640x480 except Hitomi (800x600); the
-	// per-game resolution table lands with the game profiles in Task 7.
-	// Fixed default is fine for the Task 2 skeleton.
+	// All 8 ikura games run at 640x480 except Hitomi (800x600); no
+	// per-game resolution table yet.
 	initGraphics(640, 480);
 
 	DebugMan.addDebugChannel(kDebugScript, "script", "Ikura/GDL script interpreter");

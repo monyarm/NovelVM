@@ -17,7 +17,6 @@ Common::Error IkuraMetaEngine::createInstance(OSystem *syst, Engine **engine, co
 }
 
 bool IkuraMetaEngine::hasFeature(MetaEngineFeature f) const {
-	// Save/load support lands in Task 6; nothing to report yet.
 	return false;
 }
 
