@@ -12,7 +12,8 @@ MODULE_OBJS := \
 	formats/script/script.o \
 	script/context.o \
 	script/interpreter.o \
-	runtime/input.o
+	runtime/input.o \
+	runtime/loader.o
 
 MODULE_DIRS += \
 	engines/ikura

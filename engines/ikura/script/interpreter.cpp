@@ -249,4 +249,12 @@ StepResult step(Context &ctx, byte &lastOpcode) {
 	}
 }
 
+StepResult run(Context &ctx, byte &lastOpcode) {
+	StepResult result;
+	do {
+		result = step(ctx, lastOpcode);
+	} while (result == StepResult::kOk);
+	return result;
+}
+
 } // End of namespace Ikura::VM

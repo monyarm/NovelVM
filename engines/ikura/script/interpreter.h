@@ -18,6 +18,13 @@ enum class StepResult {
 // failure, for diagnostics.
 StepResult step(Context &ctx, byte &lastOpcode);
 
+// Calls step() until it returns something other than kOk (every
+// implemented opcode runs to completion in one step() call - there's no
+// "waiting for input" state yet, so a run just executes straight through
+// to the first stopping condition). lastOpcode is set the same way step()
+// sets it.
+StepResult run(Context &ctx, byte &lastOpcode);
+
 } // End of namespace Ikura::VM
 
 #endif

@@ -12,9 +12,12 @@ struct ADGameDescription;
 
 namespace Ikura {
 
+namespace VM {
+class Context;
+}
+
 /**
- * Debug channels registered with DebugMan in IkuraEngine::run(), after
- * graphics init. Extend as Tasks 3/4 add the archive/script layers.
+ * Debug channels registered with DebugMan in IkuraEngine::run().
  */
 enum IkuraDebugChannels {
 	kDebugScript = 1 << 0,
@@ -39,6 +42,7 @@ private:
 	Console *_console;
 	Common::RandomSource _rnd;
 	Input _input;
+	VM::Context *_scriptContext;
 };
 
 class Console : public GUI::Debugger {
