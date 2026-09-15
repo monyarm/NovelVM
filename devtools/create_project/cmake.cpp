@@ -89,7 +89,7 @@ void CMakeProvider::createWorkspace(const BuildSetup &setup) {
 	workspace << "project(" << setup.projectDescription << ")\n\n";
 
 	workspace << R"EOS(set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(CMAKE_CXX_STANDARD 11) # Globally enable C++11
+set(CMAKE_CXX_STANDARD 17) # Globally enable C++17
 add_compile_definitions($<$<NOT:$<CONFIG:Debug>>:RELEASE_BUILD>)
 add_compile_options($<$<NOT:$<CONFIG:Debug>>:-UNDEBUG>)
 
@@ -160,8 +160,8 @@ endmacro()
 	file(APPEND "engines/plugins_table.h" "LINK_PLUGIN(${_engine_var})\n")
 	file(APPEND "engines/plugins_table.h" "#endif\n")
 
-	# Enable C++11
-	set_property(TARGET ${engine_name} PROPERTY CXX_STANDARD 11)
+	# Enable C++17
+	set_property(TARGET ${engine_name} PROPERTY CXX_STANDARD 17)
 	set_property(TARGET ${engine_name} PROPERTY CXX_STANDARD_REQUIRED ON)
 
 	# Link against the engine
@@ -347,7 +347,7 @@ void CMakeProvider::createProjectFile(const std::string &name, const std::string
 		project << "endif()\n";
 		project << "\n";
 
-		project << "set_property(TARGET " << name << " PROPERTY CXX_STANDARD 11)\n";
+		project << "set_property(TARGET " << name << " PROPERTY CXX_STANDARD 17)\n";
 		project << "set_property(TARGET " << name << " PROPERTY CXX_STANDARD_REQUIRED ON)\n";
 	}
 }
