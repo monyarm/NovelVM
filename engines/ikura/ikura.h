@@ -6,6 +6,7 @@
 #include "common/scummsys.h"
 #include "engines/engine.h"
 #include "gui/debugger.h"
+#include "ikura/runtime/input.h"
 
 struct ADGameDescription;
 
@@ -37,6 +38,7 @@ private:
 	const ADGameDescription *_gameDescription;
 	Console *_console;
 	Common::RandomSource _rnd;
+	Input _input;
 };
 
 class Console : public GUI::Debugger {

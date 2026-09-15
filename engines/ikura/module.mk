@@ -11,7 +11,8 @@ MODULE_OBJS := \
 	formats/graphic/gan.o \
 	formats/script/script.o \
 	script/context.o \
-	script/interpreter.o
+	script/interpreter.o \
+	runtime/input.o
 
 MODULE_DIRS += \
 	engines/ikura

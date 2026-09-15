@@ -30,6 +30,7 @@ Common::Error IkuraEngine::run() {
 	while (!shouldQuit()) {
 		Common::Event event;
 		while (g_system->getEventManager()->pollEvent(event)) {
+			_input.handleEvent(event);
 		}
 		g_system->updateScreen();
 		g_system->delayMillis(10);
