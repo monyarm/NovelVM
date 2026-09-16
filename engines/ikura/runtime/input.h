@@ -2,6 +2,7 @@
 #define IKURA_RUNTIME_INPUT_H
 
 #include "common/events.h"
+#include "common/rect.h"
 #include "common/scummsys.h"
 
 namespace Ikura {
@@ -19,10 +20,17 @@ public:
 	bool consumeCancel();
 	bool isSkipHeld() const { return _skipHeld; }
 
+	// IOP_IG/IOP_IH's hotspot hit-testing (VileVN reference: MouseMove/
+	// MouseLeftDown's X/Y args). Updated on every event that carries a
+	// position - never consumed/edge-triggered, it's a live cursor
+	// position, not a signal.
+	Common::Point mousePosition() const { return _mousePosition; }
+
 private:
 	bool _advance = false;
 	bool _cancel = false;
 	bool _skipHeld = false;
+	Common::Point _mousePosition;
 };
 
 } // End of namespace Ikura

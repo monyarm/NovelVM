@@ -3,6 +3,9 @@
 namespace Ikura {
 
 void Input::handleEvent(const Common::Event &event) {
+	if (event.type == Common::EVENT_MOUSEMOVE || event.type == Common::EVENT_LBUTTONDOWN || event.type == Common::EVENT_RBUTTONDOWN)
+		_mousePosition = event.mouse;
+
 	switch (event.type) {
 	case Common::EVENT_KEYDOWN:
 		switch (event.kbd.keycode) {

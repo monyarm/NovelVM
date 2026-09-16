@@ -43,4 +43,23 @@ void Context::setSystem(uint32 position, bool value) {
 	_system[position] = value;
 }
 
+void Context::jumpScript(Format::Script::Script *script) {
+	delete _script;
+	_script = script;
+}
+
+void Context::callScript(Format::Script::Script *script) {
+	_scriptStack.push_back(_script);
+	_script = script;
+}
+
+bool Context::returnScript() {
+	if (_scriptStack.empty())
+		return false;
+	delete _script;
+	_script = _scriptStack.back();
+	_scriptStack.pop_back();
+	return true;
+}
+
 } // End of namespace Ikura::VM

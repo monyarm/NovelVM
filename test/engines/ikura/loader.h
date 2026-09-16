@@ -1,6 +1,7 @@
 #include "ikura/runtime/loader.h"
 
 #include "common/memstream.h"
+#include "ikura/formats/archive/cabinet.h"
 #include "ikura/script/interpreter.h"
 
 #include <cxxtest/TestSuite.h>
@@ -37,15 +38,22 @@ public:
 	}
 
 	void test_loads_and_runs_title_script_to_end() {
-		Ikura::VM::Context *ctx = Ikura::loadTitleScript(stream(cabinetFixture(), kCabinetSize));
-		TS_ASSERT(ctx != nullptr);
-		if (!ctx)
+		Ikura::Format::Archive::Cabinet *cab = Ikura::Format::Archive::Cabinet::open(stream(cabinetFixture(), kCabinetSize));
+		TS_ASSERT(cab != nullptr);
+		if (!cab)
 			return;
+		Ikura::VM::Context *ctx = Ikura::loadTitleScript(cab);
+		TS_ASSERT(ctx != nullptr);
+		if (!ctx) {
+			delete cab;
+			return;
+		}
 
 		byte lastOpcode;
 		TS_ASSERT_EQUALS((int)Ikura::VM::run(*ctx, lastOpcode), (int)Ikura::VM::StepResult::kEnd);
 		TS_ASSERT_EQUALS(lastOpcode, 0x00);
 		delete ctx;
+		delete cab;
 	}
 
 	void test_missing_title_entry_rejected() {
@@ -59,11 +67,20 @@ public:
 			10, 0, 0, 0,
 			0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x08,
 		};
-		TS_ASSERT(Ikura::loadTitleScript(stream(kNoTitle, sizeof(kNoTitle))) == nullptr);
+		Ikura::Format::Archive::Cabinet *cab = Ikura::Format::Archive::Cabinet::open(stream(kNoTitle, sizeof(kNoTitle)));
+		TS_ASSERT(cab != nullptr);
+		if (!cab)
+			return;
+		TS_ASSERT(Ikura::loadTitleScript(cab) == nullptr);
+		delete cab;
 	}
 
 	void test_malformed_cabinet_rejected() {
 		static const byte kGarbage[32] = {0};
-		TS_ASSERT(Ikura::loadTitleScript(stream(kGarbage, sizeof(kGarbage))) == nullptr);
+		TS_ASSERT(Ikura::Format::Archive::Cabinet::open(stream(kGarbage, sizeof(kGarbage))) == nullptr);
+	}
+
+	void test_null_cabinet_rejected() {
+		TS_ASSERT(Ikura::loadTitleScript(nullptr) == nullptr);
 	}
 };
