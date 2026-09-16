@@ -326,3 +326,6 @@ CLAUDE.md
 novelvm
 novelvm.*
 vilevn
+
+# Ignore downloaded game data used for local engine testing
+/testdata/
