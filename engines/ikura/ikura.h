@@ -10,10 +10,19 @@
 
 struct ADGameDescription;
 
+namespace Common {
+class Archive;
+}
+
 namespace Ikura {
 
 namespace VM {
 class Context;
+}
+
+namespace Runtime {
+class Presentation;
+class Audio;
 }
 
 /**
@@ -43,6 +52,19 @@ private:
 	Common::RandomSource _rnd;
 	Input _input;
 	VM::Context *_scriptContext;
+	Common::Archive *_scriptCabinet;
+	Common::Archive *_graphicsCabinet;
+	Runtime::Presentation *_presentation;
+	Common::Archive *_musicCabinet;
+	Common::Archive *_seCabinet;
+	Common::Archive *_voiceCabinet;
+	Runtime::Audio *_audio;
+
+	// Which of StepResult's pause kinds (if any) the interpreter is
+	// currently sitting in - see script/interpreter.h's StepResult
+	// comments for what each caller-side resume policy needs to check.
+	enum class PauseState { kNone, kAdvance, kTimer };
+	PauseState _pauseState = PauseState::kNone;
 };
 
 class Console : public GUI::Debugger {
