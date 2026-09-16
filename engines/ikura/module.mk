@@ -9,11 +9,16 @@ MODULE_OBJS := \
 	formats/graphic/ggd8.o \
 	formats/graphic/gga.o \
 	formats/graphic/gan.o \
+	formats/graphic/graphic.o \
+	formats/audio/audio.o \
 	formats/script/script.o \
 	script/context.o \
 	script/interpreter.o \
 	runtime/input.o \
-	runtime/loader.o
+	runtime/loader.o \
+	runtime/presentation.o \
+	runtime/audio.o \
+	runtime/font.o
 
 MODULE_DIRS += \
 	engines/ikura

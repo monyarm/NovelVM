@@ -67,6 +67,16 @@ endif
 # scans each archive once, left to right, so repeat them here.
 TEST_LIBS += audio/libaudio.a math/libmath.a common/libcommon.a common/formats/libformats.a common/compression/libcompression.a common/libcommon.a image/libimage.a graphics/libgraphics.a
 
+# graphics/libgraphics.a's TTF font loader (loadTTFFontFromArchive, only
+# compiled in under USE_FREETYPE2) needs Common::makeZipArchive from
+# common/compression/libcompression.a, but that always lands earlier in
+# the list above - same one-pass-per-archive ld issue as the comment
+# above, just the reverse direction (graphics needing compression,
+# instead of an engine needing graphics). One more pass fixes it.
+ifdef USE_FREETYPE2
+TEST_LIBS += common/compression/libcompression.a
+endif
+
 #
 TEST_FLAGS   := --runner=StdioPrinter --no-std --no-eh
 TEST_CFLAGS  := $(CFLAGS) -I$(srcdir)/test/cxxtest
