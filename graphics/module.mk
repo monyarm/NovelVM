@@ -25,6 +25,8 @@ MODULE_OBJS := \
 	fonts/winfont.o \
 	framelimiter.o \
 	opengl/blitter.o \
+	gmo_mesh.o \
+	gmo_render.o \
 	hotspot_renderer.o \
 	image-archive.o \
 	korfont.o \

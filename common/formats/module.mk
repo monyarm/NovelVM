@@ -32,6 +32,7 @@ MODULE_OBJS := \
 	afs.o \
 	awb.o \
 	cri_mask.o \
+	gmo.o \
 	gim.o
 
 # Include common rules
