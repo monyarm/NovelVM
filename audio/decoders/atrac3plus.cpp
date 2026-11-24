@@ -1314,7 +1314,7 @@ bool decodeTonesInfo(BitReader &gb, ChanUnitCtx &ctx, int numChannels) {
 
 	ctx.wavesInfo->amplitudeMode = (int)gb.getBits(1);
 	if (!ctx.wavesInfo->amplitudeMode)
-		return false; // GHA amplitude mode 0 not supported by the reference either
+		return false; // TODO: GHA amplitude mode 0 (unsupported by FFmpeg too; no real sample uses it)
 
 	ctx.wavesInfo->numToneBands = readVLC(gb, vlcs().tone[0]) + 1;
 
@@ -1913,8 +1913,7 @@ ATRAC3PlusFrameDecoder::~ATRAC3PlusFrameDecoder() {
 bool ATRAC3PlusFrameDecoder::init(uint16 channels, uint16 blockAlign) {
 	// Channel layouts 1-4, 6, 7, 8 are implemented generically per FFmpeg's
 	// atrac3plusdec.c. Real data only covers mono and stereo (CH_UNIT_MONO /
-	// CH_UNIT_STEREO); the 3-8 channel configs are TO VERIFY LATER against
-	// real data (see docs/middleware-plan.md).
+	// CH_UNIT_STEREO). TODO: verify the 3-8 channel configs against real data.
 	(void)blockAlign; // ATRAC3+ frame size is carried per-frame by the container
 	if (channels == 0 || channels > 8 || channels == 5)
 		return false;

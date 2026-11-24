@@ -681,12 +681,11 @@ struct ATRAC3FrameDecoder::Impl {
 
 	bool decodeFrame(const byte *raw, uint32 blockAlign, int16 *out) {
 		bool ok = true;
-		// NOTE: the JOINT_STEREO branch (channel-pair matrixing/weighting,
+		// TODO: verify on real data. The JOINT_STEREO branch (channel-pair matrixing/weighting,
 		// byte-reversed second sound unit) and the >2-channel layout are
 		// implemented from FFmpeg's atrac3.c spec, but no real
 		// joint-stereo/multichannel plain-ATRAC3 sample exists in the
-		// corpus -- TO VERIFY LATER against real data. Only the SINGLE
-		// (per-channel) mode is real-data-verified (see docs/middleware-plan.md).
+		// corpus. Only the SINGLE (per-channel) mode is real-data-verified.
 		if (codingMode == kATRAC3CodingJointStereo) {
 			for (int ch = 0; ch + 1 < channels && ok; ch += 2) {
 				int pair = ch / 2;
