@@ -9,6 +9,7 @@ MODULE_OBJS := \
 	coroutines.o \
 	dbcs-str.o \
 	debug.o \
+	debug_demo_view.o \
 	engine_data.o \
 	error.o \
 	events.o \

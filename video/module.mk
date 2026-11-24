@@ -9,6 +9,7 @@ MODULE_OBJS := \
 	avi_decoder.o \
 	dxa_decoder.o \
 	flic_decoder.o \
+	mpeg_video_track.o \
 	mpegps_decoder.o \
 	mve_decoder.o \
 	paco_decoder.o \

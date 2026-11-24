@@ -328,3 +328,6 @@ CLAUDE.md
 novelvm
 novelvm.*
 vilevn
+
+/testdata/
+/.env

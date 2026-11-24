@@ -20,7 +20,9 @@ MODULE_OBJS := \
 	cvm.o \
 	pmsf.o \
 	dds.o \
-	adx.o
+	adx.o \
+	utf_table.o \
+	cri_mask.o
 
 # Include common rules
 include $(srcdir)/rules.mk
