@@ -27,6 +27,8 @@ MODULE_OBJS := \
 	opengl/blitter.o \
 	gmo_mesh.o \
 	gmo_render.o \
+	rmd_render_mesh.o \
+	rmd_render.o \
 	hotspot_renderer.o \
 	image-archive.o \
 	korfont.o \
