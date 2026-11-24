@@ -9,6 +9,7 @@ TESTS        := $(srcdir)/test/common/*.h \
 	$(srcdir)/test/common/compression/*.h \
 	$(srcdir)/test/common/formats/*.h \
 	$(srcdir)/test/audio/*.h \
+	$(srcdir)/test/video/*.h \
 	$(srcdir)/test/graphics/ps2texture.h \
 	$(srcdir)/test/math/*.h \
 	$(srcdir)/test/image/*.h
