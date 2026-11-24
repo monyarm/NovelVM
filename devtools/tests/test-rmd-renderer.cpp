@@ -247,26 +247,6 @@ static int dumpRMD(const char *path, const char *textureDirectory = nullptr,
 		// angle, not "front" - it's a side profile. PI is front-facing.
 		const float rotY = (float)M_PI;
 		Graphics::assembleRMDMesh(rmd, textures, 100, 100, rotY, nullptr, nullptr, mesh);
-		{
-			std::ofstream dump("/tmp/opencode/novelvm-n101-render-dump.txt");
-			dump << "basePose rotY=" << rotY << " width=100 height=100 animation=disabled triangles=" << mesh.triangles.size() << "\n";
-			for (uint j = 0; j < rmd.frames().size(); ++j) {
-				dump << "frame=" << j << " parent=" << rmd.frames()[j].parent << " matrix=";
-				for (int k = 0; k < 12; ++k) dump << (k ? "," : "") << rmd.frames()[j].transform[k];
-				dump << "\n";
-			}
-			for (uint j = 0; j < rmd.atomics().size(); ++j)
-				dump << "atomic=" << j << " frame=" << rmd.atomics()[j].frame << " geometry=" << rmd.atomics()[j].geometry << "\n";
-			for (uint j = 0; j < mesh.triangles.size(); ++j) {
-				const Graphics::RMDRenderTriangle &tri = mesh.triangles[j];
-				dump << "renderTri=" << j << " texture=";
-				for (uint ti = 0; ti < textures.size(); ++ti) if (textures[ti] == tri.texture) { dump << rmd.textures()[ti].name.c_str(); break; }
-				dump << " alpha=" << (tri.alpha ? 1 : 0) << " hasUv=" << (tri.hasUv ? 1 : 0);
-				for (int k = 0; k < 3; ++k)
-					dump << " v" << k << "=" << tri.v[k].x << "," << tri.v[k].y << "," << tri.v[k].z << "," << tri.v[k].u << "," << tri.v[k].v << "," << tri.v[k].a;
-				dump << "\n";
-			}
-		}
 		if (mesh.triangles.size() <= 1629)
 			return 10;
 		std::cout << "renderUVFace=";

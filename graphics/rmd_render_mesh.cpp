@@ -203,57 +203,6 @@ void assembleRMDMesh(const Common::RMD &rmd, const Common::Array<Graphics::Surfa
 			out.triangles.push_back(tri);
 		}
 	}
-	// --- Crude flame/particle-effect placeholder ------------------------------
-	// Real particle emitters are RenderWare kPersonaParticleList opaque nodes
-	// (magic 0xF0F000E0) whose payload is an embedded .EPL-style tag/record
-	// block (see docs/bed-epl-format-notes.md for the reverse-engineering
-	// notes). We checked whether the RMD's own frame hierarchy could supply
-	// each emitter's bone/position -- traced via the parser's
-	// _currentHAnimFrame state at the moment a particle-list node is
-	// captured -- and on a real file (PS09E.RMD, "Hell Biker") that node is
-	// captured with zero frames parsed yet, so no frame association is
-	// available at all. The true per-record position field inside the
-	// 192-byte tag record is also unconfirmed (the XYZ-triple hypothesis for
-	// it was explicitly refuted during that investigation). Lacking any real
-	// position source, this just drops two fixed billboard blobs near the
-	// model's lower bounding-box extent, spread along Z (front/back -- a
-	// guess for wheel-like ground contact points), purely so a model
-	// carrying a particle list shows *something* instead of nothing. It
-	// ignores the real tag data entirely (shape/color/count/lifetime) and is
-	// not a faithful particle renderer.
-	bool hasParticleList = false;
-	const uint32 kPersonaParticleListMagic = 0xF0F000E0;
-	for (uint i = 0; i < rmd.opaqueNodes().size() && !hasParticleList; ++i)
-		hasParticleList = rmd.opaqueNodes()[i].type == kPersonaParticleListMagic;
-	if (hasParticleList && minX <= maxX) {
-		const float sizeX = MAX((maxX - minX) * 0.06f, 0.01f);
-		const float sizeY = MAX((maxY - minY) * 0.08f, 0.01f);
-		const float anchorZ[2] = {minZ + (maxZ - minZ) * 0.15f, minZ + (maxZ - minZ) * 0.85f};
-		for (int q = 0; q < 2; ++q) {
-			const float cxq = (minX + maxX) * 0.5f, cyq = minY + sizeY * 0.5f, czq = anchorZ[q];
-			const float corners[4][2] = {{-sizeX, -sizeY}, {sizeX, -sizeY}, {sizeX, sizeY}, {-sizeX, sizeY}};
-			const int idx[6] = {0, 1, 2, 0, 2, 3};
-			for (int t = 0; t < 2; ++t) {
-				RMDRenderTriangle quad;
-				for (int k = 0; k < 3; ++k) {
-					const float *c = corners[idx[t * 3 + k]];
-					quad.v[k].x = cxq + c[0];
-					quad.v[k].y = cyq + c[1];
-					quad.v[k].z = czq;
-					quad.v[k].nx = 0; quad.v[k].ny = 0; quad.v[k].nz = 1;
-					quad.v[k].u = quad.v[k].v = 0;
-					quad.v[k].r = 1.0f; quad.v[k].g = 0.35f; quad.v[k].b = 0.05f; quad.v[k].a = 0.65f;
-				}
-				quad.texture = nullptr;
-				quad.hasUv = false;
-				quad.alpha = true;
-				quad.alphaTest = false;
-				quad.diffuse[0] = quad.diffuse[1] = quad.diffuse[2] = 1.0f;
-				out.triangles.push_back(quad);
-			}
-		}
-	}
-
 	for (uint i = 1; i < out.triangles.size(); ++i) { RMDRenderTriangle key = out.triangles[i]; int j = i - 1; while (j >= 0 && out.triangles[j].alpha > key.alpha) { out.triangles[j + 1] = out.triangles[j]; --j; } out.triangles[j + 1] = key; }
 	if (minX > maxX)
 		return;
