@@ -17,9 +17,8 @@ struct USMVideoInfo {
 	uint32 framerateNum = 0;
 	uint32 framerateDen = 0;
 
-	// CRI's "mpeg_codec" field. Real Persona 5 Royal data uses kCodecVP9;
-	// none of these have a decoder in NovelVM yet (no FFmpeg/libav, no
-	// standalone VP9/H264 port) -- see docs/middleware-plan.md.
+	// CRI's "mpeg_codec" field. Real Persona 5 Royal data uses kCodecVP9
+	// (decoded via libvpx; H.264 via OpenH264, MPEG-1 via libmpeg2).
 	enum Codec {
 		kCodecUnknown = 0,
 		kCodecMPEG1 = 1,

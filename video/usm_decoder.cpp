@@ -322,6 +322,9 @@ bool USMDecoder::ADXAudioTrack::queueChunk(const byte *data, uint32 size) {
 USMDecoder::USMDecoder() : _stream(nullptr), _videoTrack(nullptr), _audioTrack(nullptr), _hasKey(false) {
 }
 
+// TODO: no real USM corpus is available (P5/P5R/P4G are PC/PS4/Vita): only stream index 0 is
+// used, @ALP/@SBT streams are detected but not decoded, the MPEG1/H264 codec paths are
+// untested on real data, and there is no mechanism to source per-title keys.
 void USMDecoder::setDecryptionKey(uint32 key1, uint32 key2) {
 	Common::initCRIMask(key1, key2, _mask);
 	_hasKey = true;

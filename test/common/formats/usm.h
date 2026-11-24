@@ -9,7 +9,6 @@
 
 #include "../../system/null_osystem.h"
 
-#ifdef USE_VPX
 
 /**
  * Synthetic USM (Sofdec2) fixtures, no game data. The file is built in the
@@ -32,6 +31,7 @@ public:
 	// heap if a caller never called setOutputPixelFormat() first. It must
 	// now default to a real YUV-convertible RGB format.
 	void testDefaultPixelFormatIsConvertible() {
+#ifdef USE_VPX
 		Common::Array<byte> file = buildUSM(true, true);
 		Video::USMDecoder decoder;
 		TS_ASSERT(decoder.loadStream(makeStream(file)));
@@ -41,12 +41,14 @@ public:
 		Graphics::PixelFormat fmt = decoder.getPixelFormat();
 		TS_ASSERT(fmt.bytesPerPixel == 2 || fmt.bytesPerPixel == 4);
 		TS_ASSERT(fmt.bytesPerPixel != 1);
+#endif
 	}
 
 	// @ALP/@SBT metadata is recorded during the same leading scan that
 	// reads @SFV/@SFA; the alpha @UTF width/height/framerate fields are
 	// kept, and absence is reported as false.
 	void testAlphaAndSubtitlePresence() {
+#ifdef USE_VPX
 		Common::Array<byte> withStreams = buildUSM(true, true);
 		Video::USMDecoder with;
 		TS_ASSERT(with.loadStream(makeStream(withStreams)));
@@ -61,12 +63,14 @@ public:
 		TS_ASSERT(without.loadStream(makeStream(withoutStreams)));
 		TS_ASSERT(!without.hasAlphaStream());
 		TS_ASSERT(!without.hasSubtitleStream());
+#endif
 	}
 
 	// mpeg_codec 5 (H.264) must be accepted rather than rejected on the
 	// codec value alone. The synthetic file carries metadata only, so no
 	// @SFV payload is decoded and no frame is produced.
 	void testAcceptsH264Codec() {
+#ifdef USE_VPX
 #ifdef USE_OPENH264
 		Common::Array<byte> file = buildUSM(true, true, 5);
 		Video::USMDecoder decoder;
@@ -74,10 +78,12 @@ public:
 		TS_ASSERT_EQUALS(decoder.getWidth(), 320);
 		TS_ASSERT_EQUALS(decoder.getHeight(), 240);
 #endif
+#endif
 	}
 
 	// mpeg_codec 1 (MPEG-1) must likewise be accepted.
 	void testAcceptsMPEG1Codec() {
+#ifdef USE_VPX
 #ifdef USE_MPEG2
 		Common::Array<byte> file = buildUSM(true, true, 1);
 		Video::USMDecoder decoder;
@@ -85,13 +91,16 @@ public:
 		TS_ASSERT_EQUALS(decoder.getWidth(), 320);
 		TS_ASSERT_EQUALS(decoder.getHeight(), 240);
 #endif
+#endif
 	}
 
 	// An unknown mpeg_codec is still rejected.
 	void testRejectsUnknownCodec() {
+#ifdef USE_VPX
 		Common::Array<byte> file = buildUSM(true, true, 42);
 		Video::USMDecoder decoder;
 		TS_ASSERT(!decoder.loadStream(makeStream(file)));
+#endif
 	}
 
 private:
@@ -235,4 +244,3 @@ private:
 	}
 };
 
-#endif // USE_VPX
