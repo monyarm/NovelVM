@@ -257,12 +257,19 @@ public:
 		Common::Array<byte> uvDictStruct; append32(uvDictStruct, 1);
 		Common::Array<byte> uvDict; appendNode(uvDict, 1, uvDictStruct); appendNode(uvDict, 0x1B, uvAnim);
 		appendNode(data, 0x2B, uvDict);
-		// Visibility animation (0xF0F00080) fading material "hasi" from 1 to 0 over 1s.
+		// Transparency animation (0xF0F00080) on material "hasi": 0 -> 0.25 over 1s (alpha = 1 - value).
 		Common::Array<byte> vis;
 		append32(vis, 2); appendFloat(vis, 1.0f); append32(vis, 8); append32(vis, 4); append32(vis, 0x12345678);
 		appendBytes(vis, "hasi", 4);
-		appendFloat(vis, 0.0f); appendFloat(vis, 1.0f); appendFloat(vis, 1.0f); appendFloat(vis, 0.0f);
+		appendFloat(vis, 0.0f); appendFloat(vis, 0.0f); appendFloat(vis, 1.0f); appendFloat(vis, 0.25f);
 		appendNode(data, 0xF0F00080, vis);
+		// Colour animation (0xF0F00081) on "hasi": 16-byte keys {time, r, g, b}, red -> blue over 1s.
+		Common::Array<byte> color;
+		append32(color, 2); appendFloat(color, 1.0f); append32(color, 16); append32(color, 4); append32(color, 0);
+		appendBytes(color, "hasi", 4);
+		const float colorKeys[8] = {0, 1, 0, 0, 1, 0, 0, 1};
+		for (uint32 i = 0; i < 8; ++i) appendFloat(color, colorKeys[i]);
+		appendNode(data, 0xF0F00081, color);
 		appendNode(data, 0xF0F00004, Common::Array<byte>());
 		Common::MemoryReadStream stream(data.data(), data.size(), DisposeAfterUse::NO);
 		Common::RMD rmd(&stream);
@@ -270,7 +277,7 @@ public:
 		TS_ASSERT_EQUALS(rmd.materials()[0].uvAnimationName, "09 - Default");
 		TS_ASSERT_EQUALS(rmd.uvAnimations().size(), 1u);
 		TS_ASSERT_EQUALS(rmd.materials()[0].name, "hasi");
-		TS_ASSERT_EQUALS(rmd.visibilityAnimations().size(), 1u);
+		TS_ASSERT_EQUALS(rmd.materialAnimations().size(), 2u);
 		Common::RMD::MaterialPose materialPose;
 		rmd.evaluateSlotMaterials(0, 1.6667f / 2, materialPose);
 		const Common::Array<float> &uv = materialPose.uvTransforms;
@@ -283,8 +290,14 @@ public:
 		rmd.evaluateSlotMaterials(0, 0.5f, materialPose);
 		TS_ASSERT_EQUALS(materialPose.opacity.size(), 2u);
 		if (materialPose.opacity.size() == 2) {
-			TS_ASSERT_DELTA(materialPose.opacity[0], 0.5f, 1e-5f); // halfway through the fade
+			TS_ASSERT_DELTA(materialPose.opacity[0], 0.875f, 1e-5f); // transparency 0.125 halfway
 			TS_ASSERT_DELTA(materialPose.opacity[1], 1.0f, 1e-5f);
+		}
+		TS_ASSERT_EQUALS(materialPose.color.size(), 6u);
+		if (materialPose.color.size() == 6) {
+			TS_ASSERT_DELTA(materialPose.color[0], 0.5f, 1e-5f); // r halfway from 1 to 0
+			TS_ASSERT_DELTA(materialPose.color[2], 0.5f, 1e-5f); // b halfway from 0 to 1
+			TS_ASSERT_DELTA(materialPose.color[3], 0x33 / 255.0f, 1e-5f); // material 1: its own red (0xFF3366CC)
 		}
 		TS_ASSERT_EQUALS(rmd.frames().size(), 1u);
 		TS_ASSERT_EQUALS(rmd.geometries().size(), 1u);
@@ -427,11 +440,13 @@ public:
 		appendNode(data, 0xF0F00004, Common::Array<byte>());
 		appendNode(data, 0xF0F00005, override);
 		appendNode(data, 0xF0F00004, Common::Array<byte>());
+		appendNode(data, 0xF0F00003, instance); // slot 3: instance of the earlier slot 2
+		appendNode(data, 0xF0F00004, Common::Array<byte>());
 
 		Common::RMD rmd = parse(data.data(), data.size());
 		TS_ASSERT(rmd.ok());
-		TS_ASSERT_EQUALS(rmd.animationSlots().size(), 3u);
-		if (rmd.animationSlots().size() != 3)
+		TS_ASSERT_EQUALS(rmd.animationSlots().size(), 4u);
+		if (rmd.animationSlots().size() != 4)
 			return;
 		TS_ASSERT_EQUALS(rmd.animationSlots()[0].animation, -1);
 		TS_ASSERT_EQUALS(rmd.animationSlots()[0].extras.size(), 0u);
@@ -443,6 +458,12 @@ public:
 		TS_ASSERT_EQUALS(rmd.animationSlots()[2].transformOverride.m[3], 0.0f);
 		TS_ASSERT_EQUALS(rmd.animationSlots()[2].transformOverride.m[15], 1.0f);
 		TS_ASSERT(!rmd.animationSlots()[0].hasTransformOverride);
+		// Slot 2 follows slot 1 here, so the instance (slot 1 -> slot 2) is a forward reference,
+		// which the game never produces; it must stay unresolved rather than copy anything.
+		TS_ASSERT(!rmd.animationSlots()[1].hasTransformOverride);
+		// A backward instance takes over its source's transform override.
+		TS_ASSERT(rmd.animationSlots()[3].hasTransformOverride);
+		TS_ASSERT_DELTA(rmd.animationSlots()[3].transformOverride.m[5], 1.05f, 1e-6f);
 		TS_ASSERT_EQUALS(rmd.animationForSlot(1), -1);
 		TS_ASSERT_EQUALS(rmd.animationForSlot(7), -1);
 	}

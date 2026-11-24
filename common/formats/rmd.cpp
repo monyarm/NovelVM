@@ -26,7 +26,8 @@ enum {
 	kUVAnimationDictionary = 0x2B, kPersonaAnimationTerminator = 0xF0F00004,
 	kPersonaAnimationOverride = 0xF0F00005, kPersonaParticleList = 0xF0F000E0,
 	kPersonaAnimationPlaceholder = 0xF0F00001, kPersonaAnimationInstance = 0xF0F00003,
-	kPersonaVisibilityAnimation = 0xF0F00080, kPersonaParticleAnimation = 0xF0F000E1,
+	kPersonaMaterialAnimation = 0xF0F00080, kPersonaMaterialAnimationLast = 0xF0F00083,
+	kPersonaParticleAnimation = 0xF0F000E1,
 	kUVAnimationPlugin = 0x135, kUVParamKeyFrames = 0x1C1, kUserData = 0x11F,
 };
 
@@ -180,6 +181,7 @@ RMD::RMD(SeekableReadStream *stream) {
 	if (_ok) {
 		if (!personaSet)
 			parseContent(0, size);
+		resolveSlotInstances();
 		if (_ok && !validateFrames())
 			_ok = false;
 		if (_ok && !validateReferences())
@@ -201,7 +203,7 @@ void RMD::clearModel() {
 	_opaqueNodes.clear();
 	_animationSlots.clear();
 	_uvAnimations.clear();
-	_visibilityAnimations.clear();
+	_materialAnimations.clear();
 	_slotOpen = false;
 	_recoveryRanges.clear();
 }
@@ -274,7 +276,7 @@ bool RMD::parsePersonaAnimationSet(uint32 begin, uint32 end) {
 static bool isAnimationSlotNode(uint32 type) {
 	return type == kPersonaAnimation || type == kUVAnimationDictionary || type == kPersonaAnimationPlaceholder ||
 		type == kPersonaAnimationInstance || type == kPersonaAnimationOverride ||
-		type == kPersonaVisibilityAnimation || type == kPersonaParticleAnimation;
+		(type >= kPersonaMaterialAnimation && type <= kPersonaMaterialAnimationLast) || type == kPersonaParticleAnimation;
 }
 
 void RMD::parseUVAnimationDictionary(const Node &node, AnimationSlot &slot) {
@@ -338,30 +340,45 @@ void RMD::evaluateSlotMaterials(uint32 slot, float time, MaterialPose &pose) con
 	Common::Array<float> &out = pose.uvTransforms;
 	out.resize(_materials.size() * 6);
 	pose.opacity.resize(_materials.size());
+	pose.color.resize(_materials.size() * 3);
 	for (uint32 m = 0; m < _materials.size(); ++m) {
 		float *t = &out[m * 6];
 		t[0] = 1; t[1] = 0; t[2] = 0; t[3] = 1; t[4] = 0; t[5] = 0;
 		pose.opacity[m] = 1;
+		pose.color[m * 3] = _materials[m].color.r / 255.0f;
+		pose.color[m * 3 + 1] = _materials[m].color.g / 255.0f;
+		pose.color[m * 3 + 2] = _materials[m].color.b / 255.0f;
 	}
 	if (slot >= _animationSlots.size())
 		return;
 	const AnimationSlot &s = _animationSlots[slot];
-	for (uint32 v = 0; v < s.visibilityAnimations.size(); ++v) {
-		const VisibilityAnimation &vis = _visibilityAnimations[s.visibilityAnimations[v]];
-		if (vis.times.empty())
+	for (uint32 v = 0; v < s.materialAnimations.size(); ++v) {
+		const MaterialAnimation &anim = _materialAnimations[s.materialAnimations[v]];
+		if (anim.times.empty())
 			continue;
-		const float tl = vis.duration > 0 ? fmodf(MAX(time, 0.0f), vis.duration) : 0;
-		float value = vis.values[0];
-		for (uint32 k = 0; k < vis.times.size(); ++k) {
-			if (tl < vis.times[k])
+		// Linear between the surrounding keys, holding the last key's value.
+		const uint32 width = anim.channel == 0 ? 1 : 3;
+		const float tl = anim.duration > 0 ? fmodf(MAX(time, 0.0f), anim.duration) : 0;
+		float value[3];
+		for (uint32 c = 0; c < width; ++c)
+			value[c] = anim.values[c];
+		for (uint32 k = 0; k < anim.times.size(); ++k) {
+			if (tl < anim.times[k])
 				break;
-			value = vis.values[k];
-			if (k + 1 < vis.times.size() && tl < vis.times[k + 1] && vis.times[k + 1] > vis.times[k])
-				value += (vis.values[k + 1] - vis.values[k]) * (tl - vis.times[k]) / (vis.times[k + 1] - vis.times[k]);
+			const bool between = k + 1 < anim.times.size() && tl < anim.times[k + 1] && anim.times[k + 1] > anim.times[k];
+			const float f = between ? (tl - anim.times[k]) / (anim.times[k + 1] - anim.times[k]) : 0;
+			for (uint32 c = 0; c < width; ++c)
+				value[c] = anim.values[k * width + c] + (between ? (anim.values[(k + 1) * width + c] - anim.values[k * width + c]) * f : 0);
 		}
-		for (uint32 m = 0; m < _materials.size(); ++m)
-			if (_materials[m].name.equalsIgnoreCase(vis.name))
-				pose.opacity[m] = CLIP(value, 0.0f, 1.0f);
+		for (uint32 m = 0; m < _materials.size(); ++m) {
+			if (!_materials[m].name.equalsIgnoreCase(anim.name))
+				continue;
+			if (anim.channel == 0)
+				pose.opacity[m] = CLIP(1.0f - value[0], 0.0f, 1.0f);
+			else
+				for (uint32 c = 0; c < 3; ++c)
+					pose.color[m * 3 + c] = CLIP(value[c], 0.0f, 1.0f);
+		}
 	}
 	for (uint32 m = 0; m < _materials.size(); ++m) {
 		if (_materials[m].uvAnimationName.empty())
@@ -403,6 +420,26 @@ void RMD::evaluateSlotMaterials(uint32 slot, float time, MaterialPose &pose) con
 			t[4] = px * c - py * sn + 0.5f; t[5] = px * sn + py * c + 0.5f;
 			break;
 		}
+	}
+}
+
+void RMD::resolveSlotInstances() {
+	// An instance slot (0xF0F00003) takes over its source slot's skeletal animation, transform
+	// override, material and UV animations, as the game does when it loads the slot. Sources
+	// precede their instances, so resolving in order also resolves instance chains.
+	for (uint32 i = 0; i < _animationSlots.size(); ++i) {
+		AnimationSlot &slot = _animationSlots[i];
+		if (slot.instanceOf < 0 || (uint32)slot.instanceOf >= i)
+			continue;
+		const AnimationSlot &source = _animationSlots[slot.instanceOf];
+		if (source.animation >= 0)
+			slot.animation = source.animation;
+		slot.hasTransformOverride = source.hasTransformOverride;
+		slot.transformOverride = source.transformOverride;
+		if (!source.materialAnimations.empty())
+			slot.materialAnimations = source.materialAnimations;
+		if (!source.uvAnimations.empty())
+			slot.uvAnimations = source.uvAnimations;
 	}
 }
 
@@ -454,28 +491,39 @@ void RMD::parseNode(const Node &node) {
 			slot.transformOverride.m[15] = 1;
 			slot.hasTransformOverride = true;
 		}
-		if (node.type == kPersonaVisibilityAnimation) {
-			// { uint32 count; float duration; uint32 keySize (8); uint32 nameLen; uint32 (unused
-			// pointer); char name[nameLen] (no NUL, no padding); { float time, value }[count] }.
-			// Holds for every one of the 1623 nodes in a 604-file P3 FES/P4 sample.
+		if (node.type == kPersonaMaterialAnimation || node.type == kPersonaMaterialAnimation + 1) {
+			// { uint32 count; float duration; uint32 keySize; uint32 nameLen; uint32 (unused);
+			// char name[nameLen] (no NUL, no padding); keySize-byte keys }. Keys are
+			// { float time, value } for 0xF0F00080 and { float time, r, g, b } for 0xF0F00081.
+			// All 1623 0xF0F00080 nodes in a 604-file P3 FES/P4 sample have keySize 8; no
+			// 0xF0F00081 occurs there.
 			const uint32 p = node.payloadOffset;
+			const uint32 channel = node.type - kPersonaMaterialAnimation;
+			const uint32 width = channel == 0 ? 1 : 3;
 			if (node.size >= 20) {
 				const uint32 count = readUint32LE(_data, p), keySize = readUint32LE(_data, p + 8);
 				const uint32 nameLen = readUint32LE(_data, p + 12);
-				if (keySize == 8 && nameLen <= node.size - 20 && (uint64)20 + nameLen + (uint64)count * 8 <= node.size) {
-					VisibilityAnimation vis;
-					vis.duration = readFloatLE(_data, p + 4);
-					vis.name = Common::String((const char *)&_data[p + 20], nameLen);
+				if (keySize >= 4 + width * 4 && nameLen <= node.size - 20 &&
+						(uint64)20 + nameLen + (uint64)count * keySize <= node.size) {
+					MaterialAnimation anim;
+					anim.channel = channel;
+					anim.duration = readFloatLE(_data, p + 4);
+					anim.name = Common::String((const char *)&_data[p + 20], nameLen);
 					for (uint32 k = 0; k < count; ++k) {
-						vis.times.push_back(readFloatLE(_data, p + 20 + nameLen + k * 8));
-						vis.values.push_back(readFloatLE(_data, p + 20 + nameLen + k * 8 + 4));
+						const uint32 key = p + 20 + nameLen + k * keySize;
+						anim.times.push_back(readFloatLE(_data, key));
+						for (uint32 c = 0; c < width; ++c)
+							anim.values.push_back(readFloatLE(_data, key + 4 + c * 4));
 					}
-					slot.visibilityAnimations.push_back(_visibilityAnimations.size());
-					_visibilityAnimations.push_back(vis);
+					slot.materialAnimations.push_back(_materialAnimations.size());
+					_materialAnimations.push_back(anim);
 				}
 			}
 		}
-		// Transform override, visibility, UV and particle animation: kept as raw payloads.
+		// TODO: 0xF0F00002 (animation layers), 0xF0F00007/08 (per-slot start frames),
+		// 0xF0F00070 (16 scale-property records) and 0xF0F000D0 (four-way directional blend
+		// groups) are not interpreted. None of 0x02/0x08 occur in the sampled corpus.
+		// Transform override, material, UV and particle animation: kept as raw payloads.
 		OpaqueNode opaque;
 		opaque.type = node.type;
 		opaque.payload.resize(node.size);
