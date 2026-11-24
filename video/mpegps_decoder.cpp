@@ -20,6 +20,9 @@
  */
 
 #include "audio/audiostream.h"
+#include "audio/decoders/atrac3.h"
+#include "audio/decoders/atrac3_common.h"
+#include "audio/decoders/atrac3plus.h"
 #include "audio/decoders/raw.h"
 #include "audio/decoders/ac3.h"
 #include "audio/decoders/mp3.h"
@@ -31,7 +34,8 @@
 #include "common/textconsole.h"
 
 #include "video/mpegps_decoder.h"
-#include "image/codecs/mpeg.h"
+#include "video/mpeg_video_track.h"
+#include "image/codecs/codec.h"
 
 // The demuxing code is based on libav's demuxing code
 
@@ -80,6 +84,14 @@ bool MPEGPSDecoder::loadStream(Common::SeekableReadStream *stream) {
 
 void MPEGPSDecoder::setPrebufferedPackets(int packets) {
 	_demuxer->setPrebufferedPackets(packets);
+}
+
+void MPEGPSDecoder::setATRACAudioInfo(ATRACCodec codec, uint16 channels, uint32 sampleRate, uint16 blockAlign) {
+	_atracCodec = codec;
+	_atracChannels = channels;
+	_atracSampleRate = sampleRate;
+	_atracBlockAlign = blockAlign;
+	_hasATRACInfo = true;
 }
 
 void MPEGPSDecoder::close() {
@@ -133,7 +145,36 @@ MPEGPSDecoder::MPEGStream *MPEGPSDecoder::getStream(uint32 startCode, Common::Se
 				addTrack(audioTrack);
 				break;
 			}
+			case kPrivateStreamATRAC3Plus: {
+				typeName = "ATRAC3+";
+				if (_hasATRACInfo && _atracCodec == kATRACCodecATRAC3Plus) {
+					handled = true;
+					ATRACAudioTrack *audioTrack = new ATRACAudioTrack(kATRACCodecATRAC3Plus,
+						ATRACAudioTrack::kFramingPSMF, _atracChannels, _atracSampleRate,
+						_atracBlockAlign, getSoundType());
+					stream = audioTrack;
+					_streamMap[startCode] = audioTrack;
+					addTrack(audioTrack);
+				}
+				break;
+			}
 			default:
+				if (_hasATRACInfo && (_atracCodec == kATRACCodecATRAC3 || _atracCodec == kATRACCodecATRAC3JointStereo)) {
+					// Plain ATRAC3 has no in-band sync tag, so only decode it
+					// as ATRAC when a container explicitly declared this
+					// private stream to be ATRAC3. (No real PSMF sample of
+					// this exists yet; the shared frame decoder is already
+					// real-data-verified via the AT3 container.)
+					typeName = "ATRAC3";
+					handled = true;
+					ATRACAudioTrack *audioTrack = new ATRACAudioTrack(kATRACCodecATRAC3,
+						ATRACAudioTrack::kFramingPlain, _atracChannels, _atracSampleRate,
+						_atracBlockAlign, getSoundType());
+					stream = audioTrack;
+					_streamMap[startCode] = audioTrack;
+					addTrack(audioTrack);
+					break;
+				}
 				typeName = "Unknown";
 				break;
 			}
@@ -150,16 +191,30 @@ MPEGPSDecoder::MPEGStream *MPEGPSDecoder::getStream(uint32 startCode, Common::Se
 			warning("Found extra video stream 0x%04X", startCode);
 			_streamMap[startCode] = 0;
 		} else if (startCode >= 0x1C0 && startCode <= 0x1DF) {
+			// Some PS2 games (real-data-verified: Persona 3/4's .SFD
+			// files) put CRI ADX directly on this "MPEG audio" stream ID
+			// instead of real MPEG audio. Real ADX starts with magic
+			// 0x8000; MPEG audio never does (its sync word starts with
+			// 11 set bits), so this check is unambiguous.
+			if (packet->readUint16BE() == 0x8000) {
+				packet->seek(0);
+				ADXAudioTrack *audioTrack = new ADXAudioTrack(*packet, getSoundType());
+				stream = audioTrack;
+				_streamMap[startCode] = audioTrack;
+				addTrack(audioTrack);
+			} else {
+				packet->seek(0);
 #ifdef USE_MAD
-			// MPEG Audio stream
-			MPEGAudioTrack *audioTrack = new MPEGAudioTrack(*packet, getSoundType());
-			stream = audioTrack;
-			_streamMap[startCode] = audioTrack;
-			addTrack(audioTrack);
+				// MPEG Audio stream
+				MPEGAudioTrack *audioTrack = new MPEGAudioTrack(*packet, getSoundType());
+				stream = audioTrack;
+				_streamMap[startCode] = audioTrack;
+				addTrack(audioTrack);
 #else
-			warning("Found audio stream 0x%04X, but no MAD support compiled in", startCode);
-			_streamMap[startCode] = 0;
+				warning("Found audio stream 0x%04X, but no MAD support compiled in", startCode);
+				_streamMap[startCode] = 0;
 #endif
+			}
 		} else {
 			// Probably not relevant
 			debug(0, "Found unhandled MPEG-PS stream type 0x%04x", startCode);
@@ -178,9 +233,16 @@ void MPEGPSDecoder::readNextPacket() {
 
 		if (!packet) {
 			// End of stream
-			for (TrackListIterator it = getTrackListBegin(); it != getTrackListEnd(); it++)
-				if ((*it)->getTrackType() == Track::kTrackTypeVideo)
-					((MPEGVideoTrack *)*it)->setEndOfTrack();
+			for (TrackListIterator it = getTrackListBegin(); it != getTrackListEnd(); it++) {
+				if ((*it)->getTrackType() != Track::kTrackTypeVideo)
+					continue;
+				if (MPEGVideoTrack *mpeg = dynamic_cast<MPEGVideoTrack *>(*it))
+					mpeg->setEndOfTrack();
+#ifdef USE_OPENH264
+				if (H264VideoTrack *avc = dynamic_cast<H264VideoTrack *>(*it))
+					avc->setEndOfTrack();
+#endif
+			}
 			return;
 		}
 
@@ -199,6 +261,29 @@ void MPEGPSDecoder::readNextPacket() {
 	}
 }
 
+bool isH264AnnexBPacket(const byte *data, uint32 size) {
+	if (!data || size < 4)
+		return false;
+
+	// MPEG-1/2 sequence headers are also Annex-B-shaped (00 00 01), but
+	// start with 0xB3. Require an SPS or PPS before selecting OpenH264.
+	for (uint32 i = 0; i + 4 <= size; i++) {
+		uint32 startCodeSize = 0;
+		if (data[i] == 0 && data[i + 1] == 0 && data[i + 2] == 1)
+			startCodeSize = 3;
+		else if (i + 5 <= size && data[i] == 0 && data[i + 1] == 0 &&
+		         data[i + 2] == 0 && data[i + 3] == 1)
+			startCodeSize = 4;
+		if (!startCodeSize)
+			continue;
+
+		byte nalType = data[i + startCodeSize] & 0x1F;
+		if (nalType == 7 || nalType == 8)
+			return true;
+	}
+	return false;
+}
+
 bool MPEGPSDecoder::addFirstVideoTrack() {
 	int32 startCode;
 	uint32 pts, dts;
@@ -207,9 +292,27 @@ bool MPEGPSDecoder::addFirstVideoTrack() {
 	if (!packet)
 		return false;
 
-	// Video stream
-	// Can be MPEG-1/2 or MPEG-4/h.264. We'll assume the former and
-	// I hope we never need the latter.
+	// Video stream can be MPEG-1/2 or H.264/AVC (the latter used by PSP
+	// PSMF openings). Both formats use 00 00 01 start codes, so require an
+	// H.264 SPS/PPS instead of treating every start code as H.264.
+	packet->seek(0);
+	bool h264 = false;
+	if (packet->size() > 0) {
+		Common::Array<byte> head(packet->size());
+		packet->read(head.data(), head.size());
+		h264 = isH264AnnexBPacket(head.data(), head.size());
+	}
+	packet->seek(0);
+
+#ifdef USE_OPENH264
+	if (h264) {
+		H264VideoTrack *track = new H264VideoTrack(packet);
+		addTrack(track);
+		_streamMap[startCode] = track;
+		return true;
+	}
+#endif
+
 	MPEGVideoTrack *track = new MPEGVideoTrack(packet);
 	addTrack(track);
 	_streamMap[startCode] = track;
@@ -225,6 +328,11 @@ MPEGPSDecoder::PrivateStreamType MPEGPSDecoder::detectPrivateStreamType(Common::
 	uint32 ps2Header = packet->readUint32BE();
 	if (!packet->eos() && ps2Header == MKTAG('S', 'S', 'h', 'd'))
 		return kPrivateStreamPS2Audio;
+
+	// PSMF audio: a 4-byte PSP audio sub-header, then an ATRAC3+ frame whose
+	// real sync tag is 0F D0 (see common/formats/pmf.cpp).
+	if (!packet->eos() && (ps2Header >> 16) == 0x0FD0)
+		return kPrivateStreamATRAC3Plus;
 
 	switch (dvdCode & 0xE0) {
 	case 0x80:
@@ -647,13 +755,13 @@ MPEGPSDecoder::MPEGVideoTrack::MPEGVideoTrack(Common::SeekableReadStream *firstP
 	findDimensions(firstPacket);
 
 #ifdef USE_MPEG2
-	_mpegDecoder = new Image::MPEGDecoder();
+	_decoder = new MPEGFrameDecoder();
 #endif
 }
 
 MPEGPSDecoder::MPEGVideoTrack::~MPEGVideoTrack() {
 #ifdef USE_MPEG2
-	delete _mpegDecoder;
+	delete _decoder;
 #endif
 
 	if (_surface) {
@@ -697,7 +805,7 @@ bool MPEGPSDecoder::MPEGVideoTrack::sendPacket(Common::SeekableReadStream *packe
 	}
 
 	uint32 framePeriod;
-	bool foundFrame = _mpegDecoder->decodePacket(*packet, framePeriod, _surface);
+	bool foundFrame = _decoder->decode(*packet, framePeriod, _surface);
 
 	if (foundFrame) {
 		_curFrame++;
@@ -743,6 +851,105 @@ void MPEGPSDecoder::MPEGVideoTrack::findDimensions(Common::SeekableReadStream *f
 
 	firstPacket->seek(0);
 }
+
+// --------------------------------------------------------------------------
+// H.264/AVC video track (OpenH264)
+// --------------------------------------------------------------------------
+
+#ifdef USE_OPENH264
+
+MPEGPSDecoder::H264VideoTrack::H264VideoTrack(Common::SeekableReadStream *firstPacket) {
+	(void)firstPacket; // owned by the demuxer; content re-delivered via sendPacket
+	_endOfTrack = false;
+	_curFrame = -1;
+	_framePts = 0xFFFFFFFF;
+	_basePts = 0;
+	_haveBasePts = false;
+	_nextFrameStartTime = Audio::Timestamp(0, 27000000); // 27 MHz timer
+	_width = _height = 0;
+	_pixelFormat = Image::Codec::getDefaultYUVFormat();
+
+	// The shared H264FrameDecoder owns the OpenH264 context and the Annex-B
+	// reassembly buffer (extracted from this class so USM can reuse it).
+	// OpenH264 wants an SPS; streams carry SPS/PPS NAL units inline
+	// (Annex-B), so wiring the decoder up and feeding packets is enough --
+	// dimensions arrive with the first decoded frame.
+	_decoder = new H264FrameDecoder();
+}
+
+MPEGPSDecoder::H264VideoTrack::~H264VideoTrack() {
+	delete _decoder;
+}
+
+uint16 MPEGPSDecoder::H264VideoTrack::getWidth() const {
+	return _width;
+}
+
+uint16 MPEGPSDecoder::H264VideoTrack::getHeight() const {
+	return _height;
+}
+
+Graphics::PixelFormat MPEGPSDecoder::H264VideoTrack::getPixelFormat() const {
+	return _pixelFormat;
+}
+
+bool MPEGPSDecoder::H264VideoTrack::setOutputPixelFormat(const Graphics::PixelFormat &format) {
+	if (format.bytesPerPixel != 2 && format.bytesPerPixel != 4)
+		return false;
+	_pixelFormat = format;
+	return true;
+}
+
+const Graphics::Surface *MPEGPSDecoder::H264VideoTrack::decodeNextFrame() {
+	return _decoder->getSurface();
+}
+
+bool MPEGPSDecoder::H264VideoTrack::sendPacket(Common::SeekableReadStream *packet, uint32 pts, uint32 dts) {
+	uint32 size = packet->size();
+	if (size == 0) {
+		delete packet;
+		return false;
+	}
+
+	if (pts != 0xFFFFFFFF) {
+		_framePts = pts;
+		if (!_haveBasePts) {
+			_basePts = pts;
+			_haveBasePts = true;
+		}
+	}
+
+	Common::Array<byte> data(size);
+	packet->read(data.data(), size);
+	delete packet;
+
+	uint16 width = _width, height = _height;
+	if (!_decoder->decode(data.data(), size, width, height, _pixelFormat))
+		return false;
+
+	if (width && height) {
+		_width = width;
+		_height = height;
+	}
+
+	_curFrame++;
+
+	// Pace with the real PES PTS (90 kHz), normalised so the first frame
+	// starts at t=0. The previous code used Audio::Timestamp(_curFrame, 30),
+	// which is the (msecs, framerate) constructor -- frame N started at N
+	// *milliseconds*, so the video advanced ~33x too fast and drifted out of
+	// sync with the audio. Fall back to the stream's constant 29.97 fps when
+	// a packet carries no PTS.
+	if (_framePts != 0xFFFFFFFF)
+		_nextFrameStartTime = Audio::Timestamp((_framePts - _basePts) / 90, 1000);
+	else
+		_nextFrameStartTime = Audio::Timestamp(_curFrame * 1001 / 30, 1000);
+	_framePts = 0xFFFFFFFF;
+
+	return true;
+}
+
+#endif // USE_OPENH264
 
 // --------------------------------------------------------------------------
 // Audio track
@@ -912,4 +1119,170 @@ uint32 MPEGPSDecoder::PS2AudioTrack::calculateSampleCount(uint32 packetSize) con
 
 	return result * _channels;
 }
+
+MPEGPSDecoder::ADXAudioTrack::ADXAudioTrack(Common::SeekableReadStream &firstPacket, Audio::Mixer::SoundType soundType) :
+		AudioTrack(soundType) {
+	if (!Common::parseADXFrameInfo(firstPacket, _info))
+		error("Failed to parse embedded ADX header in MPEG-PS video");
+
+	byte flags = Audio::FLAG_16BITS | Audio::FLAG_LITTLE_ENDIAN;
+	if (_info.channelCount == 2)
+		flags |= Audio::FLAG_STEREO;
+
+	_audStream = Audio::makePacketizedRawStream(_info.sampleRate, flags);
+	_frameBuffer = new byte[_info.frameSize()];
+	_frameBufPos = 0;
+	_hist1[0] = _hist1[1] = _hist2[0] = _hist2[1] = 0;
+	_isFirstPacket = true;
+}
+
+MPEGPSDecoder::ADXAudioTrack::~ADXAudioTrack() {
+	delete[] _frameBuffer;
+	delete _audStream;
+}
+
+bool MPEGPSDecoder::ADXAudioTrack::sendPacket(Common::SeekableReadStream *packet, uint32 pts, uint32 dts) {
+	if (_isFirstPacket) {
+		packet->skip(_info.streamDataOffset);
+		_isFirstPacket = false;
+	}
+
+	uint32 frameSize = _info.frameSize();
+	uint32 sampleBytesPerFrame = _info.samplesPerFrame() * _info.channelCount * sizeof(int16);
+
+	while (!packet->eos()) {
+		uint32 avail = packet->size() - packet->pos();
+		if (avail == 0)
+			break;
+		uint32 take = MIN(frameSize - _frameBufPos, avail);
+		packet->read(_frameBuffer + _frameBufPos, take);
+		_frameBufPos += take;
+		if (_frameBufPos < frameSize)
+			break;
+
+		int16 *pcm = (int16 *)malloc(sampleBytesPerFrame);
+		Common::decodeADXFrame(_frameBuffer, _info, _hist1, _hist2, pcm);
+		_audStream->queuePacket(new Common::MemoryReadStream((byte *)pcm, sampleBytesPerFrame, DisposeAfterUse::YES));
+		_frameBufPos = 0;
+	}
+
+	delete packet;
+	return true;
+}
+
+Audio::AudioStream *MPEGPSDecoder::ADXAudioTrack::getAudioStream() const {
+	return _audStream;
+}
+
+// --------------------------------------------------------------------------
+// ATRAC audio track (plain ATRAC3 or ATRAC3+)
+// --------------------------------------------------------------------------
+
+MPEGPSDecoder::ATRACAudioTrack::ATRACAudioTrack(ATRACCodec codec, Framing framing, uint16 channels,
+                                                uint32 sampleRate, uint16 blockAlign,
+                                                Audio::Mixer::SoundType soundType)
+	: AudioTrack(soundType), _decoder(nullptr), _audStream(nullptr), _framing(framing),
+	  _channels(channels), _blockAlign(blockAlign), _frameSamples(0), _esPos(0) {
+	if (codec == kATRACCodecATRAC3Plus)
+		_decoder = new Audio::ATRAC3PlusFrameDecoder();
+	else
+		_decoder = new Audio::ATRAC3FrameDecoder(codec == kATRACCodecATRAC3JointStereo
+		                                             ? Audio::kATRAC3CodingJointStereo
+		                                             : Audio::kATRAC3CodingSingle);
+
+	_decoder->init(channels, blockAlign);
+	_frameSamples = _decoder->frameSamples();
+
+	byte flags = Audio::FLAG_16BITS | Audio::FLAG_LITTLE_ENDIAN;
+	if (channels == 2)
+		flags |= Audio::FLAG_STEREO;
+	_audStream = Audio::makePacketizedRawStream(sampleRate, flags);
+}
+
+MPEGPSDecoder::ATRACAudioTrack::~ATRACAudioTrack() {
+	delete _decoder;
+	delete _audStream;
+}
+
+void MPEGPSDecoder::ATRACAudioTrack::queueFrame(const byte *frame, uint32 frameBytes) {
+	int16 *pcm = (int16 *)malloc((uint32)_channels * _frameSamples * sizeof(int16));
+	if (!pcm)
+		return;
+	if (!_decoder->decodeFrame(frame, frameBytes, pcm)) {
+		free(pcm);
+		return;
+	}
+	_audStream->queuePacket(new Common::MemoryReadStream((byte *)pcm,
+		_channels * _frameSamples * sizeof(int16), DisposeAfterUse::YES));
+}
+
+void MPEGPSDecoder::ATRACAudioTrack::feed(const byte *data, uint32 size) {
+	uint32 old = _es.size();
+	_es.resize(old + size);
+	memcpy(_es.data() + old, data, size);
+
+	if (_framing == kFramingPlain) {
+		while (_blockAlign && _es.size() - _esPos >= _blockAlign) {
+			queueFrame(_es.data() + _esPos, _blockAlign);
+			_esPos += _blockAlign;
+		}
+	} else { // kFramingPSMF
+		// Real PSMF framing: each frame is preceded by its own 0F D0 sync tag
+		// (the 4-byte PSP audio sub-header is stripped per PES in sendPacket).
+		while (_esPos + 8 <= _es.size()) {
+			if (_es[_esPos] != 0x0F || _es[_esPos + 1] != 0xD0) {
+				_esPos++;
+				continue;
+			}
+			uint32 frameSize = (((_es[_esPos + 2] & 0x03) << 8) | (_es[_esPos + 3] * 8)) + 0x10;
+			if (frameSize < 8) {
+				_esPos++;
+				continue;
+			}
+			if (_esPos + frameSize > _es.size())
+				break; // wait for the rest of the frame
+			queueFrame(_es.data() + _esPos + 8, frameSize - 8);
+			_esPos += frameSize;
+		}
+	}
+
+	// Drop the consumed prefix so the buffer does not grow without bound.
+	if (_esPos > 0) {
+		uint32 remain = _es.size() - _esPos;
+		if (remain)
+			memmove(_es.data(), _es.data() + _esPos, remain);
+		_es.resize(remain);
+		_esPos = 0;
+	}
+}
+
+bool MPEGPSDecoder::ATRACAudioTrack::sendPacket(Common::SeekableReadStream *packet, uint32 pts, uint32 dts) {
+	if (!packet)
+		return true;
+
+	uint32 size = (uint32)packet->size();
+	// PSMF wraps each PES payload in a 4-byte PSP audio sub-header.
+	if (_framing == kFramingPSMF) {
+		if (size <= 4) {
+			delete packet;
+			return true;
+		}
+		packet->skip(4);
+		size -= 4;
+	}
+
+	Common::Array<byte> chunk(size);
+	if (size)
+		packet->read(chunk.data(), size);
+	delete packet;
+
+	if (size)
+		feed(chunk.data(), size);
+	return true;
+}
+
+Audio::AudioStream *MPEGPSDecoder::ATRACAudioTrack::getAudioStream() const {
+	return _audStream;
+}
+
 } // End of namespace Video

@@ -176,6 +176,7 @@ _gif=auto
 _sjis=auto
 _theoradec=auto
 _vpx=auto
+_openh264=auto
 _faad=auto
 _fluidsynth=auto
 _fluidlite=auto
@@ -362,6 +363,7 @@ add_component lua "Lua" "_lua" "USE_LUA"
 add_component mactoolbox "Mac Toolbox" "_mactoolbox" "USE_MACTOOLBOX"
 add_component mfc "MFC" "_mfc" "USE_MFC"
 add_component vpx "libvpx" "_vpx" "USE_VPX"
+add_component openh264 "OpenH264" "_openh264" "USE_OPENH264"
 add_component theoradec "libtheoradec" "_theoradec" "USE_THEORADEC"
 add_component midi "MIDI synthesis" "_midi" "USE_MIDI"
 add_component mpc "MPC" "_libmpcdec" "USE_MPCDEC"
@@ -1172,6 +1174,10 @@ Optional Libraries:
   --with-vpx-prefix=DIR    prefix where libtvpx is installed (optional)
   --disable-vpx            disable VP8/VP9 decoder [autodetect]
 
+  --with-openh264-prefix=DIR  prefix where OpenH264 is installed (optional)
+  --disable-openh264       disable H.264/AVC decoder [autodetect]
+  --enable-openh264        enable H.264/AVC decoder
+
   --with-faad-prefix=DIR   prefix where libfaad is installed (optional)
   --disable-faad           disable AAC decoder [autodetect]
 
@@ -1375,6 +1381,8 @@ for ac_option in $@; do
 	--enable-theoradec)           _theoradec=yes         ;;
 	--disable-vpx)                _vpx=no                ;;
 	--enable-vpx)                 _vpx=yes               ;;
+	--disable-openh264)           _openh264=no           ;;
+	--enable-openh264)            _openh264=yes          ;;
 	--disable-faad)               _faad=no               ;;
 	--enable-faad)                _faad=yes              ;;
 	--disable-fluidsynth)         _fluidsynth=no         ;;
@@ -1574,6 +1582,12 @@ for ac_option in $@; do
 		VPX_CFLAGS="-I$arg/include"
 		VPX_LIBS="-L$arg/lib"
 		VPX_STATIC_LIBS="-L$arg/lib"
+		;;
+	--with-openh264-prefix=*)
+		arg=`echo $ac_option | cut -d '=' -f 2`
+		OPENH264_CFLAGS="-I$arg/include"
+		OPENH264_LIBS="-L$arg/lib"
+		OPENH264_STATIC_LIBS="-L$arg/lib"
 		;;
 	--with-faad-prefix=*)
 		arg=`echo $ac_option | cut -d '=' -f 2`
@@ -5938,6 +5952,46 @@ fi
 
 if test ! "$_vpx" = notsupported ; then
 	echo "$_vpx"
+fi
+
+#
+# Check for OpenH264 (H.264/AVC decoder, used for PSP PSMF video)
+#
+echocheck "OpenH264"
+if test "$_openh264" = auto ; then
+	_openh264=no
+
+	if test "$_pkg_config" = "yes" && $_pkgconfig --exists openh264; then
+		append_var OPENH264_LIBS "`$_pkgconfig --libs openh264`"
+		append_var OPENH264_STATIC_LIBS "`$_pkgconfig --static --libs openh264`"
+		append_var OPENH264_CFLAGS "`$_pkgconfig --cflags openh264`"
+	else
+		append_var OPENH264_LIBS "-lopenh264"
+	fi
+
+	cat > $TMPC << EOF
+#include "wels/codec_api.h"
+int main(void) {
+	int version = WelsGetCodecVersion();
+	if (version == 0) return 1;
+	return 0;
+}
+EOF
+	cc_check_no_clean $OPENH264_CFLAGS $OPENH264_LIBS && _openh264=yes
+	# If it fails, try with static libs, it may help
+	if test "$_openh264" != "yes"; then
+		OPENH264_LIBS="$OPENH264_STATIC_LIBS"
+		cc_check_no_clean $OPENH264_CFLAGS $OPENH264_LIBS && _openh264=yes
+	fi
+	cc_check_clean
+fi
+if test "$_openh264" = yes ; then
+	append_var LIBS "$OPENH264_LIBS"
+	append_var INCLUDES "$OPENH264_CFLAGS"
+fi
+
+if test ! "$_openh264" = notsupported ; then
+	echo "$_openh264"
 fi
 
 #

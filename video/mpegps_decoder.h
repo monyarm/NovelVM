@@ -22,12 +22,15 @@
 #ifndef VIDEO_MPEGPS_DECODER_H
 #define VIDEO_MPEGPS_DECODER_H
 
+#include "common/formats/adx.h"
+#include "common/array.h"
 #include "common/hashmap.h"
 #include "common/queue.h"
 #include "graphics/surface.h"
 #include "video/video_decoder.h"
 
 namespace Audio {
+class ATRACFrameDecoder;
 class PacketizedAudioStream;
 }
 
@@ -39,11 +42,13 @@ namespace Graphics {
 struct PixelFormat;
 }
 
-namespace Image {
-class MPEGDecoder;
-}
-
 namespace Video {
+
+/** True when a packet contains an H.264 Annex-B SPS/PPS rather than MPEG-PS video. */
+bool isH264AnnexBPacket(const byte *data, uint32 size);
+
+class MPEGFrameDecoder;
+class H264FrameDecoder;
 
 /**
  * Decoder for MPEG Program Stream videos.
@@ -54,6 +59,13 @@ namespace Video {
  */
 class MPEGPSDecoder : public VideoDecoder {
 public:
+	// Which ATRAC codec a container's audio stream carries.
+	enum ATRACCodec {
+		kATRACCodecATRAC3,             // plain ATRAC3, SINGLE (per-channel) coding
+		kATRACCodecATRAC3JointStereo,  // plain ATRAC3, JOINT_STEREO coding
+		kATRACCodecATRAC3Plus
+	};
+
 	MPEGPSDecoder(double decibel = 0.0);
 	virtual ~MPEGPSDecoder();
 
@@ -64,9 +76,19 @@ public:
 	// Used only by qdEngine
 	void setPrebufferedPackets(int packets);
 
+	// Container-supplied ATRAC audio parameters (e.g. a PSMF audio stream
+	// table). When set, the matching private stream is decoded by a
+	// decoder-owned ATRACAudioTrack so the VideoDecoder clocks the audio
+	// (rather than the engine playing it separately through the mixer).
+	void setATRACAudioInfo(ATRACCodec codec, uint16 channels, uint32 sampleRate, uint16 blockAlign);
+
+	// Whether getTime() follows a playing audio track (AV sync). Off by
+	// default; containers with trustworthy video timestamps can enable it.
+	void setUseAudioSync(bool enabled) { _useAudioSync = enabled; }
+
 protected:
 	void readNextPacket() override;
-	bool useAudioSync() const override { return false; }
+	bool useAudioSync() const override { return _useAudioSync; }
 
 private:
 	class MPEGPSDemuxer {
@@ -159,9 +181,50 @@ private:
 		void findDimensions(Common::SeekableReadStream *firstPacket);
 
 #ifdef USE_MPEG2
-		Image::MPEGDecoder *_mpegDecoder;
+
+		MPEGFrameDecoder *_decoder;
 #endif
+
 	};
+
+#ifdef USE_OPENH264
+	// An H.264/AVC video track (PSP PSMF openings). PES payloads carry
+	// Annex-B NAL units; OpenH264 decodes them to YUV420 which is converted
+	// into a surface the same way USM's VP9 path does.
+	class H264VideoTrack : public VideoTrack, public MPEGStream {
+	public:
+		H264VideoTrack(Common::SeekableReadStream *firstPacket);
+		~H264VideoTrack();
+
+		bool endOfTrack() const override { return _endOfTrack; }
+		uint16 getWidth() const override;
+		uint16 getHeight() const override;
+		Graphics::PixelFormat getPixelFormat() const override;
+		bool setOutputPixelFormat(const Graphics::PixelFormat &format) override;
+		int getCurFrame() const override { return _curFrame; }
+		uint32 getNextFrameStartTime() const override { return _nextFrameStartTime.msecs(); }
+		const Graphics::Surface *decodeNextFrame() override;
+
+		bool sendPacket(Common::SeekableReadStream *packet, uint32 pts, uint32 dts) override;
+		StreamType getStreamType() const override { return kStreamTypeVideo; }
+
+		void setEndOfTrack() { _endOfTrack = true; }
+
+	private:
+		bool _endOfTrack;
+		int _curFrame;
+		uint32 _framePts;
+		uint32 _basePts;
+		bool _haveBasePts;
+		Audio::Timestamp _nextFrameStartTime;
+
+		uint16 _width;
+		uint16 _height;
+		Graphics::PixelFormat _pixelFormat;
+
+		H264FrameDecoder *_decoder;
+	};
+#endif // USE_OPENH264
 
 #ifdef USE_MAD
 	// An MPEG audio track
@@ -198,6 +261,31 @@ private:
 	};
 #endif
 
+	// CRI ADX embedded directly in the "MPEG audio" stream ID range
+	// instead of real MPEG audio -- real-data-verified in Persona 3/4's
+	// PS2 FMV (.SFD files under DATA.CVM). See common/formats/adx.h.
+	class ADXAudioTrack : public AudioTrack, public MPEGStream {
+	public:
+		ADXAudioTrack(Common::SeekableReadStream &firstPacket, Audio::Mixer::SoundType soundType);
+		~ADXAudioTrack();
+
+		bool sendPacket(Common::SeekableReadStream *packet, uint32 pts, uint32 dts) override;
+		StreamType getStreamType() const override { return kStreamTypeAudio; }
+
+	protected:
+		Audio::AudioStream *getAudioStream() const override;
+
+	private:
+		Common::ADXFrameInfo _info;
+		Audio::PacketizedAudioStream *_audStream;
+		bool _isFirstPacket;
+
+		byte *_frameBuffer;
+		uint32 _frameBufPos;
+		int32 _hist1[2];
+		int32 _hist2[2];
+	};
+
 	class PS2AudioTrack : public AudioTrack, public MPEGStream {
 	public:
 		PS2AudioTrack(Common::SeekableReadStream *firstPacket, Audio::Mixer::SoundType soundType);
@@ -228,13 +316,52 @@ private:
 		uint32 calculateSampleCount(uint32 packetSize) const;
 	};
 
+	// Decoder-owned streaming ATRAC audio (plain ATRAC3 or ATRAC3+). The
+	// frame decoder is supplied by whichever codec the container carries;
+	// this class only handles PES-payload-to-frame reassembly, so both
+	// codecs share one implementation. Used for PSP PSMF openings (real
+	// data: ATRAC3+ tagged 0F D0 behind a 4-byte PSP audio sub-header),
+	// replacing the old engine-side mixer playback that could drift.
+	class ATRACAudioTrack : public AudioTrack, public MPEGStream {
+	public:
+		enum Framing {
+			kFramingPlain,        // raw blockAlign frames, no per-packet header
+			kFramingPSMF          // 4-byte PSP audio sub-header + 0F D0-tagged frames
+		};
+
+		ATRACAudioTrack(ATRACCodec codec, Framing framing, uint16 channels, uint32 sampleRate,
+		                uint16 blockAlign, Audio::Mixer::SoundType soundType);
+		~ATRACAudioTrack();
+
+		bool sendPacket(Common::SeekableReadStream *packet, uint32 pts, uint32 dts) override;
+		StreamType getStreamType() const override { return kStreamTypeAudio; }
+
+	protected:
+		Audio::AudioStream *getAudioStream() const override;
+
+	private:
+		void feed(const byte *data, uint32 size);
+		void queueFrame(const byte *frame, uint32 frameBytes);
+
+		Audio::ATRACFrameDecoder *_decoder;
+		Audio::PacketizedAudioStream *_audStream;
+		Framing _framing;
+		uint16 _channels;
+		uint16 _blockAlign;
+		int _frameSamples;
+
+		Common::Array<byte> _es; // unconsumed elementary-stream bytes
+		uint32 _esPos;
+	};
+
 	// The different types of private streams we can detect at the moment
 	enum PrivateStreamType {
 		kPrivateStreamUnknown,
 		kPrivateStreamAC3,
 		kPrivateStreamDTS,
 		kPrivateStreamDVDPCM,
-		kPrivateStreamPS2Audio
+		kPrivateStreamPS2Audio,
+		kPrivateStreamATRAC3Plus
 	};
 
 	PrivateStreamType detectPrivateStreamType(Common::SeekableReadStream *packet);
@@ -247,6 +374,14 @@ private:
 	// A map from stream types to stream handlers
 	typedef Common::HashMap<int, MPEGStream *> StreamMap;
 	StreamMap _streamMap;
+
+	// Optional container-supplied ATRAC audio parameters (see setATRACAudioInfo).
+	bool _hasATRACInfo = false;
+	ATRACCodec _atracCodec = kATRACCodecATRAC3;
+	uint16 _atracChannels = 0;
+	uint32 _atracSampleRate = 0;
+	uint16 _atracBlockAlign = 0;
+	bool _useAudioSync = false;
 
 	double _decibel;
 };
