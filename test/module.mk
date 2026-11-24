@@ -41,6 +41,11 @@ ifdef USE_TINYGL
 TESTS += $(srcdir)/test/graphics/tinygl*.h
 endif
 
+ifeq ($(ENABLE_SMT), STATIC_PLUGIN)
+	TESTS += $(srcdir)/test/engines/smt/*.h
+	TEST_LIBS += engines/smt/libsmt.a engines/libengines.a
+endif
+
 # libcommon needs libformats and libformats needs libcommon: so libcommon is put twice
 TEST_LIBS +=	video/libvideo.a audio/libaudio.a math/libmath.a common/libcommon.a common/formats/libformats.a common/compression/libcompression.a common/libcommon.a image/libimage.a graphics/libgraphics.a
 
