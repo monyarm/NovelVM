@@ -22,6 +22,7 @@ MODULE_OBJS := \
 	pmsf.o \
 	dds.o \
 	adx.o \
+	acx.o \
 	hca.o \
 	ahx.o \
 	utf_table.o \
