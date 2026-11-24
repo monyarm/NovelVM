@@ -1,267 +1,362 @@
-#include <algorithm>
-
 #include "common/formats/adx.h"
-#include "video/mpegps_decoder.h"
-#include "audio/mixer.h"
-#include "common/endian.h"
-#include "common/stream.h"
+
+#include <cmath>
+
+#include "audio/audiostream.h"
+#include "common/array.h"
+#include "common/formats/adx_key8_primes.h"
 #include "common/textconsole.h"
-#include "common/types.h"
 #include "common/util.h"
-
-namespace {
-
-const int nibble_to_int[16] = {0, 1, 2, 3, 4, 5, 6, 7,
-                               -8, -7, -6, -5, -4, -3, -2, -1};
-
-} // anonymous namespace
 
 namespace Common {
 
-class ADX_ADPCMStream : public ::Audio::ADPCMStream {
+namespace {
+
+// Header layout verified against real Code Geass and Persona 3 (FES/
+// Portable) .adx files. https://rewiki.miraheze.org/wiki/CRI_ADX_Audio
+struct ADXHeader {
+	uint32 streamDataOffset = 0;
+	byte channelCount = 0;
+	uint32 sampleRate = 0;
+	uint32 sampleCount = 0;
+	uint16 highpass = 0;
+	byte blockSize = 0;
+	int32 coef1 = 0;
+	int32 coef2 = 0;
+
+	bool hasLoop = false;
+	uint32 loopStart = 0;
+	uint32 loopEnd = 0;
+
+	bool encrypted = false;
+	uint16 xorStart = 0;
+	uint16 xorMult = 0;
+	uint16 xorAdd = 0;
+};
+
+// CRI key derivation, ported from vgmstream's cri_keys.c. Public,
+// game-agnostic algorithms; the actual per-game key isn't shipped here.
+// Unverified against real encrypted data (none in this session's corpus).
+
+void deriveKey9(uint64 key9, uint16 subkey, uint16 &xorStart, uint16 &xorMult, uint16 &xorAdd) {
+	xorStart = xorMult = xorAdd = 0;
+	if (key9 == 0)
+		return;
+	if (subkey != 0)
+		key9 = key9 * (((uint64)subkey << 16) | (uint16)(~subkey + 2));
+	key9--;
+	xorStart = (uint16)((key9 >> 27) & 0x7fff);
+	xorMult = (uint16)(((key9 >> 12) & 0x7ffc) | 1);
+	xorAdd = (uint16)(((key9 << 1) & 0x7fff) | 1);
+}
+
+void deriveKey8(const Common::String &key8, uint16 &xorStart, uint16 &xorMult, uint16 &xorAdd) {
+	xorStart = xorMult = xorAdd = 0;
+	if (key8.empty())
+		return;
+	xorStart = kADXKey8Primes[0x100];
+	xorMult = kADXKey8Primes[0x200];
+	xorAdd = kADXKey8Primes[0x300];
+	for (uint32 i = 0; i < key8.size(); i++) {
+		int idx = (int)(int8)key8[i] + 0x80;
+		xorStart = kADXKey8Primes[xorStart * kADXKey8Primes[idx] % 0x400];
+		xorMult = kADXKey8Primes[xorMult * kADXKey8Primes[idx] % 0x400];
+		xorAdd = kADXKey8Primes[xorAdd * kADXKey8Primes[idx] % 0x400];
+	}
+}
+
+bool parseADXHeader(Common::SeekableReadStream &s, ADXHeader &h) {
+	if (s.readUint16BE() != 0x8000) {
+		warning("ADX: bad magic (expected 0x8000)");
+		return false;
+	}
+
+	uint16 copyrightOffset = s.readUint16BE();
+	h.streamDataOffset = (uint32)copyrightOffset + 4;
+
+	byte format = s.readByte();
+	h.blockSize = s.readByte();
+	byte bitsPerSample = s.readByte();
+	h.channelCount = s.readByte();
+	h.sampleRate = s.readUint32BE();
+	h.sampleCount = s.readUint32BE();
+	h.highpass = s.readUint16BE();
+	byte version = s.readByte();
+	byte encryptionFlag = s.readByte();
+
+	if (s.err() || s.eos()) {
+		warning("ADX: truncated header");
+		return false;
+	}
+	if (format != 3) {
+		warning("ADX: unsupported encoding format %d", format);
+		return false;
+	}
+	if (bitsPerSample != 4) {
+		warning("ADX: unsupported bit depth %d", bitsPerSample);
+		return false;
+	}
+	if (h.channelCount != 1 && h.channelCount != 2) {
+		warning("ADX: unsupported channel count %d", h.channelCount);
+		return false;
+	}
+	// sampleRate is the divisor in the coefficient math below and the basis
+	// for every timestamp; 0 (or an absurd value) would yield a NaN/Inf
+	// coefficient and an undefined float->int conversion.
+	if (h.sampleRate == 0 || h.sampleRate > 384000) {
+		warning("ADX: implausible sample rate %u", h.sampleRate);
+		return false;
+	}
+	if (h.blockSize < 3) {
+		warning("ADX: implausible block size %d", h.blockSize);
+		return false;
+	}
+	if (version != 3 && version != 4) {
+		warning("ADX: unsupported header version %d", version);
+		return false;
+	}
+	h.encrypted = (encryptionFlag != 0);
+
+	// Hist1/Hist2 (unused, decode always starts from zero), then an
+	// optional 24-byte loop descriptor.
+	s.skip(4);
+	s.skip(8);
+	int64 loopOffset = s.pos();
+	if (loopOffset + 24 <= (int64)h.streamDataOffset) {
+		s.skip(8);
+		h.loopStart = s.readUint32BE();
+		s.skip(4);
+		h.loopEnd = s.readUint32BE();
+		s.skip(4);
+		h.hasLoop = (h.loopEnd > h.loopStart) && (h.loopEnd <= h.sampleCount);
+	}
+
+	// https://wiki.multimedia.cx/index.php/CRI_ADX_ADPCM#Coefficients
+	double z = cos(2.0 * M_PI * h.highpass / h.sampleRate);
+	double a = M_SQRT2 - z;
+	double b = M_SQRT2 - 1.0;
+	double c = (a - sqrt((a + b) * (a - b))) / b;
+	h.coef1 = (int32)floor(c * 8192.0);
+	h.coef2 = (int32)floor(c * c * -4096.0);
+
+	s.seek(h.streamDataOffset);
+	return !s.err();
+}
+
+const int8 kNibbleToInt[16] = {0, 1, 2, 3, 4, 5, 6, 7, -8, -7, -6, -5, -4, -3, -2, -1};
+
+int16 clamp16(int32 v) {
+	if (v > 32767)
+		return 32767;
+	if (v < -32768)
+		return -32768;
+	return (int16)v;
+}
+
+class ADXStream : public Audio::SeekableAudioStream {
 public:
-	ADX_ADPCMStream(Common::SeekableReadStream *stream, DisposeAfterUse::Flag disposeAfterUse, uint32 size, uint32 blockSize, AdxHeaderInfo info) : ::Audio::ADPCMStream(stream, disposeAfterUse, size, 44100, 1, blockSize), _looped(info.HasLoop) {}
-
-	bool endOfData() const override {
-		return (!_looped && ::Audio::ADPCMStream::endOfData());
+	ADXStream(Common::SeekableReadStream *stream, DisposeAfterUse::Flag dispose, const ADXHeader &header)
+		: _stream(stream), _dispose(dispose), _header(header) {
+		_samplesPerFrame = ((uint32)header.blockSize - 2) * 2;
+		_frameBuf.resize((uint32)header.blockSize * header.channelCount);
+		_decoded.resize(_samplesPerFrame * header.channelCount);
+		rewind();
 	}
 
-	void seekToBlock(uint32 block) {
-		reset();
-		_stream->seek(_startpos + _blockAlign * block);
+	~ADXStream() override {
+		if (_dispose == DisposeAfterUse::YES)
+			delete _stream;
 	}
 
+	// numSamples/return value count interleaved int16 slots, not frames.
 	int readBuffer(int16 *buffer, const int numSamples) override {
+		uint32 channels = _header.channelCount;
 		int samples = 0;
-		int read = 0;
+		while ((uint32)(numSamples - samples) >= channels && !endOfData()) {
+			if (_bufPos >= _samplesInBuf && !decodeFrame())
+				break;
 
-		while (samples < numSamples) {
-			if (::Audio::ADPCMStream::endOfData()) {
-				if (!_looped)
-					break;
-				rewind();
-			}
+			uint32 framesAvail = _samplesInBuf - _bufPos;
+			uint32 framesWanted = (uint32)(numSamples - samples) / channels;
+			uint32 toCopy = MIN(framesAvail, framesWanted);
+			if (toCopy == 0)
+				break;
 
-			if (DecodedSamplesAvailable) {
-				int samplesWrittenNow = std::min(samples, DecodedSamplesAvailable);
+			memcpy(buffer, &_decoded[_bufPos * channels], toCopy * channels * sizeof(int16));
+			buffer += toCopy * channels;
+			samples += toCopy * channels;
+			_bufPos += toCopy;
+			_samplesRead += toCopy;
+		}
+		return samples;
+	}
 
-				if (buffer) {
-					// null pointer => discard-seek
-					memcpy(buffer,
-					       DecodedBuffer +
-					           DecodedSamplesConsumed * _info.ChannelCount,
-					       samplesWrittenNow * _info.ChannelCount * sizeof(int16));
-					buffer += samplesWrittenNow * _info.ChannelCount;
-				}
-				samples += samplesWrittenNow;
-				read += samplesWrittenNow;
-				_info.ReadPosition += samplesWrittenNow;
-				DecodedSamplesAvailable -= samplesWrittenNow;
-				DecodedSamplesConsumed += samplesWrittenNow;
-			}
-			else {
+	bool isStereo() const override { return _header.channelCount == 2; }
+	int getRate() const override { return _header.sampleRate; }
+	bool endOfData() const override { return !_header.hasLoop && _samplesRead >= _header.sampleCount; }
 
-				int samplesLeft = _info.SampleCount - _info.ReadPosition;
-				if (samplesLeft == 0)
-					return read;
+	bool rewind() override {
+		_stream->seek(_header.streamDataOffset);
+		_hist1[0] = _hist1[1] = _hist2[0] = _hist2[1] = 0;
+		_xorState[0] = _xorState[1] = _header.xorStart;
+		_samplesRead = 0;
+		_samplesInBuf = 0;
+		_bufPos = 0;
+		return true;
+	}
 
-				DecodedSamplesAvailable = _info.SamplesPerBuffer;
-				DecodedSamplesConsumed = 0;
-
-				_stream->read(EncodedBuffer,_info.EncodedBytesPerBuffer);
-
-				bool decodeSuccess = DecodeBuffer();
-
-				DecodedSamplesAvailable =
-				    MIN(DecodedSamplesAvailable, samplesLeft);
-				if (!decodeSuccess)
-					return read;
-			}
+	bool seek(const Audio::Timestamp &where) override {
+		uint32 targetSample = (uint32)where.convertToFramerate(_header.sampleRate).totalNumberOfFrames();
+		if (!_header.hasLoop && targetSample >= _header.sampleCount) {
+			_samplesRead = _header.sampleCount;
+			return true;
 		}
 
-			return samples;
+		rewind();
+		uint32 frame = targetSample / _samplesPerFrame;
+		_stream->seek(_header.streamDataOffset + (int64)frame * _frameBuf.size());
+		_samplesRead = frame * _samplesPerFrame;
+
+		uint32 remainder = targetSample - _samplesRead;
+		if (remainder > 0) {
+			if (!decodeFrame())
+				return false;
+			_bufPos = remainder;
+			_samplesRead += remainder;
 		}
+		return true;
+	}
+
+	Audio::Timestamp getLength() const override {
+		return Audio::Timestamp(0, _header.sampleCount, _header.sampleRate);
+	}
 
 private:
-	bool _looped;
-	AdxHeaderInfo _info;
-	int DecodedSamplesAvailable = 0;
-	int DecodedSamplesConsumed = 0;
-	int16 DecodedBuffer[127] = {0};
-	uint8 EncodedBuffer[256] = {0};
+	Common::SeekableReadStream *_stream;
+	DisposeAfterUse::Flag _dispose;
+	ADXHeader _header;
 
-	static inline int get_high_nibble_signed(uint8 n) {
-		return nibble_to_int[n >> 4];
-	}
+	uint32 _samplesPerFrame = 0;
+	Common::Array<byte> _frameBuf;
+	Common::Array<int16> _decoded;
+	int32 _hist1[2] = {0, 0};
+	int32 _hist2[2] = {0, 0};
+	uint16 _xorState[2] = {0, 0};
+	uint32 _samplesRead = 0;
+	uint32 _samplesInBuf = 0;
+	uint32 _bufPos = 0;
 
-	static inline int get_low_nibble_signed(uint8 n) {
-		return nibble_to_int[n & 0xf];
-	}
-
-	static inline int clamp16(int32_t val) {
-		if (val > 32767)
-			return 32767;
-		if (val < -32768)
-			return -32768;
-		return val;
-	}
-
-	bool DecodeBuffer() {
-
-		int16 *output = DecodedBuffer;
-		uint8 *input = EncodedBuffer;
-
-		for (int c = 0; c < _info.ChannelCount; c++) {
-			/* the +1 becomes important on quiet ADXs */
-			int scale = SWAP_BYTES_16(*(uint16 *)input) + 1;
-			input += 2;
-
-			for (int i = 0; i < _info.SamplesPerBuffer; i++) {
-				/* this byte contains nibbles for two samples */
-				int sample_byte = input[i / 2];
-
-				output[i * _info.ChannelCount + c] =
-				    clamp16((i & 1 ? get_low_nibble_signed(sample_byte)
-				                   : get_high_nibble_signed(sample_byte)) *
-				                scale +
-				            (_info.Coef1 * _info.Hist1[c] >> 12) + (_info.Coef2 * _info.Hist2[c] >> 12));
-
-				_info.Hist2[c] = _info.Hist1[c];
-				_info.Hist1[c] = output[i * _info.ChannelCount + c];
-			}
-			input += _info.SamplesPerBuffer / 2;
+	bool decodeFrame() {
+		if (_header.hasLoop && _samplesRead >= _header.loopEnd) {
+			uint32 frame = _header.loopStart / _samplesPerFrame;
+			_stream->seek(_header.streamDataOffset + (int64)frame * _frameBuf.size());
+			_samplesRead = frame * _samplesPerFrame;
 		}
 
+		if (_stream->read(_frameBuf.data(), _frameBuf.size()) != _frameBuf.size())
+			return false;
+
+		for (byte c = 0; c < _header.channelCount; c++) {
+			const byte *chan = &_frameBuf[(uint32)c * _header.blockSize];
+			int32 rawScale = ((int32)chan[0] << 8) | chan[1];
+			int32 scale;
+			if (_header.encrypted) {
+				scale = (((int16)rawScale ^ (int16)_xorState[c]) & 0x1fff) + 1;
+				_xorState[c] = (_xorState[c] * _header.xorMult + _header.xorAdd) & 0x7fff;
+			} else {
+				scale = rawScale + 1; // +1 matters on quiet streams (scale 0)
+			}
+			const byte *nibbles = chan + 2;
+
+			for (uint32 i = 0; i < _samplesPerFrame; i++) {
+				byte b = nibbles[i / 2];
+				int sample = kNibbleToInt[(i & 1) ? (b & 0xf) : (b >> 4)];
+				int32 predicted = (_header.coef1 * _hist1[c] >> 12) + (_header.coef2 * _hist2[c] >> 12);
+				int16 out = clamp16(sample * scale + predicted);
+				_decoded[i * _header.channelCount + c] = out;
+				_hist2[c] = _hist1[c];
+				_hist1[c] = out;
+			}
+		}
+
+		_samplesInBuf = _samplesPerFrame;
+		_bufPos = 0;
 		return true;
 	}
 };
 
-void ADX::SetCoefficients(double cutoff, double sample_rate) {
-	// https://wiki.multimedia.cx/index.php/CRI_ADX_ADPCM#Coefficients
+} // namespace
 
-	/* temps to keep the calculation simple */
-	double z, a, b, c;
-
-	z = cos(2.0 * M_PI * cutoff / sample_rate);
-
-	a = M_SQRT2 - z;
-	b = M_SQRT2 - 1.0;
-	c = (a - sqrt((a + b) * (a - b))) / b;
-
-	/* compute the coefficients as fixed point values, with 12 fractional bits */
-	coefficient[0] = (int16)floor(c * 8192);
-	coefficient[1] = (int16)floor(c * c * -4096);
+Audio::SeekableAudioStream *makeADXStream(Common::SeekableReadStream *stream, DisposeAfterUse::Flag disposeAfterUse) {
+	ADXHeader header;
+	if (!parseADXHeader(*stream, header) || header.encrypted) {
+		if (header.encrypted)
+			warning("ADX: file is encrypted, no key supplied");
+		if (disposeAfterUse == DisposeAfterUse::YES)
+			delete stream;
+		return nullptr;
+	}
+	return new ADXStream(stream, disposeAfterUse, header);
 }
 
-ADX::ADX(const char *path) {
-
-	Common::File f;
-	if (f.open(path)) {
-		readFile(&f);
+Audio::SeekableAudioStream *makeADXStream(Common::SeekableReadStream *stream, DisposeAfterUse::Flag disposeAfterUse, uint64 key9, uint16 subkey) {
+	ADXHeader header;
+	if (!parseADXHeader(*stream, header)) {
+		if (disposeAfterUse == DisposeAfterUse::YES)
+			delete stream;
+		return nullptr;
 	}
+	if (header.encrypted)
+		deriveKey9(key9, subkey, header.xorStart, header.xorMult, header.xorAdd);
+	return new ADXStream(stream, disposeAfterUse, header);
 }
 
-ADX::ADX(Common::SeekableReadStream *stream) {
-	readFile(stream);
+Audio::SeekableAudioStream *makeADXStream(Common::SeekableReadStream *stream, DisposeAfterUse::Flag disposeAfterUse, const Common::String &key8) {
+	ADXHeader header;
+	if (!parseADXHeader(*stream, header)) {
+		if (disposeAfterUse == DisposeAfterUse::YES)
+			delete stream;
+		return nullptr;
+	}
+	if (header.encrypted)
+		deriveKey8(key8, header.xorStart, header.xorMult, header.xorAdd);
+	return new ADXStream(stream, disposeAfterUse, header);
 }
 
-void ADX::readFile(Common::SeekableReadStream *stream) {
-	readHeader(stream);
-	::Audio::SoundHandle* _handle = new ::Audio::SoundHandle();
-	auto _astream = stream->readStream(stream->size() - info.StreamDataOffset);
-	::Audio::AudioStream *_as = new ADX_ADPCMStream(_astream, DisposeAfterUse::NO, _astream->size(),info.EncodedBytesPerBuffer,info);
-	g_system->getMixer()->playStream(::Audio::Mixer::kMusicSoundType, _handle, _as, -1, ::Audio::Mixer::kMaxChannelVolume,0);
+bool parseADXFrameInfo(Common::SeekableReadStream &stream, ADXFrameInfo &info) {
+	int64 startPos = stream.pos();
+	ADXHeader h;
+	bool ok = parseADXHeader(stream, h);
+	stream.seek(startPos);
+	if (!ok)
+		return false;
+
+	info.channelCount = h.channelCount;
+	info.sampleRate = h.sampleRate;
+	info.blockSize = h.blockSize;
+	info.streamDataOffset = h.streamDataOffset;
+	info.coef1 = h.coef1;
+	info.coef2 = h.coef2;
+	return true;
 }
 
-void ADX::readHeader(Common::SeekableReadStream *stream) {
+void decodeADXFrame(const byte *frameData, const ADXFrameInfo &info, int32 hist1[2], int32 hist2[2], int16 *out) {
+	uint32 samplesPerFrame = info.samplesPerFrame();
+	for (byte c = 0; c < info.channelCount; c++) {
+		const byte *chan = frameData + (uint32)c * info.blockSize;
+		int32 scale = (((int32)chan[0] << 8) | chan[1]) + 1; // +1 matters on quiet streams (scale 0)
+		const byte *nibbles = chan + 2;
 
-	uint8 header[0x34];
-	stream->read(header, 0x34);
-	if (SWAP_BYTES_16((*(uint16 *)header)) != 0x8000) {
-		warning("Corrupt ADX Header");
-		return;
+		for (uint32 i = 0; i < samplesPerFrame; i++) {
+			byte b = nibbles[i / 2];
+			int sample = kNibbleToInt[(i & 1) ? (b & 0xf) : (b >> 4)];
+			int32 predicted = (info.coef1 * hist1[c] >> 12) + (info.coef2 * hist2[c] >> 12);
+			int16 o = clamp16(sample * scale + predicted);
+			out[i * info.channelCount + c] = o;
+			hist2[c] = hist1[c];
+			hist1[c] = o;
+		}
 	}
-
-	info.StreamDataOffset = SWAP_BYTES_16(*(uint16 *)(header + 2)) + 4;
-
-	stream->seek(info.StreamDataOffset - 6, SEEK_SET);
-	char const magic[] = "(c)CRI";
-	char fileMagic[6];
-	stream->read(fileMagic, 6);
-	if (memcmp(magic, fileMagic, 6) != 0) {
-		warning("Corrupt 2nd ADX Header");
-		return;
-	}
-
-	if (header[4] != 3) {
-		warning(
-		    "Encountered ADX file with unsupported encoding type format %d\n",
-		    header[4]);
-		return;
-	}
-
-	info.FrameSize = header[5];
-
-	if (header[6] != 4) {
-		warning(
-		    "Encountered ADX file with unknown bits per sample %d\n", header[6]);
-		return;
-	}
-
-	info.ChannelCount = header[7];
-	if (info.ChannelCount != 1 && info.ChannelCount != 2) {
-		warning(
-		    "Encountered ADX file with unsupported channel count %d\n",
-		    info.ChannelCount);
-		return;
-	}
-
-	info.SampleRate = SWAP_BYTES_16(*(uint32 *)(header + 8));
-
-	info.SampleCount = SWAP_BYTES_16(*(uint32 *)(header + 12));
-
-	info.Highpass = SWAP_BYTES_16(*(uint16 *)(header + 16));
-
-	if (header[18] != 4) {
-		warning(
-		       "Encountered ADX file with unsupported header version %d\n",
-		       header[18]);
-		return;
-	}
-
-	if (header[19] != 0) {
-		warning("Encountered encrypted ADX file, type %d\n",
-		       header[19]);
-		return;
-	}
-
-	int HistOffset = 0x18;
-	int HistSize = MAX(8, 4 * info.ChannelCount);
-
-	info.Hist1[0] = SWAP_BYTES_16(*(uint16 *)(header + HistOffset));
-	info.Hist2[0] = SWAP_BYTES_16(*(uint16 *)(header + HistOffset + 2));
-	info.Hist1[1] = SWAP_BYTES_16(*(uint16 *)(header + HistOffset + 4));
-	info.Hist2[1] = SWAP_BYTES_16(*(uint16 *)(header + HistOffset + 6));
-
-	int LoopOffset = HistOffset + HistSize;
-	int LoopSize = 0x18;
-	if (LoopOffset + LoopSize <= info.StreamDataOffset) {
-		info.HasLoop = true;
-		info.LoopStart = SWAP_BYTES_32(*(uint32 *)(header + LoopOffset + 8));
-		info.LoopEnd = SWAP_BYTES_32(*(uint32 *)(header + LoopOffset + 16));
-	} else {
-		info.HasLoop = false;
-	}
-
-	info.EncodedBytesPerBuffer = info.FrameSize * info.ChannelCount;
-	info.SamplesPerBuffer = (info.FrameSize - 2) * 2;
-	info.LoopStart = info.HasLoop ? info.LoopStart : 0;
-	info.LoopEnd = info.HasLoop ? info.LoopEnd : info.SampleCount;
-	SetCoefficients(info.Highpass, info.SampleRate);
-
-	info.BitDepth = 16;
-
-	stream->seek(info.StreamDataOffset, SEEK_SET);
 }
 
 } // namespace Common

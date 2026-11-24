@@ -147,7 +147,6 @@ Common::Error SMTEngine::run() {
 
 	Format::Graphic::TMX _tmx("test/COIN_C10.TMX");
 	Format::Script::BMD _bmd("test/field.BMD");
-	Common::ADX _adx("test/THEME.ADX");
 
 	//TMX _tmx("test/PSMT8.tmx");
 
