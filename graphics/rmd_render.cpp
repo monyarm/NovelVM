@@ -9,6 +9,7 @@
 #include "common/system.h"
 #include "math/vector3d.h"
 #include "graphics/rmd_render_mesh.h"
+#include "graphics/opengl/blitter.h"
 #include "graphics/opengl/context.h"
 #include "graphics/opengl/debug.h"
 #include "graphics/opengl/shader.h"
@@ -106,14 +107,7 @@ GLuint textureFor(const Graphics::Surface *surface) {
 	if (!surface) return 0;
 	State &s = state();
 	for (uint i = 0; i < s.glTextures.size(); ++i) if (s.glTextures[i].surface == surface) return s.glTextures[i].id;
-	Common::Array<byte> rgba; rgba.resize(surface->w * surface->h * 4);
-	for (int y = 0; y < surface->h; ++y) for (int x = 0; x < surface->w; ++x) {
-		uint32 p = 0; memcpy(&p, surface->getBasePtr(x, y), surface->format.bytesPerPixel);
-		byte *d = &rgba[(y * surface->w + x) * 4]; surface->format.colorToRGB(p, d[0], d[1], d[2]); d[3] = surface->format.aLoss == 8 ? 255 : (byte)(((p >> surface->format.aShift) << surface->format.aLoss) & 255);
-	}
-	GLuint id = 0; GL_CALL(glGenTextures(1, &id)); GL_CALL(glBindTexture(GL_TEXTURE_2D, id)); GL_CALL(glPixelStorei(GL_UNPACK_ALIGNMENT, 1));
-	GL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, surface->w, surface->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, rgba.data()));
-	GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)); GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
+	GLuint id = 0; GL_CALL(glGenTextures(1, &id)); ::OpenGL::uploadTexture(id, *surface, true);
 	GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT)); GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT));
 	GLTexture entry = {surface, id};
 	s.glTextures.push_back(entry); return id;

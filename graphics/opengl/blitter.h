@@ -1,6 +1,7 @@
 #ifndef GRAPHICS_OPENGL_BLITTER_H
 #define GRAPHICS_OPENGL_BLITTER_H
 
+#include "common/array.h"
 #include "common/scummsys.h"
 #include "common/str.h"
 
@@ -57,6 +58,16 @@ public:
 	static void drawText(const Graphics::Font &font, const Common::String &text, int x, int y, int maxWidth,
 	                     uint32 color, Graphics::TextAlign align = Graphics::kTextAlignLeft);
 };
+
+/** Convert @p src to tightly packed RGBA8888 bytes (row copy when it already is RGBA8888). */
+void surfaceToRGBA(const Graphics::Surface &src, Common::Array<byte> &out);
+
+/**
+ * Upload @p s as RGBA8888 into GL texture @p id: glTexImage2D when @p allocate, else
+ * glTexSubImage2D. Sets nearest filtering and clamp-to-edge wrapping; callers drawing
+ * repeated UVs set their own wrap modes after binding.
+ */
+void uploadTexture(uint id, const Graphics::Surface &s, bool allocate);
 
 } // End of namespace OpenGL
 
