@@ -21,6 +21,7 @@ MODULE_OBJS := \
 	pmsf.o \
 	dds.o \
 	adx.o \
+	hca.o \
 	ahx.o \
 	utf_table.o \
 	cri_mask.o
