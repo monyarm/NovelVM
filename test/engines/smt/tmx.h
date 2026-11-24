@@ -224,6 +224,41 @@ public:
 	}
 
 	// Corrupt header must fail cleanly (no crash, no surface).
+	// Regression: with two palettes, the indices follow BOTH cluts.
+	// The surface uses palette 0; reading indices right after palette 0 would
+	// pick up palette 1's bytes instead.
+	void test_psmt8_two_palettes_uses_first() {
+		const int w = 4, h = 4;
+		byte clut[256 * 4];
+		TmxSyntheticHelper::buildLinearClut256(clut, 240);
+		TmxSyntheticHelper::swizzleClut256(clut);
+		byte clut2[256 * 4];
+		memset(clut2, 0xEE, sizeof(clut2));
+
+		byte idx[16];
+		for (int i = 0; i < 16; i++)
+			idx[i] = (byte)i;
+
+		uint32 total = 0x40 + sizeof(clut) + sizeof(clut2) + sizeof(idx);
+		byte file[0x40 + 2 * 256 * 4 + 16];
+		int o = TmxSyntheticHelper::buildHeader(file, 2, 0x00, w, h, 0x13, 0, total);
+		memcpy(file + o, clut, sizeof(clut));
+		memcpy(file + o + sizeof(clut), clut2, sizeof(clut2));
+		memcpy(file + o + sizeof(clut) + sizeof(clut2), idx, sizeof(idx));
+
+		Common::MemoryReadStream stream(file, sizeof(file), DisposeAfterUse::NO);
+		SMT::TMX tmx(&stream);
+		Graphics::Surface *surf = tmx.getSurface();
+		TS_ASSERT(surf);
+		if (!surf)
+			return;
+		const byte *pix = (const byte *)surf->getPixels();
+		for (int k = 0; k < w * h; k++) {
+			TS_ASSERT_EQUALS((int)pix[k * 4 + 2], k);
+			TS_ASSERT_EQUALS((int)pix[k * 4 + 1], 255 - k);
+		}
+	}
+
 	void test_bad_magic() {
 		byte file[0x40] = { 0 };
 		file[0] = 0x02; // tmxID ok
