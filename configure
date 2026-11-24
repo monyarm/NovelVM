@@ -5972,9 +5972,8 @@ if test "$_openh264" = auto ; then
 	cat > $TMPC << EOF
 #include "wels/codec_api.h"
 int main(void) {
-	int version = WelsGetCodecVersion();
-	if (version == 0) return 1;
-	return 0;
+	OpenH264Version version = WelsGetCodecVersion();
+	return version.uMajor == 0 && version.uMinor == 0 ? 1 : 0;
 }
 EOF
 	cc_check_no_clean $OPENH264_CFLAGS $OPENH264_LIBS && _openh264=yes
