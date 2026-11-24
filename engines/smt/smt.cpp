@@ -396,12 +396,9 @@ Common::Error SMTEngine::run() {
 	// cutscenes as SFD (MPEG-PS + embedded CRI ADX) inside DATA.CVM --
 	// real-data-verified this session for P3F (P3CTOP.SFD) and P4
 	// (P4CTOP1.SFD/P4CTOP2.SFD, discovered via the same real DATA.CVM).
-	// P3P's real umd0.cpk/umd1.cpk contain no directly-reachable PMF/USM
-	// movie files -- P3P's cutscenes turned out to be packed inside nested
-	// AFS archives (also real CPK/CVM-adjacent CRI middleware, but not
-	// implemented this session, see docs/middleware-plan.md), so P3P finds
-	// no video here. P4G/P5/P5R have no local real corpus this session;
-	// this best-effort CPK scan for a PMF/USM opening is untested for them.
+	// P3P's openings are loose PSMF files (sound/pmsf, see below), not
+	// inside its CPKs. P4G/P5/P5R have no local real corpus; the best-effort
+	// CPK scan for a PMF/USM opening is untested for them.
 	Video::MPEGPSDecoder openingDecoder;
 	bool openingLoaded = false;
 	Common::SeekableReadStream *openingStream = nullptr;
@@ -459,11 +456,7 @@ Common::Error SMTEngine::run() {
 		// USRDIR/sound/pmsf/*.pmsf -- real files P3OPMV_P3P.pmsf and
 		// P3OPMV_P3PB.pmsf. The game directory is already mounted by the
 		// Engine base, so Common::PMF(filename) resolves the same way the
-		// CPKs above do. (Earlier sessions only had the CPKs extracted and
-		// wrongly concluded P3P's movies were packed in nested AFS
-		// archives -- the loose sound/pmsf directory existed all along, the
-		// extraction was simply incomplete. docs/middleware-plan.md was
-		// corrected accordingly.)
+		// CPKs above do.
 		gameCpk = new Common::CPK("umd0.cpk");
 		// P3OPMV_P3PB.pmsf is unrelated content, not an alternate opening --
 		// no fallback to it here (see kOpeningVideoCandidates above).
@@ -499,7 +492,7 @@ Common::Error SMTEngine::run() {
 		// 	openingStream = gameCpk->createReadStreamForMember(pmfPath);
 		// 	openingSourceDesc = Common::String::format("data.cpk/%s", pmfPath.toString().c_str());
 		// }
-		debug("SMT: P4G/P5/P5R opening video not attempted -- data.cpk decryption unsolved (see docs/middleware-plan.md)");
+		debug("SMT: P4G/P5/P5R opening video not attempted -- data.cpk decryption unsolved");
 	}
 
 	// Parse one entry into the active RMD model. The texture-phase list is
@@ -733,14 +726,13 @@ Common::Error SMTEngine::run() {
 
 	if (openingStream) {
 		if (openingSourceDesc.hasSuffixIgnoreCase(".USM")) {
-			// USM's real video codec in the one sample found this session
-			// (Persona 5 Royal) is VP9, which has no decoder here -- see
-			// docs/middleware-plan.md. Report what was found without
-			// attempting to feed raw chunked USM data to the MPEG-PS
-			// decoder, which only understands MPEG-PS, not USM's chunks.
+			// TODO: play USM through Video::USMDecoder (VP9 via libvpx) instead of rejecting it
+			// by extension. No USM opening is reachable yet: P4G/P5/P5R keep them in a
+			// CRI-encrypted data.cpk, so this path has never seen real data. The MPEG-PS
+			// decoder below cannot read USM's chunked layout.
 			delete openingStream;
 			openingStream = nullptr;
-			warning("SMT: found a USM opening (%s) but video decode isn't implemented (real sample used VP9)", openingSourceDesc.c_str());
+			warning("SMT: found a USM opening (%s) but USM playback is not wired up yet", openingSourceDesc.c_str());
 		} else if (openingSourceDesc.hasSuffixIgnoreCase(".PMF")) {
 			// PMF isn't itself an MPEG-PS stream on disk -- its real 2048-
 			// byte PSMF header wraps one. We already unwrapped it via
