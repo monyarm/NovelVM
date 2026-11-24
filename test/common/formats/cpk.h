@@ -45,14 +45,14 @@ public:
 		Common::Array<byte> file = assemble(headerPacket, itocPacket, kItocOffset, kContentOffset);
 
 		Common::DumpFile out;
-		TS_ASSERT(out.open(Common::Path("/tmp/opencode/novelvm_cpk_itoc_test.cpk")));
+		TS_ASSERT(out.open(Common::Path("/tmp/novelvm_cpk_itoc_test.cpk")));
 		if (out.isOpen()) {
 			TS_ASSERT_EQUALS(out.write(file.data(), file.size()), file.size());
 			out.close();
 		}
 
 		if (!SearchMan.hasArchive("novelvm_cpk_tmp"))
-			SearchMan.addDirectory("novelvm_cpk_tmp", Common::Path("/tmp/opencode"), 1, 1);
+			SearchMan.addDirectory("novelvm_cpk_tmp", Common::Path("/tmp"), 1, 1);
 
 		Common::CPK cpk("novelvm_cpk_itoc_test.cpk");
 

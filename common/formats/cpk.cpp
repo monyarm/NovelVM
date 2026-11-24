@@ -271,6 +271,7 @@ bool CPK::load() {
 	return true;
 }
 
+// TODO: verify the ITOC path below against a real ITOC-keyed CPK (P3P's CPKs are TOC-only).
 // ITOC path: implemented from the documented CRI layout (CriPakTools'
 // ReadITOC and vgmstream's cpk.c), but never verified against a real
 // ITOC-keyed archive -- none was available in the test corpus. The layout is
