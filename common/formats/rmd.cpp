@@ -27,6 +27,7 @@ enum {
 	kPersonaAnimationOverride = 0xF0F00005, kPersonaParticleList = 0xF0F000E0,
 	kPersonaAnimationPlaceholder = 0xF0F00001, kPersonaAnimationInstance = 0xF0F00003,
 	kPersonaVisibilityAnimation = 0xF0F00080, kPersonaParticleAnimation = 0xF0F000E1,
+	kUVAnimationPlugin = 0x135, kUVParamKeyFrames = 0x1C1,
 };
 
 uint32 readUint32LE(const Common::Array<byte> &data, uint32 offset) {
@@ -199,6 +200,7 @@ void RMD::clearModel() {
 	_animations.clear();
 	_opaqueNodes.clear();
 	_animationSlots.clear();
+	_uvAnimations.clear();
 	_slotOpen = false;
 	_recoveryRanges.clear();
 }
@@ -274,6 +276,115 @@ static bool isAnimationSlotNode(uint32 type) {
 		type == kPersonaVisibilityAnimation || type == kPersonaParticleAnimation;
 }
 
+void RMD::parseUVAnimationDictionary(const Node &node, AnimationSlot &slot) {
+	// RW UV animation dictionary: STRUCT { int32 count }, then count animation chunks (0x1B):
+	// version 0x100, type, numFrames, flags, duration, then (type 0x1C1, as librw's uvanim.cpp)
+	// int32 unused, char name[32], int32 nodeToUVChannel[8], and 32-byte keyframes
+	// { float time; float theta, s0, s1, skew, x, y; int32 prev }. The first numNodes frames
+	// start each node; later frames belong to the node of their prev frame.
+	Node st;
+	if (!readNode(node.payloadOffset, node.payloadEnd, st) || st.type != kStruct || st.size < 4)
+		return;
+	const uint32 count = readUint32LE(_data, st.payloadOffset);
+	uint32 offset = st.payloadEnd;
+	for (uint32 a = 0; a < count && offset < node.payloadEnd; ++a) {
+		Node anim;
+		if (!readNode(offset, node.payloadEnd, anim) || anim.type != kPersonaAnimation)
+			return;
+		offset = anim.payloadEnd;
+		const uint32 p = anim.payloadOffset;
+		if (anim.size < 88 || readUint32LE(_data, p) != 0x100 || readUint32LE(_data, p + 4) != kUVParamKeyFrames)
+			continue;
+		const uint32 frames = readUint32LE(_data, p + 8);
+		if ((uint64)88 + (uint64)frames * 32 > anim.size)
+			continue;
+		UVAnimation uv;
+		uv.duration = readFloatLE(_data, p + 16);
+		uint32 len = 0;
+		while (len < 32 && _data[p + 24 + len])
+			++len;
+		uv.name = Common::String((const char *)&_data[p + 24], len);
+		// nodes: frames until one points back at frame 0
+		uint32 nodes = 1;
+		while (nodes < frames && readUint32LE(_data, p + 88 + nodes * 32 + 28) != 0)
+			++nodes;
+		Common::Array<int32> nodeOf(frames, -1);
+		for (uint32 i = 0; i < frames; ++i) {
+			const uint32 k = p + 88 + i * 32;
+			const uint32 prev = readUint32LE(_data, k + 28);
+			nodeOf[i] = i < nodes ? (int32)i : (prev < i ? nodeOf[prev] : -1);
+			// nodeToUVChannel[node] picks the UV set; NovelVM renders the base set (0) only.
+			if (nodeOf[i] < 0 || readUint32LE(_data, p + 56 + nodeOf[i] * 4) != 0)
+				continue;
+			UVAnimationKey key;
+			key.time = readFloatLE(_data, k);
+			key.theta = readFloatLE(_data, k + 4);
+			key.scaleU = readFloatLE(_data, k + 8);
+			key.scaleV = readFloatLE(_data, k + 12);
+			key.skew = readFloatLE(_data, k + 16);
+			key.x = readFloatLE(_data, k + 20);
+			key.y = readFloatLE(_data, k + 24);
+			uv.keys.push_back(key);
+		}
+		if (uv.keys.empty())
+			continue;
+		slot.uvAnimations.push_back(_uvAnimations.size());
+		_uvAnimations.push_back(uv);
+	}
+}
+
+void RMD::evaluateSlotUVTransforms(uint32 slot, float time, Common::Array<float> &out) const {
+	out.resize(_materials.size() * 6);
+	for (uint32 m = 0; m < _materials.size(); ++m) {
+		float *t = &out[m * 6];
+		t[0] = 1; t[1] = 0; t[2] = 0; t[3] = 1; t[4] = 0; t[5] = 0;
+	}
+	if (slot >= _animationSlots.size())
+		return;
+	const AnimationSlot &s = _animationSlots[slot];
+	for (uint32 m = 0; m < _materials.size(); ++m) {
+		if (_materials[m].uvAnimationName.empty())
+			continue;
+		for (uint32 a = 0; a < s.uvAnimations.size(); ++a) {
+			const UVAnimation &uv = _uvAnimations[s.uvAnimations[a]];
+			if (!uv.name.equalsIgnoreCase(_materials[m].uvAnimationName))
+				continue;
+			// Interpolate the param keys (theta wrapped to the short way round, as librw).
+			const float tl = uv.duration > 0 ? fmodf(MAX(time, 0.0f), uv.duration) : 0;
+			UVAnimationKey k = uv.keys[0];
+			for (uint32 i = 0; i + 1 < uv.keys.size(); ++i) {
+				const UVAnimationKey &a0 = uv.keys[i], &a1 = uv.keys[i + 1];
+				if (tl > a1.time)
+					k = a1;
+				if (tl < a0.time || tl > a1.time)
+					continue;
+				const float f = a1.time > a0.time ? (tl - a0.time) / (a1.time - a0.time) : 0;
+				float dTheta = a1.theta - a0.theta;
+				while (dTheta < -(float)M_PI) dTheta += 2 * (float)M_PI;
+				while (dTheta > (float)M_PI) dTheta -= 2 * (float)M_PI;
+				k.theta = a0.theta + dTheta * f;
+				k.scaleU = a0.scaleU + (a1.scaleU - a0.scaleU) * f;
+				k.scaleV = a0.scaleV + (a1.scaleV - a0.scaleV) * f;
+				k.skew = a0.skew + (a1.skew - a0.skew) * f;
+				k.x = a0.x + (a1.x - a0.x) * f;
+				k.y = a0.y + (a1.y - a0.y) * f;
+				break;
+			}
+			// librw uvAnimParamApplyCB: right = (s0, skew), up = (0, s1), pos = (x, y), then
+			// rotate by theta about (0.5, 0.5); row vectors, so u' = u*right.x + v*up.x + pos.x.
+			const float c = cosf(k.theta), sn = sinf(k.theta);
+			const float r0 = k.scaleU, r1 = k.skew, u0 = 0, u1 = k.scaleV;
+			const float px = k.x - 0.5f, py = k.y - 0.5f;
+			float *t = &out[m * 6];
+			// (row) * R with R = [[c, sn], [-sn, c]]
+			t[0] = r0 * c - r1 * sn; t[1] = r0 * sn + r1 * c;
+			t[2] = u0 * c - u1 * sn; t[3] = u0 * sn + u1 * c;
+			t[4] = px * c - py * sn + 0.5f; t[5] = px * sn + py * c + 0.5f;
+			break;
+		}
+	}
+}
+
 int32 RMD::animationForSlot(uint32 slot) const {
 	// Instances point at another slot; bound the walk in case of a reference cycle.
 	for (uint32 hops = 0; slot < _animationSlots.size() && hops <= _animationSlots.size(); ++hops) {
@@ -312,6 +423,8 @@ void RMD::parseNode(const Node &node) {
 		}
 		if (node.type == kPersonaAnimationPlaceholder)
 			return;
+		if (node.type == kUVAnimationDictionary)
+			parseUVAnimationDictionary(node, slot);
 		// Transform override, visibility, UV and particle animation: kept as raw payloads.
 		OpaqueNode opaque;
 		opaque.type = node.type;
@@ -474,6 +587,21 @@ void RMD::parseNode(const Node &node) {
 
 	if (node.type == kAnimation) {
 		parseAnimation(node);
+		return;
+	}
+
+	if (node.type == kUVAnimationPlugin && !_materials.empty()) {
+		// Material UV anim plugin: STRUCT { uint32 mask; char name[32] per set bit }. Only
+		// bit 0 (the base UV channel) occurs in the corpus.
+		Node st;
+		if (readNode(node.payloadOffset, node.payloadEnd, st) && st.type == kStruct && st.size >= 36 &&
+				(readUint32LE(_data, st.payloadOffset) & 1)) {
+			const uint32 nameOffset = st.payloadOffset + 4;
+			uint32 len = 0;
+			while (len < 32 && _data[nameOffset + len])
+				++len;
+			_materials.back().uvAnimationName = Common::String((const char *)&_data[nameOffset], len);
+		}
 		return;
 	}
 

@@ -91,6 +91,7 @@ public:
 		float specular = 0;
 		float diffuse = 0;
 		bool alpha = false;
+		Common::String uvAnimationName; ///< base-UV animation (UV anim plugin 0x135, slot 0), or empty
 	};
 	struct Texture {
 		Common::String name;
@@ -145,7 +146,25 @@ public:
 		int32 animation = -1;  ///< index into animations(), or -1
 		int32 instanceOf = -1; ///< slot reused through an instance node, or -1
 		Common::Array<uint32> extras; ///< opaqueNodes() indices: transform override, visibility, UV, particle animation
+		Common::Array<uint32> uvAnimations; ///< uvAnimations() indices from this slot's UV animation dictionary
 	};
+	/** RenderWare UV animation (param keyframes, type 0x1C1), base UV channel only. */
+	struct UVAnimationKey {
+		float time = 0;
+		float theta = 0, scaleU = 1, scaleV = 1, skew = 0, x = 0, y = 0;
+	};
+	struct UVAnimation {
+		Common::String name;
+		float duration = 0;
+		Common::Array<UVAnimationKey> keys;
+	};
+	const Common::Array<UVAnimation> &uvAnimations() const { return _uvAnimations; }
+	/**
+	 * Per-material 2x3 UV transforms for @p slot at @p time (seconds, looping): six floats per
+	 * material, u' = m[0]*u + m[2]*v + m[4], v' = m[1]*u + m[3]*v + m[5]. Identity for
+	 * materials without a UV animation in that slot.
+	 */
+	void evaluateSlotUVTransforms(uint32 slot, float time, Common::Array<float> &out) const;
 	const Common::Array<AnimationSlot> &animationSlots() const { return _animationSlots; }
 	/** Skeletal animation played by @p slot, following instance references; -1 if none. */
 	int32 animationForSlot(uint32 slot) const;
@@ -182,6 +201,8 @@ private:
 	Common::Array<Animation> _animations;
 	Common::Array<OpaqueNode> _opaqueNodes;
 	Common::Array<AnimationSlot> _animationSlots;
+	Common::Array<UVAnimation> _uvAnimations;
+	void parseUVAnimationDictionary(const Node &node, AnimationSlot &slot);
 	bool _slotOpen = false;
 	Common::Array<RecoveryRange> _recoveryRanges;
 

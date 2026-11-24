@@ -37,6 +37,17 @@ private:
 		return out;
 	}
 
+	static void appendFloat(Common::Array<byte> &out, float value) {
+		uint32 bits;
+		memcpy(&bits, &value, 4);
+		append32(out, bits);
+	}
+
+	static void appendName32(Common::Array<byte> &out, const char *name) {
+		for (uint32 i = 0; i < 32; ++i)
+			out.push_back(i < strlen(name) ? (byte)name[i] : 0);
+	}
+
 	static void appendNode(Common::Array<byte> &out, uint32 type, const Common::Array<byte> &payload, uint32 version = 0x1C020037) {
 		Common::Array<byte> child = node(type, payload, version);
 		for (uint32 i = 0; i < child.size(); ++i) out.push_back(child[i]);
@@ -195,6 +206,12 @@ public:
 				for (uint32 j = 0; j < textureName.size(); ++j) reference.push_back(textureName[j]);
 				for (uint32 j = 0; j < maskName.size(); ++j) reference.push_back(maskName[j]);
 				appendNode(material, 6, reference);
+				// UV anim plugin (0x135): STRUCT { mask = 1, name[32] } inside the material extension.
+				Common::Array<byte> uvStruct; append32(uvStruct, 1);
+				appendName32(uvStruct, "09 - Default");
+				Common::Array<byte> uvPlugin; appendNode(uvPlugin, 1, uvStruct);
+				Common::Array<byte> extension; appendNode(extension, 0x135, uvPlugin);
+				appendNode(material, 3, extension);
 			}
 			appendNode(materialList, 7, material);
 		}
@@ -216,9 +233,34 @@ public:
 		Common::Array<byte> nativeBytes; nativeBytes.push_back(0xA5); nativeBytes.push_back(0x5A); appendNode(textureNative, 1, nativeBytes);
 		Common::Array<byte> textureDict; appendNode(textureDict, 1, textureStruct); appendNode(textureDict, 21, textureNative);
 		Common::Array<byte> data; appendNode(data, 22, textureDict, 0x1C020037); appendNode(data, 16, clump);
+		// One animation slot holding a UV animation dictionary, laid out like the real P3 FES
+		// FOBJ000.RMD one: a param (0x1C1) animation scrolling y from 0 to 1 over 1.6667s.
+		Common::Array<byte> uvAnim;
+		append32(uvAnim, 0x100); append32(uvAnim, 0x1C1); append32(uvAnim, 2); append32(uvAnim, 0); appendFloat(uvAnim, 1.6667f);
+		append32(uvAnim, 0); appendName32(uvAnim, "09 - Default");
+		for (uint32 i = 0; i < 8; ++i) append32(uvAnim, 0); // nodeToUVChannel: base set
+		const float keys[2][7] = {{0, 0, 1, 1, 0, 0, 0}, {1.6667f, 0, 1, 1, 0, 0, 1}};
+		for (uint32 k = 0; k < 2; ++k) {
+			for (uint32 j = 0; j < 7; ++j) appendFloat(uvAnim, keys[k][j]);
+			append32(uvAnim, k == 0 ? 0xFEC4A9F3 : 0); // prev: junk for the first frame, as in the file
+		}
+		Common::Array<byte> uvDictStruct; append32(uvDictStruct, 1);
+		Common::Array<byte> uvDict; appendNode(uvDict, 1, uvDictStruct); appendNode(uvDict, 0x1B, uvAnim);
+		appendNode(data, 0x2B, uvDict);
+		appendNode(data, 0xF0F00004, Common::Array<byte>());
 		Common::MemoryReadStream stream(data.data(), data.size(), DisposeAfterUse::NO);
 		Common::RMD rmd(&stream);
 		TS_ASSERT(rmd.ok());
+		TS_ASSERT_EQUALS(rmd.materials()[0].uvAnimationName, "09 - Default");
+		TS_ASSERT_EQUALS(rmd.uvAnimations().size(), 1u);
+		Common::Array<float> uv;
+		rmd.evaluateSlotUVTransforms(0, 1.6667f / 2, uv);
+		TS_ASSERT_EQUALS(uv.size(), 12u);
+		if (uv.size() == 12) {
+			TS_ASSERT_DELTA(uv[0], 1.0f, 1e-5f); TS_ASSERT_DELTA(uv[3], 1.0f, 1e-5f);
+			TS_ASSERT_DELTA(uv[4], 0.0f, 1e-5f); TS_ASSERT_DELTA(uv[5], 0.5f, 1e-4f); // half a V scroll
+			TS_ASSERT_DELTA(uv[6 + 5], 0.0f, 1e-5f); // material 1: no UV animation, identity
+		}
 		TS_ASSERT_EQUALS(rmd.frames().size(), 1u);
 		TS_ASSERT_EQUALS(rmd.geometries().size(), 1u);
 		TS_ASSERT_EQUALS(rmd.geometries()[0].indices.size(), 6u);
