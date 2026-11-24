@@ -414,7 +414,7 @@ static const int8 atrac3p_spectra_cbs[][12] = {
     // these counts through a uint8_t* parameter, so the effective value
     // really is unsigned 172, not a signed overflow -- confirmed by
     // cross-checking against a real ffmpeg decode of a file that exercises
-    // this exact table (see docs/middleware-plan.md). -84 is 172's bit
+    // this exact table. -84 is 172's bit
     // pattern reinterpreted as int8 (avoids a narrowing-conversion error);
     // the reader (buildCanonicalHuff in atrac3plus.cpp) reinterprets every
     // count back to unsigned before use, recovering the real value 172.
