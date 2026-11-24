@@ -28,7 +28,7 @@ struct RMDRenderMesh {
 void assembleRMDMesh(const Common::RMD &rmd, const Common::Array<Graphics::Surface *> &textures,
 					 int width, int height, float rotY, const Common::RMD::BonePose *pose,
 					 const RMDBounds *fixed, RMDRenderMesh &out,
-					 const Common::Array<float> *uvTransforms = nullptr);
+					 const Common::RMD::MaterialPose *materialPose = nullptr);
 
 } // namespace Graphics
 

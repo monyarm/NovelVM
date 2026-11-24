@@ -43,6 +43,11 @@ private:
 		append32(out, bits);
 	}
 
+	static void appendBytes(Common::Array<byte> &out, const char *bytes, uint32 n) {
+		for (uint32 i = 0; i < n; ++i)
+			out.push_back((byte)bytes[i]);
+	}
+
 	static void appendName32(Common::Array<byte> &out, const char *name) {
 		for (uint32 i = 0; i < 32; ++i)
 			out.push_back(i < strlen(name) ? (byte)name[i] : 0);
@@ -211,6 +216,11 @@ public:
 				appendName32(uvStruct, "09 - Default");
 				Common::Array<byte> uvPlugin; appendNode(uvPlugin, 1, uvStruct);
 				Common::Array<byte> extension; appendNode(extension, 0x135, uvPlugin);
+				// RW user data (0x11F): one string array "name" = "hasi", as on real P3 FES materials.
+				Common::Array<byte> userData; append32(userData, 1);
+				append32(userData, 5); appendBytes(userData, "name", 5); append32(userData, 3); append32(userData, 1);
+				append32(userData, 5); appendBytes(userData, "hasi", 5);
+				appendNode(extension, 0x11F, userData);
 				appendNode(material, 3, extension);
 			}
 			appendNode(materialList, 7, material);
@@ -247,19 +257,34 @@ public:
 		Common::Array<byte> uvDictStruct; append32(uvDictStruct, 1);
 		Common::Array<byte> uvDict; appendNode(uvDict, 1, uvDictStruct); appendNode(uvDict, 0x1B, uvAnim);
 		appendNode(data, 0x2B, uvDict);
+		// Visibility animation (0xF0F00080) fading material "hasi" from 1 to 0 over 1s.
+		Common::Array<byte> vis;
+		append32(vis, 2); appendFloat(vis, 1.0f); append32(vis, 8); append32(vis, 4); append32(vis, 0x12345678);
+		appendBytes(vis, "hasi", 4);
+		appendFloat(vis, 0.0f); appendFloat(vis, 1.0f); appendFloat(vis, 1.0f); appendFloat(vis, 0.0f);
+		appendNode(data, 0xF0F00080, vis);
 		appendNode(data, 0xF0F00004, Common::Array<byte>());
 		Common::MemoryReadStream stream(data.data(), data.size(), DisposeAfterUse::NO);
 		Common::RMD rmd(&stream);
 		TS_ASSERT(rmd.ok());
 		TS_ASSERT_EQUALS(rmd.materials()[0].uvAnimationName, "09 - Default");
 		TS_ASSERT_EQUALS(rmd.uvAnimations().size(), 1u);
-		Common::Array<float> uv;
-		rmd.evaluateSlotUVTransforms(0, 1.6667f / 2, uv);
+		TS_ASSERT_EQUALS(rmd.materials()[0].name, "hasi");
+		TS_ASSERT_EQUALS(rmd.visibilityAnimations().size(), 1u);
+		Common::RMD::MaterialPose materialPose;
+		rmd.evaluateSlotMaterials(0, 1.6667f / 2, materialPose);
+		const Common::Array<float> &uv = materialPose.uvTransforms;
 		TS_ASSERT_EQUALS(uv.size(), 12u);
 		if (uv.size() == 12) {
 			TS_ASSERT_DELTA(uv[0], 1.0f, 1e-5f); TS_ASSERT_DELTA(uv[3], 1.0f, 1e-5f);
 			TS_ASSERT_DELTA(uv[4], 0.0f, 1e-5f); TS_ASSERT_DELTA(uv[5], 0.5f, 1e-4f); // half a V scroll
 			TS_ASSERT_DELTA(uv[6 + 5], 0.0f, 1e-5f); // material 1: no UV animation, identity
+		}
+		rmd.evaluateSlotMaterials(0, 0.5f, materialPose);
+		TS_ASSERT_EQUALS(materialPose.opacity.size(), 2u);
+		if (materialPose.opacity.size() == 2) {
+			TS_ASSERT_DELTA(materialPose.opacity[0], 0.5f, 1e-5f); // halfway through the fade
+			TS_ASSERT_DELTA(materialPose.opacity[1], 1.0f, 1e-5f);
 		}
 		TS_ASSERT_EQUALS(rmd.frames().size(), 1u);
 		TS_ASSERT_EQUALS(rmd.geometries().size(), 1u);
