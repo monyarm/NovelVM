@@ -20,6 +20,7 @@ MODULE_OBJS := \
 	cpk.o \
 	cvm.o \
 	pmsf.o \
+	pmf.o \
 	dds.o \
 	adx.o \
 	acx.o \
