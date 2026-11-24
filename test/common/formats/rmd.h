@@ -283,19 +283,21 @@ public:
 		TS_ASSERT_EQUALS(rmd.frames().size(), 0u);
 	}
 
-	void testIgnoresOpaqueHAnimMetadata() {
+	void testParsesHierarchyWithZeroNameIdAndNineNodes() {
+		// Real P3F/P4 field RMDs (e.g. P4 FIELD/RMD/M001_002.RMD) start the HAnim payload with
+		// 0x100, nameId 0, nodeCount 9 -- bytes that also look like a {0x100, size 0, version 9}
+		// chunk header. They must still parse as a hierarchy.
 		Common::Array<byte> frameStruct;
 		append32(frameStruct, 1);
 		for (uint32 i = 0; i < 14; ++i) append32(frameStruct, i == 12 ? 0xFFFFFFFF : 0);
 		Common::Array<byte> frameList;
 		appendNode(frameList, 1, frameStruct);
 
-		Common::Array<byte> hAnimStruct;
-		append32(hAnimStruct, 1); append32(hAnimStruct, 42);
 		Common::Array<byte> hAnim;
-		appendNode(hAnim, 0x100, Common::Array<byte>(), 0x09);
-		appendNode(hAnim, 1, hAnimStruct);
-		appendNode(hAnim, 0x100, Common::Array<byte>(), 0x10);
+		append32(hAnim, 0x100); append32(hAnim, 0); append32(hAnim, 9); append32(hAnim, 0); append32(hAnim, 36);
+		for (uint32 i = 0; i < 9; ++i) {
+			append32(hAnim, i); append32(hAnim, (i + 3) % 9); append32(hAnim, 0);
+		}
 		Common::Array<byte> data;
 		appendNode(data, 14, frameList);
 		appendNode(data, 0x11E, hAnim);
@@ -303,9 +305,66 @@ public:
 		Common::RMD rmd = parse(data.data(), data.size());
 		TS_ASSERT(rmd.ok());
 		if (rmd.ok()) {
-			TS_ASSERT_EQUALS(rmd.frames().size(), 1u);
 			TS_ASSERT_EQUALS(rmd.frames()[0].nameId, 0u);
+			// Hierarchy index 3 is node 0, i.e. frame 0; without the hierarchy it would be frame 3 (absent).
+			TS_ASSERT_EQUALS(rmd.frameForHierarchy(3), 0);
 		}
+	}
+
+	void testHierarchyIgnoresFramesWithoutHAnim() {
+		// Real P4 weapons (MODEL/WEAPON/WP000.RMD): the root frame has no HAnim extension
+		// (so its nameId is a default 0) and frame 1 carries HAnim node 0. Node 0 is frame 1.
+		Common::Array<byte> frameStruct;
+		append32(frameStruct, 2);
+		for (uint32 f = 0; f < 2; ++f)
+			for (uint32 i = 0; i < 14; ++i) append32(frameStruct, i == 12 ? (f == 0 ? 0xFFFFFFFF : 0) : 0);
+		Common::Array<byte> hAnim;
+		append32(hAnim, 0x100); append32(hAnim, 0); append32(hAnim, 1); append32(hAnim, 0); append32(hAnim, 36);
+		append32(hAnim, 0); append32(hAnim, 0); append32(hAnim, 0);
+		Common::Array<byte> hAnimExtension;
+		appendNode(hAnimExtension, 0x11E, hAnim);
+		Common::Array<byte> frameList;
+		appendNode(frameList, 1, frameStruct);
+		appendNode(frameList, 3, Common::Array<byte>());
+		appendNode(frameList, 3, hAnimExtension);
+		Common::Array<byte> data;
+		appendNode(data, 14, frameList);
+
+		Common::RMD rmd = parse(data.data(), data.size());
+		TS_ASSERT(rmd.ok());
+		if (rmd.ok()) {
+			TS_ASSERT_EQUALS(rmd.frames().size(), 2u);
+			TS_ASSERT_EQUALS(rmd.frameForHierarchy(0), 1);
+		}
+	}
+
+	void testAnimationSlotsFollowTerminatorsAndInstances() {
+		// Slots as in real RMDs (and Amicitia's RmdScene): each runs up to a 0xF0F00004
+		// terminator. Slot 0 is a placeholder, slot 1 an instance of slot 2, slot 2 holds a
+		// transform override (64-byte matrix) and nothing skeletal.
+		Common::Array<byte> instance;
+		instance.push_back(2); instance.push_back(0);
+		Common::Array<byte> override(64, (byte)0);
+		Common::Array<byte> data;
+		appendNode(data, 0xF0F00001, Common::Array<byte>());
+		appendNode(data, 0xF0F00004, Common::Array<byte>());
+		appendNode(data, 0xF0F00003, instance);
+		appendNode(data, 0xF0F00004, Common::Array<byte>());
+		appendNode(data, 0xF0F00005, override);
+		appendNode(data, 0xF0F00004, Common::Array<byte>());
+
+		Common::RMD rmd = parse(data.data(), data.size());
+		TS_ASSERT(rmd.ok());
+		TS_ASSERT_EQUALS(rmd.animationSlots().size(), 3u);
+		if (rmd.animationSlots().size() != 3)
+			return;
+		TS_ASSERT_EQUALS(rmd.animationSlots()[0].animation, -1);
+		TS_ASSERT_EQUALS(rmd.animationSlots()[0].extras.size(), 0u);
+		TS_ASSERT_EQUALS(rmd.animationSlots()[1].instanceOf, 2);
+		TS_ASSERT_EQUALS(rmd.animationSlots()[2].extras.size(), 1u);
+		TS_ASSERT_EQUALS(rmd.opaqueNodes()[rmd.animationSlots()[2].extras[0]].type, 0xF0F00005u);
+		TS_ASSERT_EQUALS(rmd.animationForSlot(1), -1);
+		TS_ASSERT_EQUALS(rmd.animationForSlot(7), -1);
 	}
 
 	void testPreservesPersonaParticleListTrailer() {

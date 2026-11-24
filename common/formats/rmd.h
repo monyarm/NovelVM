@@ -71,6 +71,7 @@ public:
 		int32 parent = -1;
 		uint32 flags = 0;
 		uint32 nameId = 0;
+		bool hasHAnim = false; // nameId is only meaningful when the frame carries an HAnim extension
 		Common::String name;
 	};
 	struct HierarchyNode {
@@ -136,7 +137,21 @@ public:
 	const Common::Array<Clump> &clumps() const { return _clumps; }
 	const Common::Array<Animation> &animations() const { return _animations; }
 	const Common::Array<OpaqueNode> &opaqueNodes() const { return _opaqueNodes; }
+	/**
+	 * One Persona animation slot: the nodes up to a terminator (0xF0F00004). Games select
+	 * animations by slot index; placeholder slots are empty and instance slots reuse another.
+	 */
+	struct AnimationSlot {
+		int32 animation = -1;  ///< index into animations(), or -1
+		int32 instanceOf = -1; ///< slot reused through an instance node, or -1
+		Common::Array<uint32> extras; ///< opaqueNodes() indices: transform override, visibility, UV, particle animation
+	};
+	const Common::Array<AnimationSlot> &animationSlots() const { return _animationSlots; }
+	/** Skeletal animation played by @p slot, following instance references; -1 if none. */
+	int32 animationForSlot(uint32 slot) const;
 	bool evaluateAnimation(uint32 animationIndex, float time, BonePose &pose) const;
+	/** Frame index for an HAnim hierarchy index (animation track bone), or -1. */
+	int32 frameForHierarchy(uint32 index) const;
 
 private:
 	struct Node {
@@ -166,8 +181,9 @@ private:
 	Common::Array<Clump> _clumps;
 	Common::Array<Animation> _animations;
 	Common::Array<OpaqueNode> _opaqueNodes;
+	Common::Array<AnimationSlot> _animationSlots;
+	bool _slotOpen = false;
 	Common::Array<RecoveryRange> _recoveryRanges;
-	Common::Array<float> _frameMinAngleToBind;
 
 	static bool validVersion(uint32 version);
 	bool readNode(uint32 offset, uint32 limit, Node &node) const;
@@ -186,8 +202,6 @@ private:
 	bool validateFrames() const;
 	bool validateReferences() const;
 	void clearModel();
-	int32 frameForHierarchy(uint32 index) const;
-	void computeFrameMinAngleToBind();
 };
 
 } // namespace Common

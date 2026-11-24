@@ -25,6 +25,8 @@ enum {
 	kAnimation = 0x108, kSkin = 0x116, kPersonaAnimation = 0x1B,
 	kUVAnimationDictionary = 0x2B, kPersonaAnimationTerminator = 0xF0F00004,
 	kPersonaAnimationOverride = 0xF0F00005, kPersonaParticleList = 0xF0F000E0,
+	kPersonaAnimationPlaceholder = 0xF0F00001, kPersonaAnimationInstance = 0xF0F00003,
+	kPersonaVisibilityAnimation = 0xF0F00080, kPersonaParticleAnimation = 0xF0F000E1,
 };
 
 uint32 readUint32LE(const Common::Array<byte> &data, uint32 offset) {
@@ -92,33 +94,6 @@ RMD::Matrix poseMatrix(const RMD::AnimationKey &key) {
 	out.m[8] = 2 * (x * z + y * w); out.m[9] = 2 * (y * z - x * w); out.m[10] = 1 - 2 * (x * x + y * y);
 	out.m[12] = key.translation.x; out.m[13] = key.translation.y; out.m[14] = key.translation.z;
 	return out;
-}
-
-float angleBetweenRotations(const RMD::Matrix &m1, const RMD::Matrix &m2) {
-	float r[9];
-	for (uint32 row = 0; row < 3; ++row)
-		for (uint32 column = 0; column < 3; ++column) {
-			float sum = 0;
-			for (uint32 i = 0; i < 3; ++i)
-				sum += m1.m[i * 4 + row] * m2.m[i * 4 + column];
-			r[row * 3 + column] = sum;
-		}
-	float cosine = (r[0] + r[4] + r[8] - 1) * 0.5f;
-	cosine = CLIP(cosine, -1.0f, 1.0f);
-	return acosf(cosine);
-}
-
-bool trackIsStatic(const RMD::AnimationTrack &track) {
-	if (track.keys.size() < 2)
-		return true;
-	const RMD::AnimationKey &first = track.keys[0];
-	for (uint32 i = 1; i < track.keys.size(); ++i) {
-		const RMD::AnimationKey &key = track.keys[i];
-		if (fabsf(first.rotation.x - key.rotation.x) > 1e-4f || fabsf(first.rotation.y - key.rotation.y) > 1e-4f ||
-			fabsf(first.rotation.z - key.rotation.z) > 1e-4f || fabsf(first.rotation.w - key.rotation.w) > 1e-4f)
-			return false;
-	}
-	return true;
 }
 
 RMD::Quaternion slerp(const RMD::Quaternion &a, const RMD::Quaternion &b, float alpha) {
@@ -209,31 +184,8 @@ RMD::RMD(SeekableReadStream *stream) {
 		if (_ok && !validateReferences())
 			_ok = false;
 	}
-	if (_ok)
-		computeFrameMinAngleToBind();
 	if (!_ok)
 		clearModel();
-}
-
-void RMD::computeFrameMinAngleToBind() {
-	_frameMinAngleToBind.resize(_frames.size());
-	for (uint32 i = 0; i < _frames.size(); ++i)
-		_frameMinAngleToBind[i] = 1e9f;
-	for (uint32 a = 0; a < _animations.size(); ++a) {
-		const Animation &animation = _animations[a];
-		for (uint32 t = 0; t < animation.tracks.size(); ++t) {
-			const AnimationTrack &track = animation.tracks[t];
-			const int32 frame = frameForHierarchy(track.bone);
-			if (frame < 0 || (uint32)frame >= _frames.size())
-				continue;
-			const Matrix bind = frameMatrix(_frames[frame]);
-			for (uint32 k = 0; k < track.keys.size(); ++k) {
-				const float angle = angleBetweenRotations(bind, poseMatrix(track.keys[k])) * 180.0f / 3.14159265f;
-				if (angle < _frameMinAngleToBind[frame])
-					_frameMinAngleToBind[frame] = angle;
-			}
-		}
-	}
 }
 
 void RMD::clearModel() {
@@ -246,6 +198,8 @@ void RMD::clearModel() {
 	_clumps.clear();
 	_animations.clear();
 	_opaqueNodes.clear();
+	_animationSlots.clear();
+	_slotOpen = false;
 	_recoveryRanges.clear();
 }
 
@@ -295,8 +249,9 @@ bool RMD::parsePersonaAnimationSet(uint32 begin, uint32 end) {
 			_ok = false;
 			return false;
 		}
-		if (node.type == 0xF0F00004) {
+		if (node.type == kPersonaAnimationTerminator) {
 			terminated = true;
+			parseNode(node);
 			offset = nextSiblingOffset(node, end);
 			continue;
 		}
@@ -312,7 +267,61 @@ bool RMD::parsePersonaAnimationSet(uint32 begin, uint32 end) {
 	return terminated && animationCount > 0;
 }
 
+// Node types that make up a Persona animation slot (Amicitia's RmdScene animation set).
+static bool isAnimationSlotNode(uint32 type) {
+	return type == kPersonaAnimation || type == kUVAnimationDictionary || type == kPersonaAnimationPlaceholder ||
+		type == kPersonaAnimationInstance || type == kPersonaAnimationOverride ||
+		type == kPersonaVisibilityAnimation || type == kPersonaParticleAnimation;
+}
+
+int32 RMD::animationForSlot(uint32 slot) const {
+	// Instances point at another slot; bound the walk in case of a reference cycle.
+	for (uint32 hops = 0; slot < _animationSlots.size() && hops <= _animationSlots.size(); ++hops) {
+		const AnimationSlot &s = _animationSlots[slot];
+		if (s.animation >= 0 || s.instanceOf < 0)
+			return s.animation;
+		slot = (uint32)s.instanceOf;
+	}
+	return -1;
+}
+
 void RMD::parseNode(const Node &node) {
+	if (node.type == kPersonaAnimationTerminator) {
+		if (!_slotOpen)
+			_animationSlots.push_back(AnimationSlot());
+		_slotOpen = false;
+		return;
+	}
+	if (isAnimationSlotNode(node.type)) {
+		if (!_slotOpen) {
+			_animationSlots.push_back(AnimationSlot());
+			_slotOpen = true;
+		}
+		AnimationSlot &slot = _animationSlots.back();
+		if (node.type == kPersonaAnimation) {
+			const uint32 before = _animations.size();
+			parsePersonaAnimation(node);
+			if (_animations.size() > before)
+				_animationSlots.back().animation = (int32)_animations.size() - 1;
+			return;
+		}
+		if (node.type == kPersonaAnimationInstance) {
+			if (node.size >= 2)
+				slot.instanceOf = (int16)readUint16LE(_data, node.payloadOffset);
+			return;
+		}
+		if (node.type == kPersonaAnimationPlaceholder)
+			return;
+		// Transform override, visibility, UV and particle animation: kept as raw payloads.
+		OpaqueNode opaque;
+		opaque.type = node.type;
+		opaque.payload.resize(node.size);
+		for (uint32 i = 0; i < node.size; ++i)
+			opaque.payload[i] = _data[node.payloadOffset + i];
+		slot.extras.push_back(_opaqueNodes.size());
+		_opaqueNodes.push_back(opaque);
+		return;
+	}
 	if (node.type == kFrameList) {
 		_nextHAnimFrame = 0;
 		_currentHAnimFrame = 0;
@@ -468,12 +477,7 @@ void RMD::parseNode(const Node &node) {
 		return;
 	}
 
-	if (node.type == kPersonaAnimation) {
-		parsePersonaAnimation(node);
-		return;
-	}
-
-	if (node.type == kPersonaAnimationOverride || node.type == kPersonaParticleList) {
+	if (node.type == kPersonaParticleList) {
 		OpaqueNode opaque;
 		opaque.type = node.type;
 		opaque.payload.resize(node.size);
@@ -556,9 +560,6 @@ void RMD::parseNode(const Node &node) {
 	}
 
 	if (node.type == kHAnimFrameExtension) {
-		Node child;
-		if (readNode(node.payloadOffset, node.payloadEnd, child) && child.type == kHAnimOpaqueExtension)
-			return;
 		if (node.size == 0 && (node.version == 0x09 || node.version == 0x10))
 			return;
 		if (_frames.empty() || node.size < 12 || _currentHAnimFrame >= _frames.size()) {
@@ -571,6 +572,7 @@ void RMD::parseNode(const Node &node) {
 			return;
 		}
 		frame.nameId = readUint32LE(_data, node.payloadOffset + 4);
+		frame.hasHAnim = true;
 		const uint32 count = readUint32LE(_data, node.payloadOffset + 8);
 		if (count == 0) {
 			if (node.size != 12) {
@@ -1084,8 +1086,8 @@ void RMD::parsePersonaAnimation(const Node &node) {
 						!std::isfinite(key.rotation.z) || !std::isfinite(key.rotation.w) ||
 						fabsf(key.rotation.x) > 1.0f || fabsf(key.rotation.y) > 1.0f ||
 						fabsf(key.rotation.z) > 1.0f || fabsf(key.rotation.w) > 1.0f ||
+						// No +-1 bound on tx/ty/tz: an axis with scalar 0 stores filler (decodes to -2/-1).
 						!std::isfinite(tx) || !std::isfinite(ty) || !std::isfinite(tz) ||
-						fabsf(tx) > 1.0f || fabsf(ty) > 1.0f || fabsf(tz) > 1.0f ||
 						!std::isfinite(key.translation.x) || !std::isfinite(key.translation.y) ||
 						!std::isfinite(key.translation.z) || fabsf(key.translation.x) > 1000000.0f ||
 						fabsf(key.translation.y) > 1000000.0f || fabsf(key.translation.z) > 1000000.0f) {
@@ -1379,15 +1381,6 @@ bool RMD::evaluateAnimation(uint32 animationIndex, float time, BonePose &pose) c
 		if (frame < 0)
 			continue;
 		const Matrix bindLocalForFrame = frameMatrix(_frames[frame]);
-		// A static (unanimated) track holding a value far from this file's own bind, when some
-		// other clip's data for the same bone comes much closer to that bind, indicates a clip
-		// snapshot baked from a different bind pose (e.g. a shared costume-variant animation)
-		// rather than a real held pose -- keep this bone at its own bind instead of snapping to it.
-		if (trackIsStatic(track) && sample.hasRotation && (uint32)frame < _frameMinAngleToBind.size()) {
-			const float angle = angleBetweenRotations(bindLocalForFrame, poseMatrix(sample)) * 180.0f / 3.14159265f;
-			if (angle - _frameMinAngleToBind[frame] > 40.0f)
-				continue;
-		}
 		// Some bind poses carry a deliberate (possibly non-uniform, but always axis-aligned
 		// -- confirmed the three rows stay mutually orthogonal, just with different lengths)
 		// scale on a bone specifically to compensate an ancestor's own bind-pose scale
@@ -1471,7 +1464,7 @@ int32 RMD::frameForHierarchy(uint32 index) const {
 	if (!found)
 		return -1;
 	for (uint32 i = 0; i < _frames.size(); ++i)
-		if (_frames[i].nameId == nodeId)
+		if (_frames[i].hasHAnim && _frames[i].nameId == nodeId)
 			return (int32)i;
 	return -1;
 }
