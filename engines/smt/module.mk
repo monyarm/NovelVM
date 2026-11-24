@@ -4,8 +4,8 @@ MODULE_OBJS := \
 	smt.o \
 	metaengine.o \
 	formats/archive/pac.o \
-	formats/graphic/tmx.o \
-	formats/script/bmd.o 
+	formats/script/bmd.o \
+	formats/texture/tmx.o
 
 MODULE_DIRS += \
 	engines/smt

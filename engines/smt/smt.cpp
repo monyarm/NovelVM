@@ -7,7 +7,7 @@
 #include "common/formats/pmsf.h"
 #include "graphics/surface.h"
 #include "smt/formats/archive/pac.h"
-#include "smt/formats/graphic/tmx.h"
+#include "smt/formats/texture/tmx.h"
 #include "smt/formats/script/bmd.h"
 
 #include "smt/smt.h"
@@ -145,7 +145,7 @@ Common::Error SMTEngine::run() {
 	auto _dfile = _data.createReadStreamForMember("i_bust_02_61.tmx");
 	//df.writeStream(_dfile);
 
-	Format::Graphic::TMX _tmx("test/COIN_C10.TMX");
+	TMX _tmx("test/COIN_C10.TMX");
 	Format::Script::BMD _bmd("test/field.BMD");
 
 	//TMX _tmx("test/PSMT8.tmx");
