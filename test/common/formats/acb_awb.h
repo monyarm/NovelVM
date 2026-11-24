@@ -347,6 +347,31 @@ public:
 		TS_ASSERT(awb.createReadStreamForId(999) == nullptr);
 	}
 
+	// Regression: a malformed offset table whose next offset lies before
+	// the (aligned) entry start must give an empty entry, not an underflowed ~4GB size.
+	void testMalformedOffsetsGiveEmptyEntry() {
+		Common::Array<uint16> ids;
+		ids.push_back(1);
+		ids.push_back(2);
+		Common::Array<Common::Array<byte>> subs;
+		subs.push_back(makeSubfile(0x40));
+		subs.push_back(makeSubfile(0x40));
+		Common::Array<byte> bytes = buildAWB(ids, subs);
+		// offset table at 16 + 2*2: make entry 1's end (offset[2]) smaller than its start
+		const uint32 offTable = 16 + 2 * 2;
+		const uint32 start1 = bytes[offTable + 4] | (bytes[offTable + 5] << 8) | (bytes[offTable + 6] << 16) | (bytes[offTable + 7] << 24);
+		w32le(bytes.data() + offTable + 8, start1 - 40); // still below start1 after 32-byte alignment
+
+		Common::MemoryReadStream s(bytes.data(), bytes.size(), DisposeAfterUse::NO);
+		Common::AWB awb(&s, DisposeAfterUse::NO);
+		// Old code computed size = (aligned end) - start, underflowing to ~4GB: a 4GB allocation and a failed read (nullptr).
+		Common::SeekableReadStream *entry = awb.createReadStreamForId(2);
+		TS_ASSERT(entry != nullptr);
+		if (entry)
+			TS_ASSERT_EQUALS(entry->size(), 0);
+		delete entry;
+	}
+
 	// BUG 3 regression: a file-backed AWB whose last subfile ends exactly at
 	// EOF must size that entry to the real end, not realign past the file.
 	void testFileBackedLastEntryEndsAtEof() {
@@ -365,14 +390,14 @@ public:
 		TS_ASSERT_EQUALS(bytes.size(), 42u);
 
 		Common::DumpFile out;
-		TS_ASSERT(out.open(Common::Path("/tmp/opencode/novelvm_awb_eof_test.awb")));
+		TS_ASSERT(out.open(Common::Path("/tmp/novelvm_awb_eof_test.awb")));
 		if (out.isOpen()) {
 			TS_ASSERT_EQUALS(out.write(bytes.data(), bytes.size()), bytes.size());
 			out.close();
 		}
 
 		if (!SearchMan.hasArchive("novelvm_awb_tmp"))
-			SearchMan.addDirectory("novelvm_awb_tmp", Common::Path("/tmp/opencode"), 1, 1);
+			SearchMan.addDirectory("novelvm_awb_tmp", Common::Path("/tmp"), 1, 1);
 
 		Common::AWB awb("novelvm_awb_eof_test.awb");
 		Common::SeekableReadStream *rs = awb.createReadStreamForId(6);

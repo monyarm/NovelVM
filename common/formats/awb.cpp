@@ -118,16 +118,22 @@ bool AWB::loadFromStream(Common::SeekableReadStream &f) {
 	_entries.resize(count);
 	for (int32 i = 0; i < count; i++) {
 		_entries[i].id = ids[i];
-		uint32 off = offsets[i];
-		uint32 next = offsets[i + 1];
+		uint64 off = offsets[i];
+		uint64 next = offsets[i + 1];
 		uint32 offAlign = off % offsetAlign;
 		if (offAlign)
 			off += offsetAlign - offAlign;
 		uint32 nextAlign = next % offsetAlign;
 		if (nextAlign && (next + (offsetAlign - nextAlign) < fileEnd || fileEnd == 0))
 			next += offsetAlign - nextAlign;
-		_entries[i].offset = off;
-		_entries[i].size = next - off;
+		// Malformed/tightly packed tables can put the aligned start past the next entry or
+		// the file end: give such entries no data rather than an underflowed ~4GB size.
+		if (fileEnd)
+			next = MIN<uint64>(next, fileEnd);
+		if (next < off)
+			next = off;
+		_entries[i].offset = (uint32)MIN<uint64>(off, 0xFFFFFFFF);
+		_entries[i].size = (uint32)(next - off);
 
 		// Detect codec from the first bytes of each subfile
 		byte header[4] = {0};
