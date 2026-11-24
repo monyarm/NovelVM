@@ -45,7 +45,8 @@ endif
 ifdef USE_VPX
 MODULE_OBJS += \
 	mkv_decoder.o \
-	mkv/mkvparser.o
+	mkv/mkvparser.o \
+	usm_decoder.o
 endif
 
 # Include common rules

@@ -26,6 +26,7 @@ MODULE_OBJS := \
 	acx.o \
 	hca.o \
 	ahx.o \
+	usm.o \
 	utf_table.o \
 	at3.o \
 	afs.o \
