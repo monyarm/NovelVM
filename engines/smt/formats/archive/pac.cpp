@@ -1,4 +1,5 @@
 #include "common/archive.h"
+#include "common/substream.h"
 
 #include "smt/smt.h"
 
@@ -20,8 +21,16 @@ PAC::PAC(const Common::String &filename) : _pakFilename(filename) {
 }
 
 PAC::PAC(Common::SeekableReadStream &stream) {
+	_streamData.resize(stream.size());
+	stream.seek(0);
+	stream.read(_streamData.data(), _streamData.size());
+	Common::MemoryReadStream copy(_streamData.data(), _streamData.size(), DisposeAfterUse::NO);
+	readFile(copy);
+}
 
-	readFile(stream);
+PAC::PAC(Common::SeekableReadStream *stream) : _stream(stream) {
+	if (_stream)
+		readFile(*_stream);
 }
 
 PAC::~PAC() {
@@ -65,17 +74,36 @@ Common::SeekableReadStream *PAC::createReadStreamForMember(const Common::Path &n
 
 	Entry *hdr = entries[name.toString()].get();
 
-	Common::File archiveFile;
-	archiveFile.open(Common::Path(_pakFilename));
-	archiveFile.seek(hdr->position);
+	if (_stream) {
+		if (hdr->position > (uint32)_stream->size() || hdr->size > (uint32)_stream->size() - hdr->position)
+			return nullptr;
+		return new Common::SafeSeekableSubReadStream(_stream.get(), hdr->position, hdr->position + hdr->size);
+	}
 
 	byte *data = (byte *)malloc(hdr->size);
 	assert(data);
-
-	uint32 len = archiveFile.read(data, hdr->size);
+	uint32 len = 0;
+	if (!_pakFilename.empty()) {
+		Common::File archiveFile;
+		archiveFile.open(Common::Path(_pakFilename));
+		archiveFile.seek(hdr->position);
+		len = archiveFile.read(data, hdr->size);
+	} else if (hdr->position + hdr->size <= _streamData.size()) {
+		memcpy(data, _streamData.data() + hdr->position, hdr->size);
+		len = hdr->size;
+	}
 	assert(len == hdr->size);
 
 	return new Common::MemoryReadStream(data, hdr->size, DisposeAfterUse::YES);
+}
+
+bool PAC::getMemberRange(const Common::Path &name, uint32 &offset, uint32 &size) const {
+	if (!entries.contains(name.toString()))
+		return false;
+	Entry *hdr = entries[name.toString()].get();
+	offset = hdr->position;
+	size = hdr->size;
+	return true;
 }
 
 const Common::Array<Common::String> PAC::getFileExtensions() {
@@ -244,6 +272,8 @@ void PAC::ReadEntries(Common::SeekableReadStream &stream) {
 			entry.name = fileName;
 			entry.position = stream.pos();
 			entry.size = length;
+			if (entry.position > stream.size() || entry.size > stream.size() - entry.position)
+				break;
 
 			// clear string builder for next iteration
 			stringBuilder.clear();
@@ -289,6 +319,8 @@ void PAC::ReadEntries(Common::SeekableReadStream &stream) {
 			entry.name = fileName;
 			entry.position = stream.pos();
 			entry.size = length;
+			if (entry.position > stream.size() || entry.size > stream.size() - entry.position)
+				break;
 
 			// clear string builder for next iteration
 			stringBuilder.clear();

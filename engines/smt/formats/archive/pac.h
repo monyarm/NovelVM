@@ -27,11 +27,14 @@ typedef Common::HashMap<Common::String, Common::ScopedPtr<Entry>, Common::Ignore
 class PAC : public Common::Archive, public Common::FileFormat {
 	EntriesMap entries;
 	Common::String _pakFilename;
+	Common::Array<byte> _streamData;
+	Common::ScopedPtr<Common::SeekableReadStream> _stream;
 
 public:
 	PAC();
 	PAC(const Common::String &name);
 	PAC(Common::SeekableReadStream &stream);
+	PAC(Common::SeekableReadStream *stream);
 	~PAC() override;
 
 	void readFile(Common::SeekableReadStream &stream);
@@ -40,6 +43,7 @@ public:
 	int listMembers(Common::ArchiveMemberList &list) const override;
 	const Common::ArchiveMemberPtr getMember(const Common::Path &name) const override;
 	Common::SeekableReadStream *createReadStreamForMember(const Common::Path &name) const override;
+	bool getMemberRange(const Common::Path &name, uint32 &offset, uint32 &size) const;
 
 	//File Format implementation
 
