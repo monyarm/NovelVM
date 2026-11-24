@@ -35,6 +35,9 @@ MODULE_OBJS := \
 	decoders/adpcm.o \
 	decoders/aiff.o \
 	decoders/apc.o \
+	decoders/atrac3.o \
+	decoders/atrac3_common.o \
+	decoders/atrac3plus.o \
 	decoders/flac.o \
 	decoders/g711.o \
 	decoders/iff_sound.o \
