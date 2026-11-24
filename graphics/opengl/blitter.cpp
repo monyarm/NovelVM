@@ -59,6 +59,8 @@ BlitState &blitState() {
 	return s;
 }
 
+} // namespace
+
 void surfaceToRGBA(const Graphics::Surface &src, Common::Array<byte> &out) {
 	const Graphics::PixelFormat &f = src.format;
 	out.resize((uint32)(src.w * src.h * 4));
@@ -88,8 +90,10 @@ void surfaceToRGBA(const Graphics::Surface &src, Common::Array<byte> &out) {
 // allocate=true (re)allocates the texture storage with glTexImage2D; when the
 // storage already exists and the size is unchanged, allocate=false refreshes
 // it with glTexSubImage2D, matching how ScummVM updates movie frames.
-void uploadTexture(GLuint id, const Graphics::Surface &s, bool allocate) {
-	Common::Array<byte> rgba;
+void uploadTexture(uint id, const Graphics::Surface &s, bool allocate) {
+	// Reused across calls: video playback uploads every frame, so a fresh buffer each time
+	// would allocate and free a full RGBA frame per frame.
+	static Common::Array<byte> rgba;
 	surfaceToRGBA(s, rgba);
 
 	GL_CALL(glBindTexture(GL_TEXTURE_2D, id));
@@ -105,6 +109,8 @@ void uploadTexture(GLuint id, const Graphics::Surface &s, bool allocate) {
 		GL_CALL(glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, s.w, s.h,
 		                        GL_RGBA, GL_UNSIGNED_BYTE, rgba.data()));
 }
+
+namespace {
 
 GLuint createTexture(const Graphics::Surface &s) {
 	GLuint id = 0;

@@ -7,6 +7,7 @@
 #include "common/array.h"
 #include "common/system.h"
 
+#include "graphics/opengl/blitter.h"
 #include "graphics/opengl/context.h"
 #include "graphics/opengl/debug.h"
 #include "graphics/opengl/shader.h"
@@ -137,22 +138,6 @@ GLState &glState() {
 // Build an RGBA8888 byte buffer from any supported surface format, using the
 // same channel/alpha extraction as the CPU texture sampler so both paths see
 // identical texels.
-void surfaceToRGBA(const Graphics::Surface &src, Common::Array<byte> &out) {
-	const Graphics::PixelFormat &f = src.format;
-	out.resize((uint32)(src.w * src.h * 4));
-	for (uint16 y = 0; y < src.h; y++) {
-		const byte *row = (const byte *)src.getBasePtr(0, y);
-		for (uint16 x = 0; x < src.w; x++) {
-			uint32 p = 0;
-			memcpy(&p, row + x * f.bytesPerPixel, f.bytesPerPixel);
-			byte r, g, b;
-			f.colorToRGB(p, r, g, b);
-			byte a = (f.aLoss == 8) ? 255 : (byte)(((p >> f.aShift) << f.aLoss) & 0xFF);
-			byte *d = &out[(uint32)(y * src.w + x) * 4];
-			d[0] = r; d[1] = g; d[2] = b; d[3] = a;
-		}
-	}
-}
 
 void applyWrap(GLenum param, uint32 guWrap) {
 	if (guWrap == kGuClamp) {
@@ -175,17 +160,9 @@ GLuint textureFor(const Graphics::Surface *surface) {
 		if (st.glTextures[i].surface == surface)
 			return st.glTextures[i].id;
 
-	Common::Array<byte> rgba;
-	surfaceToRGBA(*surface, rgba);
-
 	GLuint id = 0;
 	GL_CALL(glGenTextures(1, &id));
-	GL_CALL(glBindTexture(GL_TEXTURE_2D, id));
-	GL_CALL(glPixelStorei(GL_UNPACK_ALIGNMENT, 1));
-	GL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, surface->w, surface->h, 0,
-	                     GL_RGBA, GL_UNSIGNED_BYTE, rgba.data()));
-	GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST));
-	GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
+	::OpenGL::uploadTexture(id, *surface, true);
 	applyWrap(GL_TEXTURE_WRAP_S, kGuRepeat);
 	applyWrap(GL_TEXTURE_WRAP_T, kGuRepeat);
 
