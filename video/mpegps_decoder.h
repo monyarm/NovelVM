@@ -82,6 +82,13 @@ public:
 	// (rather than the engine playing it separately through the mixer).
 	void setATRACAudioInfo(ATRACCodec codec, uint16 channels, uint32 sampleRate, uint16 blockAlign);
 
+	/**
+	 * Read ATRAC3+ parameters from a PSMF audio packet's own frame header (after the 4-byte
+	 * PSP sub-header), so PSMF streams play without setATRACAudioInfo(). Returns false for
+	 * anything not recognised. The packet position is left unchanged.
+	 */
+	static bool detectATRAC3PlusInfo(Common::SeekableReadStream &packet, uint16 &channels, uint32 &sampleRate, uint16 &blockAlign);
+
 	// Whether getTime() follows a playing audio track (AV sync). Off by
 	// default; containers with trustworthy video timestamps can enable it.
 	void setUseAudioSync(bool enabled) { _useAudioSync = enabled; }
@@ -377,6 +384,7 @@ private:
 
 	// Optional container-supplied ATRAC audio parameters (see setATRACAudioInfo).
 	bool _hasATRACInfo = false;
+
 	ATRACCodec _atracCodec = kATRACCodecATRAC3;
 	uint16 _atracChannels = 0;
 	uint32 _atracSampleRate = 0;
