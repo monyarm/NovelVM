@@ -149,6 +149,10 @@ public:
 		Common::Array<uint32> extras; ///< opaqueNodes() indices: transform override, visibility, UV, particle animation
 		Common::Array<uint32> uvAnimations; ///< uvAnimations() indices from this slot's UV animation dictionary
 		Common::Array<uint32> visibilityAnimations; ///< visibilityAnimations() indices
+		/// 0xF0F00005 RwMatrix: replaces the root frame's local transform while this slot plays.
+		/// In the corpus always a diagonal scale (per-NPC size variants, ~0.89-1.1).
+		bool hasTransformOverride = false;
+		Matrix transformOverride;
 	};
 	/** RenderWare UV animation (param keyframes, type 0x1C1), base UV channel only. */
 	struct UVAnimationKey {

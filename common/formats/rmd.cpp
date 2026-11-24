@@ -446,6 +446,14 @@ void RMD::parseNode(const Node &node) {
 			return;
 		if (node.type == kUVAnimationDictionary)
 			parseUVAnimationDictionary(node, slot);
+		if (node.type == kPersonaAnimationOverride && node.size == 64) {
+			for (uint32 i = 0; i < 16; ++i)
+				slot.transformOverride.m[i] = readFloatLE(_data, node.payloadOffset + i * 4);
+			// RwMatrix layout: right/up/at/pos, each padded to 4 floats; the pads are not matrix terms.
+			slot.transformOverride.m[3] = slot.transformOverride.m[7] = slot.transformOverride.m[11] = 0;
+			slot.transformOverride.m[15] = 1;
+			slot.hasTransformOverride = true;
+		}
 		if (node.type == kPersonaVisibilityAnimation) {
 			// { uint32 count; float duration; uint32 keySize (8); uint32 nameLen; uint32 (unused
 			// pointer); char name[nameLen] (no NUL, no padding); { float time, value }[count] }.
@@ -1622,6 +1630,14 @@ bool RMD::evaluateAnimation(uint32 animationIndex, float time, BonePose &pose) c
 					for (uint32 k = 0; k < 3; ++k) animLocal.m[row * 4 + k] *= rowScale[row];
 		}
 		pose.localTransforms[frame] = animLocal;
+	}
+	for (uint32 s = 0; s < _animationSlots.size(); ++s) {
+		if (_animationSlots[s].animation != (int32)animationIndex || !_animationSlots[s].hasTransformOverride)
+			continue;
+		for (uint32 i = 0; i < count; ++i)
+			if (_frames[i].parent < 0 && !_frames[i].hasHAnim) // never an animated bone in real files
+				pose.localTransforms[i] = _animationSlots[s].transformOverride;
+		break;
 	}
 	Common::Array<byte> state(count, 0);
 	for (uint32 i = 0; i < count; ++i) {

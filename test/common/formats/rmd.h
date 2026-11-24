@@ -411,7 +411,15 @@ public:
 		// transform override (64-byte matrix) and nothing skeletal.
 		Common::Array<byte> instance;
 		instance.push_back(2); instance.push_back(0);
-		Common::Array<byte> override(64, (byte)0);
+		// Transform override: an RwMatrix scale (1.1, 1.05, 1.1) as on real P4 NPC variants;
+		// the pad after each row is garbage and must not leak into the matrix.
+		Common::Array<byte> override;
+		const float rows[16] = {1.1f, 0, 0, 7, 0, 1.05f, 0, 7, 0, 0, 1.1f, 7, 0, 0, 0, 0};
+		for (uint32 i = 0; i < 16; ++i) {
+			uint32 bits;
+			memcpy(&bits, &rows[i], 4);
+			append32(override, bits);
+		}
 		Common::Array<byte> data;
 		appendNode(data, 0xF0F00001, Common::Array<byte>());
 		appendNode(data, 0xF0F00004, Common::Array<byte>());
@@ -430,6 +438,11 @@ public:
 		TS_ASSERT_EQUALS(rmd.animationSlots()[1].instanceOf, 2);
 		TS_ASSERT_EQUALS(rmd.animationSlots()[2].extras.size(), 1u);
 		TS_ASSERT_EQUALS(rmd.opaqueNodes()[rmd.animationSlots()[2].extras[0]].type, 0xF0F00005u);
+		TS_ASSERT(rmd.animationSlots()[2].hasTransformOverride);
+		TS_ASSERT_DELTA(rmd.animationSlots()[2].transformOverride.m[5], 1.05f, 1e-6f);
+		TS_ASSERT_EQUALS(rmd.animationSlots()[2].transformOverride.m[3], 0.0f);
+		TS_ASSERT_EQUALS(rmd.animationSlots()[2].transformOverride.m[15], 1.0f);
+		TS_ASSERT(!rmd.animationSlots()[0].hasTransformOverride);
 		TS_ASSERT_EQUALS(rmd.animationForSlot(1), -1);
 		TS_ASSERT_EQUALS(rmd.animationForSlot(7), -1);
 	}
