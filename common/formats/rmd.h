@@ -92,7 +92,7 @@ public:
 		float diffuse = 0;
 		bool alpha = false;
 		Common::String uvAnimationName; ///< base-UV animation (UV anim plugin 0x135, slot 0), or empty
-		Common::String name; ///< RW user data "name" (0x11F), targeted by visibility animations
+		Common::String name; ///< RW user data "name" (0x11F), targeted by material animations
 	};
 	struct Texture {
 		Common::String name;
@@ -146,9 +146,9 @@ public:
 	struct AnimationSlot {
 		int32 animation = -1;  ///< index into animations(), or -1
 		int32 instanceOf = -1; ///< slot reused through an instance node, or -1
-		Common::Array<uint32> extras; ///< opaqueNodes() indices: transform override, visibility, UV, particle animation
+		Common::Array<uint32> extras; ///< opaqueNodes() indices: transform override, material, UV, particle animation
 		Common::Array<uint32> uvAnimations; ///< uvAnimations() indices from this slot's UV animation dictionary
-		Common::Array<uint32> visibilityAnimations; ///< visibilityAnimations() indices
+		Common::Array<uint32> materialAnimations; ///< materialAnimations() indices
 		/// 0xF0F00005 RwMatrix: replaces the root frame's local transform while this slot plays.
 		/// In the corpus always a diagonal scale (per-NPC size variants, ~0.89-1.1).
 		bool hasTransformOverride = false;
@@ -165,23 +165,31 @@ public:
 		Common::Array<UVAnimationKey> keys;
 	};
 	const Common::Array<UVAnimation> &uvAnimations() const { return _uvAnimations; }
-	/** Persona visibility animation (0xF0F00080): opacity keys for the material with this name. */
-	struct VisibilityAnimation {
+	/**
+	 * Persona material animation (0xF0F00080-83) for the materials whose RW user data "name"
+	 * matches. Channel 0 (0xF0F00080) is transparency: material alpha = 1 - value. Channel 1
+	 * (0xF0F00081) is the material RGB. The game has no effect for 0xF0F00082/83.
+	 */
+	struct MaterialAnimation {
 		Common::String name;
+		uint32 channel = 0;
 		float duration = 0;
-		Common::Array<float> times, values;
+		Common::Array<float> times;
+		Common::Array<float> values; ///< one per key (transparency) or three (r, g, b in 0..1)
 	};
-	const Common::Array<VisibilityAnimation> &visibilityAnimations() const { return _visibilityAnimations; }
+	const Common::Array<MaterialAnimation> &materialAnimations() const { return _materialAnimations; }
 	/** Per-material animation state for one slot at one time. */
 	struct MaterialPose {
 		/// six floats per material: u' = m[0]*u + m[2]*v + m[4], v' = m[1]*u + m[3]*v + m[5]
 		Common::Array<float> uvTransforms;
 		/// opacity per material, 1 when not animated
 		Common::Array<float> opacity;
+		/// material RGB (three floats in 0..1 per material): the material's own colour unless animated
+		Common::Array<float> color;
 	};
 	/**
-	 * Evaluate @p slot's UV and visibility animations at @p time (seconds, each looping over
-	 * its own duration). Materials without animations in that slot get identity/opaque.
+	 * Evaluate @p slot's UV and material animations at @p time (seconds, each looping over its
+	 * own duration). Materials a slot does not animate keep their own UVs, colour and opacity.
 	 */
 	void evaluateSlotMaterials(uint32 slot, float time, MaterialPose &out) const;
 	const Common::Array<AnimationSlot> &animationSlots() const { return _animationSlots; }
@@ -221,7 +229,8 @@ private:
 	Common::Array<OpaqueNode> _opaqueNodes;
 	Common::Array<AnimationSlot> _animationSlots;
 	Common::Array<UVAnimation> _uvAnimations;
-	Common::Array<VisibilityAnimation> _visibilityAnimations;
+	Common::Array<MaterialAnimation> _materialAnimations;
+	void resolveSlotInstances();
 	bool _inMaterial = false;
 	void parseUVAnimationDictionary(const Node &node, AnimationSlot &slot);
 	bool _slotOpen = false;

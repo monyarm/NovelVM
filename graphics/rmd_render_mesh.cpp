@@ -128,7 +128,7 @@ void assembleRMDMesh(const Common::RMD &rmd, const Common::Array<Graphics::Surfa
 			RMDRenderTriangle tri;
 			uint materialIndex = i / 3 < g.materialIndices.size() ? g.materialIndices[i / 3] : 0;
 			const Common::RMD::Material *mat = materialIndex < rmd.materials().size() ? &rmd.materials()[materialIndex] : nullptr;
-			// Visibility animation: hidden materials draw nothing (and write no depth).
+			// Material transparency animation: fully transparent materials draw nothing (and write no depth).
 			const float opacity = materialPose && materialIndex < materialPose->opacity.size() ? materialPose->opacity[materialIndex] : 1.0f;
 			if (opacity <= 0.0f)
 				continue;
@@ -142,9 +142,13 @@ void assembleRMDMesh(const Common::RMD &rmd, const Common::Array<Graphics::Surfa
 			tri.alphaTest = tex >= 0 && (uint)tex < textureIsCutout.size() && textureIsCutout[tex];
 			if (mat) {
 				const float factor = mat->diffuse > 0.0f ? mat->diffuse : 1.0f;
-				tri.diffuse[0] = MIN(1.0f, mat->color.r / 255.0f * factor);
-				tri.diffuse[1] = MIN(1.0f, mat->color.g / 255.0f * factor);
-				tri.diffuse[2] = MIN(1.0f, mat->color.b / 255.0f * factor);
+				// material colour, or its animated value (RMD::MaterialPose::color)
+				const bool animated = materialPose && (materialIndex + 1) * 3 <= materialPose->color.size();
+				for (int c = 0; c < 3; ++c) {
+					const float base = animated ? materialPose->color[materialIndex * 3 + c]
+						: (c == 0 ? mat->color.r : c == 1 ? mat->color.g : mat->color.b) / 255.0f;
+					tri.diffuse[c] = MIN(1.0f, base * factor);
+				}
 			}
 			for (int k = 0; k < 3; ++k) {
 				Common::RMD::Vec3 p = g.positions[ids[k]];

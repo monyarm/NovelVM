@@ -1132,7 +1132,7 @@ Common::Error SMTEngine::run() {
 				}
 				if (rmdModel->evaluateAnimation(animMotion, time, rmdBonePose))
 					frameRmdPose = &rmdBonePose;
-				// UV and visibility animations live in the same slot as the skeletal clip.
+				// UV and material animations live in the same slot as the skeletal clip.
 				for (uint s = 0; s < rmdModel->animationSlots().size(); ++s)
 					if (rmdModel->animationSlots()[s].animation == animMotion) {
 						rmdModel->evaluateSlotMaterials(s, time, rmdMaterialPose);
@@ -1142,9 +1142,9 @@ Common::Error SMTEngine::run() {
 				animLabel = Common::String::format("Animation %d/%u (time %.1f)",
 				                                   animMotion + 1, (unsigned)animations.size(), time);
 			} else {
-				// No skeletal clip: still play the first slot's UV/visibility animations.
+				// No skeletal clip: still play the first slot's UV/material animations.
 				for (uint s = 0; s < rmdModel->animationSlots().size(); ++s)
-					if (!rmdModel->animationSlots()[s].uvAnimations.empty() || !rmdModel->animationSlots()[s].visibilityAnimations.empty()) {
+					if (!rmdModel->animationSlots()[s].uvAnimations.empty() || !rmdModel->animationSlots()[s].materialAnimations.empty()) {
 						rmdModel->evaluateSlotMaterials(s, elapsed / 1000.0f, rmdMaterialPose);
 						frameRmdMaterials = &rmdMaterialPose;
 						break;
