@@ -24,6 +24,7 @@ MODULE_OBJS := \
 	fonts/ttf.o \
 	fonts/winfont.o \
 	framelimiter.o \
+	opengl/blitter.o \
 	hotspot_renderer.o \
 	image-archive.o \
 	korfont.o \
@@ -50,6 +51,7 @@ MODULE_OBJS := \
 	opengl/shader.o \
 	opengl/texture.o \
 	palette.o \
+	ps2texture.o \
 	pixelformat.o \
 	pm5544.o \
 	primitives.o \

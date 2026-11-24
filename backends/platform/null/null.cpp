@@ -53,11 +53,12 @@ typedef void (*sighandler_t)(int);
 #include "backends/mutex/null/null-mutex.h"
 #include "base/main.h"
 
+#include "backends/mixer/null/null-mixer.h"
+
 #ifndef NULL_DRIVER_USE_FOR_TEST
 #include "backends/saves/default/default-saves.h"
 #include "backends/timer/default/default-timer.h"
 #include "backends/events/default/default-events.h"
-#include "backends/mixer/null/null-mixer.h"
 #include "backends/graphics/null/null-graphics.h"
 #include "gui/debugger.h"
 #endif
@@ -144,6 +145,12 @@ void OSystem_NULL::initBackend() {
 	_startTime = GetTickCount();
 #endif
 
+	// Audio::Mixer is needed even in the minimal test build -- anything
+	// exercising VideoDecoder::addTrack()'s audio path calls
+	// g_system->getMixer(), which asserts if this is left unset.
+	_mixerManager = new NullMixerManager();
+	_mixerManager->init();
+
 #ifndef NULL_DRIVER_USE_FOR_TEST
 #ifdef POSIX
 	last_handler = signal(SIGINT, intHandler);
@@ -153,9 +160,6 @@ void OSystem_NULL::initBackend() {
 	_eventManager = new DefaultEventManager(this);
 	_savefileManager = new DefaultSaveFileManager();
 	_graphicsManager = new NullGraphicsManager();
-	_mixerManager = new NullMixerManager();
-	// Setup and start mixer
-	_mixerManager->init();
 
 	BaseBackend::initBackend();
 #endif
