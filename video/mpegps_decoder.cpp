@@ -94,6 +94,26 @@ void MPEGPSDecoder::setATRACAudioInfo(ATRACCodec codec, uint16 channels, uint32 
 	_hasATRACInfo = true;
 }
 
+bool MPEGPSDecoder::detectATRAC3PlusInfo(Common::SeekableReadStream &packet, uint16 &channels, uint32 &sampleRate, uint16 &blockAlign) {
+	// PSMF audio payload: 4-byte PSP sub-header, then the ATRAC3+ frame header
+	// 0F D0 <attr:16 BE>: bits 13-15 sample rate code, 10-12 channels, 0-9 (data size - 8) / 8
+	// (as PPSSPP reads it). Verified on the real P3P opening: code 1, 2 channels, 744 bytes,
+	// matching its PSMF header (44100 Hz stereo). Other rate codes have no real sample, so
+	// those streams still need setATRACAudioInfo().
+	const int64 start = packet.pos();
+	packet.skip(4);
+	const uint16 sync = packet.readUint16BE();
+	const uint16 attr = packet.readUint16BE();
+	const bool eos = packet.eos();
+	packet.seek(start);
+	channels = (attr >> 10) & 7;
+	if (eos || sync != 0x0FD0 || (attr >> 13) != 1 || channels < 1 || channels > 2)
+		return false;
+	sampleRate = 44100;
+	blockAlign = (attr & 0x3FF) * 8 + 8;
+	return true;
+}
+
 void MPEGPSDecoder::close() {
 	VideoDecoder::close();
 	_demuxer->close();
@@ -147,6 +167,10 @@ MPEGPSDecoder::MPEGStream *MPEGPSDecoder::getStream(uint32 startCode, Common::Se
 			}
 			case kPrivateStreamATRAC3Plus: {
 				typeName = "ATRAC3+";
+				uint16 channels, blockAlign;
+				uint32 sampleRate;
+				if (!_hasATRACInfo && detectATRAC3PlusInfo(*packet, channels, sampleRate, blockAlign))
+					setATRACAudioInfo(kATRACCodecATRAC3Plus, channels, sampleRate, blockAlign);
 				if (_hasATRACInfo && _atracCodec == kATRACCodecATRAC3Plus) {
 					handled = true;
 					ATRACAudioTrack *audioTrack = new ATRACAudioTrack(kATRACCodecATRAC3Plus,
@@ -187,6 +211,7 @@ MPEGPSDecoder::MPEGStream *MPEGPSDecoder::getStream(uint32 startCode, Common::Se
 			}
 		} else if (startCode >= 0x1E0 && startCode <= 0x1EF) {
 			// Video stream
+			// TODO: Encrypted ADX inside SFD is untested (no encrypted sample in the corpus).
 			// TODO: Multiple video streams
 			warning("Found extra video stream 0x%04X", startCode);
 			_streamMap[startCode] = 0;
@@ -196,12 +221,21 @@ MPEGPSDecoder::MPEGStream *MPEGPSDecoder::getStream(uint32 startCode, Common::Se
 			// instead of real MPEG audio. Real ADX starts with magic
 			// 0x8000; MPEG audio never does (its sync word starts with
 			// 11 set bits), so this check is unambiguous.
+			Common::ADXFrameInfo adxInfo;
 			if (packet->readUint16BE() == 0x8000) {
 				packet->seek(0);
-				ADXAudioTrack *audioTrack = new ADXAudioTrack(*packet, getSoundType());
-				stream = audioTrack;
-				_streamMap[startCode] = audioTrack;
-				addTrack(audioTrack);
+				const bool validHeader = Common::parseADXFrameInfo(*packet, adxInfo);
+				packet->seek(0);
+				if (validHeader) {
+					ADXAudioTrack *audioTrack = new ADXAudioTrack(*packet, getSoundType());
+					stream = audioTrack;
+					_streamMap[startCode] = audioTrack;
+					addTrack(audioTrack);
+				} else {
+					// Corrupt or truncated header: drop this audio stream, keep the video.
+					warning("Skipping MPEG-PS stream 0x%04X: malformed embedded ADX header", startCode);
+					_streamMap[startCode] = 0;
+				}
 			} else {
 				packet->seek(0);
 #ifdef USE_MAD
