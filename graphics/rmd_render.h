@@ -18,7 +18,8 @@ public:
 	static void render(const Common::RMD &rmd, int width, int height, float rotY = 0.0f,
 	                  const Common::RMD::BonePose *bonePose = nullptr,
 	                  const RMDBounds *fixedBounds = nullptr,
-	                  RMDBounds *outBounds = nullptr, bool unlit = false);
+	                  RMDBounds *outBounds = nullptr, bool unlit = false,
+	                  const Common::Array<float> *uvTransforms = nullptr); ///< RMD::evaluateSlotUVTransforms()
 	static void computeBounds(const Common::RMD &rmd, int width, int height, float rotY,
 	                         const Common::RMD::BonePose *bonePose, RMDBounds *outBounds);
 	static void invalidate();

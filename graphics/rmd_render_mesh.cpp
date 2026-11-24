@@ -49,7 +49,7 @@ int textureIndex(const Common::RMD &rmd, const Common::RMD::Material &material) 
 
 void assembleRMDMesh(const Common::RMD &rmd, const Common::Array<Graphics::Surface *> &textures,
 					 int width, int height, float rotY, const Common::RMD::BonePose *pose,
-					 const RMDBounds *fixed, RMDRenderMesh &out) {
+					 const RMDBounds *fixed, RMDRenderMesh &out, const Common::Array<float> *uvTransforms) {
 	out.triangles.clear();
 	out.bounds = RMDBounds();
 	if (width <= 0 || height <= 0)
@@ -190,7 +190,19 @@ void assembleRMDMesh(const Common::RMD &rmd, const Common::Array<Graphics::Surfa
 					minZ = MIN(minZ, z); maxZ = MAX(maxZ, z);
 				}
 				tri.v[k].x = x; tri.v[k].y = y; tri.v[k].z = z;
-				if (g.uvs.size() > ids[k]) { tri.hasUv = true; tri.v[k].u = g.uvs[ids[k]].u; tri.v[k].v = g.uvs[ids[k]].v; }
+				if (g.uvs.size() > ids[k]) {
+					tri.hasUv = true;
+					const float u = g.uvs[ids[k]].u, v = g.uvs[ids[k]].v;
+					// per-material UV animation (RMD::evaluateSlotUVTransforms): u' = m0 u + m2 v + m4
+					if (uvTransforms && (materialIndex + 1) * 6 <= uvTransforms->size()) {
+						const float *m = &(*uvTransforms)[materialIndex * 6];
+						tri.v[k].u = m[0] * u + m[2] * v + m[4];
+						tri.v[k].v = m[1] * u + m[3] * v + m[5];
+					} else {
+						tri.v[k].u = u;
+						tri.v[k].v = v;
+					}
+				}
 				if (g.colors.size() > ids[k]) { tri.v[k].r = g.colors[ids[k]].r / 255.0f; tri.v[k].g = g.colors[ids[k]].g / 255.0f; tri.v[k].b = g.colors[ids[k]].b / 255.0f; tri.v[k].a = g.colors[ids[k]].a / 255.0f; } else tri.v[k].r = tri.v[k].g = tri.v[k].b = tri.v[k].a = 1;
 					if (mat) tri.v[k].a *= mat->color.a / 255.0f;
 			}
