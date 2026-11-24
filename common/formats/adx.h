@@ -1,66 +1,54 @@
-#ifndef ADX_H
-#define ADX_H
+#ifndef FORMAT_ADX_H
+#define FORMAT_ADX_H
 
-#include "common/debug.h"
-#include "common/file.h"
-#include "common/fs.h"
-
-#include "audio/audiostream.h"
-#include "audio/decoders/adpcm_intern.h"
+#include "common/scummsys.h"
+#include "common/stream.h"
 #include "common/str.h"
-#include "common/system.h" 
-#include "audio/mixer.h"
+
+namespace Audio {
+class SeekableAudioStream;
+}
 
 namespace Common {
 
-struct AdxHeaderInfo {
-	int ChannelCount;
-	int SampleRate;
-	int SampleCount;
-	bool HasLoop;
-	int LoopStart;
-	int LoopEnd;
+// Decodes a CRI ADX stream. Returns nullptr on a malformed/unsupported
+// file, or an encrypted file with no key. Loops indefinitely if the file
+// declares loop points (never signals end-of-data); getLength() still
+// reports the one-pass length.
+Audio::SeekableAudioStream *makeADXStream(Common::SeekableReadStream *stream, DisposeAfterUse::Flag disposeAfterUse);
 
-	int BitDepth;
+// As above, decrypting with CRI's "type 9" (keycode) scheme.
+Audio::SeekableAudioStream *makeADXStream(Common::SeekableReadStream *stream, DisposeAfterUse::Flag disposeAfterUse, uint64 key9, uint16 subkey = 0);
 
-	uint16 Highpass;
-	uint8 FrameSize;
-	int StreamDataOffset;
+// As above, decrypting with CRI's "type 8" (keystring) scheme.
+Audio::SeekableAudioStream *makeADXStream(Common::SeekableReadStream *stream, DisposeAfterUse::Flag disposeAfterUse, const Common::String &key8);
 
-	int32 Hist1[2];
-	int32 Hist2[2];
+// For decoding ADX arriving as a series of chunks rather than one
+// seekable file (e.g. ADX embedded in an MPEG-PS video's audio stream --
+// see video/mpegps_decoder.cpp). Unencrypted, non-looping only; nothing
+// using this needs either.
+struct ADXFrameInfo {
+	byte channelCount = 0;
+	uint32 sampleRate = 0;
+	byte blockSize = 0;
+	uint32 streamDataOffset = 0;
+	int32 coef1 = 0;
+	int32 coef2 = 0;
 
-	int ReadPosition = 0;
-
-	int SamplesPerBuffer = 0;
-	int32 Coef1;
-	int32 Coef2;
-
-	int32 EncodedBytesPerBuffer;
-
-	int BytesPerSample() const { return (BitDepth / 8) * ChannelCount; }
+	uint32 samplesPerFrame() const { return ((uint32)blockSize - 2) * 2; }
+	uint32 frameSize() const { return (uint32)blockSize * channelCount; }
 };
 
-class ADX_ADPCMStream;
+// Parses a real ADX header from the start of `stream` without consuming
+// it (the stream position is restored before returning).
+bool parseADXFrameInfo(Common::SeekableReadStream &stream, ADXFrameInfo &info);
 
-class ADX {
+// Decodes one frame (info.frameSize() bytes at `frameData`) into `out`
+// (info.channelCount * info.samplesPerFrame() interleaved int16 samples).
+// hist1/hist2 carry decode state across calls -- zero both before the
+// first frame.
+void decodeADXFrame(const byte *frameData, const ADXFrameInfo &info, int32 hist1[2], int32 hist2[2], int16 *out);
 
-public:
-	ADX(const char *path);
-	ADX(Common::SeekableReadStream *stream);
-	~ADX(){};
-
-private:
-	int16 coefficient[2];
-	AdxHeaderInfo info;
-	void readFile(Common::SeekableReadStream *stream);
-
-	void readHeader(Common::SeekableReadStream *f);
-
-	void SetCoefficients(double cutoff, double sample_rate);
-
-
-};
 } // namespace Common
 
 #endif
