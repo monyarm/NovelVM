@@ -28,10 +28,18 @@ Graphics::Surface *TMX::getSurface() {
 		return nullptr;
 
 	int clutCount = Graphics::ps2ClutColorCount(_formatSettings.pixelFmt);
+	// The game's TMX loader expands the PS2 half-range palette alpha itself: 0x7F and above
+	// become fully opaque, anything lower a * 255 / 128. (RMD textures instead reach the GS as
+	// raw half-range alpha, which the shared helper's plain a / 128 scaling models.)
+	Common::Array<byte> clut = _clut;
+	const bool halfRange = _formatSettings.paletteFmt == Graphics::kPSMCT32;
+	if (halfRange)
+		for (uint i = 3; i < clut.size(); i += 4)
+			clut[i] = clut[i] >= 0x7F ? 255 : (byte)(clut[i] * 255 / 128);
 	return Graphics::ps2CreateIndexedSurface(_formatSettings.paletteFmt,
-		_formatSettings.numPalettes ? _clut.data() : nullptr, clutCount,
+		_formatSettings.numPalettes ? clut.data() : nullptr, clutCount,
 		_indices.data(), _formatSettings.pixelFmt, _w, _h,
-		clutCount == 256, true);
+		clutCount == 256, !halfRange);
 }
 
 void TMX::readFile(Common::SeekableReadStream *s) {
@@ -78,8 +86,10 @@ void TMX::readClut(Common::SeekableReadStream *s) {
 	if (_formatSettings.numPalettes == 0 || clutCount == 0)
 		return;
 
-	// PS2 clut payloads occupy 4 bytes per colour entry (one PSMCT32 word),
-	// regardless of the nominal clut format.
+	// TODO: the game sizes palettes by their format: 16-bit palettes (formats 2 and 10) use 2
+	// bytes per entry (RGB555, entry 0 transparent), and it also loads direct-colour TMX
+	// (RGBA32, RGB24, RGB555). Every sampled P3 FES/P4 TMX is indexed with a 32-bit palette,
+	// so only that layout is handled: 4 bytes per entry.
 	_clut.resize(clutCount * 4);
 	s->read(_clut.data(), _clut.size());
 	// Multi-palette (palette-swap) TMX: the surface uses palette 0, like Amicitia's default;
