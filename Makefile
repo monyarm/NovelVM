@@ -158,5 +158,16 @@ cmake: CMakeLists.txt
 	cmake -H. -Bbuild
 	cmake --build build
 
+.PHONY: rmd-renderer-check
+rmd-renderer-check:
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(INCLUDES) -DRMD_RENDER_COMPILE_CHECK -fsyntax-only $(srcdir)/graphics/rmd_render.cpp
+
+.PHONY: rmd-renderer-diagnostic
+rmd-renderer-diagnostic: devtools/tests/test-rmd-renderer
+	./devtools/tests/test-rmd-renderer
+
+devtools/tests/test-rmd-renderer: devtools/tests/test-rmd-renderer.cpp graphics/rmd_render_mesh.o
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(INCLUDES) -o $@ $< graphics/rmd_render_mesh.o video/libvideo.a audio/libaudio.a math/libmath.a common/libcommon.a common/formats/libformats.a common/compression/libcompression.a common/libcommon.a image/libimage.a graphics/libgraphics.a audio/libaudio.a math/libmath.a common/libcommon.a common/formats/libformats.a common/compression/libcompression.a common/libcommon.a image/libimage.a $(LIBS)
+
 test-games: $(EXECUTABLE)
 	devtools/run_event_recorder_tests.py --xunit-output=$(EXECUTABLE).test-results.xml
