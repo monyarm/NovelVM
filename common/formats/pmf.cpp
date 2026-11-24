@@ -93,6 +93,8 @@ bool PMF::load() {
 		_streams.push_back(stream);
 	}
 
+	// TODO: the EP map is parsed but not used for seeking, and multi-video-stream PMFs are
+	// unverified (every real sample has one video stream).
 	// Real EP map for the first video stream, if any (JPCSP/PPSSPP: 10
 	// bytes/entry -- 1 index + 1 pic offset + 4 PTS + 4 relative offset).
 	for (uint32 i = 0; i < _streams.size(); i++) {
