@@ -224,6 +224,31 @@ public:
 	}
 
 	// Corrupt header must fail cleanly (no crash, no surface).
+	// The game expands palette alpha 0x7F and above to opaque (0x7F is common in real P4 TMX).
+	void test_psmt8_alpha_7f_is_opaque() {
+		const int w = 4, h = 4;
+		byte clut[256 * 4];
+		TmxSyntheticHelper::buildLinearClut256(clut, 0x7F);
+		clut[1 * 4 + 3] = 0x40;
+		TmxSyntheticHelper::swizzleClut256(clut);
+		byte idx[16] = {0};
+		idx[1] = 1;
+		uint32 total = 0x40 + sizeof(clut) + sizeof(idx);
+		byte file[0x40 + 256 * 4 + 16];
+		int o = TmxSyntheticHelper::buildHeader(file, 1, 0x00, w, h, 0x13, 0, total);
+		memcpy(file + o, clut, sizeof(clut));
+		memcpy(file + o + sizeof(clut), idx, sizeof(idx));
+		Common::MemoryReadStream stream(file, sizeof(file), DisposeAfterUse::NO);
+		SMT::TMX tmx(&stream);
+		Graphics::Surface *surf = tmx.getSurface();
+		TS_ASSERT(surf);
+		if (!surf)
+			return;
+		const byte *pix = (const byte *)surf->getPixels();
+		TS_ASSERT_EQUALS((int)pix[3], 255);           // 0x7F -> opaque
+		TS_ASSERT_EQUALS((int)pix[4 + 3], 0x40 * 255 / 128); // 0x40 -> 127
+	}
+
 	// Regression: with two palettes, the indices follow BOTH cluts.
 	// The surface uses palette 0; reading indices right after palette 0 would
 	// pick up palette 1's bytes instead.
