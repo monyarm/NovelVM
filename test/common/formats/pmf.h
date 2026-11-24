@@ -56,14 +56,14 @@ public:
 		put32be(ep + 16, 0x00001234);
 
 		Common::DumpFile out;
-		TS_ASSERT(out.open(Common::Path("/tmp/opencode/novelvm_pmf_ep_test.pmf")));
+		TS_ASSERT(out.open(Common::Path("/tmp/novelvm_pmf_ep_test.pmf")));
 		if (out.isOpen()) {
 			TS_ASSERT_EQUALS(out.write(file.data(), file.size()), file.size());
 			out.close();
 		}
 
 		if (!SearchMan.hasArchive("novelvm_pmf_tmp"))
-			SearchMan.addDirectory("novelvm_pmf_tmp", Common::Path("/tmp/opencode"), 1, 1);
+			SearchMan.addDirectory("novelvm_pmf_tmp", Common::Path("/tmp"), 1, 1);
 
 		Common::PMF pmf("novelvm_pmf_ep_test.pmf");
 		TS_ASSERT(pmf.isValid());
@@ -91,12 +91,9 @@ public:
 		TS_ASSERT_EQUALS(eps[1].offset, 0x00001234u);
 	}
 
-	// Real-corpus probe (dev-only, skipped unless SMT_GMO_CORPUS is set):
-	// demuxes the real P3P opening with our PSMF code and writes the inner
-	// MPEG-PS plus a stats report to /tmp/opencode, so the demuxed stream can
-	// be decoded by ffmpeg and compared frame-for-frame against the same
-	// conversion done directly by ffmpeg on the original .pmsf.
-	void testRealP3PDump() {
+	// Real-corpus check (skipped unless SMT_GMO_CORPUS is set): the real P3P
+	// opening demuxes with our PSMF code and its inner MPEG-PS reads back whole.
+	void testRealP3PDemux() {
 		const char *corpus = getenv("SMT_GMO_CORPUS");
 		if (!corpus || !*corpus)
 			return;
@@ -119,34 +116,18 @@ public:
 		if (!mpeg)
 			return;
 
-		Common::DumpFile out;
-		TS_ASSERT(out.open(Common::Path("/tmp/opencode/ours_p3p_inner.mpg"), true));
-		uint32 mpegBytes = (uint32)mpeg->size();
+		const uint32 mpegBytes = (uint32)mpeg->size();
 		byte buf[65536];
-		uint32 dumped = 0;
+		uint32 total = 0;
 		while (!mpeg->eos()) {
 			uint32 r = mpeg->read(buf, sizeof(buf));
 			if (!r)
 				break;
-			out.write(buf, r);
-			dumped += r;
+			total += r;
 		}
-		out.close();
 		delete mpeg;
-
-		uint32 frameCount = a.blockAlign ? (uint32)(a.frames.size() / a.blockAlign) : 0;
-		Common::String msg = Common::String::format(
-			"audio channels=%u sampleRate=%u blockAlign=%u numSamples=%u frames=%u audioSeconds=%.3f\n"
-			"video width=%u height=%u mpegSize=%u mpegDumped=%u\n",
-			a.channels, a.sampleRate, a.blockAlign, a.numSamples, frameCount,
-			a.sampleRate ? (double)a.numSamples / (double)a.sampleRate : 0.0,
-			pmf.getWidth(), pmf.getHeight(), mpegBytes, dumped);
-
-		Common::DumpFile rep;
-		if (rep.open(Common::Path("/tmp/opencode/ours_p3p_report.txt"), true)) {
-			rep.write(msg.c_str(), msg.size());
-			rep.close();
-		}
+		TS_ASSERT_EQUALS(total, mpegBytes);
+		TS_ASSERT(a.blockAlign && a.frames.size() / a.blockAlign > 0);
 	}
 
 private:
