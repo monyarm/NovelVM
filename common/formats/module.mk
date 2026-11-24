@@ -31,7 +31,8 @@ MODULE_OBJS := \
 	at3.o \
 	afs.o \
 	awb.o \
-	cri_mask.o
+	cri_mask.o \
+	gim.o
 
 # Include common rules
 include $(srcdir)/rules.mk
