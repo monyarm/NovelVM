@@ -43,6 +43,7 @@ bool AFS::load() {
 	}
 
 	Common::Array<AFSEntry> entries(count);
+	const int64 fileSize = f.size();
 	uint32 lastEnd = 0;
 	for (uint32 i = 0; i < count; i++) {
 		entries[i].offset = f.readUint32LE();
@@ -50,6 +51,13 @@ bool AFS::load() {
 		if (f.err() || f.eos()) {
 			warning("AFS::AFS(): truncated TOC in %s", _filename.c_str());
 			return false;
+		}
+		// TOC values are untrusted: an entry running past the file (or wrapping 32 bits)
+		// would corrupt the metadata bound below and the member reads.
+		if (fileSize >= 0 && (uint64)entries[i].offset + entries[i].size > (uint64)fileSize) {
+			warning("AFS::AFS(): entry %u of %s lies outside the file, ignoring its data", i, _filename.c_str());
+			entries[i].offset = 0;
+			entries[i].size = 0;
 		}
 		uint32 end = entries[i].offset + entries[i].size;
 		if (end > lastEnd)

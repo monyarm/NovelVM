@@ -24,7 +24,7 @@ struct AFSEntry {
  * A second table follows at the next real 2048-byte (CD/UMD sector)
  * boundary at or after the last entry's end: one 48-byte record per file
  * (a 32-byte null-padded filename, then 16 trailing bytes of unconfirmed
- * meaning -- not required for extraction, see docs/middleware-plan.md).
+ * meaning -- not required for extraction).
  * Verified against two real Persona 3 Portable voice archives (533 and
  * 1021 entries): the computed metadata offset landed exactly on real
  * filenames both times (`0000_401_001_0000.adx`, `0000_402_005_0000.adx`).
