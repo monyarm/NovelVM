@@ -12,8 +12,7 @@ void initCRIMask(uint32 key1, uint32 key2, CRIMask &out) {
 		(byte)((key2 >> 16) & 0xFF), (byte)((key2 >> 24) & 0xFF)
 	};
 
-	// Real key-schedule facts (independently reverse engineered, see
-	// docs/middleware-plan.md): a fixed sequence of byte-wise add/xor
+	// Real key-schedule facts (independently reverse engineered): a fixed sequence of byte-wise add/xor
 	// operations expanding the two key halves into a 32-byte table.
 	byte t[0x20];
 	t[0x00] = k1[0];

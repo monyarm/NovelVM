@@ -10,9 +10,8 @@ namespace Common {
 // three 32-byte XOR tables; @SFV/@SFA *data* chunks (payloadType 0) get
 // masked, metadata chunks (payloadType 1) don't. Algorithm facts only,
 // independently reimplemented from public reverse-engineering documentation
-// (no license on the source, so no code copied) -- see
-// docs/middleware-plan.md for provenance and how the real key for a given
-// title is meant to be supplied (never hardcoded/committed here).
+// (no license on the source, so no code copied). The real key for a given
+// title is meant to be supplied at runtime (never hardcoded/committed here).
 struct CRIMask {
 	byte audioMask[0x20];
 	byte videoMask1[0x20];
