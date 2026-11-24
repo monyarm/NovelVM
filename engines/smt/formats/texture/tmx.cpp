@@ -82,10 +82,12 @@ void TMX::readClut(Common::SeekableReadStream *s) {
 	// regardless of the nominal clut format.
 	_clut.resize(clutCount * 4);
 	s->read(_clut.data(), _clut.size());
+	// Multi-palette (palette-swap) TMX: the surface uses palette 0, like Amicitia's default;
+	// skip the others so the indices are read from where they really start.
+	s->skip((uint32)(_formatSettings.numPalettes - 1) * clutCount * 4);
 }
 
 void TMX::readIndices(Common::SeekableReadStream *s) {
-	int texelCount = _w * _h;
 	_indices.resize(Graphics::ps2TexelDataSize(_formatSettings.pixelFmt, _w, _h));
 	s->read(_indices.data(), _indices.size());
 
