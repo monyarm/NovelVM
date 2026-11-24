@@ -16,6 +16,7 @@ MODULE_OBJS := \
 	winexe_ne.o \
 	winexe_pe.o \
 	xmlparser.o \
+	acb.o \
 	cpk.o \
 	cvm.o \
 	pmsf.o \
@@ -24,6 +25,7 @@ MODULE_OBJS := \
 	hca.o \
 	ahx.o \
 	utf_table.o \
+	awb.o \
 	cri_mask.o
 
 # Include common rules
