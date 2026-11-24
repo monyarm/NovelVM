@@ -19,7 +19,7 @@ public:
 	                  const Common::RMD::BonePose *bonePose = nullptr,
 	                  const RMDBounds *fixedBounds = nullptr,
 	                  RMDBounds *outBounds = nullptr, bool unlit = false,
-	                  const Common::Array<float> *uvTransforms = nullptr); ///< RMD::evaluateSlotUVTransforms()
+	                  const Common::RMD::MaterialPose *materialPose = nullptr); ///< RMD::evaluateSlotMaterials()
 	static void computeBounds(const Common::RMD &rmd, int width, int height, float rotY,
 	                         const Common::RMD::BonePose *bonePose, RMDBounds *outBounds);
 	static void invalidate();

@@ -49,7 +49,8 @@ int textureIndex(const Common::RMD &rmd, const Common::RMD::Material &material) 
 
 void assembleRMDMesh(const Common::RMD &rmd, const Common::Array<Graphics::Surface *> &textures,
 					 int width, int height, float rotY, const Common::RMD::BonePose *pose,
-					 const RMDBounds *fixed, RMDRenderMesh &out, const Common::Array<float> *uvTransforms) {
+					 const RMDBounds *fixed, RMDRenderMesh &out, const Common::RMD::MaterialPose *materialPose) {
+	const Common::Array<float> *uvTransforms = materialPose ? &materialPose->uvTransforms : nullptr;
 	out.triangles.clear();
 	out.bounds = RMDBounds();
 	if (width <= 0 || height <= 0)
@@ -127,13 +128,17 @@ void assembleRMDMesh(const Common::RMD &rmd, const Common::Array<Graphics::Surfa
 			RMDRenderTriangle tri;
 			uint materialIndex = i / 3 < g.materialIndices.size() ? g.materialIndices[i / 3] : 0;
 			const Common::RMD::Material *mat = materialIndex < rmd.materials().size() ? &rmd.materials()[materialIndex] : nullptr;
+			// Visibility animation: hidden materials draw nothing (and write no depth).
+			const float opacity = materialPose && materialIndex < materialPose->opacity.size() ? materialPose->opacity[materialIndex] : 1.0f;
+			if (opacity <= 0.0f)
+				continue;
 			int tex = mat ? textureIndex(rmd, *mat) : -1;
 			tri.texture = tex >= 0 && (uint)tex < textures.size() ? textures[tex] : nullptr;
 			if (tex >= 0 && (uint)tex < rmd.textures().size()) {
 				tri.horizontalAddressing = rmd.textures()[tex].horizontalAddressing;
 				tri.verticalAddressing = rmd.textures()[tex].verticalAddressing;
 			}
-			tri.alpha = mat && (mat->alpha || mat->color.a != 255);
+			tri.alpha = (mat && (mat->alpha || mat->color.a != 255)) || opacity < 1.0f;
 			tri.alphaTest = tex >= 0 && (uint)tex < textureIsCutout.size() && textureIsCutout[tex];
 			if (mat) {
 				const float factor = mat->diffuse > 0.0f ? mat->diffuse : 1.0f;
@@ -193,7 +198,7 @@ void assembleRMDMesh(const Common::RMD &rmd, const Common::Array<Graphics::Surfa
 				if (g.uvs.size() > ids[k]) {
 					tri.hasUv = true;
 					const float u = g.uvs[ids[k]].u, v = g.uvs[ids[k]].v;
-					// per-material UV animation (RMD::evaluateSlotUVTransforms): u' = m0 u + m2 v + m4
+					// per-material UV animation (RMD::evaluateSlotMaterials): u' = m0 u + m2 v + m4
 					if (uvTransforms && (materialIndex + 1) * 6 <= uvTransforms->size()) {
 						const float *m = &(*uvTransforms)[materialIndex * 6];
 						tri.v[k].u = m[0] * u + m[2] * v + m[4];
@@ -205,6 +210,7 @@ void assembleRMDMesh(const Common::RMD &rmd, const Common::Array<Graphics::Surfa
 				}
 				if (g.colors.size() > ids[k]) { tri.v[k].r = g.colors[ids[k]].r / 255.0f; tri.v[k].g = g.colors[ids[k]].g / 255.0f; tri.v[k].b = g.colors[ids[k]].b / 255.0f; tri.v[k].a = g.colors[ids[k]].a / 255.0f; } else tri.v[k].r = tri.v[k].g = tri.v[k].b = tri.v[k].a = 1;
 					if (mat) tri.v[k].a *= mat->color.a / 255.0f;
+					tri.v[k].a *= opacity;
 			}
 			Common::RMD::Vec3 ab = {tri.v[1].x - tri.v[0].x, tri.v[1].y - tri.v[0].y, tri.v[1].z - tri.v[0].z};
 			Common::RMD::Vec3 ac = {tri.v[2].x - tri.v[0].x, tri.v[2].y - tri.v[0].y, tri.v[2].z - tri.v[0].z};

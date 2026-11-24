@@ -1094,8 +1094,8 @@ Common::Error SMTEngine::run() {
 	const Common::GMO::MaterialPose *frameMpp = nullptr;
 	Common::RMD::BonePose rmdBonePose;
 	const Common::RMD::BonePose *frameRmdPose = nullptr;
-	Common::Array<float> rmdUVTransforms;
-	const Common::Array<float> *frameRmdUV = nullptr;
+	Common::RMD::MaterialPose rmdMaterialPose;
+	const Common::RMD::MaterialPose *frameRmdMaterials = nullptr;
 	Common::String animLabel;
 	// No special starting offset: model selection is random now, and the
 	// "start on the front" offset this used to have (M_PI_2) was calibrated
@@ -1107,7 +1107,7 @@ Common::Error SMTEngine::run() {
 		frameBpp = nullptr;
 		frameMpp = nullptr;
 		frameRmdPose = nullptr;
-		frameRmdUV = nullptr;
+		frameRmdMaterials = nullptr;
 		animLabel.clear();
 		int32 elapsed = g_system->getMillis() - modelSpinStart;
 		modelAngle = (float)elapsed / (float)modelSpinMs * (float)(M_PI * 2);
@@ -1132,21 +1132,21 @@ Common::Error SMTEngine::run() {
 				}
 				if (rmdModel->evaluateAnimation(animMotion, time, rmdBonePose))
 					frameRmdPose = &rmdBonePose;
-				// UV animations live in the same slot as the skeletal clip.
+				// UV and visibility animations live in the same slot as the skeletal clip.
 				for (uint s = 0; s < rmdModel->animationSlots().size(); ++s)
 					if (rmdModel->animationSlots()[s].animation == animMotion) {
-						rmdModel->evaluateSlotUVTransforms(s, time, rmdUVTransforms);
-						frameRmdUV = &rmdUVTransforms;
+						rmdModel->evaluateSlotMaterials(s, time, rmdMaterialPose);
+						frameRmdMaterials = &rmdMaterialPose;
 						break;
 					}
 				animLabel = Common::String::format("Animation %d/%u (time %.1f)",
 				                                   animMotion + 1, (unsigned)animations.size(), time);
 			} else {
-				// No skeletal clip: still scroll the first slot's UV animations.
+				// No skeletal clip: still play the first slot's UV/visibility animations.
 				for (uint s = 0; s < rmdModel->animationSlots().size(); ++s)
-					if (!rmdModel->animationSlots()[s].uvAnimations.empty()) {
-						rmdModel->evaluateSlotUVTransforms(s, elapsed / 1000.0f, rmdUVTransforms);
-						frameRmdUV = &rmdUVTransforms;
+					if (!rmdModel->animationSlots()[s].uvAnimations.empty() || !rmdModel->animationSlots()[s].visibilityAnimations.empty()) {
+						rmdModel->evaluateSlotMaterials(s, elapsed / 1000.0f, rmdMaterialPose);
+						frameRmdMaterials = &rmdMaterialPose;
 						break;
 					}
 			}
@@ -1292,7 +1292,7 @@ Common::Error SMTEngine::run() {
 				// the model starts front-on instead of showing its back.
 				Graphics::RMDRenderer::render(*rmdModel, screenWidth, screenHeight, modelAngle + (float)M_PI,
 				                              frameRmdPose, rmdFixedBounds.valid ? &rmdFixedBounds : nullptr,
-				                              &rmdFixedBounds, true /* unlit standalone demo */, frameRmdUV);
+				                              &rmdFixedBounds, true /* unlit standalone demo */, frameRmdMaterials);
 			} else {
 				Graphics::GMORenderer::render(*gmoModel, screenWidth, screenHeight, modelAngle, gmoIsPersona,
 				                      frameBpp, frameMpp, gmoFixedBounds.valid ? &gmoFixedBounds : nullptr,

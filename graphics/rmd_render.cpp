@@ -89,9 +89,9 @@ void freeTextures(Common::Array<Graphics::Surface *> &textures) {
 
 void build(const Common::RMD &rmd, const Common::Array<Graphics::Surface *> &textures, int width, int height,
 		   float rotY, const Common::RMD::BonePose *pose, const RMDBounds *fixed, RMDBounds *bounds,
-		   Common::Array<Tri> &out, const Common::Array<float> *uvTransforms = nullptr) {
+		   Common::Array<Tri> &out, const Common::RMD::MaterialPose *materialPose = nullptr) {
 	RMDRenderMesh mesh;
-	assembleRMDMesh(rmd, textures, width, height, rotY, pose, fixed, mesh, uvTransforms);
+	assembleRMDMesh(rmd, textures, width, height, rotY, pose, fixed, mesh, materialPose);
 	out = mesh.triangles;
 	if (bounds)
 		*bounds = mesh.bounds;
@@ -134,12 +134,12 @@ void RMDRenderer::computeBounds(const Common::RMD &rmd, int width, int height, f
 
 void RMDRenderer::invalidate() { reset(); }
 
-void RMDRenderer::render(const Common::RMD &rmd, int width, int height, float rotY, const Common::RMD::BonePose *pose, const RMDBounds *fixed, RMDBounds *out, bool unlit, const Common::Array<float> *uvTransforms) {
+void RMDRenderer::render(const Common::RMD &rmd, int width, int height, float rotY, const Common::RMD::BonePose *pose, const RMDBounds *fixed, RMDBounds *out, bool unlit, const Common::RMD::MaterialPose *materialPose) {
 	if (width <= 0 || height <= 0) return;
 	State &s = state();
 	if (!s.shader) { static const char *const attrs[] = {"a_position", "a_normal", "a_uv", "a_color", nullptr}; s.shader = OpenGL::Shader::fromStrings("RMD", kVertexShader, kFragmentShader, attrs, 120); }
 	if (s.model != &rmd) { reset(); s.model = &rmd; s.textures.resize(rmd.textures().size()); for (uint i = 0; i < s.textures.size(); ++i) s.textures[i] = rmd.getTextureSurface(i); }
-	build(rmd, s.textures, width, height, rotY, pose, fixed, out, s.tris, uvTransforms); s.verts.clear(); s.runs.clear(); if (s.tris.empty()) return;
+	build(rmd, s.textures, width, height, rotY, pose, fixed, out, s.tris, materialPose); s.verts.clear(); s.runs.clear(); if (s.tris.empty()) return;
 	for (uint i = 0; i < s.tris.size(); ++i) {
 		const Tri *previous = s.runs.empty() ? nullptr : &s.tris[s.runs.back().first];
 		bool same = previous && previous->texture == s.tris[i].texture &&

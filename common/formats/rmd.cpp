@@ -27,7 +27,7 @@ enum {
 	kPersonaAnimationOverride = 0xF0F00005, kPersonaParticleList = 0xF0F000E0,
 	kPersonaAnimationPlaceholder = 0xF0F00001, kPersonaAnimationInstance = 0xF0F00003,
 	kPersonaVisibilityAnimation = 0xF0F00080, kPersonaParticleAnimation = 0xF0F000E1,
-	kUVAnimationPlugin = 0x135, kUVParamKeyFrames = 0x1C1,
+	kUVAnimationPlugin = 0x135, kUVParamKeyFrames = 0x1C1, kUserData = 0x11F,
 };
 
 uint32 readUint32LE(const Common::Array<byte> &data, uint32 offset) {
@@ -201,6 +201,7 @@ void RMD::clearModel() {
 	_opaqueNodes.clear();
 	_animationSlots.clear();
 	_uvAnimations.clear();
+	_visibilityAnimations.clear();
 	_slotOpen = false;
 	_recoveryRanges.clear();
 }
@@ -333,15 +334,35 @@ void RMD::parseUVAnimationDictionary(const Node &node, AnimationSlot &slot) {
 	}
 }
 
-void RMD::evaluateSlotUVTransforms(uint32 slot, float time, Common::Array<float> &out) const {
+void RMD::evaluateSlotMaterials(uint32 slot, float time, MaterialPose &pose) const {
+	Common::Array<float> &out = pose.uvTransforms;
 	out.resize(_materials.size() * 6);
+	pose.opacity.resize(_materials.size());
 	for (uint32 m = 0; m < _materials.size(); ++m) {
 		float *t = &out[m * 6];
 		t[0] = 1; t[1] = 0; t[2] = 0; t[3] = 1; t[4] = 0; t[5] = 0;
+		pose.opacity[m] = 1;
 	}
 	if (slot >= _animationSlots.size())
 		return;
 	const AnimationSlot &s = _animationSlots[slot];
+	for (uint32 v = 0; v < s.visibilityAnimations.size(); ++v) {
+		const VisibilityAnimation &vis = _visibilityAnimations[s.visibilityAnimations[v]];
+		if (vis.times.empty())
+			continue;
+		const float tl = vis.duration > 0 ? fmodf(MAX(time, 0.0f), vis.duration) : 0;
+		float value = vis.values[0];
+		for (uint32 k = 0; k < vis.times.size(); ++k) {
+			if (tl < vis.times[k])
+				break;
+			value = vis.values[k];
+			if (k + 1 < vis.times.size() && tl < vis.times[k + 1] && vis.times[k + 1] > vis.times[k])
+				value += (vis.values[k + 1] - vis.values[k]) * (tl - vis.times[k]) / (vis.times[k + 1] - vis.times[k]);
+		}
+		for (uint32 m = 0; m < _materials.size(); ++m)
+			if (_materials[m].name.equalsIgnoreCase(vis.name))
+				pose.opacity[m] = CLIP(value, 0.0f, 1.0f);
+	}
 	for (uint32 m = 0; m < _materials.size(); ++m) {
 		if (_materials[m].uvAnimationName.empty())
 			continue;
@@ -425,6 +446,27 @@ void RMD::parseNode(const Node &node) {
 			return;
 		if (node.type == kUVAnimationDictionary)
 			parseUVAnimationDictionary(node, slot);
+		if (node.type == kPersonaVisibilityAnimation) {
+			// { uint32 count; float duration; uint32 keySize (8); uint32 nameLen; uint32 (unused
+			// pointer); char name[nameLen] (no NUL, no padding); { float time, value }[count] }.
+			// Holds for every one of the 1623 nodes in a 604-file P3 FES/P4 sample.
+			const uint32 p = node.payloadOffset;
+			if (node.size >= 20) {
+				const uint32 count = readUint32LE(_data, p), keySize = readUint32LE(_data, p + 8);
+				const uint32 nameLen = readUint32LE(_data, p + 12);
+				if (keySize == 8 && nameLen <= node.size - 20 && (uint64)20 + nameLen + (uint64)count * 8 <= node.size) {
+					VisibilityAnimation vis;
+					vis.duration = readFloatLE(_data, p + 4);
+					vis.name = Common::String((const char *)&_data[p + 20], nameLen);
+					for (uint32 k = 0; k < count; ++k) {
+						vis.times.push_back(readFloatLE(_data, p + 20 + nameLen + k * 8));
+						vis.values.push_back(readFloatLE(_data, p + 20 + nameLen + k * 8 + 4));
+					}
+					slot.visibilityAnimations.push_back(_visibilityAnimations.size());
+					_visibilityAnimations.push_back(vis);
+				}
+			}
+		}
 		// Transform override, visibility, UV and particle animation: kept as raw payloads.
 		OpaqueNode opaque;
 		opaque.type = node.type;
@@ -590,6 +632,41 @@ void RMD::parseNode(const Node &node) {
 		return;
 	}
 
+	if (node.type == kUserData && _inMaterial && !_materials.empty()) {
+		// RW user data: int32 arrays; each { int32 len; char name[len]; int32 format;
+		// int32 count; values }. Materials carry one string array "name" (format 3).
+		uint32 p = node.payloadOffset;
+		const uint32 end = node.payloadEnd;
+		if (p + 4 > end)
+			return;
+		const uint32 arrays = readUint32LE(_data, p);
+		p += 4;
+		for (uint32 a = 0; a < arrays && p + 4 <= end; ++a) {
+			const uint32 nameLen = readUint32LE(_data, p);
+			if (nameLen > end - p - 4 || p + 4 + nameLen + 8 > end)
+				return;
+			const bool isName = nameLen >= 4 && memcmp(&_data[p + 4], "name", 4) == 0 && (nameLen == 4 || _data[p + 8] == 0);
+			p += 4 + nameLen;
+			const uint32 format = readUint32LE(_data, p), count = readUint32LE(_data, p + 4);
+			p += 8;
+			if (format != 3) // int/float arrays: not used by materials, stop rather than guess sizes
+				return;
+			for (uint32 i = 0; i < count && p + 4 <= end; ++i) {
+				const uint32 len = readUint32LE(_data, p);
+				if (len > end - p - 4)
+					return;
+				if (isName && i == 0) {
+					uint32 n = 0;
+					while (n < len && _data[p + 4 + n])
+						++n;
+					_materials.back().name = Common::String((const char *)&_data[p + 4], n);
+				}
+				p += 4 + len;
+			}
+		}
+		return;
+	}
+
 	if (node.type == kUVAnimationPlugin && !_materials.empty()) {
 		// Material UV anim plugin: STRUCT { uint32 mask; char name[32] per set bit }. Only
 		// bit 0 (the base UV channel) occurs in the corpus.
@@ -633,7 +710,9 @@ void RMD::parseNode(const Node &node) {
 			return;
 		}
 		_materials.push_back(material);
+		_inMaterial = true;
 		parseContent(node.payloadOffset, node.payloadEnd);
+		_inMaterial = false;
 		return;
 	}
 
