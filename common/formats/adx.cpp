@@ -38,6 +38,8 @@ struct ADXHeader {
 // game-agnostic algorithms; the actual per-game key isn't shipped here.
 // Unverified against real encrypted data (none in this session's corpus).
 
+// TODO: Type 8/9 ADX decryption is only self-consistency tested; no encrypted ADX exists in
+// the available corpus (P3F/P4 BGM.CVM ADX are unencrypted). Verify against a real sample.
 void deriveKey9(uint64 key9, uint16 subkey, uint16 &xorStart, uint16 &xorMult, uint16 &xorAdd) {
 	xorStart = xorMult = xorAdd = 0;
 	if (key9 == 0)
