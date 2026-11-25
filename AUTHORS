@@ -80,11 +80,77 @@ ScummVM Team
        monyarm                        - Engine
        Persona Modding community      - TGE, Shrinefox, Meloman19 and others;
                                         source code for their tools
+       Raikaru                        - Persona 4 and Persona 3 FES
+                                        decompilations, the TMX reference
 
   NovelVM Middleware
   ------------------
+    ATRAC3 / ATRAC3+:
+       Maxim Poliakovski              - FFmpeg ATRAC3 and ATRAC3+ decoders,
+                                        which these decoders are ported from
+                                        (LGPL)
+       Benjamin Larsson               - FFmpeg ATRAC3 decoder (LGPL)
+
+    ADX:
+       vgmstream contributors         - CRI key derivation and the type 8 key
+                                        table (ISC)
+       Raikaru                        - Persona 4 decompilation, used to
+                                        check CRI ADX behaviour
+
+    AHX:
+       Fabrice Bellard                - FFmpeg MPEG audio layer II decoder,
+                                        which the AHX decoder is ported from
+                                        (LGPL)
+       FFmpeg contributors            - FFmpeg MPEG audio layer II decoder
+                                        (LGPL)
+       vgmstream contributors         - AHX container and frame layout
+
+    AWB:
+       vgmstream contributors         - AWB entry alignment reference
+
+    CPK:
+       esperknight                    - CriPakTools: CRILAYLA decompression
+                                        and the ITOC layout
+       vgmstream contributors         - CPK layout reference
+
     DDS / S3TC:
        Benjamin Dobell, Glass Echidna - S3TC/DDS texture decompression
+
+    EPL:
+       Raikaru                        - Persona 4 and Persona 3 FES
+                                        decompilations, the EPL and AfPack
+                                        reference
+       snaku                          - Original Persona 3 FES decompilation
+
+    GMO:
+       Rich Whitehouse                - Noesis, used to compare GMO output
+       MrAdults and Ukurere           - FFRTT wiki GMO format notes
+       pionome                        - PiosGmoLibrary format reference
+       genkimorimori252525-oss        - KNEEKURA-TECH-HUB GMO format notes
+
+    HCA:
+       nyaga                          - Original HCA decoder decompilation
+       kode54                         - C port of the HCA decoder
+       bnnm                           - HCA v3 reverse engineering
+       Thealexbarney                  - VGAudio
+       Youjose                        - CriCodecs
+       vgmstream contributors         - clhca, which the HCA decoder and
+                                        tables are ported from (ISC)
+
+    PMF:
+       JPCSP team                     - PSMF layout reference
+       PPSSPP team                    - PSMF layout and ATRAC3+ header
+                                        reference
+
+    RMD:
+       TGE                            - AmicitiaLibrary, the RMD reference
+       Raikaru                        - Persona 4 and Persona 3 FES
+                                        decompilations, the Persona RMD chunk
+                                        reference
+
+    USM:
+       FFmpeg contributors            - USM container layout reference
+                                        (libavformat/usmdec.c)
 
   Backend Teams
   -------------
