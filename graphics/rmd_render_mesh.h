@@ -1,6 +1,7 @@
 #ifndef GRAPHICS_RMD_RENDER_MESH_H
 #define GRAPHICS_RMD_RENDER_MESH_H
 
+#include "graphics/epl_effect.h"
 #include "graphics/rmd_render.h"
 
 namespace Graphics {
@@ -22,13 +23,18 @@ struct RMDRenderTriangle {
 
 struct RMDRenderMesh {
 	Common::Array<RMDRenderTriangle> triangles;
+	Common::Array<EffectBatch> effects; ///< effect batches in the same screen space as the triangles
 	RMDBounds bounds;
 };
+
+/** Viewer for effects drawn with assembleRMDMesh(rotY): model-space camera position and screen axes. */
+EffectCamera rmdEffectCamera(float rotY);
 
 void assembleRMDMesh(const Common::RMD &rmd, const Common::Array<Graphics::Surface *> &textures,
 					 int width, int height, float rotY, const Common::RMD::BonePose *pose,
 					 const RMDBounds *fixed, RMDRenderMesh &out,
-					 const Common::RMD::MaterialPose *materialPose = nullptr);
+					 const Common::RMD::MaterialPose *materialPose = nullptr,
+					 const Common::Array<EffectBatch> *effects = nullptr);
 
 } // namespace Graphics
 

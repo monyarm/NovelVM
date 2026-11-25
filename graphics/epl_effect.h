@@ -18,11 +18,15 @@ struct EffectTextureRef {
 	bool valid() const { return globalSlot >= 0 || embeddedTMX; }
 };
 
-/** Supplies texture dimensions (in pixels); billboard sizes depend on them. */
+struct Surface;
+
+/** Supplies decoded effect textures; billboard sizes depend on their pixel dimensions. */
 class EffectTextureSource {
 public:
 	virtual ~EffectTextureSource() {}
 	virtual bool textureSize(const EffectTextureRef &texture, int &width, int &height) = 0;
+	/** The decoded texture, kept alive by the source; nullptr if unavailable. */
+	virtual const Graphics::Surface *textureSurface(const EffectTextureRef &texture) { return nullptr; }
 };
 
 /** Viewer in the effect's space: position and the screen right/up axes. */
@@ -112,6 +116,11 @@ void rotate(const float q[4], const float v[3], float out[3]);
 /** Hamilton product a (x) b; with row vectors R(a (x) b) = R(a) R(b). */
 void multiply(const float a[4], const float b[4], float out[4]);
 void eulerToQuat(float ax, float ay, float az, float out[4]);
+/**
+ * Pose from a RenderWare row-major matrix (rows right, up, at; translation in m[12..14]):
+ * the rotation is orthonormalised (scale and shear removed) and returned as a quaternion.
+ */
+void matrixToPose(const float m[16], float position[3], float rotation[4]);
 /** Multiply two packed RGBA colours channel by channel (normalised, truncated). */
 uint32 modulate(uint32 a, uint32 b);
 }

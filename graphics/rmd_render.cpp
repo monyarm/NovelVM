@@ -42,6 +42,7 @@ static const char *const kFragmentShader =
 	"uniform int u_hasUv;\n"
 	"uniform int u_unlit;\n"
 	"uniform int u_alphaTest;\n"
+	"uniform int u_vertexColor;\n"
 	"void main() {\n"
 	"  int textured = (u_hasTexture != 0 && u_hasUv != 0) ? 1 : 0;\n"
 	"  vec4 texel = vec4(1.0);\n"
@@ -61,7 +62,7 @@ static const char *const kFragmentShader =
 	// -- the flag doesn't gate "safe to multiply", so there's no known-safe
 	// way to consume it here. Vertex color only matters as a flat tint on
 	// untextured geometry.
-	"  vec3 color = (textured != 0) ? (texel.rgb * u_diffuse) : (texel.rgb * v_color.rgb * u_diffuse);\n"
+	"  vec3 color = (textured != 0 && u_vertexColor == 0) ? (texel.rgb * u_diffuse) : (texel.rgb * v_color.rgb * u_diffuse);\n"
 	"  if (u_unlit == 0) color *= 0.45 + 0.55 * abs(dot(normalize(v_normal), vec3(0.0, 0.0, 1.0)));\n"
 	"  gl_FragColor = vec4(color, texel.a * v_color.a);\n"
 	"}\n";
@@ -89,10 +90,13 @@ void freeTextures(Common::Array<Graphics::Surface *> &textures) {
 
 void build(const Common::RMD &rmd, const Common::Array<Graphics::Surface *> &textures, int width, int height,
 		   float rotY, const Common::RMD::BonePose *pose, const RMDBounds *fixed, RMDBounds *bounds,
-		   Common::Array<Tri> &out, const Common::RMD::MaterialPose *materialPose = nullptr) {
+		   Common::Array<Tri> &out, const Common::RMD::MaterialPose *materialPose = nullptr,
+		   const Common::Array<EffectBatch> *effects = nullptr, Common::Array<EffectBatch> *effectsOut = nullptr) {
 	RMDRenderMesh mesh;
-	assembleRMDMesh(rmd, textures, width, height, rotY, pose, fixed, mesh, materialPose);
+	assembleRMDMesh(rmd, textures, width, height, rotY, pose, fixed, mesh, materialPose, effects);
 	out = mesh.triangles;
+	if (effectsOut)
+		*effectsOut = mesh.effects;
 	if (bounds)
 		*bounds = mesh.bounds;
 }
@@ -123,6 +127,76 @@ GLenum wrapMode(byte mode) {
 
 } // namespace
 
+namespace {
+
+// Effect blend modes in the game's draw-list order, and their blend equations (PS2 GS ALPHA
+// register): 0/1 Cs*As + Cd*(1-As), 2 Cs*As + Cd, 3/4 Cd - Cs*As, 5/6 Cs - Cd*As.
+const int kEffectDrawOrder[7] = {0, 1, 4, 5, 2, 6, 3};
+
+void setEffectBlend(int mode) {
+	switch (mode) {
+	case 2:
+		GL_CALL(glBlendEquation(GL_FUNC_ADD)); GL_CALL(glBlendFunc(GL_SRC_ALPHA, GL_ONE));
+		break;
+	case 3: case 4:
+		GL_CALL(glBlendEquation(GL_FUNC_REVERSE_SUBTRACT)); GL_CALL(glBlendFunc(GL_SRC_ALPHA, GL_ONE));
+		break;
+	case 5: case 6:
+		GL_CALL(glBlendEquation(GL_FUNC_SUBTRACT)); GL_CALL(glBlendFunc(GL_ONE, GL_SRC_ALPHA));
+		break;
+	default:
+		GL_CALL(glBlendEquation(GL_FUNC_ADD)); GL_CALL(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+		break;
+	}
+}
+
+void drawEffects(State &s, const Common::Array<EffectBatch> &batches, EffectTextureSource *textures) {
+	if (batches.empty())
+		return;
+	// All effect lists: no depth writes, no culling, wrapped bilinear textures, vertex colours.
+	GL_CALL(glEnable(GL_BLEND)); GL_CALL(glDepthMask(GL_FALSE));
+	s.shader->setUniform("u_vertexColor", (unsigned int)1);
+	s.shader->setUniform("u_diffuse", Math::Vector3d(1, 1, 1));
+	s.shader->setUniform("u_alphaTest", (unsigned int)0);
+	s.shader->setUniform("u_hasUv", (unsigned int)1);
+	Common::Array<float> verts;
+	for (int order = 0; order < 7; ++order) {
+		for (uint b = 0; b < batches.size(); ++b) {
+			const EffectBatch &batch = batches[b];
+			if (batch.blendMode != kEffectDrawOrder[order] || batch.vertices.empty())
+				continue;
+			verts.clear();
+			for (uint i = 0; i < batch.vertices.size(); ++i) {
+				const EffectVertex &v = batch.vertices[i];
+				const float vertex[12] = {v.x, v.y, v.z, 0, 0, 1, v.u, v.v, v.r, v.g, v.b, v.a};
+				for (int k = 0; k < 12; ++k)
+					verts.push_back(vertex[k]);
+			}
+			const Graphics::Surface *surface = textures && batch.texture.valid() ? textures->textureSurface(batch.texture) : nullptr;
+			s.shader->setUniform("u_hasTexture", (unsigned int)(surface ? 1 : 0));
+			if (surface) {
+				GL_CALL(glBindTexture(GL_TEXTURE_2D, textureFor(surface)));
+				GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
+				GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+			}
+			if (batch.depthTest) { GL_CALL(glEnable(GL_DEPTH_TEST)); } else { GL_CALL(glDisable(GL_DEPTH_TEST)); }
+			setEffectBlend(batch.blendMode);
+			const int stride = 12 * sizeof(float); const byte *base = (const byte *)verts.data();
+			s.shader->enableVertexAttribute("a_position", 3, GL_FLOAT, GL_FALSE, stride, base);
+			s.shader->enableVertexAttribute("a_normal", 3, GL_FLOAT, GL_FALSE, stride, base + 3 * sizeof(float));
+			s.shader->enableVertexAttribute("a_uv", 2, GL_FLOAT, GL_FALSE, stride, base + 6 * sizeof(float));
+			s.shader->enableVertexAttribute("a_color", 4, GL_FLOAT, GL_FALSE, stride, base + 8 * sizeof(float));
+			s.shader->use(true);
+			GL_CALL(glDrawArrays(GL_TRIANGLES, 0, (GLsizei)batch.vertices.size()));
+		}
+	}
+	GL_CALL(glBlendEquation(GL_FUNC_ADD)); GL_CALL(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+	GL_CALL(glEnable(GL_DEPTH_TEST));
+	s.shader->setUniform("u_vertexColor", (unsigned int)0);
+}
+
+} // namespace
+
 bool RMDRenderer::isAvailable() { return g_system && g_system->hasFeature(OSystem::kFeatureOpenGLForGame) && OpenGLContext.type != OpenGL::kContextNone && OpenGLContext.enginesShadersSupported; }
 
 void RMDRenderer::computeBounds(const Common::RMD &rmd, int width, int height, float rotY, const Common::RMD::BonePose *pose, RMDBounds *out) {
@@ -134,12 +208,14 @@ void RMDRenderer::computeBounds(const Common::RMD &rmd, int width, int height, f
 
 void RMDRenderer::invalidate() { reset(); }
 
-void RMDRenderer::render(const Common::RMD &rmd, int width, int height, float rotY, const Common::RMD::BonePose *pose, const RMDBounds *fixed, RMDBounds *out, bool unlit, const Common::RMD::MaterialPose *materialPose) {
+void RMDRenderer::render(const Common::RMD &rmd, int width, int height, float rotY, const Common::RMD::BonePose *pose, const RMDBounds *fixed, RMDBounds *out, bool unlit, const Common::RMD::MaterialPose *materialPose,
+		const Common::Array<EffectBatch> *effects, EffectTextureSource *effectTextures) {
 	if (width <= 0 || height <= 0) return;
 	State &s = state();
 	if (!s.shader) { static const char *const attrs[] = {"a_position", "a_normal", "a_uv", "a_color", nullptr}; s.shader = OpenGL::Shader::fromStrings("RMD", kVertexShader, kFragmentShader, attrs, 120); }
 	if (s.model != &rmd) { reset(); s.model = &rmd; s.textures.resize(rmd.textures().size()); for (uint i = 0; i < s.textures.size(); ++i) s.textures[i] = rmd.getTextureSurface(i); }
-	build(rmd, s.textures, width, height, rotY, pose, fixed, out, s.tris, materialPose); s.verts.clear(); s.runs.clear(); if (s.tris.empty()) return;
+	Common::Array<EffectBatch> effectBatches;
+	build(rmd, s.textures, width, height, rotY, pose, fixed, out, s.tris, materialPose, effects, &effectBatches); s.verts.clear(); s.runs.clear(); if (s.tris.empty()) return;
 	for (uint i = 0; i < s.tris.size(); ++i) {
 		const Tri *previous = s.runs.empty() ? nullptr : &s.tris[s.runs.back().first];
 		bool same = previous && previous->texture == s.tris[i].texture &&
@@ -161,6 +237,7 @@ void RMDRenderer::render(const Common::RMD &rmd, int width, int height, float ro
 		for (int k = 0; k < 3; ++k) for (int n = 0; n < 12; ++n) s.verts.push_back(((float *)&s.tris[i].v[k])[n]);
 	}
 	float zMin = 1e30f, zMax = -1e30f; for (uint i = 0; i < s.tris.size(); ++i) for (int k = 0; k < 3; ++k) { zMin = MIN(zMin, s.tris[i].v[k].z); zMax = MAX(zMax, s.tris[i].v[k].z); }
+	for (uint b = 0; b < effectBatches.size(); ++b) for (uint i = 0; i < effectBatches[b].vertices.size(); ++i) { zMin = MIN(zMin, effectBatches[b].vertices[i].z); zMax = MAX(zMax, effectBatches[b].vertices[i].z); }
 	float range = MAX(zMax - zMin, 1.0f), proj[16] = {2.0f / width, 0, 0, 0, 0, -2.0f / height, 0, 0, 0, 0, 0.98f / range, 0, -1, 1, 0.01f - zMin * 0.98f / range, 1};
 	GLboolean previousDepthMask = GL_TRUE;
 	GL_CALL(glGetBooleanv(GL_DEPTH_WRITEMASK, &previousDepthMask));
@@ -181,12 +258,13 @@ void RMDRenderer::render(const Common::RMD &rmd, int width, int height, float ro
 	GL_CALL(glEnable(GL_POLYGON_OFFSET_FILL));
 	GL_CALL(glClearColor(32.0f / 255.0f, 32.0f / 255.0f, 40.0f / 255.0f, 1.0f));
 	GL_CALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
-	s.shader->use(true); GL_CALL(glUniformMatrix4fv(s.shader->getUniformLocation("u_projection"), 1, GL_FALSE, proj)); s.shader->setUniform("u_texture", (unsigned int)0); s.shader->setUniform("u_unlit", (unsigned int)(unlit ? 1 : 0));
+	s.shader->use(true); GL_CALL(glUniformMatrix4fv(s.shader->getUniformLocation("u_projection"), 1, GL_FALSE, proj)); s.shader->setUniform("u_texture", (unsigned int)0); s.shader->setUniform("u_unlit", (unsigned int)(unlit ? 1 : 0)); s.shader->setUniform("u_vertexColor", (unsigned int)0);
 	const int stride = 12 * sizeof(float); const byte *base = (const byte *)s.verts.data(); s.shader->enableVertexAttribute("a_position", 3, GL_FLOAT, GL_FALSE, stride, base); s.shader->enableVertexAttribute("a_normal", 3, GL_FLOAT, GL_FALSE, stride, base + 3 * sizeof(float)); s.shader->enableVertexAttribute("a_uv", 2, GL_FLOAT, GL_FALSE, stride, base + 6 * sizeof(float)); s.shader->enableVertexAttribute("a_color", 4, GL_FLOAT, GL_FALSE, stride, base + 8 * sizeof(float)); GL_CALL(glActiveTexture(GL_TEXTURE0));
 	s.shader->use(true);
 	for (uint r = 0; r < s.runs.size(); ++r) { const Tri &t = s.tris[s.runs[r].first]; s.shader->setUniform("u_diffuse", Math::Vector3d(t.diffuse[0], t.diffuse[1], t.diffuse[2])); s.shader->setUniform("u_hasTexture", (unsigned int)(t.texture ? 1 : 0)); s.shader->setUniform("u_hasUv", (unsigned int)(t.hasUv ? 1 : 0)); s.shader->setUniform("u_alphaTest", (unsigned int)(t.alphaTest ? 1 : 0)); if (t.texture) { GL_CALL(glBindTexture(GL_TEXTURE_2D, textureFor(t.texture))); GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapMode(t.horizontalAddressing))); GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapMode(t.verticalAddressing))); } if (t.alpha) { GL_CALL(glEnable(GL_BLEND)); GL_CALL(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)); GL_CALL(glDepthMask(GL_FALSE)); } else { GL_CALL(glDisable(GL_BLEND)); GL_CALL(glDepthMask(GL_TRUE)); } GL_CALL(glPolygonOffset(0.0f, -(float)r * 32.0f)); GL_CALL(glDrawArrays(GL_TRIANGLES, s.runs[r].first * 3, s.runs[r].count * 3)); }
 	GL_CALL(glPolygonOffset(0.0f, 0.0f));
 	GL_CALL(glDisable(GL_POLYGON_OFFSET_FILL));
+	drawEffects(s, effectBatches, effectTextures);
 	GL_CALL(glDepthMask(previousDepthMask));
 	GL_CALL(glClearColor(0.0f, 0.0f, 0.0f, 1.0f));
 }

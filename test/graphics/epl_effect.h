@@ -82,6 +82,19 @@ public:
 		TS_ASSERT_DELTA(fabsf(r[1]), 1.0f, 1e-5f);
 	}
 
+	void testMatrixToPoseRemovesScale() {
+		// RW rows right/up/at of a 90 degree turn about y, scaled by 2, translated by (1, 2, 3).
+		const float m[16] = {0, 0, -2, 0, 0, 2, 0, 0, 2, 0, 0, 0, 1, 2, 3, 1};
+		float position[3], q[4], r[3];
+		Graphics::EffectMath::matrixToPose(m, position, q);
+		TS_ASSERT_DELTA(position[2], 3.0f, 1e-5f);
+		const float x[3] = {1, 0, 0};
+		Graphics::EffectMath::rotate(q, x, r); // must give the normalised first row
+		TS_ASSERT_DELTA(r[0], 0.0f, 1e-5f);
+		TS_ASSERT_DELTA(r[2], -1.0f, 1e-5f);
+		TS_ASSERT_DELTA(q[0] * q[0] + q[1] * q[1] + q[2] * q[2] + q[3] * q[3], 1.0f, 1e-5f);
+	}
+
 	void testParticlesSpawnAtNodeAndBillboard() {
 		Common::Array<byte> d = makeParticleTree();
 		Common::EPL epl(d.data(), d.size());

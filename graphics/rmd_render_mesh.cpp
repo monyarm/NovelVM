@@ -49,7 +49,8 @@ int textureIndex(const Common::RMD &rmd, const Common::RMD::Material &material) 
 
 void assembleRMDMesh(const Common::RMD &rmd, const Common::Array<Graphics::Surface *> &textures,
 					 int width, int height, float rotY, const Common::RMD::BonePose *pose,
-					 const RMDBounds *fixed, RMDRenderMesh &out, const Common::RMD::MaterialPose *materialPose) {
+					 const RMDBounds *fixed, RMDRenderMesh &out, const Common::RMD::MaterialPose *materialPose,
+					 const Common::Array<EffectBatch> *effects) {
 	const Common::Array<float> *uvTransforms = materialPose ? &materialPose->uvTransforms : nullptr;
 	out.triangles.clear();
 	out.bounds = RMDBounds();
@@ -234,6 +235,31 @@ void assembleRMDMesh(const Common::RMD &rmd, const Common::Array<Graphics::Surfa
 	float scale = MIN(height * 0.85f / MAX(spanY, 0.0001f), width * 0.95f / MAX(spanX, 0.0001f));
 	for (uint i = 0; i < out.triangles.size(); ++i)
 		for (int k = 0; k < 3; ++k) { out.triangles[i].v[k].x = width * 0.5f + (out.triangles[i].v[k].x - cx) * scale; out.triangles[i].v[k].y = height * 0.5f - (out.triangles[i].v[k].y - cy) * scale; }
+	// Effects live in model space: same spin and fit, without widening the model's bounds.
+	if (effects) {
+		out.effects = *effects;
+		for (uint b = 0; b < out.effects.size(); ++b)
+			for (uint i = 0; i < out.effects[b].vertices.size(); ++i) {
+				EffectVertex &v = out.effects[b].vertices[i];
+				const Common::RMD::Vec3 p = {v.x, v.y, v.z};
+				float x, y, z;
+				transform(spin, p, x, y, z);
+				v.x = width * 0.5f + (x - cx) * scale;
+				v.y = height * 0.5f - (y - cy) * scale;
+				v.z = z;
+			}
+	}
+}
+
+EffectCamera rmdEffectCamera(float rotY) {
+	// The spin maps x' = x cos - z sin, z' = x sin + z cos; screen x is x', screen up is y and
+	// smaller z' is nearer. Invert that for the screen axes and a distant viewer.
+	EffectCamera camera;
+	const float c = cosf(rotY), s = sinf(rotY), distance = 100000.0f;
+	camera.right[0] = c; camera.right[1] = 0; camera.right[2] = -s;
+	camera.up[0] = 0; camera.up[1] = 1; camera.up[2] = 0;
+	camera.position[0] = -s * distance; camera.position[1] = 0; camera.position[2] = -c * distance;
+	return camera;
 }
 
 } // namespace Graphics
