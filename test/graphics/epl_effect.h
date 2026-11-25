@@ -156,6 +156,41 @@ public:
 		TS_ASSERT_DELTA(maxX, 17.0f, 1e-3f);
 	}
 
+	void testBoardIsSizedByTexture() {
+		// Board: size key 1.5 x multiplier 2 on a 64x64 texture -> half extent 2 * 3 = 6 in XZ.
+		Common::Array<byte> d = makeTree(7, 1, 0x98 + 4);
+		const uint32 r = 0x90 + 0xC0, p = r + 0x2C;
+		d[r + 0x1C] = 4; // global texture slot
+		put32(d, r + 0x20, 0x2C + 0x98);
+		put32(d, r + 0x24, 4);
+		put32(d, p + 0x98, 5);
+		put32(d, p + 0x04, 0x00FFFFFF);
+		put32(d, p + 0x24, 255);
+		putFloat(d, p + 0x30, 1.0f);
+		putFloat(d, p + 0x38, 1.5f);
+		putFloat(d, p + 0x90, 2.0f);
+		Common::EPL epl(d.data(), d.size());
+		TS_ASSERT(epl.ok());
+		FixedTextures textures;
+		Graphics::EPLEffect effect(epl, &textures);
+		Graphics::EffectCamera camera;
+		effect.advance(camera);
+		Common::Array<Graphics::EffectBatch> batches;
+		effect.draw(camera, batches);
+		TS_ASSERT_EQUALS(batches.size(), 1u);
+		if (batches.size() != 1)
+			return;
+		TS_ASSERT_EQUALS(batches[0].texture.globalSlot, 5);
+		TS_ASSERT_EQUALS(batches[0].vertices.size(), 6u);
+		float maxX = -1e9f, maxZ = -1e9f;
+		for (uint i = 0; i < batches[0].vertices.size(); ++i) {
+			maxX = MAX(maxX, batches[0].vertices[i].x);
+			maxZ = MAX(maxZ, batches[0].vertices[i].z);
+		}
+		TS_ASSERT_DELTA(maxX, 6.0f, 1e-4f);
+		TS_ASSERT_DELTA(maxZ, 6.0f, 1e-4f);
+	}
+
 	void testParticlesSpawnAtNodeAndBillboard() {
 		Common::Array<byte> d = makeParticleTree();
 		Common::EPL epl(d.data(), d.size());
