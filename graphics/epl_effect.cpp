@@ -666,12 +666,386 @@ private:
 	}
 };
 
+// ---------------------------------------------------------------------------
+// Geometry primitives: local vertices placed by (v x scale) R(q) + position, vertex colour times
+// the kind's sampled material colour times the node colour.
+// ---------------------------------------------------------------------------
+
+class GeometryPrimitive : public EffectPrimitive {
+public:
+	explicit GeometryPrimitive(const Common::EPL::Record &record) : _record(record) {
+		_params.bytes = record.parameters;
+	}
+	void setPosition(const float p[3]) override { for (int i = 0; i < 3; ++i) _position[i] = p[i]; }
+	void setRotation(const float q[4]) override { for (int i = 0; i < 4; ++i) _rotation[i] = q[i]; }
+	void setScale(float scale) override { _scale[0] = _scale[1] = _scale[2] = scale; }
+	void setVectorScale(const float scale[3]) override { for (int i = 0; i < 3; ++i) _scale[i] = scale[i]; }
+
+protected:
+	struct Vertex {
+		float position[3];
+		float u, v;
+		uint32 color;
+	};
+
+	Common::EPL::Record _record;
+	Params _params;
+	float _position[3] = {0, 0, 0};
+	float _rotation[4] = {0, 0, 0, 1};
+	float _scale[3] = {1, 1, 1};
+
+	/** Emit triangles (index triples into `vertices`), coloured by vertex x material colour. */
+	void emit(EffectBatch &batch, const Vertex *vertices, const int *indices, int indexCount, uint32 material) const {
+		for (int i = 0; i < indexCount; ++i) {
+			const Vertex &in = vertices[indices[i]];
+			const float scaled[3] = {in.position[0] * _scale[0], in.position[1] * _scale[1], in.position[2] * _scale[2]};
+			float world[3];
+			rotate(_rotation, scaled, world);
+			EffectVertex out;
+			out.x = world[0] + _position[0];
+			out.y = world[1] + _position[1];
+			out.z = world[2] + _position[2];
+			out.u = in.u;
+			out.v = in.v;
+			float rgba[4];
+			colorToFloats(modulate(in.color, material), rgba);
+			out.r = rgba[0]; out.g = rgba[1]; out.b = rgba[2]; out.a = rgba[3];
+			batch.vertices.push_back(out);
+		}
+	}
+};
+
+/** Packed colour with every channel (alpha too) times env. */
+uint32 scaleColor(uint32 c, float env) {
+	uint32 out = 0;
+	for (int i = 0; i < 4; ++i)
+		out |= (uint32)CLIP((int)(((c >> (8 * i)) & 0xFF) * env), 0, 255) << (8 * i);
+	return out;
+}
+
+/** Packed colour with RGB times env and the given alpha. */
+uint32 scaleRGB(uint32 c, float env, uint32 alpha) {
+	return (scaleColor(c, env) & 0xFFFFFF) | (alpha << 24);
+}
+
+// Kind 12: flat ring (sub 1) or filled disc (sub 3) in the local XZ plane, growing over time.
+class Ring : public GeometryPrimitive {
+public:
+	using GeometryPrimitive::GeometryPrimitive;
+
+	void reset() override { _age = 0; }
+	void advance() override { ++_age; }
+
+	void draw(const EffectCamera &camera, uint32 nodeColor, Common::Array<EffectBatch> &out) override {
+		const int32 duration = _params.s32(0x34);
+		const int32 age = _age - 1; // geometry is rebuilt before the age step
+		if (_age <= 0 || (duration != 0 && age > duration) || (_record.sub != 1 && _record.sub != 3))
+			return;
+		const uint32 material = modulate(_params.sampleColor(0x00, 0x24, age, duration), nodeColor);
+		if ((material >> 24) == 0)
+			return;
+		const uint32 tail = _record.sub == 1 ? 0x60 : 0x5C;
+		const float speed = _params.f32(tail), accel = _params.f32(tail + 4);
+		float t = _params.u8(tail + 8) ? (float)(duration - age) : (float)age;
+		const float v = fabsf(speed);
+		if (accel < 0)
+			t = MIN(t, -v / accel);
+		const float r = _params.f32(0x40) + t * (v + 0.5f * accel * t);
+		const float inner = _params.f32(0x50), middle = _params.f32(0x54), outer = _params.f32(0x58);
+		const float radii[4] = {_record.sub == 3 ? 0 : r, r + inner, r + inner + middle, r + inner + middle + outer};
+		const uint32 colors[4] = {_params.u32(0x44), _params.u32(0x48), _params.u32(0x48), _params.u32(0x4C)};
+		const uint32 segments = MAX<uint32>(3, _params.u32(0x38));
+
+		EffectBatch batch;
+		batch.blendMode = _params.u16(0x28);
+		batch.depthTest = _params.u8(0x3C) != 0;
+		static const int kStrip[18] = {0, 1, 5, 0, 5, 4, 1, 2, 6, 1, 6, 5, 2, 3, 7, 2, 7, 6};
+		for (uint32 k = 0; k < segments; ++k) {
+			Vertex rows[8];
+			for (int row = 0; row < 2; ++row) {
+				const float theta = 2 * kPi * (k + row) / segments;
+				for (int j = 0; j < 4; ++j) {
+					Vertex &vertex = rows[row * 4 + j];
+					vertex.position[0] = cosf(theta) * radii[j];
+					vertex.position[1] = 0;
+					vertex.position[2] = sinf(theta) * radii[j];
+					vertex.u = vertex.v = 0;
+					vertex.color = colors[j];
+				}
+			}
+			emit(batch, rows, kStrip, 18, material);
+		}
+		out.push_back(batch);
+	}
+
+private:
+	int32 _age = 0;
+};
+
+// Kind 10: a pool of quads (rays, streaks, a crown) in the local XZ plane.
+class FlashQuads : public GeometryPrimitive {
+public:
+	FlashQuads(const Common::EPL::Record &record, EffectTextureSource *textures) : GeometryPrimitive(record) {
+		// Embedded TMX replaces the default texture; a texture slot resource is ignored.
+		if (record.resourceKind == Common::EPL::kResourceTMX && !record.resource.empty())
+			_texture.embeddedTMX = &_record.resource;
+		else if (record.sub == 4 || record.sub == 6)
+			_texture.globalSlot = 0x12;
+		else if (record.sub == 5)
+			_texture.globalSlot = 0x13;
+		_quads.resize(MIN<uint32>(_params.u32(0x38), 1024)); // corpus counts are small
+	}
+
+	void reset() override { _frame = 0; }
+
+	void advance() override {
+		const int32 duration = _params.s32(0x34), life = _params.s32(0x4C);
+		if ((duration != 0 && _frame > duration) || life <= 0 || !supported()) {
+			++_frame;
+			return;
+		}
+		if (_frame == 0)
+			for (uint i = 0; i < _quads.size(); ++i)
+				_quads[i].age = -1;
+		const bool burst = _frame == 0 && _params.u8(0x55);
+		int32 births = burst ? (int32)_quads.size() : _params.s32(0x50);
+		for (uint i = 0; i < _quads.size(); ++i) {
+			Quad &q = _quads[i];
+			if (q.age >= life)
+				q.age = _params.u8(0x54) ? -1 : -2;
+			if (q.age == -1 && births > 0) {
+				--births;
+				spawn(q, life);
+				if (burst)
+					preAdvance(q, (int32)(EffectRandom::next() % (uint32)life));
+			}
+			if (q.age >= 0) {
+				step(q);
+				++q.age;
+			}
+		}
+		++_frame;
+	}
+
+	void draw(const EffectCamera &camera, uint32 nodeColor, Common::Array<EffectBatch> &out) override {
+		const int32 duration = _params.s32(0x34), life = _params.s32(0x4C);
+		if (_frame <= 0 || (duration != 0 && _frame - 1 > duration) || life <= 0 || !supported())
+			return;
+		const uint32 material = modulate(_params.sampleColor(0x00, 0x24, _frame - 1, duration), nodeColor);
+		EffectBatch batch;
+		batch.blendMode = _params.u16(0x28);
+		batch.depthTest = _params.u8(0x56) != 0;
+		batch.texture = _texture;
+		const uint32 innerColor = _params.u32(0x58), outerColor = _params.u32(0x5C);
+		for (uint i = 0; i < _quads.size(); ++i) {
+			const Quad &q = _quads[i];
+			if (q.age <= 0)
+				continue;
+			const float env = envelope(q.age - 1, life);
+			const bool odd = (i & 1) != 0;
+			Vertex v[5];
+			if (_record.sub == 1) {
+				// Rays: v0/v1 tip edge, v3 centre, v2/v4 sides; untextured.
+				for (int k = 0; k < 5; ++k) {
+					for (int a = 0; a < 3; ++a)
+						v[k].position[a] = q.vertices[k][a];
+					v[k].u = v[k].v = 0;
+				}
+				v[0].color = v[1].color = scaleRGB(outerColor, env, 0);
+				v[2].color = v[4].color = (uint32)(255 * env * (odd ? 0.5f : 1.0f)) << 24;
+				v[3].color = scaleRGB(innerColor, env, odd ? 0xFF : 0x40);
+				static const int kRays[9] = {0, 3, 2, 0, 1, 3, 1, 4, 3};
+				emit(batch, v, kRays, 9, material);
+			} else {
+				// Textured quad; odd quads use the texture's left half, even ones the right.
+				const float u0 = odd ? 0.0f : 0.5f;
+				static const float kUV[4][2] = {{0, 0}, {0.5f, 0}, {0, 1}, {0.5f, 1}};
+				for (int k = 0; k < 4; ++k) {
+					for (int a = 0; a < 3; ++a)
+						v[k].position[a] = q.vertices[k][a];
+					v[k].u = u0 + kUV[k][0];
+					v[k].v = kUV[k][1];
+				}
+				v[0].color = v[1].color = scaleColor(outerColor, env);
+				v[2].color = v[3].color = scaleColor(innerColor, env);
+				static const int kQuad[6] = {0, 1, 3, 0, 3, 2};
+				emit(batch, v, kQuad, 6, material);
+			}
+		}
+		if (!batch.vertices.empty())
+			out.push_back(batch);
+	}
+
+private:
+	struct Quad {
+		int32 age = -1;
+		float phase = 0, omega = 0;
+		float width = 0, length = 0, lengthStep = 0, radius = 0, radiusStep = 0, tilt = 0, tiltStep = 0;
+		float distance = 0, speed = 0;
+		float vertices[5][3] = {};
+	};
+
+	EffectTextureRef _texture;
+	Common::Array<Quad> _quads;
+	int32 _frame = 0;
+
+	bool supported() const { return _record.sub == 1 || _record.sub == 4 || _record.sub == 5 || _record.sub == 6; }
+	bool reversed() const { return _record.sub == 5 && _params.u8(0x84); }
+
+	float envelope(int32 age, int32 life) const {
+		float fadeIn = _params.f32(0x44), fadeOut = _params.f32(0x48);
+		if (reversed()) {
+			// Age runs from life down to 0, with the fade fractions mirrored.
+			age = life - age;
+			const float in = 1 - fadeOut;
+			fadeOut = 1 - fadeIn;
+			fadeIn = in;
+		}
+		const int32 fi = (int32)(fadeIn * life), fo = (int32)(fadeOut * life);
+		if (age < fi)
+			return (float)age / fi;
+		if (age > fo)
+			return life > fo ? (float)(life - age) / (life - fo) : 0;
+		return 1;
+	}
+
+	static float randomSign() { return (EffectRandom::next() & 1) ? -1.0f : 1.0f; }
+
+	void spawn(Quad &q, int32 life) {
+		q = Quad();
+		q.age = 0;
+		q.phase = 2 * kPi * EffectRandom::nextFloat();
+		switch (_record.sub) {
+		case 1: {
+			q.omega = vary(_params.f32(0x74), _params.f32(0x78)) * randomSign();
+			q.radius = vary(_params.f32(0x6C), _params.f32(0x70));
+			const float factor = vary(1.0f, _params.f32(0x68));
+			q.width = _params.f32(0x60) * factor;
+			q.length = _params.f32(0x64) * factor;
+			break;
+		}
+		case 4: {
+			q.omega = vary(_params.f32(0x74), _params.f32(0x78)) * randomSign();
+			const int32 grow = MAX(1, _params.s32(0x70));
+			q.lengthStep = vary(_params.f32(0x68), _params.f32(0x6C)) / grow;
+			q.width = vary(_params.f32(0x60), _params.f32(0x64));
+			break;
+		}
+		case 5:
+			q.width = vary(_params.f32(0x60), _params.f32(0x64));
+			q.length = vary(_params.f32(0x68), _params.f32(0x6C));
+			q.distance = vary(_params.f32(0x70), _params.f32(0x74));
+			q.speed = vary(_params.f32(0x78), _params.f32(0x7C));
+			break;
+		case 6: {
+			auto pair = [&](uint32 off, float &value, float &delta) {
+				value = vary(_params.f32(off), _params.f32(off + 4));
+				delta = (vary(_params.f32(off + 8), _params.f32(off + 12)) - value) / life;
+			};
+			q.width = vary(_params.f32(0x60), _params.f32(0x64));
+			pair(0x68, q.length, q.lengthStep);
+			pair(0x78, q.radius, q.radiusStep);
+			pair(0x88, q.tilt, q.tiltStep);
+			q.omega = vary(_params.f32(0x98), _params.f32(0x9C));
+			break;
+		}
+		default:
+			break;
+		}
+	}
+
+	// Burst births start part-way through their life.
+	void preAdvance(Quad &q, int32 age) {
+		if (_record.sub == 4)
+			q.length = q.lengthStep * (age % MAX(1, _params.s32(0x70)));
+		if (_record.sub == 6) {
+			q.length += q.lengthStep * age;
+			q.radius += q.radiusStep * age;
+			q.tilt += q.tiltStep * age;
+		}
+		q.age = age;
+	}
+
+	float angle(const Quad &q, float accel) const {
+		const float sign = q.omega < 0 ? -1.0f : 1.0f;
+		return q.phase + q.age * (q.omega + sign * 0.5f * accel * q.age);
+	}
+
+	static void set(float out[3], float x, float y, float z) {
+		out[0] = x;
+		out[1] = y;
+		out[2] = z;
+	}
+
+	void step(Quad &q) {
+		switch (_record.sub) {
+		case 1: {
+			const float phi = angle(q, _params.f32(0x7C));
+			const float d[3] = {cosf(phi), 0, sinf(phi)}, p[3] = {sinf(phi), 0, -cosf(phi)};
+			set(q.vertices[0], d[0] * q.radius + p[0] * q.length, 0, d[2] * q.radius + p[2] * q.length);
+			set(q.vertices[1], d[0] * q.radius - p[0] * q.length, 0, d[2] * q.radius - p[2] * q.length);
+			set(q.vertices[2], p[0] * q.width, 0, p[2] * q.width);
+			set(q.vertices[3], 0, 0, 0);
+			set(q.vertices[4], -p[0] * q.width, 0, -p[2] * q.width);
+			break;
+		}
+		case 4: {
+			const float phi = angle(q, _params.f32(0x7C));
+			if (q.age < MAX(1, _params.s32(0x70)))
+				q.length += q.lengthStep;
+			const float d[3] = {cosf(phi), 0, sinf(phi)}, p[3] = {sinf(phi), 0, -cosf(phi)};
+			set(q.vertices[0], d[0] * q.length + p[0] * q.width, 0, d[2] * q.length + p[2] * q.width);
+			set(q.vertices[1], d[0] * q.length - p[0] * q.width, 0, d[2] * q.length - p[2] * q.width);
+			set(q.vertices[2], p[0] * q.width, 0, p[2] * q.width);
+			set(q.vertices[3], -p[0] * q.width, 0, -p[2] * q.width);
+			break;
+		}
+		case 5: {
+			const float d[3] = {cosf(q.phase), 0, sinf(q.phase)}, p[3] = {sinf(q.phase), 0, -cosf(q.phase)};
+			const float accel = _params.f32(0x80), v = q.speed;
+			float t = reversed() ? (float)(_params.s32(0x4C) - q.age) : (float)q.age;
+			if (accel < 0)
+				t = MIN(t, -v / accel);
+			const float dist = t * (v + 0.5f * accel * t) + q.distance;
+			for (int k = 0; k < 4; ++k) {
+				const float l = (k < 2 ? 1 : -1) * q.length, w = (k % 2 == 0 ? 1 : -1) * q.width;
+				set(q.vertices[k], d[0] * (dist + l) + p[0] * w, 0, d[2] * (dist + l) + p[2] * w);
+			}
+			break;
+		}
+		case 6: {
+			const float phi = q.phase + q.age * (q.omega + 0.5f * _params.f32(0xA0) * q.age);
+			const float base[3] = {cosf(phi) * q.radius, 0, sinf(phi) * q.radius};
+			float up[3] = {cosf(phi) * q.tilt, 1 - q.tilt, sinf(phi) * q.tilt};
+			normalize(up);
+			const float w[3] = {sinf(phi) * q.width, 0, -cosf(phi) * q.width};
+			for (int a = 0; a < 3; ++a) {
+				q.vertices[2][a] = base[a] + w[a];
+				q.vertices[3][a] = base[a] - w[a];
+				q.vertices[0][a] = base[a] + up[a] * q.length + w[a];
+				q.vertices[1][a] = base[a] + up[a] * q.length - w[a];
+			}
+			q.length += q.lengthStep;
+			q.radius += q.radiusStep;
+			q.tilt += q.tiltStep;
+			break;
+		}
+		default:
+			break;
+		}
+	}
+};
+
 EffectPrimitive *createPrimitive(const Common::EPL::Record &record, EffectTextureSource *textures) {
 	switch (record.kind) {
 	case Common::EPL::kParticle:
 		return new ParticleEmitter(record, textures);
+	case Common::EPL::kRing:
+		return new Ring(record);
+	case Common::EPL::kFlashQuads:
+		return new FlashQuads(record, textures);
 	default:
-		return nullptr; // TODO: rings, flash quads, wind, boards, models, object particles, filters
+		return nullptr; // TODO: wind, boards, models, object particles, filters
 	}
 }
 
