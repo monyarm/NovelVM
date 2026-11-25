@@ -56,3 +56,8 @@ end_section();
 begin_section("USM");
 	add_person("FFmpeg contributors", "", "USM container layout reference (libavformat/usmdec.c)");
 end_section();
+
+begin_section("@UTF tables");
+	add_person("vgmstream contributors", "", "CRI @UTF table layout reference");
+	add_person("esperknight", "", "CriPakTools, used only to write the @UTF spec (incl. the table mask); no code taken from it");
+end_section();
