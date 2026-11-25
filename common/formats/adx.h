@@ -34,6 +34,8 @@ struct ADXFrameInfo {
 	uint32 streamDataOffset = 0;
 	int32 coef1 = 0;
 	int32 coef2 = 0;
+	uint32 sampleCount = 0;
+	int32 history[2][2] = {{0, 0}, {0, 0}}; ///< per channel: previous, second previous sample (v4 header)
 
 	uint32 samplesPerFrame() const { return ((uint32)blockSize - 2) * 2; }
 	uint32 frameSize() const { return (uint32)blockSize * channelCount; }
@@ -45,9 +47,10 @@ bool parseADXFrameInfo(Common::SeekableReadStream &stream, ADXFrameInfo &info);
 
 // Decodes one frame (info.frameSize() bytes at `frameData`) into `out`
 // (info.channelCount * info.samplesPerFrame() interleaved int16 samples).
-// hist1/hist2 carry decode state across calls -- zero both before the
-// first frame.
-void decodeADXFrame(const byte *frameData, const ADXFrameInfo &info, int32 hist1[2], int32 hist2[2], int16 *out);
+// hist1/hist2 carry decode state across calls -- seed them from
+// info.history before the first frame. Returns false (and decodes nothing)
+// for the end-of-stream marker frame.
+bool decodeADXFrame(const byte *frameData, const ADXFrameInfo &info, int32 hist1[2], int32 hist2[2], int16 *out);
 
 } // namespace Common
 
