@@ -5,6 +5,10 @@
 #include "common/endian.h"
 #include "common/util.h"
 
+// TODO: AfPack features no P3 FES/P4 RMD uses, so they could not be checked against real data:
+// the camera-facing strip along edge A (section mode 2), and freezing a trail in world space
+// (command 0x0400; the demo has no world placement, so it changes nothing there anyway).
+
 namespace Graphics {
 
 namespace {
