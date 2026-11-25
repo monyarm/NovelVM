@@ -15,8 +15,9 @@ NovelVM carries a small set of engines instead of ScummVM's full list:
 | `director` | Macromedia Director, restricted to games matched on VNDB. Detection hashes are upstream's; everything else still falls back to generic Director detection. |
 | `snatcher` | Snatcher, fully playable. Detects the English Sega CD NA and EU/PAL releases. |
 | `ags` | Adventure Game Studio, with VNDB ids and support levels for the VN titles that match. |
-| `bibleblack` | Bible Black. A98SYS PAK reader and music playback only. |
-| `koihime_doki` | Koihime † Musou. EXWLCS archive reader only. |
+
+Bible Black and Koihime † Musou are developed on their own engine branches
+rather than on `master`.
 
 An engine that only reads a game's file formats is marked `File Formats` in
 `--list-games`; the game is detected and its data can be inspected, but it

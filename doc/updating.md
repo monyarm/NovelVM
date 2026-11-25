@@ -90,8 +90,8 @@ commits are the fallback. `--from REV` overrides it.
 Current values:
 
 ```sh
-NOVELVM_ENGINES="bibleblack koihime_doki smt"
-PATCHED_ENGINES="director snatcher"
+NOVELVM_ENGINES="smt"
+PATCHED_ENGINES="director snatcher ags"
 REVIEW_ENGINES="director"
 REVIEW_PATHS="engines/director/detection_tables.h"
 ```
