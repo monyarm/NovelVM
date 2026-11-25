@@ -44,7 +44,7 @@ jobs:
           dists/emscripten/build.sh make 
   windows:
     name: Windows
-    runs-on: windows-2025-vs2026
+    runs-on: windows-2022
     strategy:
       fail-fast: false
       matrix:
