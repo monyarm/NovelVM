@@ -26,10 +26,7 @@
 #include <mint/falcon.h>
 #include <mint/osbind.h>
 #include <mint/ostruct.h>
-// https://github.com/mikrosk/usound
-// Use usound_compat.h until SDL 1.2 + uSound have been upgraded in the build image.
-// Replace with #include <usound.h> once ihe image ships usound.h >= 2; it will #error in such case.
-#include "usound_compat.h"
+#include <usound.h>
 
 #include "common/config-manager.h"
 #include "common/debug.h"
@@ -38,11 +35,11 @@
 #ifdef DISABLE_FANCY_THEMES
 #define DEFAULT_OUTPUT_RATE			11025
 #define DEFAULT_OUTPUT_CHANNELS		1
-#define DEFAULT_SAMPLES				512		// 2 * 46ms (42ms at 12292 Hz) latency
+#define DEFAULT_SAMPLES				512		// 2 * 46ms (52ms at 9834 Hz) latency
 #else
 #define DEFAULT_OUTPUT_RATE			22050
 #define DEFAULT_OUTPUT_CHANNELS		2
-#define DEFAULT_SAMPLES				1024	// 2 * 46ms (42ms at 24585 Hz) latency
+#define DEFAULT_SAMPLES				1024	// 2 * 46ms (52ms at 19668 Hz) latency
 #endif
 
 static USoundContext usoundContext;
@@ -167,10 +164,7 @@ void AtariMixerManager::init() {
 	Xbtimer(XB_TIMERA, 1<<3, 1, timerA);	// event count mode, count to '1'
 	Jenabint(MFP_TIMERA);
 
-	// route both mic channels to the ADC
-	Soundcmd(ADCINPUT, 0);
-	// enable and mix both sources (ADC and connection matrix) to the output
-	Soundcmd(ADDERIN, MATIN|ADCIN);
+	Soundcmd(ADDERIN, MATIN);
 
 	_sampleBufferSize = _samples * _outputChannels * 4;	// always 32-bit
 	_sampleBuffer = new uint8[_sampleBufferSize];
@@ -203,7 +197,10 @@ bool AtariMixerManager::notifyEvent(const Common::Event &event) {
 	case Common::EVENT_RETURN_TO_LAUNCHER:
 		if (s_playbackState != kPlaybackStopped) {
 			debug("silencing the mixer");
-			suspendAudio();
+			// Stop the DMA but don't suspend the mixer: nothing would
+			// resume it, update() restarts the playback when needed.
+			Buffoper(0x00);
+			s_playbackState = kPlaybackStopped;
 		}
 		return false;
 	default:

@@ -26,6 +26,9 @@ endif
 ifdef ENABLE_HADESCH
 DIST_FILES_LIST += dists/engine-data/hadesch_translations.dat
 endif
+ifdef ENABLE_HOLLYWOOD
+DIST_FILES_LIST += dists/engine-data/hollywood.dat
+endif
 ifdef ENABLE_HUGO
 DIST_FILES_LIST += dists/engine-data/hugo.dat
 endif
@@ -49,9 +52,6 @@ DIST_FILES_LIST += dists/engine-data/neverhood.dat
 endif
 ifdef ENABLE_PRINCE
 DIST_FILES_LIST += dists/engine-data/prince_translation.dat
-endif
-ifdef ENABLE_MACS2
-DIST_FILES_LIST += dists/engine-data/macs2_translation.dat
 endif
 ifdef ENABLE_QUEEN
 DIST_FILES_LIST += dists/engine-data/queen.tbl
@@ -102,7 +102,9 @@ endif
 ifdef ENABLE_MYST3
 DIST_FILES_LIST += dists/engine-data/myst3.dat
 endif
-
+ifdef ENABLE_IGOR
+DIST_FILES_LIST += dists/engine-data/igor.tbl
+endif
 
 # pred.dic is currently only used for the AGI engine
 ifdef ENABLE_AGI

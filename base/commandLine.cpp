@@ -1166,8 +1166,16 @@ static void listGames(const Common::String &engineID, bool jsonOutput) {
 		engines = tokenizer.split();
 	}
 
-	if (jsonOutput) {
-		Common::JSONObject top;
+	Common::JSONObject top;
+
+	if (!jsonOutput) {
+		printf("Game ID                        Full Title                                                   State                         URL                                                         \n"
+		       "------------------------------ ------------------------------------------------------------ ----------------------------- ------------------------------------------------------------\n");
+	}
+
+	// The uncached plugin manager keeps only one engine plugin in memory at a time
+	PluginMan.loadFirstPlugin();
+	do {
 		const PluginList &plugins = EngineMan.getPlugins(PLUGIN_TYPE_ENGINE);
 		for (const auto &plugin : plugins) {
 			const Plugin *p = EngineMan.findDetectionPlugin(plugin->getName());
@@ -1180,41 +1188,28 @@ static void listGames(const Common::String &engineID, bool jsonOutput) {
 				PlainGameList list = p->get<MetaEngineDetection>().getSupportedGames();
 				for (const auto &v : list) {
 					const Common::String &gameId = buildQualifiedGameName(p->get<MetaEngineDetection>().getName(), v.gameId);
-					Common::JSONObject entry;
-					entry.setVal("title", new Common::JSONValue(Common::String(v.description ? v.description : "")));
-					entry.setVal("state", new Common::JSONValue(Common::String(v.state ? v.state : "")));
-					entry.setVal("url", new Common::JSONValue(Common::String(v.url ? v.url : "")));
-					top.setVal(gameId, new Common::JSONValue(entry));
+					if (jsonOutput) {
+						Common::JSONObject entry;
+						entry.setVal("title", new Common::JSONValue(Common::String(v.description ? v.description : "")));
+						entry.setVal("state", new Common::JSONValue(Common::String(v.state ? v.state : "")));
+						entry.setVal("url", new Common::JSONValue(Common::String(v.url ? v.url : "")));
+						top.setVal(gameId, new Common::JSONValue(entry));
+					} else {
+						printPadded(gameId.c_str(), kListGameIDWidth);
+						printPadded(v.description, kListTitleWidth);
+						printPadded(v.state, kListStateWidth);
+						printPadded(v.url, kListURLWidth);
+						printf("\n");
+					}
 				}
 			}
 		}
+	} while (PluginMan.loadNextPlugin());
+
+	if (jsonOutput) {
 		Common::JSONValue *root = new Common::JSONValue(top);
 		printf("%s\n", root->stringify(true).c_str());
 		delete root;
-		return;
-	}
-
-	printf("Game ID                        Full Title                                                   State                         URL                                                         \n"
-	       "------------------------------ ------------------------------------------------------------ ----------------------------- ------------------------------------------------------------\n");
-
-	const PluginList &plugins = EngineMan.getPlugins(PLUGIN_TYPE_ENGINE);
-	for (const auto &plugin : plugins) {
-		const Plugin *p = EngineMan.findDetectionPlugin(plugin->getName());
-		/* If for some reason, we can't find the MetaEngineDetection for this Engine, just ignore it */
-		if (!p) {
-			continue;
-		}
-
-		if (all || Common::find(engines.begin(), engines.end(), p->getName()) != engines.end()) {
-			PlainGameList list = p->get<MetaEngineDetection>().getSupportedGames();
-			for (const auto &v : list) {
-				printPadded(buildQualifiedGameName(p->get<MetaEngineDetection>().getName(), v.gameId).c_str(), kListGameIDWidth);
-				printPadded(v.description, kListTitleWidth);
-				printPadded(v.state, kListStateWidth);
-				printPadded(v.url, kListURLWidth);
-				printf("\n");
-			}
-		}
 	}
 }
 
@@ -1256,28 +1251,32 @@ static void listEngines(bool jsonOutput) {
 			"--------------- ------------------------------------------------------\n");
 	}
 
-	const PluginList &plugins = EngineMan.getPlugins(PLUGIN_TYPE_ENGINE);
 	bool first = true;
-	for (const auto &plugin : plugins) {
-		const Plugin *p = EngineMan.findDetectionPlugin(plugin->getName());
-		/* If for some reason, we can't find the MetaEngineDetection for this Engine, just ignore it */
-		if (!p) {
-			continue;
-		}
-
-		if (jsonOutput) {
-			if (!first) {
-				printf(",\n");
-			} else {
-				printf("\n");
-				first = false;
+	// The uncached plugin manager keeps only one engine plugin in memory at a time
+	PluginMan.loadFirstPlugin();
+	do {
+		const PluginList &plugins = EngineMan.getPlugins(PLUGIN_TYPE_ENGINE);
+		for (const auto &plugin : plugins) {
+			const Plugin *p = EngineMan.findDetectionPlugin(plugin->getName());
+			/* If for some reason, we can't find the MetaEngineDetection for this Engine, just ignore it */
+			if (!p) {
+				continue;
 			}
-			printf("  \"%s\": \"%s\"", p->get<MetaEngineDetection>().getName(),
-			       p->get<MetaEngineDetection>().getEngineName());
-		} else {
-			printf("%-15s %s\n", p->get<MetaEngineDetection>().getName(), p->get<MetaEngineDetection>().getEngineName());
+
+			if (jsonOutput) {
+				if (!first) {
+					printf(",\n");
+				} else {
+					printf("\n");
+					first = false;
+				}
+				printf("  \"%s\": \"%s\"", p->get<MetaEngineDetection>().getName(),
+				       p->get<MetaEngineDetection>().getEngineName());
+			} else {
+				printf("%-15s %s\n", p->get<MetaEngineDetection>().getName(), p->get<MetaEngineDetection>().getEngineName());
+			}
 		}
-	}
+	} while (PluginMan.loadNextPlugin());
 	if (jsonOutput) {
 		printf("\n}\n");
 	}

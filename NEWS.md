@@ -1,7 +1,53 @@
 For a more comprehensive changelog of the latest experimental code, see:
         https://github.com/scummvm/scummvm/commits/
 
-#### 2026.4.0 (2026-10-XX)
+#### 2027.1.0 (2027-01-XX)
+
+ New games:
+   - Added support for Shadowgate.
+   - Added support for Deja Vu: A Nightmare Comes True!!
+   - Added support for Deja Vu II: Lost in Last Vegas.
+   - Added support for Uninvited.
+   - Added support for The Colony.
+
+ GRIM:
+   - Rewrote iMUSE to match the original, adding 3D speech positioning.
+   - Rewrote SMUSH video playback to match the original.
+   - Many fixes to the OpenGL shaders renderer.
+   - Fixed various text, collision and movement issues.
+
+ M4:
+   - Missing Animation and journal fixes for Ripley's Riddle of Master Lu.
+   - Fix Riddle crash on Mei animation when visiting Peiping temple for the final time.
+
+ MADS:
+   - MT32 crash fixes for Dragonsphere.
+
+ MM:
+   - Integrated Dragoo84's M&M1 Bugfix and Enhanced Mode improvements pack
+   - Party XP gain and training now work correctly.
+   - A blue arrow is shown beside XP value to indicate when a level-up is possible.
+   - Certain party members are now eligible for multiple attacks per turn, as originally intended.
+   - Added G/S (Gather/Share) button on character screen, normally available in classic mode.
+   - Spellbook improved - manual spell sorting with X and scrolling with PgUp/PgDn.
+   - Quest log implemented - keep track of quests with K.
+   - Battle log implemented - keep track of damage, spells and statuses during combat with L.
+   - Bestiary implemented - unlock enemy units and their stats through encounters and check
+     with N or click the black skull icon in the interface corner.
+   - Post-combat loot (sacks, boxes and chests) are now finally enabled, as intended. Previously,
+     only gold and gems were received (yeah, sucks).
+   - Many game-breaking quest bugs corrected.
+   - Spell behaviour corrected.
+   - Fixed several tavern bugs.
+
+ SCUMM:
+   - Added optional hotspot highlighting with object names.
+   - Various fixes to Full Throttle bike fights.
+
+ Sherlock:
+   - Improved resource handling by not keeping entire resource files in memory at all times.
+
+#### 2026.4.0 "Never-slop" (2026-10-10)
 
  New games:
    - Added support for Mortadelo y Filemón: Una Aventura de Cine Edición Original.
@@ -15,8 +61,15 @@ For a more comprehensive changelog of the latest experimental code, see:
    - Added support for Mortadelo y Filemón: Mamelucos a la Romana.
    - Added support for Dracula: Resurrection.
    - Added support for Dracula 2: The Last Sanctuary.
+   - Added support for Amerzone: The Explorer's Legacy.
+   - Added support for The Cameron Files: The Secret at Loch Ness.
+   - Added support for The Messenger / Louvre: The Final Curse.
    - Added support for Nancy Drew: The Secret of Shadow Ranch.
    - Added support for Nancy Drew: Curse of Blackmoor Manor.
+   - Added support for Nancy Drew: Secret of the Old Clock.
+   - Added support for Nancy Drew: Last Train to Blue Moon Canyon.
+   - Added support for Nancy Drew: Danger by Design.
+   - Added support for Nancy Drew: The Creature of Kapu Cave.
    - Added support for Chamber of the Sci-Mutant Priestess.
    - Added support for Star Wars: Rebel Assault.
    - Added support for Star Wars: Rebel Assault II: The Hidden Empire.
@@ -39,6 +92,13 @@ For a more comprehensive changelog of the latest experimental code, see:
    - Added support for Rhiannon: Curse of the Four Branches.
    - Added support for Shadows on the Vatican series.
    - Added support for other Wintermute engine games, over 140 titles.
+   - Added support for Der Schatz im Silbersee (Treasure of the Silver Lake).
+   - Added support for The Fool's Errand.
+   - Added support for Harvester.
+   - Added support for Lord Avalot d'Argent.
+   - Added support for Dungeon Master.
+   - Added support for Eagle Eye Mysteries.
+   - Added support for Eagle Eye Mysteries in London.
 
  General:
    - Optimised mixing and rate converters, for better performance.
@@ -46,6 +106,9 @@ For a more comprehensive changelog of the latest experimental code, see:
    - Fixed bug with inability to specify game overrides for MIDI and MT-32
      devices.
    - Switched Nuked-OPL3 AdLib emulator to Nuked-OPL3-fast fork.
+   - Added support for "obfuscated" InstallShield files. This mainly affected
+     certain Nancy Drew games, that can now be run without having to run the
+     Windows installer first.
 
  Asylum:
    - Fixed missing or incorrect walking sounds in some scenes.
@@ -65,6 +128,7 @@ For a more comprehensive changelog of the latest experimental code, see:
 
  Hopkins:
    - Added the missing underwater base 3D first-person shooter.
+   - Optional quality-of-life HUD for underwater base shooter with map and autopilot.
 
  Kyra:
    - Added support for Korean fan-translation of kyra1 (added in 2026.3.0).
@@ -80,7 +144,7 @@ For a more comprehensive changelog of the latest experimental code, see:
    - Numerous Riddle of Master Lu fixes for crashes, missing functionality, and game bugs.
    - Fixed original game bug where conversations with Wolf could freeze the game.
    - Added original game cheat codes for bypassing the maze.
-   - Added translation of message log entries
+   - Added translation of message log entries.
 
  MM:
    - Fix multiple M&M1 classic combat crashes.
@@ -105,6 +169,8 @@ For a more comprehensive changelog of the latest experimental code, see:
 
  SCUMM:
    - Improved cursor scale in early Windows HE games.
+   - Added option to use PAL timing for SID audio in C64 games. This slows
+     down the music, but that's how many non-US players would have heard it.
 
  Sherlock:
    - Vertical movement delta fix for Rose Tattoo.
@@ -113,15 +179,24 @@ For a more comprehensive changelog of the latest experimental code, see:
    - Added detection for Shape-Shift Escape.
 
  TsAGE:
-   - Added General MIDI and MT-32 support to the games
-   - Improved Sound Blaster sample playback
-   - Sound is properly paused when the engine is paused
+   - Added General MIDI and MT-32 support to the games.
+   - Improved Sound Blaster sample playback.
+   - Sound is properly paused when the engine is paused.
+
+ V-Cruise:
+   - Fixed time-based puzzles sometimes getting stuck after restarting ScummVM.
 
  Voyeur:
-   - Match original first person movement with mouse when looking at mansion
+   - Match original first person movement with mouse when looking at mansion.
+
+ Android port:
+   - Support Android 17.
+   - Add TTS support.
+   - Add external MIDI device support.
 
  Atari port:
    - Added integration with nFM library.
+
 
 #### 2026.3.0 "Carousels & Killer Whales" (2026-06-20)
 
@@ -201,6 +276,7 @@ For a more comprehensive changelog of the latest experimental code, see:
  PS3 port:
    - Added support for running ScummVM engines as separate modules/executables.
      This saves about 90 MB of RAM. It is enabled only for release packages.
+
 
 #### 2026.2.0 "Railmonicon" (2026-03-28)
 
@@ -364,6 +440,7 @@ For a more comprehensive changelog of the latest experimental code, see:
    - Added support for Text-to-Speech.
    - Ported the CoreMIDI macOS feature to the iOS/tvOS ports, allowing the use
      of external MIDI devices for output.
+
 
 #### 2026.1.0 "Like a version" (2026-01-31)
 
@@ -682,6 +759,7 @@ For a more comprehensive changelog of the latest experimental code, see:
  PS3 port:
    - Fixed crashes for games using a screen shaking effect.
 
+
 #### 2.9.1 "Slappin da BASS" (2025-05-25)
 
  AGI:
@@ -829,6 +907,7 @@ For a more comprehensive changelog of the latest experimental code, see:
 
  Windows port:
    - Restored FLAC support in the Windows 9x port.
+
 
 #### 2.9.0 "Close Encounters of the 2.9th Kind" (2024-12-22)
 

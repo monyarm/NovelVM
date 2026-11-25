@@ -22,6 +22,7 @@
 #include "common/system.h"
 #include "common/frac.h"
 #include "common/tokenizer.h"
+#include "common/translation.h"
 
 #include "gui/widgets/list.h"
 #include "gui/widgets/scrollbar.h"
@@ -577,10 +578,13 @@ bool ListWidget::handleKeyDown(Common::KeyState state) {
 	bool dirty = false;
 	int oldSelectedItem = _selectedItem;
 
-	if (!_editMode && state.keycode <= Common::KEYCODE_z && Common::isPrint(state.ascii)) {
+	if (!_editMode && !(state.flags & (Common::KBD_CTRL | Common::KBD_ALT)) &&
+			state.keycode <= Common::KEYCODE_z && Common::isPrint(state.ascii)) {
 		// Quick selection mode: Go to first list item starting with this key
 		// (or a substring accumulated from the last couple key presses).
 		// Only works in a useful fashion if the list entries are sorted.
+		// Keys held with Ctrl or Alt are left alone, so that they can still
+		// reach the dialog's hotkey handling.
 		uint32 time = g_system->getMillis();
 		if (_quickSelectTime < time) {
 			_quickSelectStr = (char)state.ascii;
@@ -833,6 +837,10 @@ bool ListWidget::handleKeyDown(Common::KeyState state) {
 		markAsDirty();
 
 	if (_selectedItem != oldSelectedItem) {
+		if (_selectedItem >= 0 && _selectedItem < (int)_list.size())
+			read(stripGUIformatting(_list[_selectedItem]));
+		_lastRead = -1;
+
 		sendCommand(kListSelectionChangedCmd, _selectedItem);
 		// also draw scrollbar
 		_scrollBar->markAsDirty();
@@ -845,6 +853,21 @@ bool ListWidget::handleKeyUp(Common::KeyState state) {
 	if (state.keycode == _currentKeyDown)
 		_currentKeyDown = 0;
 	return true;
+}
+
+Common::U32String ListWidget::getSpokenDescription() const {
+	// Name the list by the text before it, or its tooltip. Fall back on
+	// naming the kind of control only when there is neither, so that an
+	// unlabelled list is still audible rather than silent. Follow it with
+	// the current selection, so that arriving here says what is under the
+	// cursor.
+	// I18N: Spoken by text-to-speech to name an unlabelled list of items
+	Common::U32String description = findSpokenName(_("list"));
+
+	if (_selectedItem >= 0 && _selectedItem < (int)_list.size())
+		description += Common::U32String(", ") + stripGUIformatting(_list[_selectedItem]);
+
+	return description;
 }
 
 void ListWidget::receivedFocusWidget() {

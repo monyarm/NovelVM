@@ -11,7 +11,7 @@ FASTCALL=false
 PLUGINS=true
 export CXXFLAGS="-mcpu=5475"
 export LDFLAGS="-mcpu=5475"
-#export CXXFLAGS="-m68020-60"
+#export CXXFLAGS="-m68020-60 -mtune=68060"
 #export LDFLAGS="-m68020-60"
 
 CPU_DIR=$(${PLATFORM}-gcc ${CXXFLAGS} -print-multi-directory)
@@ -40,7 +40,6 @@ then
 	--with-freetype2-prefix="$(${PLATFORM}-gcc -print-sysroot)/usr/bin/${CPU_DIR}" \
 	--with-mikmod-prefix="$(${PLATFORM}-gcc -print-sysroot)/usr/bin/${CPU_DIR}" \
 	--enable-release \
-	--disable-nfm \
 	--enable-verbose-build \
 	${PLUGINS_FLAGS}
 fi

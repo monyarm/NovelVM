@@ -40,7 +40,7 @@ extern const char *android_log_tag;
 
 class AndroidMixerManagerImpl : public AndroidMixerManager, public oboe::AudioStreamDataCallback {
 public:
-	AndroidMixerManagerImpl() : _chunkSize(0), _buffer(nullptr), _stream(nullptr), _latency(nullptr), _audio_thread_exit(false), _underflows(0) {}
+	AndroidMixerManagerImpl() : _chunkSize(0), _buffer(nullptr), _stream(nullptr), _latency(nullptr), _audio_thread_exit(false), _underflows(0), _plugEvent(false) {}
 	~AndroidMixerManagerImpl() override;
 
 	void init() override;
@@ -147,6 +147,8 @@ void AndroidMixerManagerImpl::initStream() {
 		->setChannelCount(oboe::ChannelCount::Stereo)
 		->setFormatConversionAllowed(true)
 		->setFormat(oboe::AudioFormat::I16)
+		->setUsage(oboe::Usage::Game)
+		->setContentType(oboe::ContentType::Movie)
 		->setDataCallback(this);
 
 	if (_mixer) {
@@ -438,7 +440,7 @@ void *AndroidMixerManagerImpl::audioThreadFunc(void *arg) {
 
 #ifdef OBOE_DEBUG
 		if (n > 0) {
-			LOGD("Requested mix of %zu frames and got %zu%s - Buffer size: %d / %d", req, n, silence ? " S" : "", stream->getBufferSizeInFrames(), stream->getBufferCapacityInFrames());
+			LOGD("Requested mix of %zu frames and got %zu%s - Buffer size: %d / %d - Status: %zu + %zu", req, n, silence ? " S" : "", stream->getBufferSizeInFrames(), stream->getBufferCapacityInFrames(), this_->_underflows.load(std::memory_order_acquire), silence_count);
 		}
 #endif
 
@@ -449,6 +451,9 @@ void *AndroidMixerManagerImpl::audioThreadFunc(void *arg) {
 				LOGD("Silence %zu+%zu: pausing audio stream", underflows, silence_count);
 				stream->pause();
 				stream->requestFlush();
+				// also flush our internal buffer full of silence
+				// we can call flush as we are paused and flushing (onAudioReady is not called)
+				this_->_buffer->flush();
 			}
 		}
 

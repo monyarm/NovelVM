@@ -223,6 +223,8 @@ bool AVIDecoder::parseNextChunk() {
 	case ID_SHOT: // block in Origin Systems Xxan videos
 	case ID_BEST: // block in Origin Systems Xxan videos
 	case ID_INDX2: // block in Origin Systems Xxan videos
+	case MKTAG('F', 'X', 'T', 'C'): // Metadata in Runaway museum demo movies
+	case MKTAG('A', 'L', 'F', 'A'):
 		skipChunk(size);
 		break;
 	case ID_PAL8: // PAL8 block in Origin Systems Xxan videos
@@ -565,6 +567,8 @@ void AVIDecoder::readNextPacket() {
 void AVIDecoder::handleNextPacket(TrackStatus &status) {
 	// If there's no more to search, bail out
 	if (status.chunkSearchOffset + 8 >= _movieListEnd) {
+		if (status.track->getTrackType() == Track::kTrackTypeAudio)
+			((AVIAudioTrack *)status.track)->setAllPacketsQueued();
 		if (status.track->getTrackType() == Track::kTrackTypeVideo) {
 			// Horrible AVI video has a premature end
 			// Force the frame to be the last frame
@@ -587,6 +591,8 @@ void AVIDecoder::handleNextPacket(TrackStatus &status) {
 	for (;;) {
 		// If there's no more to search, bail out
 		if ((uint32)_fileStream->pos() + 8 >= _movieListEnd) {
+			if (status.track->getTrackType() == Track::kTrackTypeAudio)
+				((AVIAudioTrack *)status.track)->setAllPacketsQueued();
 			if (status.track->getTrackType() == Track::kTrackTypeVideo) {
 				// Horrible AVI video has a premature end
 				// Force the frame to be the last frame
@@ -662,7 +668,7 @@ bool AVIDecoder::shouldQueueAudio(TrackStatus& status) {
 		return false;
 
 	if (_videoTracks.empty())
-		return true;
+		return static_cast<AVIAudioTrack *>(status.track)->needsAudioOnlyBuffering();
 
 	// If video is done, make sure that the rest of the audio is queued
 	// (I guess this is also really a sanity check)
@@ -1151,7 +1157,9 @@ AVIDecoder::AVIAudioTrack::AVIAudioTrack(const AVIStreamHeader &streamHeader, co
 		_wvInfo(waveFormat),
 		_audioStream(0),
 		_packetStream(0),
-		_curChunk(0) {
+		_curChunk(0),
+		_bufferedAudioOnly(false),
+		_allPacketsQueued(false) {
 }
 
 AVIDecoder::AVIAudioTrack::~AVIAudioTrack() {
@@ -1190,6 +1198,19 @@ void AVIDecoder::AVIAudioTrack::resetStream() {
 	delete _audioStream;
 	createAudioStream();
 	_curChunk = 0;
+	_allPacketsQueued = false;
+}
+
+bool AVIDecoder::AVIAudioTrack::needsAudioOnlyBuffering() {
+	if (_wvInfo.tag != Audio::kWaveFormatPCM || !_packetStream)
+		return true;
+
+	_bufferedAudioOnly = true;
+	return static_cast<Audio::StatelessPacketizedAudioStream *>(_packetStream)->numQueuedStreams() < 3;
+}
+
+bool AVIDecoder::AVIAudioTrack::endOfTrack() const {
+	return (!_bufferedAudioOnly || _allPacketsQueued) && AudioTrack::endOfTrack();
 }
 
 bool AVIDecoder::AVIAudioTrack::rewind() {

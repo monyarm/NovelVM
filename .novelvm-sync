@@ -1,4 +1,4 @@
-upstream=a88c2f18f3ced53d6c48f024098e122eb8f531b6
+upstream=16159a2afe14d0ecdfdf9547906a5801c2083cb6
 remote=scummvm
 branch=master
-rewritten-tree=26059ff59e7b292060166d62262126d4160193cb
+rewritten-tree=12ac86dab9c96e853da090fa8584b0d7976bdf24

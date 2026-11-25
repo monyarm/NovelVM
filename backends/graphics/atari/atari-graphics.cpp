@@ -178,15 +178,9 @@ void AtariGraphicsShutdown() {
 
 		VsetScreen(SCR_NOCHANGE, s_oldPhysbase, SCR_NOCHANGE, SCR_NOCHANGE);
 
-		if (g_hasSuperVidel) {
-			// SuperVidel XBIOS does not restore those (unlike TOS/EmuTOS)
-			long ssp = Super(SUP_SET);
-			//*((volatile char *)0xFFFF8265) = 0;
-			*((volatile short *)0xFFFF820E) = 0;
-			Super(ssp);
-
+		if (g_hasSuperVidel)
 			VsetMode(SVEXT | SVEXT_BASERES(0) | COL80 | BPS8C);	// resync to proper 640x480
-		}
+
 		VsetMode(s_oldMode);
 
 		VsetRGB(0, s_oldPalette.entries, s_oldPalette.falcon);
@@ -225,17 +219,17 @@ AtariGraphicsManager::AtariGraphicsManager()
 	// make the standard GUI renderer default (!DISABLE_FANCY_THEMES implies anti-aliased rendering in ThemeEngine.cpp)
 	// (and without DISABLE_FANCY_THEMES we can't use 640x480 themes)
 	const char *standardThemeEngineName = GUI::ThemeEngine::findModeConfigName(GUI::ThemeEngine::kGfxStandard);
-	if (!ConfMan.hasKey("gui_renderer"))
-		ConfMan.set("gui_renderer", standardThemeEngineName);
+	if (!ConfMan.hasKey("gui_renderer", Common::ConfigManager::kApplicationDomain))
+		ConfMan.set("gui_renderer", standardThemeEngineName, Common::ConfigManager::kApplicationDomain);
 
 	// make the built-in theme default to avoid long loading times
-	if (!ConfMan.hasKey("gui_theme"))
-		ConfMan.set("gui_theme", "builtin");
+	if (!ConfMan.hasKey("gui_theme", Common::ConfigManager::kApplicationDomain))
+		ConfMan.set("gui_theme", "builtin", Common::ConfigManager::kApplicationDomain);
 
 #ifndef DISABLE_FANCY_THEMES
 	// make "themes" the default theme path
-	if (!ConfMan.hasKey("themepath"))
-		ConfMan.setPath("themepath", "themes");
+	if (!ConfMan.hasKey("themepath", Common::ConfigManager::kApplicationDomain))
+		ConfMan.setPath("themepath", "themes", Common::ConfigManager::kApplicationDomain);
 #endif
 
 	ConfMan.flushToDisk();
@@ -684,6 +678,14 @@ void AtariGraphicsManager::updateScreen() {
 
 		if (s_screenSurf == nullptr) {
 			// BACK_BUFFER2 has been set; guard it from overwriting while presented
+
+			// TODO: this assumes that the video base written in VblHandler() is applied
+			// in the same frame. True for Videl (video counter reloaded at VDB, after VBL)
+			// but not for TT: like ST/E, its Shifter reloads the video counter about three
+			// lines before the VBL (and again on the following line), so FRONT_BUFFER is
+			// still displayed for one more frame while it becomes BACK_BUFFER1, i.e. the
+			// work screen. On TT, the video base can be written here directly instead,
+			// BACK_BUFFER2 is then displayed once a VBL (_frclock) has passed since.
 			Screen *tmp = _screen[kBackBuffer2];
 			_screen[kBackBuffer2] = _screen[kFrontBuffer];
 			_screen[kFrontBuffer] = tmp;
