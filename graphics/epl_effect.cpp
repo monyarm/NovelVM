@@ -1036,6 +1036,213 @@ private:
 	}
 };
 
+// Kind 16 sub 1: twisting textured strips around the node's up axis (a funnel of wind/flame).
+class WindFunnel : public GeometryPrimitive {
+public:
+	WindFunnel(const Common::EPL::Record &record) : GeometryPrimitive(record) {
+		// Embedded TMX, else global slot 0x14 whatever slot the resource names.
+		if (record.resourceKind == Common::EPL::kResourceTMX && !record.resource.empty())
+			_texture.embeddedTMX = &_record.resource;
+		else
+			_texture.globalSlot = 0x14;
+		_segments = MAX<uint32>(3, MIN<uint32>(_params.u32(0x8C), 256));
+		_strips.resize(MIN<uint32>(_params.u32(0x38), 256));
+		for (uint i = 0; i < _strips.size(); ++i)
+			_strips[i].rows.resize((_segments + 1) * 4);
+	}
+
+	void reset() override { _frame = 0; }
+
+	void advance() override {
+		const int32 duration = _params.s32(0x34), life = _params.s32(0x80);
+		if ((duration != 0 && _frame > duration) || life <= 0 || _record.sub != 1) {
+			++_frame;
+			return;
+		}
+		if (_frame == 0)
+			for (uint i = 0; i < _strips.size(); ++i)
+				_strips[i].age = -1;
+		const bool burst = _frame == 0 && _params.u8(0xB8);
+		int32 births = burst ? (int32)_strips.size() : _params.s32(0x84);
+		for (uint i = 0; i < _strips.size(); ++i) {
+			Strip &s = _strips[i];
+			if (s.age >= life)
+				s.age = _params.u8(0x88) ? -1 : -2;
+			if (s.age == -1 && births > 0) {
+				--births;
+				spawn(s, life);
+				if (burst) {
+					s.age = (int32)(EffectRandom::next() % (uint32)life);
+					s.radius += s.radiusStep * s.age;
+					s.height += s.heightStep * s.age;
+				}
+			}
+			if (s.age >= 0) {
+				build(s);
+				++s.age;
+			}
+		}
+		++_frame;
+	}
+
+	void draw(const EffectCamera &camera, uint32 nodeColor, Common::Array<EffectBatch> &out) override {
+		const int32 duration = _params.s32(0x34), life = _params.s32(0x80);
+		if (_frame <= 0 || (duration != 0 && _frame - 1 > duration) || life <= 0 || _record.sub != 1)
+			return;
+		const uint32 global = modulate(_params.sampleColor(0x00, 0x24, _frame - 1, duration), nodeColor);
+		EffectBatch batch;
+		batch.blendMode = _params.u16(0x28);
+		batch.depthTest = _params.u8(0xB9) != 0;
+		batch.texture = _texture;
+		// Static vertex colours: feathered across the strip, faded along it.
+		const int32 fi = (int32)(_params.f32(0x78) * _segments), fo = (int32)(_params.f32(0x7C) * _segments);
+		const float uExtent = _params.f32(0x90);
+		static const int kStrip[18] = {0, 1, 5, 0, 5, 4, 1, 2, 6, 1, 6, 5, 2, 3, 7, 2, 7, 6};
+		for (uint i = 0; i < _strips.size(); ++i) {
+			const Strip &s = _strips[i];
+			if (s.age <= 0)
+				continue;
+			const uint32 material = modulate(_params.sampleColor(0x3C, 0x60, s.age - 1, life), global);
+			Vertex rows[8];
+			for (uint32 seg = 0; seg < _segments; ++seg) {
+				for (uint32 r = 0; r < 2; ++r) {
+					const int32 row = (int32)(seg + r);
+					float along = 1;
+					if (row < fi)
+						along = (float)row / fi;
+					else if (row > fo)
+						along = (int32)_segments > fo ? (float)((int32)_segments - row) / ((int32)_segments - fo) : 0;
+					for (int j = 0; j < 4; ++j) {
+						const Row &src = s.rows[row * 4 + j];
+						Vertex &v = rows[r * 4 + j];
+						for (int a = 0; a < 3; ++a)
+							v.position[a] = src.position[a];
+						v.u = uExtent * j / 3;
+						v.v = src.v;
+						v.color = 0xFFFFFF | ((j == 0 || j == 3) ? 0 : (uint32)CLIP((int)(255 * along), 0, 255) << 24);
+					}
+				}
+				emit(batch, rows, kStrip, 18, material);
+			}
+		}
+		if (!batch.vertices.empty())
+			out.push_back(batch);
+	}
+
+private:
+	struct Row {
+		float position[3] = {0, 0, 0};
+		float v = 0;
+	};
+	struct Strip {
+		int32 age = -1;
+		float radius = 0, radiusStep = 0, height = 0, heightStep = 0, swell = 0;
+		float phase = 0, omega = 0, width = 0, twist = 0, v = 0;
+		Common::Array<Row> rows;
+	};
+
+	EffectTextureRef _texture;
+	uint32 _segments = 3;
+	Common::Array<Strip> _strips;
+	int32 _frame = 0;
+
+	void spawn(Strip &s, int32 life) {
+		Common::Array<Row> rows;
+		rows.swap(s.rows);
+		s = Strip();
+		s.rows.swap(rows);
+		s.age = 0;
+		s.radius = vary(_params.f32(0xBC), _params.f32(0xC0));
+		s.radiusStep = (vary(_params.f32(0xC4), _params.f32(0xC8)) - s.radius) / life;
+		s.height = vary(_params.f32(0xCC), _params.f32(0xD0));
+		s.heightStep = (vary(_params.f32(0xD4), _params.f32(0xD8)) - s.height) / life;
+		s.swell = vary(_params.f32(0xE8), _params.f32(0xE0));
+		s.phase = 2 * kPi * EffectRandom::nextFloat();
+		s.omega = vary(_params.f32(0xEC), _params.f32(0xF0));
+		s.width = vary(_params.f32(0xB0), _params.f32(0xB4));
+		s.twist = vary(_params.f32(0xA8), _params.f32(0xAC));
+		s.v = vary(_params.f32(0x98), _params.f32(0x9C));
+	}
+
+	void build(Strip &s) {
+		float theta = s.phase + s.age * (s.omega + 0.5f * _params.f32(0xF4) * s.age);
+		s.radius += s.radiusStep;
+		s.height += s.heightStep;
+		const float n = (float)(_segments + 1), rise = s.height / n;
+		const float step = (s.omega >= 0 ? s.twist : -s.twist) / n;
+		const float centre = _params.f32(0xE4), vSpan = _params.f32(0x98);
+		float y = 0;
+		for (uint32 seg = 0; seg <= _segments; ++seg) {
+			const float c = seg / n - centre, e = s.swell * c * c, r = s.radius + e;
+			const float p[3] = {cosf(theta) * r, y, sinf(theta) * r};
+			float normal[3] = {cosf(theta) * e, rise, sinf(theta) * e};
+			normalize(normal);
+			const float quarter = s.width / 4;
+			static const float kOffsets[4] = {2, 1, -1, -2};
+			for (int j = 0; j < 4; ++j) {
+				Row &row = s.rows[seg * 4 + j];
+				for (int a = 0; a < 3; ++a)
+					row.position[a] = p[a] + normal[a] * quarter * kOffsets[j];
+				row.v = s.v + vSpan * (seg / n);
+			}
+			theta += step;
+			y += rise;
+		}
+		s.v += _params.f32(0xA4);
+	}
+};
+
+// Kind 7: one textured quad in the node's XZ plane, sized by the texture and a size key.
+class Board : public GeometryPrimitive {
+public:
+	Board(const Common::EPL::Record &record, EffectTextureSource *textures)
+			: GeometryPrimitive(record), _textures(textures), _texture(textureFor(_record)) {}
+
+	void reset() override { _age = 0; }
+	void advance() override { ++_age; }
+
+	void draw(const EffectCamera &camera, uint32 nodeColor, Common::Array<EffectBatch> &out) override {
+		const int32 duration = _params.s32(0x8C);
+		if (_age == 0)
+			return;
+		int32 age = _age;
+		if (duration > 0 && age >= duration) {
+			if (!_params.u8(0x44))
+				return;
+			age %= duration;
+		}
+		int texW = 32, texH = 32;
+		if (_textures && _texture.valid())
+			_textures->textureSize(_texture, texW, texH);
+		const float size = _params.sampleScalar(0x34, age, duration) * _params.f32(0x90);
+		const float hx = texW / 32.0f * size, hy = texH / 32.0f * size;
+		const float spin = _params.sampleScalar(0x60, age, duration), c = cosf(spin), s = sinf(spin);
+		static const float kCorner[4][4] = {{-1, -1, 0, 0}, {1, -1, 1, 0}, {-1, 1, 0, 1}, {1, 1, 1, 1}};
+		Vertex v[4];
+		for (int k = 0; k < 4; ++k) {
+			const float x = kCorner[k][0] * hx, z = kCorner[k][1] * hy;
+			v[k].position[0] = c * x - s * z;
+			v[k].position[1] = 0;
+			v[k].position[2] = s * x + c * z;
+			v[k].u = kCorner[k][2];
+			v[k].v = kCorner[k][3];
+			v[k].color = 0xFFFFFFFF;
+		}
+		EffectBatch batch;
+		batch.blendMode = _params.u16(0x28);
+		batch.depthTest = _params.u8(0x94) != 0;
+		batch.texture = _texture;
+		static const int kQuad[6] = {0, 1, 3, 0, 3, 2};
+		emit(batch, v, kQuad, 6, modulate(_params.sampleColor(0x00, 0x24, age, duration), nodeColor));
+		out.push_back(batch);
+	}
+
+private:
+	EffectTextureSource *_textures;
+	EffectTextureRef _texture;
+	int32 _age = 0;
+};
+
 EffectPrimitive *createPrimitive(const Common::EPL::Record &record, EffectTextureSource *textures) {
 	switch (record.kind) {
 	case Common::EPL::kParticle:
@@ -1044,8 +1251,14 @@ EffectPrimitive *createPrimitive(const Common::EPL::Record &record, EffectTextur
 		return new Ring(record);
 	case Common::EPL::kFlashQuads:
 		return new FlashQuads(record, textures);
+	case Common::EPL::kWind:
+		return new WindFunnel(record);
+	case Common::EPL::kBoard:
+		return new Board(record, textures);
 	default:
-		return nullptr; // TODO: wind, boards, models, object particles, filters
+		// TODO: model (26, an embedded mini-RMD), object particles (28, mesh particles) and the
+		// screen blur/filter kinds (4, 5) are parsed but not drawn.
+		return nullptr;
 	}
 }
 
