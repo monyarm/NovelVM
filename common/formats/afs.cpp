@@ -64,9 +64,13 @@ bool AFS::load() {
 			lastEnd = end;
 	}
 
-	// The metadata (filename) table, if present, starts at the next real
-	// sector boundary at or after the last entry's data ends.
+	// The metadata (filename) table is located by the (offset, size) pair right after the TOC;
+	// archives without one put it at the next sector boundary after the last entry's data.
+	// (CRI's loader itself never reads names; it addresses files by index.)
 	uint32 metaStart = alignUp(lastEnd, kSectorSize);
+	const uint32 metaPointer = f.readUint32LE(), metaSize = f.readUint32LE();
+	if (!f.err() && !f.eos() && metaPointer != 0 && metaSize >= count * 48)
+		metaStart = metaPointer;
 	bool haveMeta = f.size() >= 0 && (int64)metaStart + (int64)count * 48 <= f.size();
 
 	for (uint32 i = 0; i < count; i++) {
