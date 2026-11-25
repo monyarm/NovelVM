@@ -11,8 +11,8 @@ Common::Platform KoihimeDokiEngine::getPlatform() const { return _gameDescriptio
 } // namespace KoihimeDoki
 
 static const PlainGameDescriptor KoihimeDokiGames[] = {
-	{"KM", "Koihime † Musou ~Doki ☆ Otome Darake no Sangokushi Engi~", "File Formats", "https://vndb.org/v369"},
-	{0, 0, 0, 0}};
+	{"KM", "Koihime † Musou ~Doki ☆ Otome Darake no Sangokushi Engi~", kFileFormatsGame, "https://vndb.org/v369"},
+	{0, 0}};
 
 namespace KoihimeDoki
 {

@@ -1191,13 +1191,13 @@ static void listGames(const Common::String &engineID, bool jsonOutput) {
 					if (jsonOutput) {
 						Common::JSONObject entry;
 						entry.setVal("title", new Common::JSONValue(Common::String(v.description ? v.description : "")));
-						entry.setVal("state", new Common::JSONValue(Common::String(v.state ? v.state : "")));
+						entry.setVal("state", new Common::JSONValue(Common::String(gameSupportLevelToString(v.state))));
 						entry.setVal("url", new Common::JSONValue(Common::String(v.url ? v.url : "")));
 						top.setVal(gameId, new Common::JSONValue(entry));
 					} else {
 						printPadded(gameId.c_str(), kListGameIDWidth);
 						printPadded(v.description, kListTitleWidth);
-						printPadded(v.state, kListStateWidth);
+						printPadded(gameSupportLevelToString(v.state), kListStateWidth);
 						printPadded(v.url, kListURLWidth);
 						printf("\n");
 					}
@@ -1234,7 +1234,7 @@ static void listAllGames(const Common::String &engineID) {
 			for (const auto &v : list) {
 				printPadded(buildQualifiedGameName(metaEngine.getName(), v.gameId).c_str(), kListGameIDWidth);
 				printPadded(v.description, kListTitleWidth);
-				printPadded(v.state, kListStateWidth);
+				printPadded(gameSupportLevelToString(v.state), kListStateWidth);
 				printPadded(v.url, kListURLWidth);
 				printf("\n");
 			}

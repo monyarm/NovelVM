@@ -41,6 +41,22 @@
  */
 
 /**
+ * How much of a game the engine actually supports. This is shown in the
+ * `--list-games` State column and in the JSON output.
+ */
+enum GameSupportLevel {
+	kUnknownGame = 0,  // no metadata recorded; upstream rows stay blank
+	kStableGame,       // fully supported / fully running
+	kTestingGame,      // ready for public testing
+	kUnstableGame,     // not ready for public testing
+	kUnsupportedGame,  // we don't want to support the game
+	kWarningGame,      // ask the user before running it
+	kFileFormatsGame   // fork: engine only reads the game's file formats
+};
+
+const char *gameSupportLevelToString(GameSupportLevel level);
+
+/**
  * A simple structure used to map gameids (like "monkey", "sword1", ...) to
  * nice human readable and descriptive game titles (like "The Secret of Monkey Island").
  * This is a plain struct to make it possible to declare NULL-terminated C arrays
@@ -49,11 +65,11 @@
 struct PlainGameDescriptor {
 	const char *gameId;
 	const char *description;
-	const char *state;
-	const char *url;
+	GameSupportLevel state = kUnknownGame;
+	const char *url = nullptr;
 
 	static PlainGameDescriptor empty();
-	static PlainGameDescriptor of(const char *gameId, const char *description, const char *state, const char *url);
+	static PlainGameDescriptor of(const char *gameId, const char *description, GameSupportLevel state, const char *url);
 };
 
 /**
@@ -90,17 +106,6 @@ struct QualifiedGameDescriptor {
 };
 
 typedef Common::Array<QualifiedGameDescriptor> QualifiedGameList;
-
-/**
- * Ths is an enum to describe how done a game is. This also indicates what level of support is expected.
- */
-enum GameSupportLevel {
-	kStableGame = 0,  // the game is fully supported
-	kTestingGame,     // the game is not supposed to end up in releases yet but is ready for public testing
-	kUnstableGame,    // the game is not even ready for public testing yet
-	kUnsupportedGame, // we don't want to support the game
-	kWarningGame      // we want to ask user to proceed and provide them with an explanation
-};
 
 /**
  * This enum is used to indicate the method of MD5 calculation used for a particular file.

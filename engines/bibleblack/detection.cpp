@@ -11,9 +11,9 @@ Common::Platform BibleBlackEngine::getPlatform() const { return _gameDescription
 } // namespace BibleBlack
 
 static const PlainGameDescriptor BibleBlackGames[] = {
-	{"BBLNdW", "Bible Black -La Noche de Walpurgis-", "File Formats", "https://vndb.org/v9"},
-	{"BBTI", "Bible Black -The Infection-", "File Formats", "https://vndb.org/v1030"},
-	{0, 0, 0, 0}};
+	{"BBLNdW", "Bible Black -La Noche de Walpurgis-", kFileFormatsGame, "https://vndb.org/v9"},
+	{"BBTI", "Bible Black -The Infection-", kFileFormatsGame, "https://vndb.org/v1030"},
+	{0, 0}};
 
 namespace BibleBlack
 {

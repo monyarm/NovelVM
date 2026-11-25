@@ -7,14 +7,14 @@ Common::Platform SMTEngine::getPlatform() const { return _gameDescription->platf
 }
 
 static const PlainGameDescriptor SMTGames[] = {
-	{"P3", "Persona 3", "File Formats", "https://megamitensei.fandom.com/wiki/Persona_3"},
-	{"P3F", "Persona 3 FES", "File Formats", "https://megamitensei.fandom.com/wiki/Persona_3_FES"},
-	{"P4", "Persona 4", "File Formats", "https://megamitensei.fandom.com/wiki/Persona_4"},
-	{"P4G", "Persona 4 Golden", "File Formats","https://megamitensei.fandom.com/wiki/Persona_4_Golden"},
-	{"P5", "Persona 5", "File Formats","https://megamitensei.fandom.com/wiki/Persona_5"},
-	{"P5R", "Persona 5 Royal", "File Formats","https://megamitensei.fandom.com/wiki/Persona_5_Royal"},
-	{"P3P", "P3P: Persona 3 Portable", "File Formats","https://megamitensei.fandom.com/wiki/Persona_3_Portable"},
-	{0, 0, 0, 0}
+	{"P3", "Persona 3", kFileFormatsGame, "https://megamitensei.fandom.com/wiki/Persona_3"},
+	{"P3F", "Persona 3 FES", kFileFormatsGame, "https://megamitensei.fandom.com/wiki/Persona_3_FES"},
+	{"P4", "Persona 4", kFileFormatsGame, "https://megamitensei.fandom.com/wiki/Persona_4"},
+	{"P4G", "Persona 4 Golden", kFileFormatsGame,"https://megamitensei.fandom.com/wiki/Persona_4_Golden"},
+	{"P5", "Persona 5", kFileFormatsGame,"https://megamitensei.fandom.com/wiki/Persona_5"},
+	{"P5R", "Persona 5 Royal", kFileFormatsGame,"https://megamitensei.fandom.com/wiki/Persona_5_Royal"},
+	{"P3P", "P3P: Persona 3 Portable", kFileFormatsGame,"https://megamitensei.fandom.com/wiki/Persona_3_Portable"},
+	{0, 0}
 };
 
 namespace SMT {

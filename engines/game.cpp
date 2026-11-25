@@ -35,14 +35,36 @@ const PlainGameDescriptor *findPlainGameDescriptor(const char *gameid, const Pla
 	return 0;
 }
 
+const char *gameSupportLevelToString(GameSupportLevel level) {
+	switch (level) {
+	case kStableGame:
+		return "Playable";
+	case kTestingGame:
+		return "Testing";
+	case kUnstableGame:
+		return "Unstable";
+	case kUnsupportedGame:
+		return "Unsupported";
+	case kWarningGame:
+		return "Warning";
+	case kFileFormatsGame:
+		return "File Formats";
+	case kUnknownGame:
+	default:
+		return "";
+	}
+}
+
 PlainGameDescriptor PlainGameDescriptor::empty() {
 	PlainGameDescriptor pgd;
 	pgd.gameId = nullptr;
 	pgd.description = nullptr;
+	pgd.state = kUnknownGame;
+	pgd.url = nullptr;
 	return pgd;
 }
 
-PlainGameDescriptor PlainGameDescriptor::of(const char *gameId, const char *description, const char *state, const char *url) {
+PlainGameDescriptor PlainGameDescriptor::of(const char *gameId, const char *description, GameSupportLevel state, const char *url) {
 	PlainGameDescriptor pgd;
 	pgd.gameId = gameId;
 	pgd.description = description;
@@ -54,7 +76,7 @@ PlainGameDescriptor PlainGameDescriptor::of(const char *gameId, const char *desc
 QualifiedGameDescriptor::QualifiedGameDescriptor(const char *engine, const PlainGameDescriptor &pgd) :
 		engineId(engine),
 		gameId(pgd.gameId),
-		description(pgd.description), state(pgd.state), url(pgd.url) {
+		description(pgd.description), state(gameSupportLevelToString(pgd.state)), url(pgd.url) {
 }
 
 DetectedGame::DetectedGame() :

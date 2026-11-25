@@ -73,7 +73,7 @@ PlainGameDescriptor findGameID(
 				if (g && g->description)
 					return PlainGameDescriptor::of(gameid, g->description, g->state, g->url);
 				else
-					return PlainGameDescriptor::of(gameid, "Obsolete game ID", "", "");
+					return PlainGameDescriptor::of(gameid, "Obsolete game ID", kUnknownGame, "");
 			}
 			o++;
 		}
