@@ -2,6 +2,7 @@
 #define SMT_GRAPHICS_RMD_RENDER_H
 
 #include "common/formats/rmd.h"
+#include "graphics/epl_effect.h"
 
 namespace Graphics {
 
@@ -19,7 +20,9 @@ public:
 	                  const Common::RMD::BonePose *bonePose = nullptr,
 	                  const RMDBounds *fixedBounds = nullptr,
 	                  RMDBounds *outBounds = nullptr, bool unlit = false,
-	                  const Common::RMD::MaterialPose *materialPose = nullptr); ///< RMD::evaluateSlotMaterials()
+	                  const Common::RMD::MaterialPose *materialPose = nullptr, ///< RMD::evaluateSlotMaterials()
+	                  const Common::Array<EffectBatch> *effects = nullptr, ///< model-space effect batches
+	                  EffectTextureSource *effectTextures = nullptr);
 	static void computeBounds(const Common::RMD &rmd, int width, int height, float rotY,
 	                         const Common::RMD::BonePose *bonePose, RMDBounds *outBounds);
 	static void invalidate();

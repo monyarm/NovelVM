@@ -41,6 +41,55 @@ void eulerToQuat(float ax, float ay, float az, float out[4]) {
 	out[3] = cX * cZ * cY - sX * sZ * sY;
 }
 
+void matrixToPose(const float m[16], float position[3], float rotation[4]) {
+	for (int k = 0; k < 3; ++k)
+		position[k] = m[12 + k];
+	auto norm = [](float v[3]) {
+		const float l = sqrtf(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
+		if (l > 0)
+			for (int i = 0; i < 3; ++i)
+				v[i] /= l;
+	};
+	auto cross = [](const float a[3], const float b[3], float o[3]) {
+		o[0] = a[1] * b[2] - a[2] * b[1];
+		o[1] = a[2] * b[0] - a[0] * b[2];
+		o[2] = a[0] * b[1] - a[1] * b[0];
+	};
+	float right[3] = {m[0], m[1], m[2]}, up[3] = {m[4], m[5], m[6]}, at[3];
+	norm(right);
+	cross(right, up, at);
+	norm(at);
+	cross(at, right, up);
+	// Rows of R(q) (see rotate()) are right, up, at.
+	const float r[3][3] = {{right[0], right[1], right[2]}, {up[0], up[1], up[2]}, {at[0], at[1], at[2]}};
+	const float trace = r[0][0] + r[1][1] + r[2][2];
+	if (trace > 0) {
+		const float s = sqrtf(trace + 1) * 2;
+		rotation[3] = s / 4;
+		rotation[0] = (r[2][1] - r[1][2]) / s;
+		rotation[1] = (r[0][2] - r[2][0]) / s;
+		rotation[2] = (r[1][0] - r[0][1]) / s;
+	} else if (r[0][0] > r[1][1] && r[0][0] > r[2][2]) {
+		const float s = sqrtf(1 + r[0][0] - r[1][1] - r[2][2]) * 2;
+		rotation[3] = (r[2][1] - r[1][2]) / s;
+		rotation[0] = s / 4;
+		rotation[1] = (r[0][1] + r[1][0]) / s;
+		rotation[2] = (r[0][2] + r[2][0]) / s;
+	} else if (r[1][1] > r[2][2]) {
+		const float s = sqrtf(1 + r[1][1] - r[0][0] - r[2][2]) * 2;
+		rotation[3] = (r[0][2] - r[2][0]) / s;
+		rotation[0] = (r[0][1] + r[1][0]) / s;
+		rotation[1] = s / 4;
+		rotation[2] = (r[1][2] + r[2][1]) / s;
+	} else {
+		const float s = sqrtf(1 + r[2][2] - r[0][0] - r[1][1]) * 2;
+		rotation[3] = (r[1][0] - r[0][1]) / s;
+		rotation[0] = (r[0][2] + r[2][0]) / s;
+		rotation[1] = (r[1][2] + r[2][1]) / s;
+		rotation[2] = s / 4;
+	}
+}
+
 uint32 modulate(uint32 a, uint32 b) {
 	uint32 out = 0;
 	for (int c = 0; c < 4; ++c) {
