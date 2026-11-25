@@ -3,7 +3,9 @@
 #include "common/formats/cvm.h"
 
 // TODO: every real CVM has structured, non-zero data at header offset 0x1000 whose purpose is
-// unknown; nothing here needs it, so it is not parsed.
+// unknown; nothing here needs it, so it is not parsed. The game finds the ISO image through the
+// CVMH/ZONE headers; here it is assumed to start at CVM_HEADER_SIZE (0x1800), as in every real
+// P3 FES/P4 CVM.
 
 namespace Common {
 
@@ -27,7 +29,12 @@ void CVM::ReadFile(Common::SeekableReadStream &cvmFile) {
 
 	byte sectorType = cvmFile.readByte();
 
+	// Volume descriptors follow each other until the set terminator (type 255).
 	while (sectorType != ID_PRIM_VOLUME_DESC) {
+		if (sectorType == 0xFF || cvmFile.eos() || cvmFile.pos() + ISO_BLOCKSIZE > cvmFile.size()) {
+			warning("CVM: no primary volume descriptor in %s", _cvmFilename.c_str());
+			return;
+		}
 		cvmFile.seek(ISO_BLOCKSIZE - 1, SEEK_CUR);
 		sectorType = cvmFile.readByte();
 	}
@@ -48,7 +55,7 @@ CVMEntry CVM::ReadISORecord(Common::SeekableReadStream &reader, bool isRoot, Com
 
 	long posStart = reader.pos();
 	byte length = reader.readByte();
-	byte ext_attr_length = reader.readByte();
+	reader.readByte(); // extended attribute record length (not part of this record)
 
 	uint32 mLba = reader.readUint32LE();
 	reader.seek(0x04, SEEK_CUR); //LBA_BE
@@ -72,22 +79,18 @@ CVMEntry CVM::ReadISORecord(Common::SeekableReadStream &reader, bool isRoot, Com
 			mName = "..";
 	} else {
 		mName = Common::String((const char *)nameBytes.data(), nameBytes.size());
-		if (parentName != "") {
-			mName = parentName + '/' + mName.substr(0, mName.findFirstOf(';'));
-		} else {
-			mName = /*_cvmFilename +"/"+ */ mName.substr(0, mName.findFirstOf(';'));
-		}
+		mName = mName.substr(0, mName.findFirstOf(';'));
+		// "NAME." is an ISO name without an extension; the game drops the dot.
+		if (mName.size() > 1 && mName.lastChar() == '.')
+			mName.deleteLastChar();
+		if (parentName != "")
+			mName = parentName + '/' + mName;
 	}
 	//debug(mName.c_str());
 
 	bool isDirectory = ((mFlags & (int)RecordFlags::DirectoryRecord) == (int)RecordFlags::DirectoryRecord) || isRoot;
 
 	if (!isDirectory) {
-		if (mName == "EVENT/SYS/ARC_C002.TMX") {
-			debug("%s", mName.c_str());
-			debug("%i", mSize);
-			debug("%li", CVM_HEADER_SIZE + ((long)mLba * ISO_BLOCKSIZE));
-		}
 		record.name = mName;
 		record.size = mSize;
 		record.offset = CVM_HEADER_SIZE + ((long)mLba * ISO_BLOCKSIZE);
@@ -130,7 +133,8 @@ CVMEntry CVM::ReadISORecord(Common::SeekableReadStream &reader, bool isRoot, Com
 		}
 	}
 
-	reader.seek(posStart + length + ext_attr_length);
+	// The extended attribute record lives with the file data, not after this record.
+	reader.seek(posStart + length);
 	return record;
 }
 
