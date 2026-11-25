@@ -1743,6 +1743,16 @@ private:
 	EffectTextureRef _texture;
 };
 
+// TODO: effect features no P3 FES/P4 RMD uses, so they could not be checked against real data
+// and are parsed but not drawn:
+// - kinds 2/15 track trails, 9 lens flare, 13 thunder, 21 camera shake/sequence, 23 screen
+//   sprite, 27 helper (model children), 29 distortion particle, 30 line nova, 31 battle-only
+//   effect, 32 model drawable (P4);
+// - particle emitter models 2, 4, 6, 7, 9, 10 and 11 (cone with an angle span, Bezier, swirl);
+// - ring sub 2 (random strip), flash quad subs 2, 3 (radial rays) and 7 (boxes), wind subs 2
+//   (falling funnel) and 3 (spiral);
+// - board textures from an animated track (resource kind 2) or a TLP (7);
+// - screen blur subs 2-5 (kind 4) and screen filter subs other than 1 and 2 (kind 5).
 EffectPrimitive *createPrimitive(const Common::EPL::Record &record, EffectTextureSource *textures) {
 	switch (record.kind) {
 	case Common::EPL::kParticle:
