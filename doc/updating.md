@@ -353,8 +353,10 @@ The bot never auto-merges and never pushes to `master`.
 Authentication is a GitHub App installed on the repository. The workflow calls
 `actions/create-github-app-token` with the `SYNC_BOT_APP_ID` and
 `SYNC_BOT_PRIVATE_KEY` secrets and passes the resulting installation token to
-`actions/checkout`, `git push`, and `gh`. The app needs `Contents: RW`,
-`Pull requests: RW`, and `Workflows: RW`; `Metadata` stays read-only.
+`actions/checkout`, `git push`, and `gh`. `SYNC_BOT_APP_ID` must be the numeric
+App ID from the app's settings page, not the Client ID. The app needs
+`Contents: RW`, `Pull requests: RW`, and `Workflows: RW`; `Metadata` stays
+read-only.
 
 An app token is used because GitHub suppresses workflow runs for events caused
 by `GITHUB_TOKEN`, so a `GITHUB_TOKEN`-created PR would get no CI. Tokens are
