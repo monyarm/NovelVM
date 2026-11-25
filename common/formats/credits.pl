@@ -1,6 +1,6 @@
 begin_section("ADX");
 	add_person("vgmstream contributors", "", "CRI key derivation and the type 8 key table (ISC)");
-	add_person("Raikaru", "", "Persona 4 decompilation, used to check CRI ADX behaviour");
+	add_person("Raikaru", "", "Persona 4 decompilation, used only to write the CRI ADX behaviour notes; no code taken from it");
 end_section();
 
 begin_section("AHX");
@@ -23,8 +23,8 @@ begin_section("DDS / S3TC");
 end_section();
 
 begin_section("EPL");
-	add_person("Raikaru", "", "Persona 4 and Persona 3 FES decompilations, the EPL and AfPack reference");
-	add_person("snaku", "", "Original Persona 3 FES decompilation");
+	add_person("Raikaru", "", "Persona 4 and Persona 3 FES decompilations, used only to write the EPL and AfPack specs; no code taken from them");
+	add_person("snaku", "", "Original Persona 3 FES decompilation, used only for specs; no code taken from it");
 end_section();
 
 begin_section("GMO");
@@ -50,7 +50,7 @@ end_section();
 
 begin_section("RMD");
 	add_person("TGE", "", "AmicitiaLibrary, the RMD reference");
-	add_person("Raikaru", "", "Persona 4 and Persona 3 FES decompilations, the Persona RMD chunk reference");
+	add_person("Raikaru", "", "Persona 4 and Persona 3 FES decompilations, used only to write the Persona RMD chunk specs; no code taken from them");
 end_section();
 
 begin_section("USM");
