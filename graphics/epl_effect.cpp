@@ -1513,6 +1513,47 @@ private:
 	int32 _elapsed = 0;
 };
 
+// Kind 5 sub 1: the whole screen filled with the sampled colour (a flash or fade).
+class ScreenFlash : public EffectPrimitive {
+public:
+	explicit ScreenFlash(const Common::EPL::Record &record) { _params.bytes = record.parameters; }
+
+	void reset() override { _age = 0; }
+	void advance() override { ++_age; }
+	void setPosition(const float position[3]) override {}
+	void setRotation(const float rotation[4]) override {}
+	void setScale(float scale) override {}
+
+	void draw(const EffectCamera &camera, uint32 nodeColor, Common::Array<EffectBatch> &out) override {
+		const int32 duration = _params.s32(0xB8), age = _age - 1;
+		if (_age <= 0 || (duration > 0 && age > duration))
+			return;
+		float rgba[4];
+		colorToFloats(modulate(_params.sampleColor(0x00, 0x24, age, duration), nodeColor), rgba);
+		if (rgba[3] <= 0)
+			return;
+		EffectBatch batch;
+		batch.blendMode = _params.u16(0x28);
+		batch.depthTest = false;
+		batch.screenSpace = true;
+		static const float kCorners[6][2] = {{0, 0}, {1, 0}, {1, 1}, {0, 0}, {1, 1}, {0, 1}};
+		for (int k = 0; k < 6; ++k) {
+			EffectVertex v;
+			v.x = kCorners[k][0];
+			v.y = kCorners[k][1];
+			v.z = 0;
+			v.u = v.v = 0;
+			v.r = rgba[0]; v.g = rgba[1]; v.b = rgba[2]; v.a = rgba[3];
+			batch.vertices.push_back(v);
+		}
+		out.push_back(batch);
+	}
+
+private:
+	Params _params;
+	int32 _age = 0;
+};
+
 EffectPrimitive *createPrimitive(const Common::EPL::Record &record, EffectTextureSource *textures) {
 	switch (record.kind) {
 	case Common::EPL::kParticle:
@@ -1527,11 +1568,16 @@ EffectPrimitive *createPrimitive(const Common::EPL::Record &record, EffectTextur
 		return new ObjectParticleEmitter(record, textures);
 	case Common::EPL::kModel:
 		return new ModelEffect(record);
+	case Common::EPL::kScreenFilter:
+		if (record.sub == 1)
+			return new ScreenFlash(record);
+		return nullptr; // TODO: sub 2, an anchored and scaled screen rectangle
+	case Common::EPL::kScreenBlur:
+		return nullptr; // TODO: zoom/rotate blur of the previous frame, needs a framebuffer copy
 	case Common::EPL::kBoard:
 		return new Board(record, textures);
 	default:
-		// TODO: the screen blur/filter kinds (4, 5) are parsed but not drawn.
-		return nullptr;
+		return nullptr; // not used by any P3 FES/P4 RMD
 	}
 }
 

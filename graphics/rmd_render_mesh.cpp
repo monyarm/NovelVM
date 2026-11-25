@@ -243,6 +243,12 @@ void assembleRMDMesh(const Common::RMD &rmd, const Common::Array<Graphics::Surfa
 		for (uint b = 0; b < out.effects.size(); ++b)
 			for (uint i = 0; i < out.effects[b].vertices.size(); ++i) {
 				EffectVertex &v = out.effects[b].vertices[i];
+				if (out.effects[b].screenSpace) {
+					v.x *= width;
+					v.y *= height;
+					v.z = minZ; // inside the depth range; screen-space batches don't depth test
+					continue;
+				}
 				const Common::RMD::Vec3 p = {v.x, v.y, v.z};
 				float x, y, z;
 				transform(spin, p, x, y, z);
