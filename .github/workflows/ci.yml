@@ -129,7 +129,9 @@ jobs:
         run: |
           cd build-novelvm
           ls
-          $env:CL = "/std:c++17"
+          # Keep the pre-C++17 conditional-operator resolution: AGS's String
+          # conversions make /std:c++17 ternaries ambiguous (MSVC C2445).
+          $env:CL = "/std:c++17 /Zc:ternary-"
           msbuild novelvm.sln /m /p:VcpkgEnableManifest=true /p:BuildInParallel=true /p:Configuration=${{ env.CONFIGURATION }} /p:PreferredToolArchitecture=x64 /p:Platform=${{ matrix.platform }} /v:minimal
       - name: Upload novelvm
         uses: actions/upload-artifact@v4
