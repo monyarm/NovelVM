@@ -77,20 +77,23 @@ table names. [DESIGN]
 
 ### 1.3 Masked or encrypted `@UTF` tables
 
-`utf_table.h` states that "optional XOR decryption" of CPK packets is the caller's job.
-No allowed source available to this spec describes the masking scheme. Both reference
-archives store plain tables: every packet starts with the bytes `40 55 54 46`
+Unmasking CPK packets is the caller's job: `UTFTable::parse` accepts only plain tables.
+Both reference archives store plain tables: every packet starts with the bytes `40 55 54 46`
 (`"@UTF"`). [VERIFIED]
 
-Required behaviour: if a packet does not start with `"@UTF"`, treat that table as
-unreadable [DESIGN]:
+Required behaviour, per `utf-table.md` §10.4:
 
-* If the header packet is unreadable, the archive opens with zero members.
-* If the TOC or ITOC packet is unreadable, that table contributes no members.
+1. If the packet starts with `"@UTF"`, parse it.
+2. Else if `UTFTable::isMasked(packet, length)`, call `UTFTable::toggleMask(packet,
+   length)` on the whole packet buffer, then parse it.
+3. Else treat that table as unreadable [DESIGN]:
+   * If the header packet is unreadable, the archive opens with zero members.
+   * If the TOC or ITOC packet is unreadable, that table contributes no members.
 
-Log a warning in each case. Masking support is an **open item** [UNCERTAIN]. It can be
-added later as a pre-pass on the packet buffer, with no change to the rest of this
-design.
+   Log a warning in each case.
+
+The mask scheme is described in `utf-table.md` §10. It comes from LibCPK and is
+unverified on real data. [UNCERTAIN]
 
 ## 2. Header chunk (`"CPK "`, at file offset 0)
 
@@ -187,7 +190,9 @@ and the magic numbers do not match. On real data the smallest `FileOffset` is
   case-insensitive comparison or a lower-cased key. Real archives contain no paths that
   differ only by case. [VERIFIED for P3P; DESIGN for the rule]
 * If two rows map to the same case-insensitive path, the first row wins and later rows
-  are ignored. [DESIGN]
+  are ignored. [DESIGN] Real archives do this: both Persona 2 PSP `P2PT_ALL.cpk` files
+  have two different root-level `card.bin` rows (EP: row 9, ID 9, 3,147,776 bytes; row
+  10, ID 2002, 76,688 bytes), so the second is reachable only by its ID. [VERIFIED]
 * Keep the members in TOC row order for `listMembers()`. The rows are **not** sorted by
   offset, and umd0 is not sorted by (dir, name) either. [VERIFIED]
 
@@ -202,8 +207,14 @@ ID 224). [DESIGN, per the public API comment "0 for TOC-named entries"]
 
 ## 4. ITOC (numeric-ID members)
 
-No real ITOC archive was available. This section follows vgmstream and the NovelVM
-test. [VGMSTREAM, TEST; UNCERTAIN on real data]
+No real `DataL`/`DataH` ITOC archive was available. This section follows vgmstream and
+the NovelVM test. [VGMSTREAM, TEST; UNCERTAIN on real data]
+
+The Persona 2 PSP archives have a TOC *and* an ITOC of a different kind: a
+`CpkExtendId` table with signed 32-bit `ID` and `TocIndex` columns, mapping numeric IDs
+to TOC rows (EP: `(0,19) (1,18) (2,26) (3,27)` ...). It has no `DataL`/`DataH`, so the
+rules below yield no ITOC members for it and its IDs are not reachable through
+`getEntryById`. [VERIFIED; supporting it is an open item]
 
 ### 4.1 Location and info table
 
@@ -538,11 +549,12 @@ The TOC has 338 rows. None are compressed. All members are `AFS\0` archives, and
 
 ## 10. Open items
 
-* Masked or encrypted `@UTF` packets (section 1.3): the scheme is unspecified and the
-  current design rejects such packets. [UNCERTAIN]
-* ITOC behaviour on real archives: 16-bit DataL sizes, nonzero ID bases, duplicate
-  IDs, and TOC and ITOC present together. All of this comes from vgmstream and the
-  synthetic test only. [UNCERTAIN]
+* Masked `@UTF` packets (section 1.3): scheme from LibCPK, unverified on real data.
+  [UNCERTAIN]
+* ITOC behaviour on real archives: 16-bit DataL sizes, nonzero ID bases and duplicate
+  IDs come from vgmstream and the synthetic test only. [UNCERTAIN]
+* `CpkExtendId` ITOCs (Persona 2 PSP, section 4): IDs map to TOC rows; not yet exposed
+  by `getEntryById`, so duplicate-named TOC rows past the first are unreachable.
 * Whether any real CPK stores a compressed member whose size fields disagree with the
   CRILAYLA header. This never happens in P3P. The spec rejects such members.
   [UNCERTAIN]
