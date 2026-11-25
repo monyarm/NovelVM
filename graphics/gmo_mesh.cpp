@@ -321,6 +321,13 @@ void buildGMOMesh(const Common::GMO &gmo, const Common::Array<Graphics::Surface 
 						for (int i = 0; i < 3; i++) matAmb[i] = CLIP(materialPose->ambient[mi * 4 + i], 0.0f, 1.0f);
 					if (materialPose->hasSpecular[mi])
 						for (int i = 0; i < 3; i++) matSpec[i] = CLIP(materialPose->specular[mi * 4 + i], 0.0f, 1.0f);
+					// Animated TEXCROP (P3P field objects scroll their textures this way).
+					if (mi < (int)materialPose->hasTexCrop.size() && materialPose->hasTexCrop[mi]) {
+						crop0 = materialPose->texCrop[mi * 4 + 0];
+						crop1 = materialPose->texCrop[mi * 4 + 1];
+						crop2 = materialPose->texCrop[mi * 4 + 2];
+						crop3 = materialPose->texCrop[mi * 4 + 3];
+					}
 				}
 				if (texIdx < 0)
 					texIdx = 0;
