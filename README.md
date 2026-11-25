@@ -11,7 +11,7 @@ NovelVM carries a small set of engines instead of ScummVM's full list:
 
 | Engine | Status |
 | --- | --- |
-| `smt` | CRIWare testbed for Persona 3/3 FES/4 (PS2), Persona 3 Portable (PSP) and Persona 4 Golden/5/5 Royal (PSVita). Reads file formats; no gameplay yet. |
+| `smt` | Persona 3/4/5. Reads file formats; no gameplay yet. |
 | `director` | Macromedia Director, restricted to games matched on VNDB. Detection hashes are upstream's; everything else still falls back to generic Director detection. |
 | `snatcher` | Snatcher, fully playable. Detects the English Sega CD NA and EU/PAL releases. |
 | `ags` | Adventure Game Studio, with VNDB ids and support levels for the VN titles that match. |
