@@ -157,10 +157,13 @@ GMO::Chunk GMO::readChunkAt(uint32 pos) {
 	return c;
 }
 
-// TODO: known GMO gaps, none exercised by the real P3P samples:
+// TODO: known GMO gaps, none exercised by the real P3P files (all 1948 GMOs in umd0.cpk use only
+// constant, linear and spherical FCURVEs, and RGBA4444 as the only vertex colour format):
 // - FCURVE extrapolation (the type's low bits) and hermite/cubic tangents are approximated,
 // - BLEND_OFFSETS are parsed but unused as bind matrices (real data doesn't reproduce the bind
-//   pose with them; skinning derives the inverse bind from the static pose instead),
+//   pose with them; skinning derives the inverse bind from the static pose instead). Noesis,
+//   which does use them without their scale, visibly distorts models such as Jack Frost
+//   (data/model/pack/ps007.pac), which render correctly this way,
 // - morph targets are read as headers only (real files have MorphFormat 0),
 // - material REFLECTION/REFRACTION/BUMP and layer MAP_TYPE/TEX_FILTER are parsed but only
 //   default values have been seen.
