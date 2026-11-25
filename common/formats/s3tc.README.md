@@ -15,6 +15,8 @@ When using these routines, feel free to chose one of either:
 
 My original worded "license" was intended to be extremely permissive and does not require attribution. However, given it is highly non-standard (not checked over by a lawyer) then that may lead to ambiguity. If you need something a bit more solid then the MIT license ought to meet your needs.
 
+For NovelVM, the MIT license text is kept in [`LICENSES/COPYING.S3TC`](../../LICENSES/COPYING.S3TC).
+
 ## Original Blog Post
 
 _October 21st, 2009_
