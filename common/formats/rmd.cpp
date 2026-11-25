@@ -702,6 +702,22 @@ void RMD::parseNode(const Node &node) {
 		return;
 	}
 
+	if (node.type == kUserData && _parsingFrameExtensions && _currentHAnimFrame < _frames.size()) {
+		// Frames carry one int array "per3HelperId" (format 1, one value).
+		static const char kKey[] = "per3HelperId";
+		uint32 p = node.payloadOffset;
+		const uint32 end = node.payloadEnd;
+		if (p + 8 > end || readUint32LE(_data, p) == 0)
+			return;
+		const uint32 nameLen = readUint32LE(_data, p + 4);
+		if (nameLen != sizeof(kKey) || p + 8 + nameLen + 12 > end || memcmp(&_data[p + 8], kKey, sizeof(kKey)) != 0)
+			return;
+		p += 8 + nameLen;
+		if (readUint32LE(_data, p) == 1 && readUint32LE(_data, p + 4) >= 1)
+			_frames[_currentHAnimFrame].helperId = (int32)readUint32LE(_data, p + 8);
+		return;
+	}
+
 	if (node.type == kUserData && _inMaterial && !_materials.empty()) {
 		// RW user data: int32 arrays; each { int32 len; char name[len]; int32 format;
 		// int32 count; values }. Materials carry one string array "name" (format 3).
@@ -1771,25 +1787,31 @@ bool RMD::evaluateAnimation(uint32 animationIndex, float time, BonePose &pose) c
 }
 
 bool RMD::helperWorldMatrix(uint32 index, const BonePose *pose, Matrix &out) const {
-	// TODO: models without a helper table locate helpers by the frame user data integer
-	// "per3HelperId", which is not parsed yet.
+	auto frameWorld = [&](uint32 f) {
+		if (pose && f < pose->worldTransforms.size())
+			return pose->worldTransforms[f];
+		Matrix world = frameMatrix(_frames[f]);
+		for (int32 parent = _frames[f].parent, guard = 0; parent >= 0 && guard < (int32)_frames.size(); parent = _frames[parent].parent, ++guard)
+			world = multiply(world, frameMatrix(_frames[parent]));
+		return world;
+	};
+	// Without a table, a frame whose user data "per3HelperId" equals the index is the helper.
+	if (_helperMatrices.empty()) {
+		for (uint32 f = 0; f < _frames.size(); ++f)
+			if (_frames[f].helperId >= 0 && (uint32)_frames[f].helperId == index) {
+				out = frameWorld(f);
+				return true;
+			}
+		return false;
+	}
 	for (uint32 h = 0; h < _helperMatrices.size(); ++h) {
 		if (_helperMatrices[h].id != (index & 0xFFFF))
 			continue;
-		for (uint32 f = 0; f < _frames.size(); ++f) {
-			if (!_frames[f].hasHAnim || _frames[f].nameId != _helperMatrices[h].frameId)
-				continue;
-			Matrix world;
-			if (pose && f < pose->worldTransforms.size()) {
-				world = pose->worldTransforms[f];
-			} else {
-				world = frameMatrix(_frames[f]);
-				for (int32 parent = _frames[f].parent, guard = 0; parent >= 0 && guard < (int32)_frames.size(); parent = _frames[parent].parent, ++guard)
-					world = multiply(world, frameMatrix(_frames[parent]));
+		for (uint32 f = 0; f < _frames.size(); ++f)
+			if (_frames[f].hasHAnim && _frames[f].nameId == _helperMatrices[h].frameId) {
+				out = multiply(_helperMatrices[h].offset, frameWorld(f));
+				return true;
 			}
-			out = multiply(_helperMatrices[h].offset, world);
-			return true;
-		}
 		return false;
 	}
 	return false;

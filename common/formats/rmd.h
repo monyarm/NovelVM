@@ -72,6 +72,7 @@ public:
 		uint32 flags = 0;
 		uint32 nameId = 0;
 		bool hasHAnim = false; // nameId is only meaningful when the frame carries an HAnim extension
+		int32 helperId = -1;   // user data "per3HelperId": effect attachment index for models without a helper table
 		Common::String name;
 	};
 	struct HierarchyNode {

@@ -418,6 +418,45 @@ public:
 		}
 	}
 
+	void testFramesWithoutHelperTableUseHelperIdUserData() {
+		// Real P3F field models (e.g. M034_011.RMD) have no 0xF0F00006 table; frame user data
+		// {1 array; "per3HelperId"; format 1 (int); 1 value} names the effect attachment index.
+		Common::Array<byte> frameStruct;
+		append32(frameStruct, 2);
+		const float translations[2][3] = {{1, 2, 3}, {10, 0, 0}};
+		for (uint32 f = 0; f < 2; ++f)
+			for (uint32 i = 0; i < 14; ++i) {
+				float value = (i == 0 || i == 4 || i == 8) ? 1.0f : (i >= 9 && i < 12) ? translations[f][i - 9] : 0.0f;
+				uint32 bits;
+				memcpy(&bits, &value, 4);
+				append32(frameStruct, i == 12 ? (f == 0 ? 0xFFFFFFFF : 0) : bits);
+			}
+		Common::Array<byte> userData;
+		append32(userData, 1); append32(userData, 13);
+		for (const char *c = "per3HelperId"; ; ++c) { userData.push_back((byte)*c); if (!*c) break; }
+		append32(userData, 1); append32(userData, 1); append32(userData, 7);
+		Common::Array<byte> extension;
+		appendNode(extension, 0x11F, userData);
+		Common::Array<byte> frameList;
+		appendNode(frameList, 1, frameStruct);
+		appendNode(frameList, 3, Common::Array<byte>());
+		appendNode(frameList, 3, extension);
+		Common::Array<byte> data;
+		appendNode(data, 14, frameList);
+
+		Common::RMD rmd = parse(data.data(), data.size());
+		TS_ASSERT(rmd.ok());
+		if (!rmd.ok())
+			return;
+		TS_ASSERT_EQUALS(rmd.frames()[0].helperId, -1);
+		TS_ASSERT_EQUALS(rmd.frames()[1].helperId, 7);
+		Common::RMD::Matrix m;
+		TS_ASSERT(rmd.helperWorldMatrix(7, nullptr, m));
+		TS_ASSERT_DELTA(m.m[12], 11.0f, 1e-5f); // child (10, 0, 0) under parent (1, 2, 3)
+		TS_ASSERT_DELTA(m.m[13], 2.0f, 1e-5f);
+		TS_ASSERT(!rmd.helperWorldMatrix(6, nullptr, m));
+	}
+
 	void testAnimationSlotsFollowTerminatorsAndInstances() {
 		// Slots as in real RMDs (and Amicitia's RmdScene): each runs up to a 0xF0F00004
 		// terminator. Slot 0 is a placeholder, slot 1 an instance of slot 2, slot 2 holds a
