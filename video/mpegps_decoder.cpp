@@ -98,8 +98,9 @@ bool MPEGPSDecoder::detectATRAC3PlusInfo(Common::SeekableReadStream &packet, uin
 	// PSMF audio payload: 4-byte PSP sub-header, then the ATRAC3+ frame header
 	// 0F D0 <attr:16 BE>: bits 13-15 sample rate code, 10-12 channels, 0-9 (data size - 8) / 8
 	// (as PPSSPP reads it). Verified on the real P3P opening: code 1, 2 channels, 744 bytes,
-	// matching its PSMF header (44100 Hz stereo). Other rate codes have no real sample, so
-	// those streams still need setATRACAudioInfo().
+	// matching its PSMF header (44100 Hz stereo).
+	// TODO: other rate codes and channel counts have no real sample, so those streams still need
+	// setATRACAudioInfo() from the container; ATRAC3 (not +) is never self-detected either.
 	const int64 start = packet.pos();
 	packet.skip(4);
 	const uint16 sync = packet.readUint16BE();
