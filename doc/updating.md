@@ -44,8 +44,9 @@ result into the normal index and working tree. This means upstream renames,
 additions, and deletions merge against our local edits, including edits inside
 patched engines. There are no patch files, no `git am`, and no sparse
 checkout: unkept engines simply never enter `BASE` or `THEIRS`. A legacy
-`.git/info/sparse-checkout` from an older sync is disabled automatically at
-startup.
+sparse-checkout file from an older sync is disabled automatically at startup;
+the script resolves its path with `git rev-parse --git-path info/sparse-checkout`,
+so this also works in a linked worktree.
 
 On a clean merge the script makes one ordinary single-parent commit:
 
@@ -181,9 +182,11 @@ instead of looking like a modify/delete conflict.
 
 Any unresolved conflict anywhere stops the sync with exit 2, regardless of
 engine class. On a conflict or gate the merge is left staged in the index and
-working tree, and the script writes `.git/novelvm-sync-pending` with the
-upstream SHA, the base/theirs commit SHAs, the original `HEAD`, and the gate
-list. It also keeps the synthetic commits alive under
+working tree, and the script writes its pending state file with the upstream
+SHA, the base/theirs commit SHAs, the original `HEAD`, and the gate list. The
+path comes from `git rev-parse --git-path novelvm-sync-pending`; in a linked
+worktree that is under `.git/worktrees/<name>/`, not `.git/` itself. It also
+keeps the synthetic commits alive under
 `refs/novelvm/pending/base` and `refs/novelvm/pending/theirs`.
 
 Commands:

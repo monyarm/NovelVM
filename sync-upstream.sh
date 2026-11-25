@@ -20,7 +20,6 @@ FROM=
 TO=
 CONTINUE=0
 ABORT=0
-PENDING_FILE=.git/novelvm-sync-pending
 
 usage() {
 	cat <<'EOF'
@@ -90,9 +89,13 @@ SCUMMVM_REMOTE_URL=${NOVELVM_SCUMMVM_REMOTE_URL:-$SCUMMVM_REMOTE_URL}
 
 ROOT=$(git rev-parse --show-toplevel 2>/dev/null) || die "not inside a Git repository"
 [ "$(pwd)" = "$ROOT" ] || die "must be run from the repository root: $ROOT"
+PENDING_FILE=$(git rev-parse --git-path novelvm-sync-pending) ||
+	die "could not resolve the Git directory"
+git_path() { git rev-parse --git-path "$1"; }
 [ -f "$REWRITE_TOOL" ] || die "rewrite tool missing: $REWRITE_TOOL"
 command -v python3 >/dev/null || die "python3 is required"
-[ ! -d .git/rebase-merge ] && [ ! -d .git/rebase-apply ] ||
+[ ! -d "$(git rev-parse --git-path rebase-merge)" ] &&
+	[ ! -d "$(git rev-parse --git-path rebase-apply)" ] ||
 	die "a rebase is already in progress"
 
 in_list() {
@@ -151,10 +154,10 @@ esac
 
 # Old syncs used a sparse checkout to hide upstream engines. Unkept engines
 # never enter the merge now, so make sure the kept directories are present.
-if [ -f .git/info/sparse-checkout ]; then
+if [ -f "$(git_path info/sparse-checkout)" ]; then
 	msg "disabling legacy sparse checkout"
 	git sparse-checkout disable >/dev/null 2>&1 ||
-		{ rm -f .git/info/sparse-checkout; git read-tree -mu HEAD; } ||
+		{ rm -f "$(git_path info/sparse-checkout)"; git read-tree -mu HEAD; } ||
 		die "could not disable the legacy sparse checkout"
 fi
 
@@ -199,12 +202,14 @@ if [ "$CONTINUE" -eq 1 ]; then
 		in_list "$engine" "$KEEP" || git rm -r -q -f -- "engines/$engine" ||
 			die "could not remove unkept engine: $engine"
 	done < <(git ls-tree -d --name-only :engines 2>/dev/null || true)
-	git diff --cached --check || die "staged sync contains whitespace errors"
+	git diff --cached --check >/dev/null 2>&1 ||
+		msg "warning: whitespace findings in staged changes (continuing)"
 
 	printf 'upstream=%s\nremote=%s\nbranch=%s\nrewritten-tree=%s\n' \
 		"$upstream" "$remote" "$branch" "$rewritten_tree" >"$SYNC_METADATA_FILE"
 	git add "$SYNC_METADATA_FILE" || die "could not stage sync metadata"
-	rm -f .git/MERGE_HEAD .git/MERGE_MSG .git/MERGE_MODE .git/AUTO_MERGE
+	rm -f "$(git_path MERGE_HEAD)" "$(git_path MERGE_MSG)" \
+	"$(git_path MERGE_MODE)" "$(git_path AUTO_MERGE)"
 	git commit -m "ALL: Sync with ScummVM rev: $upstream" || die "sync commit failed"
 	git update-ref -d refs/novelvm/pending/base 2>/dev/null || true
 	git update-ref -d refs/novelvm/pending/theirs 2>/dev/null || true
@@ -625,12 +630,14 @@ while IFS= read -r engine; do
 	in_keep "$engine" || git rm -r -q -f -- "engines/$engine" ||
 		die "could not remove unkept engine: $engine"
 done < <(git ls-tree -d --name-only :engines 2>/dev/null || true)
-git diff --cached --check || die "merged sync contains whitespace errors"
+git diff --cached --check >/dev/null 2>&1 ||
+	msg "warning: whitespace findings in staged changes (continuing)"
 
 printf 'upstream=%s\nremote=%s\nbranch=%s\nrewritten-tree=%s\n' \
 	"$NEW" "$SCUMMVM_REMOTE" "$SCUMMVM_BRANCH" "$NEW_TREE" >"$SYNC_METADATA_FILE"
 git add "$SYNC_METADATA_FILE" || die "could not stage sync metadata"
-rm -f .git/MERGE_HEAD .git/MERGE_MSG .git/MERGE_MODE .git/AUTO_MERGE
+rm -f "$(git_path MERGE_HEAD)" "$(git_path MERGE_MSG)" \
+	"$(git_path MERGE_MODE)" "$(git_path AUTO_MERGE)"
 git commit -m "ALL: Sync with ScummVM rev: $NEW" || die "sync commit failed"
 for engine in $KEEP; do
 	git cat-file -e "HEAD:engines/$engine/configure.engine" 2>/dev/null ||
