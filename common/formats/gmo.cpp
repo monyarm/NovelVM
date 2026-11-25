@@ -156,6 +156,13 @@ GMO::Chunk GMO::readChunkAt(uint32 pos) {
 	return c;
 }
 
+// TODO: known GMO gaps, none exercised by the real P3P samples:
+// - FCURVE extrapolation (the type's low bits) and hermite/cubic tangents are approximated,
+// - BLEND_OFFSETS are parsed but unused as bind matrices (real data doesn't reproduce the bind
+//   pose with them; skinning derives the inverse bind from the static pose instead),
+// - morph targets are read as headers only (real files have MorphFormat 0),
+// - material REFLECTION/REFRACTION/BUMP and layer MAP_TYPE/TEX_FILTER are parsed but only
+//   default values have been seen.
 void GMO::parseFile() {
 	// The first chunk at offset 16 is FILE (0x0002): a full chunk whose
 	// children region holds the MODEL chunks. Walk FILE's children.
