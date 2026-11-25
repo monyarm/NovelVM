@@ -1,20 +1,23 @@
-
 <!---
-Thank you for contributing to ScummVM. Please read the following carefully before submitting your Pull Request.
+Thank you for contributing to NovelVM, a ScummVM fork for visual novels that is
+never merged back upstream.
 
-ATTENTION TO AI USERS:
+Before submitting, read this repository's AI policy: AI-GUIDELINES.md.
 
-The PR description and commit log messages MUST be written by a human.
+AI tools may help with code and may author commits here, but every commit they
+touched needs an `Assisted-by: AGENT:MODEL` trailer, and the change must still
+be reviewed and understood by the human submitting it. Do not use
+`Co-Authored-By` for AI.
 
-EVERY WORD of your code and comments, must be re-read by a human and checked for sanity, correctness and common sense. At any sight of AI slop, including lengthy LLM-oriented explanations, your PR will be closed.
+Make sure your individual commits follow the ScummVM commit guidelines:
+https://wiki.scummvm.org/index.php?title=Commit_Guidelines. If they do not,
+please edit them before submitting the pull request.
 
-On top of that, we created AI-specific guidelines https://github.com/scummvm/scummvm/blob/master/AI-GUIDELINES.md
+Proper documentation must also be included for common code and changes
+impacting user-facing elements.
 
-Make sure your individual commits follow the guidelines found in the ScummVM Wiki: https://wiki.scummvm.org/index.php?title=Commit_Guidelines. If they're not, please edit them before submitting the Pull Request.
-
-Proper documentation must also be included for common code and changes impacting user facing elements.
-
-We require linear history, so no merge commits are allowed.
+We require linear history, so no merge commits are allowed. Rebase your branch
+instead.
 
 Commits and Pull Requests should use the following template:
 
@@ -41,4 +44,24 @@ Further paragraphs come after blank lines.
 
 - Use a hanging indent
 ```
---->
+-->
+
+## Description
+
+What does this change do, and why? Reference the issue it addresses
+(`Refs #123`).
+
+## Testing
+
+How was it built and tested? Say what could not be tested, and why.
+
+## Checklist
+
+- [ ] Every commit that AI touched carries an `Assisted-by: AGENT:MODEL`
+      trailer (the mechanical `ALL: Sync with ScummVM rev: <sha>` commit is
+      exempt), and no `Co-Authored-By` credits an AI.
+- [ ] The change builds and the relevant tests were run, or the untested parts
+      are listed above.
+- [ ] Commit messages are in ScummVM style (`SUBSYSTEM: Short summary`) and the
+      branch has linear history, with no merge commits.
+- [ ] I have read AI-GUIDELINES.md and take responsibility for this change.
