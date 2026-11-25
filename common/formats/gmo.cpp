@@ -1,4 +1,5 @@
 #include "common/formats/gmo.h"
+#include "common/endian.h"
 
 #include "common/memstream.h"
 #include "graphics/ps2texture.h"
@@ -26,8 +27,8 @@ enum ArrayFlag {
 	kWeightUByte = 1 << 9,
 	kWeightUShort = 2 << 9,
 	kWeightFloat = 3 << 9,
-	kWeightCountMask = 0xF << 14,  // weight-2..8 encoded as (count-1) << 14
-	kColorMask = 0x3 << 2,
+	kWeightCountMask = 0x7 << 14,  // weight-2..8 encoded as (count-1) << 14
+	kColorMask = 0x7 << 2,
 	kTexMask = 0x3 << 0,
 	kNormalMask = 0x3 << 5,
 	kVertexMask = 0x3 << 7,
@@ -478,173 +479,114 @@ void GMO::parsePart(const Chunk &c, Part &part) {
 			a.morphCount = ru32();
 			a.morphFormat = ru32();
 
-			// Determine stride (bytes per vertex) purely from flags.
-			uint32 f = a.format;
-			int texBpp = 0;
-			switch (f & kTexMask) {
-			case (1 << 0): texBpp = 1; break;
-			case (2 << 0): texBpp = 2; break;
-			case (3 << 0): texBpp = 4; break;
-			default: texBpp = 0;
-			}
-			int colorBpp = 0;
-			switch (f & kColorMask) {
-			case (4 << 2): colorBpp = 2; break; // 5650
-			case (5 << 2): colorBpp = 2; break; // 5551
-			case (6 << 2): colorBpp = 2; break; // 4444
-			case (7 << 2): colorBpp = 4; break; // 8888
-			default: colorBpp = 0;
-			}
-			int normalBpp = 0;
-			switch (f & kNormalMask) {
-			case (1 << 5): normalBpp = 3; break;
-			case (2 << 5): normalBpp = 6; break;
-			case (3 << 5): normalBpp = 12; break;
-			default: normalBpp = 0;
-			}
-			int vertexBpp = 0;
-			switch (f & kVertexMask) {
-			case (1 << 7): vertexBpp = 3; break;
-			case (2 << 7): vertexBpp = 6; break;
-			case (3 << 7): vertexBpp = 12; break;
-			default: vertexBpp = 0;
-			}
-			int weightBpp = 0;
-			int wc = weightCountFromFormat(f);
-			switch (f & kWeightMask) {
-			case (1 << 9): weightBpp = wc; break;
-			case (2 << 9): weightBpp = wc * 2; break;
-			case (3 << 9): weightBpp = wc * 4; break;
-			default: weightBpp = 0;
-			}
-			int morphPairs = a.morphFormat > 0 ? (a.morphFormat > 1 ? 4 : 2) : 0;
-
-			int stride = texBpp == 2 ? 4 : texBpp; // texture coords are 2 components
-			if (texBpp) stride = texBpp * 2;
-			if (texBpp == 0) stride = 0;
-			stride += colorBpp + normalBpp + vertexBpp + weightBpp + morphPairs * 2;
+			// PSP GE vertex layout: morph UV offsets, then weights, texture coordinates, colour,
+			// normal and position, each aligned to its own component size; the vertex is padded to
+			// the largest alignment used.
+			const uint32 f = a.format;
+			static const int kComponentSize[4] = {0, 1, 2, 4};
+			const int texSize = kComponentSize[f & 3];
+			const uint32 colorType = (f & kColorMask) >> 2;
+			const int colorSize = colorType == 7 ? 4 : (colorType >= 4 ? 2 : 0);
+			const int normalSize = kComponentSize[(f & kNormalMask) >> 5];
+			const int vertexSize = kComponentSize[(f & kVertexMask) >> 7];
+			const int weightSize = kComponentSize[(f & kWeightMask) >> 9];
+			const int wc = weightCountFromFormat(f);
+			const int morphPairs = a.morphFormat > 0 ? (a.morphFormat > 1 ? 4 : 2) : 0;
+			int stride = 0, maxAlign = 1;
+			auto place = [&](int size, int align) {
+				if (size == 0)
+					return -1;
+				stride = (stride + align - 1) & ~(align - 1);
+				const int at = stride;
+				stride += size;
+				maxAlign = MAX(maxAlign, align);
+				return at;
+			};
+			const int morphOff = place(morphPairs * 2, 2);
+			const int weightOff = place(weightSize * wc, weightSize);
+			const int texOff = place(texSize * 2, texSize);
+			const int colorOff = place(colorSize, colorSize);
+			const int normalOff = place(normalSize * 3, normalSize);
+			const int vertexOff = place(vertexSize * 3, vertexSize);
+			stride = (stride + maxAlign - 1) & ~(maxAlign - 1);
 
 			// Parse per-vertex if a positional store exists.
-			if (vertexBpp == 0)
+			if (vertexSize == 0 || stride == 0)
 				a.vertexCount = 0;
 			else
-				a.vertexCount = MIN(a.vertexCount, (uint32)((_size - _pos) / (stride ? stride : 4)));
+				a.vertexCount = MIN(a.vertexCount, (uint32)((_size - _pos) / stride));
 			if (a.vertexCount > 65536)
 				a.vertexCount = 0;
 
+			// One component value of `size` bytes (1: signed/unsigned byte, 2: short, 4: float),
+			// normalised the GE way for the given signedness.
+			auto component = [&](uint32 at, int size, bool isSigned) -> float {
+				if (size == 4) {
+					const uint32 bits = READ_LE_UINT32(_data + at);
+					float value;
+					memcpy(&value, &bits, 4);
+					return value;
+				}
+				if (size == 2)
+					return isSigned ? (int16)READ_LE_UINT16(_data + at) / 32768.0f : READ_LE_UINT16(_data + at) / 32768.0f;
+				return isSigned ? (int8)_data[at] / 128.0f : _data[at] / 128.0f;
+			};
+
 			for (uint32 v = 0; v < a.vertexCount; v++) {
-				uint32 vStart = _pos;
-				// morph offets
+				const uint32 vStart = _pos + v * stride;
 				for (int i = 0; i < morphPairs; i++)
-					a.uvOffsets.push_back(ru16());
-
-				// weight
-				if (weightBpp > 0) {
-					uint32 wf = f & kWeightMask;
-					if (wf == (1 << 9)) {
-						for (int i = 0; i < wc; i++)
-							a.weights.push_back((float)_data[_pos + i] / 128.0f);
-						_pos += wc;
-						if (wc & 1) _pos++; // pad to even
-					} else if (wf == (2 << 9)) {
-						for (int i = 0; i < wc; i++)
-							a.weights.push_back((float)ru16() / 32768.0f);
-					} else if (wf == (3 << 9)) {
-						for (int i = 0; i < wc; i++)
-							a.weights.push_back(rf32());
-					}
+					a.uvOffsets.push_back(READ_LE_UINT16(_data + vStart + morphOff + i * 2));
+				if (weightSize) {
+					for (int i = 0; i < wc; i++)
+						a.weights.push_back(component(vStart + weightOff + i * weightSize, weightSize, false));
 				}
-
-				// texture
-				if (texBpp) {
-					float u = 0, v = 0;
-					if (texBpp == 1) { u = _data[_pos] / 128.0f; v = _data[_pos + 1] / 128.0f; _pos += 2; }
-					else if (texBpp == 2) { u = (float)ru16() / 32768.0f; v = (float)ru16() / 32768.0f; }
-					else { u = rf32(); v = rf32(); }
-					a.texcoords.push_back(u);
-					a.texcoords.push_back(v);
+				if (texSize) {
+					a.texcoords.push_back(component(vStart + texOff, texSize, false));
+					a.texcoords.push_back(component(vStart + texOff + texSize, texSize, false));
 				}
-
-				// color
-				if (colorBpp) {
-					uint16 raw = ru16();
+				if (colorSize) {
 					byte r = 0, g = 0, b = 0, al = 255;
-					switch (f & kColorMask) {
-					case (4 << 2): // 5650 (little-endian bit order used by P3P)
+					const byte *cp = _data + vStart + colorOff;
+					const uint16 raw = READ_LE_UINT16(cp);
+					switch (colorType) {
+					case 4: // 5650
 						r = (byte)(((raw >> 11) & 0x1F) << 3);
 						g = (byte)(((raw >> 5) & 0x3F) << 2);
 						b = (byte)((raw & 0x1F) << 3);
 						break;
-					case (5 << 2): // 5551
-					{
-						uint16 v = (uint16)((raw >> 8) | (raw << 8)); // byte-swap to match PS2
-						r = (byte)(((v >> 10) & 0x1F) << 3);
-						g = (byte)(((v >> 5) & 0x1F) << 3);
-						b = (byte)((v & 0x1F) << 3);
-						al = (v & 0x8000) ? 255 : 0;
+					case 5: { // 5551
+						uint16 sw = (uint16)((raw >> 8) | (raw << 8)); // byte-swap to match PS2
+						r = (byte)(((sw >> 10) & 0x1F) << 3);
+						g = (byte)(((sw >> 5) & 0x1F) << 3);
+						b = (byte)((sw & 0x1F) << 3);
+						al = (sw & 0x8000) ? 255 : 0;
 						break;
 					}
-					case (6 << 2): // 4444
-					{
-						uint16 v = (uint16)((raw >> 8) | (raw << 8));
-						r = (byte)(((v >> 12) & 0xF) * 17);
-						g = (byte)(((v >> 8) & 0xF) * 17);
-						b = (byte)(((v >> 4) & 0xF) * 17);
-						al = (byte)((v & 0xF) * 17);
+					case 6: { // 4444
+						uint16 sw = (uint16)((raw >> 8) | (raw << 8));
+						r = (byte)(((sw >> 12) & 0xF) * 17);
+						g = (byte)(((sw >> 8) & 0xF) * 17);
+						b = (byte)(((sw >> 4) & 0xF) * 17);
+						al = (byte)((sw & 0xF) * 17);
 						break;
 					}
-					case (7 << 2): // 8888
-						r = raw & 0xFF;
-						g = (raw >> 8) & 0xFF;
-						{
-							byte b2 = _data[_pos]; byte a2 = _data[_pos + 1];
-							b = b2; al = a2;
-							_pos += 2;
-						}
+					default: // 8888
+						r = cp[0]; g = cp[1]; b = cp[2]; al = cp[3];
 						break;
-					default: break;
 					}
 					a.colors.push_back(r / 255.0f);
 					a.colors.push_back(g / 255.0f);
 					a.colors.push_back(b / 255.0f);
 					a.colors.push_back(al / 255.0f);
 				}
-
-				// normal
-				if (normalBpp) {
-					uint32 nf = f & kNormalMask;
-					if (nf == (1 << 5)) {
-						a.normals.push_back((float)(int8)_data[_pos] / 128.0f);
-						a.normals.push_back((float)(int8)_data[_pos + 1] / 128.0f);
-						a.normals.push_back((float)(int8)_data[_pos + 2] / 128.0f);
-						_pos += 3;
-					} else if (nf == (2 << 5)) {
-						for (int i = 0; i < 3; i++)
-							a.normals.push_back((float)(int16)ru16() / 32768.0f);
-					} else if (nf == (3 << 5)) {
-						for (int i = 0; i < 3; i++)
-							a.normals.push_back(rf32());
-					}
-				}
-
-				// position
-				if (vertexBpp) {
-					uint32 vf = f & kVertexMask;
-					if (vf == (1 << 7)) {
-						a.positions.push_back((float)(int8)_data[_pos] / 128.0f);
-						a.positions.push_back((float)(int8)_data[_pos + 1] / 128.0f);
-						a.positions.push_back((float)(int8)_data[_pos + 2] / 128.0f);
-						_pos += 3;
-					} else if (vf == (2 << 7)) {
-						for (int i = 0; i < 3; i++)
-							a.positions.push_back((float)(int16)ru16() / 32768.0f);
-					} else if (vf == (3 << 7)) {
-						for (int i = 0; i < 3; i++)
-							a.positions.push_back(rf32());
-					}
-				}
-				(void)vStart;
+				if (normalSize)
+					for (int i = 0; i < 3; i++)
+						a.normals.push_back(component(vStart + normalOff + i * normalSize, normalSize, true));
+				if (vertexSize)
+					for (int i = 0; i < 3; i++)
+						a.positions.push_back(component(vStart + vertexOff + i * vertexSize, vertexSize, true));
 			}
+			_pos += a.vertexCount * stride;
 
 			part.arrays.push_back(a);
 		}
