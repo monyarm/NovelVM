@@ -20,6 +20,9 @@
 #include "graphics/gmo_render.h"
 #include "common/formats/rmd.h"
 #include "graphics/rmd_render.h"
+#include "graphics/rmd_render_mesh.h"
+#include "graphics/epl_effect.h"
+#include "common/formats/epl.h"
 #ifdef USE_OPENGL_SHADERS
 #include "graphics/opengl/blitter.h"
 #endif
@@ -285,6 +288,97 @@ Common::RMD *loadRmdEntry(const RmdEntry &entry) {
 	return model;
 }
 
+// Effect textures: the 22 global ones in DATA.CVM effect/effpack.bin, and TMXs embedded in
+// effect trees (decoded on first use, keyed by their bytes' address, which the trees keep).
+class DemoEffectTextures : public Graphics::EffectTextureSource {
+public:
+	explicit DemoEffectTextures(Common::Archive *data) {
+		_global.resize(22, nullptr);
+		Common::SeekableReadStream *stream = data ? data->createReadStreamForMember(Common::Path("effect/effpack.bin")) : nullptr;
+		if (!stream)
+			return;
+		SMT::Format::Archive::PAC pack(stream);
+		for (uint i = 0; i < _global.size(); ++i) {
+			Common::ScopedPtr<Common::SeekableReadStream> member(pack.createReadStreamForMember(Common::Path(Common::String::format("be_%04u.tmx", i + 1))));
+			if (member)
+				_global[i] = decode(*member);
+		}
+	}
+	~DemoEffectTextures() override {
+		for (uint i = 0; i < _global.size(); ++i)
+			release(_global[i]);
+		clearEmbedded();
+	}
+	/** Call when the effect trees go away: their addresses may be reused by new ones. */
+	void clearEmbedded() {
+		for (uint i = 0; i < _embedded.size(); ++i)
+			release(_embedded[i].surface);
+		_embedded.clear();
+	}
+	bool textureSize(const Graphics::EffectTextureRef &ref, int &width, int &height) override {
+		const Graphics::Surface *surface = textureSurface(ref);
+		if (!surface)
+			return false;
+		width = surface->w;
+		height = surface->h;
+		return true;
+	}
+	const Graphics::Surface *textureSurface(const Graphics::EffectTextureRef &ref) override {
+		if (ref.globalSlot >= 0)
+			return ref.globalSlot < (int)_global.size() ? _global[ref.globalSlot] : nullptr;
+		if (!ref.embeddedTMX)
+			return nullptr;
+		for (uint i = 0; i < _embedded.size(); ++i)
+			if (_embedded[i].data == ref.embeddedTMX->data())
+				return _embedded[i].surface;
+		SMT::TMX tmx(ref.embeddedTMX->data(), ref.embeddedTMX->size());
+		Embedded entry = {ref.embeddedTMX->data(), tmx.getSurface()};
+		_embedded.push_back(entry);
+		return entry.surface;
+	}
+
+private:
+	struct Embedded { const byte *data; Graphics::Surface *surface; };
+	Common::Array<Graphics::Surface *> _global;
+	Common::Array<Embedded> _embedded; // a handful per model
+
+	static Graphics::Surface *decode(Common::SeekableReadStream &stream) {
+		SMT::TMX tmx(&stream);
+		return tmx.getSurface();
+	}
+	static void release(Graphics::Surface *surface) {
+		if (surface) {
+			surface->free();
+			delete surface;
+		}
+	}
+};
+
+// One live effect of the demo model: an E0 block instanced at one helper (§ "first..last").
+struct DemoEffect {
+	Graphics::EPLEffect *effect = nullptr;
+	uint32 helper = 0;
+	int32 slot = -1;  ///< -1: model-wide
+	uint32 flags = 0; ///< bit 0: restart when the slot's animation loops
+};
+
+void advanceDemoEffects(const Common::RMD &model, Common::Array<DemoEffect> &effects, int32 slot,
+		const Common::RMD::BonePose *pose, const Graphics::EffectCamera &camera) {
+	for (uint i = 0; i < effects.size(); ++i) {
+		DemoEffect &e = effects[i];
+		if (e.slot >= 0 && e.slot != slot)
+			continue;
+		Common::RMD::Matrix m;
+		model.helperWorldMatrix(e.helper, pose, m); // falls back to the model matrix (identity)
+		float position[3], rotation[4] = {0, 0, 0, 1};
+		Graphics::EffectMath::matrixToPose(m.m, position, rotation);
+		if (e.helper >= 1000)
+			rotation[0] = rotation[1] = rotation[2] = 0, rotation[3] = 1;
+		e.effect->setPose(position, rotation);
+		e.effect->advance(camera);
+	}
+}
+
 bool rmdMatches(const RmdEntry &entry, const Common::String &name) {
 	Common::String lower = entry.modelPath;
 	lower.toLowercase();
@@ -417,6 +511,18 @@ Common::Error SMTEngine::run() {
 	Common::Array<RmdDiscoveryWork> rmdDiscoveryWork;
 	bool rmdDiscoveryDone = false;
 	Common::RMD *rmdModel = nullptr;
+	Common::ScopedPtr<DemoEffectTextures> effectTextures;
+	Common::Array<DemoEffect> rmdEffects;
+	int32 rmdEffectSlot = -1;
+	uint32 rmdEffectTicks = 0, rmdEffectStart = 0;
+	auto clearRmdEffects = [&]() {
+		for (uint i = 0; i < rmdEffects.size(); ++i)
+			delete rmdEffects[i].effect;
+		rmdEffects.clear();
+		rmdEffectSlot = -1;
+		if (effectTextures)
+			effectTextures->clearEmbedded();
+	};
 	Graphics::RMDBounds rmdFixedBounds;
 	int rmdIndex = 0;
 	// Texture-phase candidate list: real bust portraits + persona icons
@@ -503,6 +609,7 @@ Common::Error SMTEngine::run() {
 	#ifdef USE_OPENGL_SHADERS
 		Graphics::RMDRenderer::invalidate();
 	#endif
+		clearRmdEffects();
 		delete rmdModel;
 		rmdModel = nullptr;
 		rmdFixedBounds = Graphics::RMDBounds();
@@ -515,6 +622,25 @@ Common::Error SMTEngine::run() {
 			return;
 		}
 		rmdIndex = idx;
+		if (!effectTextures && !rmdModel->effectBlocks().empty())
+			effectTextures.reset(new DemoEffectTextures(dataCvm));
+		for (uint b = 0; b < rmdModel->effectBlocks().size(); ++b) {
+			const Common::RMD::EffectBlock &block = rmdModel->effectBlocks()[b];
+			Common::EPL epl(block.payload.data(), block.payload.size());
+			if (!epl.ok())
+				continue;
+			// One independent instance per attachment index first..last.
+			for (uint32 helper = block.first; helper <= block.last; ++helper) {
+				DemoEffect e;
+				e.effect = new Graphics::EPLEffect(epl, effectTextures.get());
+				e.helper = helper;
+				e.slot = block.slot;
+				e.flags = block.flags;
+				rmdEffects.push_back(e);
+			}
+		}
+		rmdEffectTicks = 0;
+		rmdEffectStart = g_system->getMillis();
 		debug("SMT: RMD model %d/%u %s (%u frames, %u geometries, %u materials, %u textures)%s",
 		      rmdIndex + 1, (unsigned)rmdEntries.size(), rmdEntries[rmdIndex].label.c_str(),
 		      (unsigned)rmdModel->frames().size(), (unsigned)rmdModel->geometries().size(),
@@ -1125,20 +1251,31 @@ Common::Error SMTEngine::run() {
 				const Common::RMD::Animation &animation = animations[animMotion];
 				float duration = animation.duration > 0.0f ? animation.duration : 1.0f;
 				float time = (g_system->getMillis() - animMotionStart) / 1000.0f;
+				bool looped = false;
 				if (time >= duration) {
 					animMotion = (animMotion + 1) % (int)animations.size();
 					animMotionStart = g_system->getMillis();
 					time = 0.0f;
+					looped = true;
 				}
 				if (rmdModel->evaluateAnimation(animMotion, time, rmdBonePose))
 					frameRmdPose = &rmdBonePose;
 				// UV and material animations live in the same slot as the skeletal clip.
+				int32 slot = -1;
 				for (uint s = 0; s < rmdModel->animationSlots().size(); ++s)
 					if (rmdModel->animationSlots()[s].animation == animMotion) {
 						rmdModel->evaluateSlotMaterials(s, time, rmdMaterialPose);
 						frameRmdMaterials = &rmdMaterialPose;
+						slot = (int32)s;
 						break;
 					}
+				// A slot switch restarts that slot's effects from frame 0.
+				// Same slot again: only effects flagged "restart on loop" restart.
+				for (uint i = 0; i < rmdEffects.size(); ++i)
+					if (rmdEffects[i].slot >= 0 && rmdEffects[i].slot == slot &&
+							(slot != rmdEffectSlot || (looped && (rmdEffects[i].flags & 1))))
+						rmdEffects[i].effect->restart();
+				rmdEffectSlot = slot;
 				animLabel = Common::String::format("Animation %d/%u (time %.1f)",
 				                                   animMotion + 1, (unsigned)animations.size(), time);
 			} else {
@@ -1150,6 +1287,12 @@ Common::Error SMTEngine::run() {
 						break;
 					}
 			}
+			// Effects run at the game's 30 ticks per second, in the model's own space.
+			const uint32 due = (g_system->getMillis() - rmdEffectStart) * 30 / 1000;
+			const Graphics::EffectCamera camera = Graphics::rmdEffectCamera(modelAngle + (float)M_PI);
+			for (uint32 n = 0; rmdEffectTicks < due && n < 8; ++n, ++rmdEffectTicks)
+				advanceDemoEffects(*rmdModel, rmdEffects, rmdEffectSlot, frameRmdPose, camera);
+			rmdEffectTicks = MAX(rmdEffectTicks, due > 8 ? due - 8 : 0); // don't fall behind after a stall
 			return;
 		}
 		const Common::Array<Common::GMO::Motion> &motions = gmoModel->motions();
@@ -1290,9 +1433,15 @@ Common::Error SMTEngine::run() {
 				// RMD's own forward axis faces away from GMO's -- angle 0 is
 				// the model's back. Offset the live spin by a half-turn so
 				// the model starts front-on instead of showing its back.
+				Common::Array<Graphics::EffectBatch> effectBatches;
+				const Graphics::EffectCamera camera = Graphics::rmdEffectCamera(modelAngle + (float)M_PI);
+				for (uint i = 0; i < rmdEffects.size(); ++i)
+					if (rmdEffects[i].slot < 0 || rmdEffects[i].slot == rmdEffectSlot)
+						rmdEffects[i].effect->draw(camera, effectBatches);
 				Graphics::RMDRenderer::render(*rmdModel, screenWidth, screenHeight, modelAngle + (float)M_PI,
 				                              frameRmdPose, rmdFixedBounds.valid ? &rmdFixedBounds : nullptr,
-				                              &rmdFixedBounds, true /* unlit standalone demo */, frameRmdMaterials);
+				                              &rmdFixedBounds, true /* unlit standalone demo */, frameRmdMaterials,
+				                              &effectBatches, effectTextures.get());
 			} else {
 				Graphics::GMORenderer::render(*gmoModel, screenWidth, screenHeight, modelAngle, gmoIsPersona,
 				                      frameBpp, frameMpp, gmoFixedBounds.valid ? &gmoFixedBounds : nullptr,
@@ -1515,6 +1664,7 @@ Common::Error SMTEngine::run() {
 	delete gameCpk;
 
 	delete gmoModel;
+	clearRmdEffects();
 	delete rmdModel;
 	if (textureSurface) {
 		textureSurface->free();
