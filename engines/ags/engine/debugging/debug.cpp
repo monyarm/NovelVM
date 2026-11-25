@@ -109,7 +109,7 @@ PDebugOutput create_log_output(const String &name, const String &dir = "", const
 			CreateFSDirs(fs);
 			logfile_dir = fs.FullDir;
 		}
-		String logfilename = filename.IsEmpty() ? "ags.log" : filename;
+		String logfilename = filename.IsEmpty() ? String("ags.log") : filename;
 #if AGS_PLATFORM_SCUMMVM
 		logfile_dir = "";  // ignore path
 #endif
