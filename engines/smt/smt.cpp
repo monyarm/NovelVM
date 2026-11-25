@@ -1295,7 +1295,7 @@ Common::Error SMTEngine::run() {
 				for (uint i = 0; i < rmdEffects.size(); ++i)
 					if (rmdEffects[i].slot >= 0 && rmdEffects[i].slot == slot &&
 							(slot != rmdEffectSlot || (looped && (rmdEffects[i].flags & 1))))
-						rmdEffects[i].effect->restart();
+						rmdEffects[i].effect->restart(slot != rmdEffectSlot);
 				// Every slot start plays its weapon trail from the beginning; looping doesn't.
 				if (slot != rmdEffectSlot) {
 					rmdTrail.reset();
