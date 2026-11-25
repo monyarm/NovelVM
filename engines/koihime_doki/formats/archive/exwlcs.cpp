@@ -1,187 +1,267 @@
-// exwlcs, v1.0 2008/07/26
-// coded by asmodean
+/* ScummVM - Graphic Adventure Engine
+ *
+ * ScummVM is the legal property of its developers, whose names
+ * are too numerous to list here. Please refer to the COPYRIGHT
+ * file distributed with this source distribution.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
-// contact:
-//   web:   http://asmodean.reverse.net
-//   email: asmodean [at] hush.com
-//   irc:   asmodean on efnet (irc.efnet.net)
-
-
-#include "koihime_doki/koihime_doki.h"
-#include "common/archive.h"
-
+#include "common/file.h"
+#include "common/memstream.h"
+#include "common/path.h"
+#include "common/textconsole.h"
 
 #include "koihime_doki/formats/archive/exwlcs.h"
 
-namespace KoihimeDoki::Format::Archive
-{
+namespace KoihimeDoki {
+namespace Format {
+namespace Archive {
 
+namespace {
 
-unsigned long EXWLCSArchive::unobfuscate() {
-  unsigned long key = (unsigned char) (entry_count >> 24);
-  key = (key << 24) | (key << 16) | (key << 8) | key;
+const uint32 kIndexHeaderSize = 4;
+const uint32 kEntrySize = 76;
+const uint32 kNameFieldSize = 64;
+const uint32 kSniffSize = 10;
 
-  entry_count ^= key;
-
-  return key;
+uint32 readUint32LE(const byte *data) {
+	return (uint32)data[0] | ((uint32)data[1] << 8) | ((uint32)data[2] << 16) | ((uint32)data[3] << 24);
 }
 
-void EXWLCSArchive::unobfuscate(LCSENTRY& entry, unsigned long key) {
-  entry.offset ^= key;
-  entry.length ^= key;
+// The top byte of the stored count is both the key and the mask byte.
+uint32 decodeCount(uint32 stored) {
+	const byte key = (stored >> 24) & 0xFF;
+	const uint32 mask = key * 0x01010101u;
 
-  for (unsigned long i = 0; entry.filename[i]; i++) {
-    entry.filename[i] ^=  key;
-  }
+	return stored ^ mask;
 }
 
-void EXWLCSArchive::unobfuscate(unsigned char* buff, unsigned long len) const {
-  unsigned char  key = buff[3]; // Hopefully always :)
-  unsigned char* end = buff + len;
-
-  while (buff < end) {
-    *buff++ ^= key;
-  }
-}
-
-
-
-Common::String guess_file_extension(unsigned char *buff, unsigned long len)
-{
-	if (*(unsigned short*)buff == 'MB')
+// Signature checks run on the stored (undecoded) payload bytes and must not
+// look past the bytes actually read.
+const char *detectExtension(const byte *data, uint32 size) {
+	if (size >= 2 && data[0] == 0x42 && data[1] == 0x4D)
 		return ".bmp";
-	if (*(unsigned long*)buff == 'GNP\x89')
+
+	if (size >= 4 && data[0] == 0x89 && data[1] == 0x50 && data[2] == 0x4E && data[3] == 0x47)
 		return ".png";
-	if (*(unsigned long*)&buff[6] == 'FIFJ')
+
+	if (size >= 10 && data[6] == 0x4A && data[7] == 0x46 && data[8] == 0x49 && data[9] == 0x46)
 		return ".jpg";
 
 	return ".bin";
 }
 
-EXWLCSArchive::EXWLCSArchive(const Common::String &filename) : _exwlcsFilename(filename)
-{
-    Common::File exwlcsFile;
-    Common::File exwlcsLst;
+} // namespace
 
-    debug("%s", _exwlcsFilename.c_str());
-
-    if (!exwlcsFile.open(Common::Path(_exwlcsFilename)))
-    {
-        warning("EXWLCSArchive::EXWLCSArchive(): Could not find the archive file");
-        return;
-    }
-
-    if (!exwlcsLst.open(Common::Path(_exwlcsFilename + ".lst")))
-    {
-        warning("EXWLCSArchive::EXWLCSArchive(): Could not find the list file");
-        return;
-    }
-
-
-    entry_count = exwlcsLst.readUint32LE();
-    unsigned long key = unobfuscate();
-
-    //Common::Array<LCSENTRY> entries(sizeof(LCSENTRY) * entry_count);
-
-    //LCSENTRY * entries = new LCSENTRY [entry_count];
-    Common::Array<LCSENTRY> entries;
-    //entries.reserve(sizeof(LCSENTRY) * entry_count);
-
-    //exwlcsLst.read(entries,sizeof(LCSENTRY) * entry_count);
-
-
-  for (unsigned long i = 0; i < entry_count; i++) {
-    LCSENTRY hdr;
-
-    hdr.offset = exwlcsLst.readUint32LE();
-    hdr.length = exwlcsLst.readUint32LE();
-    exwlcsLst.read(hdr.filename,64);
-    hdr.unknown = exwlcsLst.readUint32LE();
-
-    entries.push_back(hdr);
-    unobfuscate(entries[i], key);
-
-
-    unsigned char* buff = new unsigned char[entries[i].length];
-
-    exwlcsFile.seek(entries[i].offset);
-
-    exwlcsFile.read(buff, entries[i].length);
-    Common::String name(entries[i].filename + guess_file_extension(buff, entries[i].length));
-    name.trim();
-    //name = name + guess_file_extension(buff, entries[i].length);
-
-    _headers[name].reset(new LCSHEADER({entries[i].offset,entries[i].length,name,0}));
-
-    delete [] buff;
-
-  }
-    //delete [] entries;
-
-
-
-
-
+EXWLCSArchive::EXWLCSArchive(const Common::String &archiveBaseName) : _baseName(archiveBaseName) {
+	readIndex();
 }
 
-EXWLCSArchive::~EXWLCSArchive()
-{
+EXWLCSArchive::~EXWLCSArchive() {
 }
 
-bool EXWLCSArchive::hasFile(const Common::Path &name) const
-{
-    return _headers.contains(name.toString());
-}
-
-int EXWLCSArchive::listMembers(Common::ArchiveMemberList &list) const
-{
-    int matches = 0;
-
-    EXWLCSHeadersMap::const_iterator it = _headers.begin();
-    for (; it != _headers.end(); ++it)
-    {
-        list.push_back(Common::ArchiveMemberList::value_type(new Common::GenericArchiveMember(Common::Path(it->_value->filename), *this)));
-        matches++;
-    }
-
-    return matches;
-}
-
-const Common::ArchiveMemberPtr EXWLCSArchive::getMember(const Common::Path &name) const
-{
-    if (!hasFile(name))
-        return Common::ArchiveMemberPtr();
-
-    return Common::ArchiveMemberPtr(new Common::GenericArchiveMember(name, *this));
-}
-
-Common::SeekableReadStream *EXWLCSArchive::createReadStreamForMember(const Common::Path &name) const
-{
-    if (!_headers.contains(name.toString())) {
-		return 0;
+void EXWLCSArchive::readIndex() {
+	if (_baseName.empty()) {
+		warning("EXWLCSArchive: empty archive base name");
+		return;
 	}
 
-	LCSHEADER *hdr = _headers[name.toString()].get();
+	Common::File body;
+	if (!body.open(Common::Path(_baseName))) {
+		warning("EXWLCSArchive: could not open body file '%s'", _baseName.c_str());
+		return;
+	}
 
-	Common::File archiveFile;
-	archiveFile.open(Common::Path(_exwlcsFilename));
-	archiveFile.seek(hdr->offset);
+	Common::File index;
+	if (!index.open(Common::Path(_baseName + ".lst"))) {
+		warning("EXWLCSArchive: could not open index file '%s.lst'", _baseName.c_str());
+		return;
+	}
 
-    unsigned char* buff = new unsigned char[hdr->length];
-    unsigned long len = hdr->length;
-    archiveFile.read(buff, len);
+	if (index.size() < (int64)kIndexHeaderSize) {
+		warning("EXWLCSArchive: index file '%s.lst' is too short", _baseName.c_str());
+		return;
+	}
 
-    // Assume that any data we don't recognize is obfuscated
-    if (strcmp(guess_file_extension(buff, len).c_str(), ".bin") == 0) {
-      unobfuscate(buff, len);
-    }
+	const uint32 storedCount = index.readUint32LE();
+	if (index.err()) {
+		warning("EXWLCSArchive: could not read the header of '%s.lst'", _baseName.c_str());
+		return;
+	}
 
-	return new Common::MemoryReadStream(buff, len, DisposeAfterUse::YES);
+	const uint32 count = decodeCount(storedCount);
+	if ((count >> 24) != 0) {
+		warning("EXWLCSArchive: '%s.lst' has an invalid member count", _baseName.c_str());
+		return;
+	}
+
+	// Check the declared count against the file size before allocating
+	// anything for it.
+	const uint64 required = (uint64)kIndexHeaderSize + (uint64)count * kEntrySize;
+	if ((uint64)index.size() < required) {
+		warning("EXWLCSArchive: index file '%s.lst' is truncated (%u entries declared)", _baseName.c_str(), count);
+		return;
+	}
+
+	const byte key = (storedCount >> 24) & 0xFF;
+	const uint32 mask = key * 0x01010101u;
+	const uint64 bodySize = (uint64)body.size();
+
+	byte record[kEntrySize];
+	for (uint32 i = 0; i < count; i++) {
+		if (index.read(record, kEntrySize) != kEntrySize) {
+			warning("EXWLCSArchive: could not read entry %u of '%s.lst'", i, _baseName.c_str());
+			_entries.clear();
+			_entryMap.clear();
+			return;
+		}
+
+		const uint32 offset = readUint32LE(record) ^ mask;
+		const uint32 size = readUint32LE(record + 4) ^ mask;
+
+		// Decode the whole fixed field, then stop at the first decoded NUL.
+		// This keeps a name containing the key byte intact.
+		byte nameField[kNameFieldSize];
+		for (uint32 j = 0; j < kNameFieldSize; j++)
+			nameField[j] = record[8 + j] ^ key;
+
+		uint32 nameLength = 0;
+		while (nameLength < kNameFieldSize && nameField[nameLength] != 0)
+			nameLength++;
+
+		if (nameLength == kNameFieldSize)
+			warning("EXWLCSArchive: entry %u has an unterminated name", i);
+
+		Common::String name((const char *)nameField, nameLength);
+
+		// Reject wrapping and out-of-range ranges instead of streaming a
+		// short buffer later.
+		if ((uint64)offset + (uint64)size > bodySize) {
+			warning("EXWLCSArchive: entry %u ('%s') lies outside the body; skipping", i, name.c_str());
+			continue;
+		}
+
+		byte signature[kSniffSize] = {};
+		const uint32 sniffSize = size < kSniffSize ? size : kSniffSize;
+		if (sniffSize > 0) {
+			if (!body.seek(offset) || body.read(signature, sniffSize) != sniffSize) {
+				warning("EXWLCSArchive: could not read entry %u ('%s') from the body; skipping", i, name.c_str());
+				continue;
+			}
+		}
+
+		const char *extension = detectExtension(signature, sniffSize);
+		name += extension;
+		name.trim();
+
+		Entry entry;
+		entry.name = name;
+		entry.offset = offset;
+		entry.size = size;
+		// Sniffing is the only discriminator: every member the sniff does not
+		// recognise is XOR-decoded, which would corrupt a plaintext member of an
+		// unrecognised type. This matches the reference reader and the engine
+		// only exposes images from this archive today; telling encoded and plain
+		// members apart would need a real archive to confirm.
+		entry.encoded = Common::String(extension) == ".bin";
+
+		// A member shorter than four bytes has no fourth byte to take the key
+		// from; hand it back as stored instead of reading past the buffer.
+		if (entry.encoded && size > 0 && size < 4) {
+			warning("EXWLCSArchive: member '%s' is too short to decode; returning it as stored", name.c_str());
+			entry.encoded = false;
+		}
+
+		if (_entryMap.contains(name)) {
+			warning("EXWLCSArchive: duplicate member '%s'; using the last entry", name.c_str());
+			_entries[_entryMap[name]] = entry;
+		} else {
+			_entryMap[name] = _entries.size();
+			_entries.push_back(entry);
+		}
+	}
 }
 
-EXWLCSArchive *EXWLCSFactory(const Common::String &name)
-{
-    return new EXWLCSArchive(name);
+bool EXWLCSArchive::hasFile(const Common::Path &name) const {
+	if (name.empty())
+		return false;
+
+	return _entryMap.contains(name.toString());
 }
 
-} // End of namespace KoihimeDoki
+int EXWLCSArchive::listMembers(Common::ArchiveMemberList &list) const {
+	int matches = 0;
+
+	for (Common::Array<Entry>::const_iterator it = _entries.begin(); it != _entries.end(); ++it) {
+		list.push_back(Common::ArchiveMemberPtr(new Common::GenericArchiveMember(it->name, *this)));
+		matches++;
+	}
+
+	return matches;
+}
+
+const Common::ArchiveMemberPtr EXWLCSArchive::getMember(const Common::Path &name) const {
+	if (!hasFile(name))
+		return Common::ArchiveMemberPtr();
+
+	return Common::ArchiveMemberPtr(new Common::GenericArchiveMember(name, *this));
+}
+
+Common::SeekableReadStream *EXWLCSArchive::createReadStreamForMember(const Common::Path &name) const {
+	if (!hasFile(name))
+		return nullptr;
+
+	const Entry &entry = _entries[_entryMap[name.toString()]];
+
+	Common::File body;
+	if (!body.open(Common::Path(_baseName))) {
+		warning("EXWLCSArchive: could not reopen body file '%s'", _baseName.c_str());
+		return nullptr;
+	}
+
+	// Allocate at least one byte so a zero-length member still yields a valid
+	// (empty) stream.
+	byte *data = (byte *)malloc(entry.size > 0 ? entry.size : 1);
+	if (!data) {
+		warning("EXWLCSArchive: out of memory for member '%s'", entry.name.c_str());
+		return nullptr;
+	}
+
+	if (entry.size > 0) {
+		if (!body.seek(entry.offset) || body.read(data, entry.size) != entry.size) {
+			warning("EXWLCSArchive: could not read member '%s' from the body", entry.name.c_str());
+			free(data);
+			return nullptr;
+		}
+	}
+
+	if (entry.encoded && entry.size >= 4) {
+		const byte key = data[3];
+		if (key != 0) {
+			for (uint32 i = 0; i < entry.size; i++)
+				data[i] ^= key;
+		}
+	}
+
+	return new Common::MemoryReadStream(data, entry.size, DisposeAfterUse::YES);
+}
+
+EXWLCSArchive *EXWLCSFactory(const Common::String &name) {
+	return new EXWLCSArchive(name);
+}
+
+} // namespace Archive
+} // namespace Format
+} // namespace KoihimeDoki
