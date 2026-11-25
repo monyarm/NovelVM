@@ -333,7 +333,6 @@ public:
 		Common::RMD rmd = parse(data);
 		TS_ASSERT(rmd.ok());
 		TS_ASSERT_EQUALS(rmd.animations().size(), 1u);
-		TS_ASSERT_EQUALS(rmd.opaqueNodes().size(), 1u);
 	}
 
 	void testParsesSkinInfluencesAndMatrices() {

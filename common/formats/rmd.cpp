@@ -24,7 +24,7 @@ enum {
 	kHAnimOpaqueExtension = 0x100,
 	kAnimation = 0x108, kSkin = 0x116, kPersonaAnimation = 0x1B,
 	kUVAnimationDictionary = 0x2B, kPersonaAnimationTerminator = 0xF0F00004,
-	kPersonaAnimationOverride = 0xF0F00005, kPersonaParticleList = 0xF0F000E0,
+	kPersonaAnimationOverride = 0xF0F00005, kPersonaParticleList = 0xF0F000E0, kPersonaHelperMatrices = 0xF0F00006,
 	kPersonaAnimationPlaceholder = 0xF0F00001, kPersonaAnimationInstance = 0xF0F00003,
 	kPersonaMaterialAnimation = 0xF0F00080, kPersonaMaterialAnimationLast = 0xF0F00083,
 	kPersonaParticleAnimation = 0xF0F000E1,
@@ -202,6 +202,11 @@ void RMD::clearModel() {
 	_animations.clear();
 	_opaqueNodes.clear();
 	_animationSlots.clear();
+	_helperMatrices.clear();
+	_effectBlocks.clear();
+	_trailPacks.clear();
+	_seenClump = false;
+	_terminators = 0;
 	_uvAnimations.clear();
 	_materialAnimations.clear();
 	_slotOpen = false;
@@ -456,6 +461,7 @@ int32 RMD::animationForSlot(uint32 slot) const {
 
 void RMD::parseNode(const Node &node) {
 	if (node.type == kPersonaAnimationTerminator) {
+		++_terminators;
 		if (!_slotOpen)
 			_animationSlots.push_back(AnimationSlot());
 		_slotOpen = false;
@@ -523,6 +529,14 @@ void RMD::parseNode(const Node &node) {
 		// TODO: 0xF0F00002 (animation layers), 0xF0F00007/08 (per-slot start frames),
 		// 0xF0F00070 (16 scale-property records) and 0xF0F000D0 (four-way directional blend
 		// groups) are not interpreted. None of 0x02/0x08 occur in the sampled corpus.
+		if (node.type == kPersonaParticleAnimation) {
+			TrailPack trail;
+			trail.slot = (int32)_terminators;
+			trail.payload.resize(node.size);
+			for (uint32 i = 0; i < node.size; ++i)
+				trail.payload[i] = _data[node.payloadOffset + i];
+			_trailPacks.push_back(trail);
+		}
 		// Transform override, material, UV and particle animation: kept as raw payloads.
 		OpaqueNode opaque;
 		opaque.type = node.type;
@@ -739,12 +753,47 @@ void RMD::parseNode(const Node &node) {
 	}
 
 	if (node.type == kPersonaParticleList) {
-		OpaqueNode opaque;
-		opaque.type = node.type;
-		opaque.payload.resize(node.size);
-		for (uint32 i = 0; i < node.size; ++i)
-			opaque.payload[i] = _data[node.payloadOffset + i];
-		_opaqueNodes.push_back(opaque);
+		// { u16 first, last; u32 length, pad, flags, reserved }, then pad bytes (aligning the
+		// payload to 16 in the file), then length bytes of EPL tree. The chunk size covers
+		// 20 + length, not the padding (see nextSiblingOffset).
+		const uint32 p = node.payloadOffset;
+		if (node.size < 20)
+			return;
+		const uint32 length = readUint32LE(_data, p + 4), pad = readUint32LE(_data, p + 8);
+		if (length != node.size - 20 || pad > 15 || (uint64)p + 20 + pad + length > _data.size())
+			return;
+		EffectBlock block;
+		block.first = readUint16LE(_data, p);
+		block.last = readUint16LE(_data, p + 2);
+		block.flags = readUint32LE(_data, p + 12);
+		block.slot = _seenClump ? (int32)_terminators : -1;
+		block.payload.resize(length);
+		for (uint32 i = 0; i < length; ++i)
+			block.payload[i] = _data[p + 20 + pad + i];
+		_effectBlocks.push_back(block);
+		return;
+	}
+
+	if (node.type == kPersonaHelperMatrices) {
+		// { u16 count; count x { u32 id; u32 HAnim frame id; RwMatrix (right/up/at/pos, each
+		// padded to 4 floats; the pads are garbage) } }
+		const uint32 p = node.payloadOffset;
+		if (node.size < 2)
+			return;
+		const uint32 count = readUint16LE(_data, p);
+		if ((uint64)2 + (uint64)count * 0x48 > node.size)
+			return;
+		for (uint32 i = 0; i < count; ++i) {
+			const uint32 e = p + 2 + i * 0x48;
+			HelperMatrix helper;
+			helper.id = readUint32LE(_data, e);
+			helper.frameId = readUint32LE(_data, e + 4);
+			for (uint32 k = 0; k < 16; ++k)
+				helper.offset.m[k] = readFloatLE(_data, e + 8 + k * 4);
+			helper.offset.m[3] = helper.offset.m[7] = helper.offset.m[11] = 0;
+			helper.offset.m[15] = 1;
+			_helperMatrices.push_back(helper);
+		}
 		return;
 	}
 
@@ -994,6 +1043,7 @@ void RMD::parseNode(const Node &node) {
 	}
 
 	if (node.type == kClump) {
+		_seenClump = true;
 		Clump clump;
 		const uint32 frameStart = _frames.size();
 		const uint32 geometryStart = _geometries.size();
@@ -1950,22 +2000,13 @@ bool RMD::readNode(uint32 offset, uint32 limit, Node &node) const {
 }
 
 uint32 RMD::nextSiblingOffset(const Node &node, uint32 end) const {
-	uint32 offset = node.payloadEnd;
-	if (node.type != kPersonaParticleList)
-		return offset;
-	bool variantMarker = false;
-	while (offset < end) {
-		Node next;
-		if (readNode(offset, end, next))
-			break;
-		if (_data[offset] == 0 || (!variantMarker && offset == node.payloadEnd && _data[offset] == 0xBD)) {
-			variantMarker = variantMarker || _data[offset] == 0xBD;
-			++offset;
-			continue;
-		}
-		break;
+	// 0xF0F000E0's size field excludes the padding between its 20-byte header and payload.
+	if (node.type == kPersonaParticleList && node.size >= 20) {
+		const uint32 pad = readUint32LE(_data, node.payloadOffset + 8);
+		if (pad <= 15 && (uint64)node.payloadEnd + pad <= end)
+			return node.payloadEnd + pad;
 	}
-	return offset;
+	return node.payloadEnd;
 }
 
 bool RMD::readSiblings(uint32 begin, uint32 end) {
