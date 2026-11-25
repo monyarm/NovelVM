@@ -851,6 +851,9 @@ bool GMO::evaluateMotion(uint motionIndex, float frame, BonePose &bonePose, Mate
 	materialPose.hasAmbient.resize(nm, false);
 	materialPose.hasSpecular.resize(nm, false);
 	materialPose.diffuse.resize(nm * 4, 1.0f);
+	// A 3-value diffuse curve keeps the material's own alpha.
+	for (int i = 0; i < nm; i++)
+		materialPose.diffuse[i * 4 + 3] = _materials[i].diffuse[3];
 	materialPose.emission.resize(nm * 4, 0.0f);
 	materialPose.ambient.resize(nm * 4, 0.0f);
 	materialPose.specular.resize(nm * 4, 1.0f);
@@ -973,7 +976,7 @@ bool GMO::evaluateMotion(uint motionIndex, float frame, BonePose &bonePose, Mate
 			default: break;
 			}
 			if (dst) {
-				for (int k = 0; k < 4; k++) dst[k] = vals[k];
+				for (uint k = 0; k < fc.valueCount && k < 4; k++) dst[k] = vals[k];
 				*flag = true;
 				any = true;
 			}

@@ -133,7 +133,7 @@ public:
 		// and a LAYER carrying the render-state chunks.
 		uint32 tChild, tData;
 		byte *matStart = fullHeader(w, 0x0008, "mat", tChild, tData);
-		halfHeader(w, 0x0082, 16); wf(w, 0.9f); wf(w, 0.5f); wf(w, 0.2f); wf(w, 1.0f);
+		halfHeader(w, 0x0082, 16); wf(w, 0.9f); wf(w, 0.5f); wf(w, 0.2f); wf(w, 0.6f);
 		halfHeader(w, 0x0083, 20); wf(w, 1.0f); wf(w, 1.0f); wf(w, 1.0f); wf(w, 1.0f); wf(w, 8.0f);
 		halfHeader(w, 0x0086, 4); wf(w, 0.75f);  // REFLECTION
 		halfHeader(w, 0x0088, 4); wf(w, 0.4f);   // BUMP
@@ -166,6 +166,12 @@ public:
 		w32(w, 0x48);  // TRANSLATE
 		w32(w, 0);     // sub-index
 		w8(w, 0); w8(w, 0); w8(w, 0x0C); w8(w, 0); // fcurve = FCURVE index 0
+		// ANIMATE: material[0] DIFFUSE from the same 3-value fcurve (no alpha).
+		halfHeader(w, 0x00B3, 16);
+		w8(w, 0); w8(w, 0x10); w8(w, 0x08); w8(w, 0); // block = MATERIAL index 0
+		w32(w, 0x82);  // DIFFUSE
+		w32(w, 0);
+		w8(w, 0); w8(w, 0); w8(w, 0x0C); w8(w, 0);
 		uint32 fch, fda;
 		byte *fcStart = fullHeader(w, 0x000C, "f", fch, fda);
 		w32(w, 1);       // type: LINEAR (low nibble = interpolation mode)
@@ -262,7 +268,7 @@ public:
 		TS_ASSERT_DELTA(g.motions()[0].fcurves[0].values[1], 2.0f, 0.0001f);
 
 		// ANIMATE ref decoding + motion sampling (bone[0] TRANSLATE).
-		TS_ASSERT_EQUALS(g.motions()[0].animates.size(), 1u);
+		TS_ASSERT_EQUALS(g.motions()[0].animates.size(), 2u);
 		TS_ASSERT_EQUALS(g.motions()[0].animates[0].block.type, (uint16)Common::GMO::kBone);
 		TS_ASSERT_EQUALS(g.motions()[0].animates[0].block.index, 0);
 		TS_ASSERT_EQUALS(g.motions()[0].animates[0].type, (uint32)Common::GMO::kTranslate);
@@ -275,6 +281,9 @@ public:
 			TS_ASSERT_DELTA(bp.translate[0], 2.5f, 0.0001f); // lerp(1,4)
 			TS_ASSERT_DELTA(bp.translate[1], 3.5f, 0.0001f); // lerp(2,5)
 			TS_ASSERT_DELTA(bp.translate[2], 4.5f, 0.0001f); // lerp(3,6)
+			TS_ASSERT(mp.hasDiffuse[0]);
+			TS_ASSERT_DELTA(mp.diffuse[0], 2.5f, 0.0001f);
+			TS_ASSERT_DELTA(mp.diffuse[3], 0.6f, 0.0001f); // a 3-value curve keeps the material alpha
 		}
 	}
 
