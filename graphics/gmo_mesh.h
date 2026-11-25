@@ -63,7 +63,7 @@ void freeGMOTextures(Common::Array<Graphics::Surface *> &textures);
  * Assemble the shared triangle list for `gmo`.
  *
  * This performs the per-bone transform chain, optional linear-blend skinning,
- * world spin / Atlus Z twist, auto-framing (or caller-supplied fixed bounds),
+ * world spin and view orientation, auto-framing (or caller-supplied fixed bounds),
  * mesh primitive expansion and texture-coordinate derivation, then stable
  * sorts the triangles by `transAlgo` (material render order). It is a pure
  * function of its inputs; `textures` is only referenced through Tri::tex.
@@ -73,7 +73,7 @@ void freeGMOTextures(Common::Array<Graphics::Surface *> &textures);
  * first so callers can reuse one array across frames.
  */
 void buildGMOMesh(const Common::GMO &gmo, const Common::Array<Graphics::Surface *> &textures,
-                  int width, int height, float rotY, bool atlus180Z,
+                  int width, int height, float rotY,
                   const Common::GMO::BonePose *bonePose, const Common::GMO::MaterialPose *materialPose,
                   const GMOBounds *fixedBounds, GMOBounds *outBounds,
                   Common::Array<Tri> &outTris);

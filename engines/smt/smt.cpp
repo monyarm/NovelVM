@@ -1083,7 +1083,7 @@ Common::Error SMTEngine::run() {
 		      (unsigned)gmoModel->materials().size(), (unsigned)gmoModel->textures().size(),
 		      en.persona ? " [persona]" : "");
 #ifdef USE_OPENGL_SHADERS
-		Graphics::GMORenderer::computeBounds(*gmoModel, 320, 240, 0.0f, gmoIsPersona, nullptr, nullptr, &gmoFixedBounds);
+		Graphics::GMORenderer::computeBounds(*gmoModel, 320, 240, 0.0f, nullptr, nullptr, &gmoFixedBounds);
 		debug("SMT: fixed camera bounds X[%.1f,%.1f] Y[%.1f,%.1f] Z[%.1f,%.1f]",
 		      gmoFixedBounds.minX, gmoFixedBounds.maxX, gmoFixedBounds.minY, gmoFixedBounds.maxY,
 		      gmoFixedBounds.minZ, gmoFixedBounds.maxZ);
@@ -1489,7 +1489,7 @@ Common::Error SMTEngine::run() {
 				                              &rmdFixedBounds, true /* unlit standalone demo */, frameRmdMaterials,
 				                              &effectBatches, effectTextures.get());
 			} else {
-				Graphics::GMORenderer::render(*gmoModel, screenWidth, screenHeight, modelAngle, gmoIsPersona,
+				Graphics::GMORenderer::render(*gmoModel, screenWidth, screenHeight, modelAngle,
 				                      frameBpp, frameMpp, gmoFixedBounds.valid ? &gmoFixedBounds : nullptr,
 				                      nullptr, true /* unlit standalone demo */);
 			}

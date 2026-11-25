@@ -37,7 +37,7 @@ void freeGMOTextures(Common::Array<Graphics::Surface *> &textures) {
 }
 
 void buildGMOMesh(const Common::GMO &gmo, const Common::Array<Graphics::Surface *> &textures,
-                  int width, int height, float rotY, bool atlus180Z,
+                  int width, int height, float rotY,
                   const Common::GMO::BonePose *bonePose, const Common::GMO::MaterialPose *materialPose,
                   const GMOBounds *fixedBounds, GMOBounds *outBounds,
                   Common::Array<Tri> &outTris) {
@@ -177,9 +177,9 @@ void buildGMOMesh(const Common::GMO &gmo, const Common::Array<Graphics::Surface 
 	float tOff[2] = {0, 0}, tScale[2] = {1, 1};
 	bool hasTOff = gmo.getTextureOffset(tOff, tScale);
 
-	// Spin around the up (Y) axis. The optional Atlus 180-degree-about-Z
-	// twist is folded in here (Amicitia wiki "GMO": all Atlus models are
-	// authored rotated 180 on Z relative to normal DCC up-axis).
+	// Spin around the up (Y) axis, then turn 180 degrees about Z; together with the y-down screen
+	// mapping below that views the model from -z, the side models face, without mirroring it
+	// (checked against Noesis on real P3P models: asymmetric ones like Athena's spear hand).
 	Math::Matrix4 worldRot;
 	worldRot.setToIdentity();
 	if (rotY != 0.0f) {
@@ -187,12 +187,10 @@ void buildGMOMesh(const Common::GMO &gmo, const Common::Array<Graphics::Surface 
 		worldRot(0, 0) = c; worldRot(0, 2) = s;
 		worldRot(2, 0) = -s; worldRot(2, 2) = c;
 	}
-	if (atlus180Z) {
-		Math::Matrix4 z180;
-		z180.setToIdentity();
-		z180(0, 0) = -1; z180(1, 1) = -1;
-		worldRot = worldRot * z180;
-	}
+	Math::Matrix4 z180;
+	z180.setToIdentity();
+	z180(0, 0) = -1; z180(1, 1) = -1;
+	worldRot = worldRot * z180;
 
 	// Bounding box of the ASSEMBLED vertices, AFTER the world rotation, so
 	// the auto-framing stays correct while the model spins. When the caller
@@ -406,7 +404,7 @@ void buildGMOMesh(const Common::GMO &gmo, const Common::Array<Graphics::Surface 
 							(void)v;
 							// Model is Y-up: X right, Y up.
 							sx = W / 2 + (tp.x() - cx) * scale;
-			sy = H / 2 + (atlus180Z ? 1.0f : -1.0f) * (tp.y() - cy) * scale;
+							sy = H / 2 + (tp.y() - cy) * scale;
 							sz = tp.z();
 						};
 
