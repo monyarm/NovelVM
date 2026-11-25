@@ -52,6 +52,7 @@ struct EffectVertex {
 struct EffectBatch {
 	int blendMode = 0;
 	bool depthTest = true;
+	bool screenSpace = false; ///< x, y are fractions of the screen (0, 0 = top left); z unused
 	EffectTextureRef texture;
 	Common::Array<EffectVertex> vertices;
 };
