@@ -157,7 +157,7 @@ String MakeAbsolutePath(const String &path) {
 		return "";
 	}
 	// canonicalize_filename treats "." as "./." (file in working dir)
-	String abs_path = path == "." ? String("./") : path;
+	String abs_path = path == "." ? "./" : path;
 #if AGS_PLATFORM_OS_WINDOWS
 	// NOTE: cannot use long path names in the engine, because it does not have unicode strings support
 	//

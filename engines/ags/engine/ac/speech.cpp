@@ -96,7 +96,7 @@ SkipSpeechStyle internal_skip_speech_to_user(int internal_val) {
 bool init_voicepak(const String &name) {
 	if (_GP(usetup).no_speech_pack) return false; // voice-over disabled
 
-	String speech_file = name.IsEmpty() ? String("speech.vox") : String::FromFormat("sp_%s.vox", name.GetCStr());
+	String speech_file = name.IsEmpty() ? "speech.vox" : String::FromFormat("sp_%s.vox", name.GetCStr());
 	if (_GP(ResPaths).SpeechPak.Name.CompareNoCase(speech_file) == 0)
 		return true; // same pak already assigned
 
@@ -131,7 +131,7 @@ bool init_voicepak(const String &name) {
 
 	// Save new resource locations and register asset libraries
 	_G(VoicePakName) = name;
-	_G(VoiceAssetPath) = name.IsEmpty() ? String("") : String::FromFormat("%s/", name.GetCStr());
+	_G(VoiceAssetPath) = name.IsEmpty() ? "" : String::FromFormat("%s/", name.GetCStr());
 	_GP(ResPaths).SpeechPak.Name = speech_file;
 	_GP(ResPaths).SpeechPak.Path = speech_filepath;
 	_GP(ResPaths).VoiceDirSub = speech_subdir;

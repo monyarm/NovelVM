@@ -110,7 +110,7 @@ bool init_translation(const String &lang, const String &fallback_lang) {
 		set_uformat(U_UTF8);
 	else
 		set_uformat(U_ASCII);
-	String encoding_msg = !encoding.IsEmpty() ? encoding : String("presume ASCII");
+	String encoding_msg = !encoding.IsEmpty() ? encoding : "presume ASCII";
 	Debug::Printf("Translation's encoding: %s", encoding_msg.GetCStr());
 
 	// Mixed encoding support: 
