@@ -6,6 +6,12 @@
 
 #include "smt/formats/archive/pac.h"
 
+// TODO: Persona 4 also has a second package reader (a count at +4, then u32 sector offsets, read
+// in 2048-byte sectors, each size being the next offset minus its own); no file on the P4 disc
+// was found to use it, so it isn't supported. The game registers every entry in order and can
+// address them by index; here duplicate names keep only the last entry (all duplicates in P4
+// are byte-identical) and listing order isn't preserved.
+
 namespace SMT::Format::Archive {
 PAC::PAC() {
 }
