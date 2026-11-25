@@ -278,6 +278,57 @@ public:
 		}
 	}
 
+	// Vertex components follow the PSP GE layout: each aligned to its own size, the vertex padded
+	// to the largest alignment. 8-bit UV (2) + pad + RGBA8888 colour (4) + 8-bit normal (3) +
+	// pad + 16-bit position (6) + pad = 20 bytes. Real P3P field objects use the colour field
+	// (format 0x0c0010ba), which an earlier 2-bit colour mask skipped, shifting every vertex.
+	void testVertexComponentsAreAlignedLikeTheGE() {
+		byte arena[512];
+		byte *w = arena;
+		w8(w, 'O'); w8(w, 'M'); w8(w, 'G'); w8(w, '.');
+		w8(w, '0'); w8(w, '0'); w8(w, '.'); w8(w, '1');
+		w8(w, 'P'); w8(w, 'S'); w8(w, 'P'); w8(w, 0);
+		w8(w, 0); w8(w, 0); w8(w, 0); w8(w, 0);
+		uint32 c, d;
+		byte *fileStart = fullHeader(w, 0x0002, nullptr, c, d);
+		byte *modelStart = fullHeader(w, 0x0003, "m", c, d);
+		byte *partStart = fullHeader(w, 0x0005, "p", c, d);
+		byte *arrStart = fullHeader(w, 0x0007, "a", c, d);
+		w32(w, (1 << 0) | (7 << 2) | (1 << 5) | (2 << 7));
+		w32(w, 2); w32(w, 0); w32(w, 0);
+		for (int v = 0; v < 2; v++) {
+			w8(w, 64); w8(w, 32);                                   // uv 0.5, 0.25
+			w8(w, 0); w8(w, 0);                                     // pad to 4
+			w8(w, 0x10 * (v + 1)); w8(w, 0x20); w8(w, 0x30); w8(w, 0xFF); // colour
+			w8(w, 0); w8(w, 0x7F); w8(w, 0);                        // normal
+			w8(w, 0);                                               // pad to 2
+			w16(w, (uint16)(0x4000 * v)); w16(w, 0xC000); w16(w, 0x2000); // position
+			w8(w, 0); w8(w, 0);                                     // pad stride to 4
+		}
+		patchNext(arrStart, w);
+		patchNext(partStart, w);
+		patchNext(modelStart, w);
+		patchNext(fileStart, w);
+
+		Common::MemoryReadStream stream(arena, (uint32)(w - arena), DisposeAfterUse::NO);
+		Common::GMO gmo(&stream);
+		TS_ASSERT_EQUALS(gmo.parts().size(), 1u);
+		if (gmo.parts().size() != 1 || gmo.parts()[0].arrays.size() != 1)
+			return;
+		const Common::GMO::Arrays &arr = gmo.parts()[0].arrays[0];
+		TS_ASSERT_EQUALS(arr.vertexCount, 2u);
+		TS_ASSERT_EQUALS(arr.colors.size(), 8u);
+		TS_ASSERT_EQUALS(arr.positions.size(), 6u);
+		if (arr.colors.size() != 8 || arr.positions.size() != 6)
+			return;
+		TS_ASSERT_DELTA(arr.texcoords[2], 0.5f, 1e-6f);
+		TS_ASSERT_DELTA(arr.colors[4], 0x20 / 255.0f, 1e-6f); // second vertex red
+		TS_ASSERT_DELTA(arr.normals[4], 127 / 128.0f, 1e-6f);
+		TS_ASSERT_DELTA(arr.positions[3], 0.5f, 1e-6f);       // second vertex x
+		TS_ASSERT_DELTA(arr.positions[4], -0.5f, 1e-6f);
+		TS_ASSERT_DELTA(arr.positions[5], 0.25f, 1e-6f);
+	}
+
 	void testRejectsBadMagic() {
 		byte buf[32] = {0};
 		buf[0] = 'X'; buf[1] = 'M'; buf[2] = 'G'; buf[3] = '.';
