@@ -872,6 +872,8 @@ Common::Error SMTEngine::run() {
 		loadBgmIndex(DebugDemoView::pickRandomIndex(*_rnd, (int)bgmEntries.size()));
 
 	if (openingStream) {
+		// TODO: the decoder is picked by file extension; probe the stream's magic (USM CRID,
+		// PSMF, MPEG-PS pack header) instead.
 		if (openingSourceDesc.hasSuffixIgnoreCase(".USM")) {
 			// TODO: play USM through Video::USMDecoder (VP9 via libvpx) instead of rejecting it
 			// by extension. No USM opening is reachable yet: P4G/P5/P5R keep them in a
