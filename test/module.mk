@@ -11,6 +11,7 @@ TESTS        := $(srcdir)/test/common/*.h \
 	$(srcdir)/test/audio/*.h \
 	$(srcdir)/test/video/*.h \
 	$(srcdir)/test/graphics/ps2texture.h \
+	$(srcdir)/test/graphics/epl_effect.h \
 	$(srcdir)/test/math/*.h \
 	$(srcdir)/test/image/*.h
 TEST_LIBS    :=

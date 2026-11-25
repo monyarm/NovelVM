@@ -29,6 +29,7 @@ MODULE_OBJS := \
 	gmo_render.o \
 	rmd_render_mesh.o \
 	rmd_render.o \
+	epl_effect.o \
 	hotspot_renderer.o \
 	image-archive.o \
 	korfont.o \
