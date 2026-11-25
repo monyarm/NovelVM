@@ -1,7 +1,13 @@
 name: CI
-on: [push, pull_request]
+on:
+  push:
+    branches: [master]
+  pull_request:
 #  schedule:
 #    - cron: '0 0-23/4 * * *'
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
 permissions:
   contents: read
 jobs:
