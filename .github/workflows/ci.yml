@@ -3,6 +3,7 @@ on:
   push:
     branches: [master]
   pull_request:
+  merge_group:
 #  schedule:
 #    - cron: '0 0-23/4 * * *'
 concurrency:
