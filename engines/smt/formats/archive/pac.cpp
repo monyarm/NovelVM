@@ -1,4 +1,5 @@
 #include "common/archive.h"
+#include "common/endian.h"
 #include "common/substream.h"
 
 #include "smt/smt.h"
@@ -154,7 +155,7 @@ bool PAC::IsValidFormatVersion1(Common::SeekableReadStream &stream) {
 			return false;
 	}
 
-	int testLength = *(int*)&testData[252]; 
+	int testLength = (int)READ_LE_UINT32(&testData[252]);
 
 	// sanity check, if the length of the first file is >= 100 mb, fail the test
 	if (testLength >= stream.size() || testLength < 0) {
@@ -193,7 +194,7 @@ bool PAC::IsValidFormatVersion2And3(Common::SeekableReadStream &stream, int entr
 		isBigEndian = true;
 	}
 
-	// check if the name field is correct
+	// check that the whole name field is a non-empty, NUL-padded name
 	bool nameTerminated = false;
 	for (int i = 0; i < entrySize - 4; i++) {
 		if (testData[4 + i] == 0x00) {
@@ -201,31 +202,21 @@ bool PAC::IsValidFormatVersion2And3(Common::SeekableReadStream &stream, int entr
 				return false;
 
 			nameTerminated = true;
+		} else if (nameTerminated) {
+			return false;
 		}
+	}
 
-		if (testData[4 + i] != 0x00 && nameTerminated)
+	int length = (int)READ_LE_UINT32(&testData[entrySize]);
+	if (length >= stream.size() || length < 0) {
+		length = (int)READ_BE_UINT32(&testData[entrySize]);
+		if (length >= stream.size() || length < 0)
 			return false;
 
-		int length = *(int*)&testData[entrySize]; // int((testData[entrySize]) << 24 |
-		             //    (testData[entrySize + 1]) << 16 |
-		             //    (testData[entrySize + 2]) << 8 |
-		             //    (testData[entrySize + 3]));
-
-		if (length >= stream.size() || length < 0) {
-			length = ((length >> 24) & 0xff) |
-			         ((length << 8) & 0xff0000) |
-			         ((length >> 8) & 0xff00) |
-			         ((length << 24) & 0xff000000);
-
-			if (length >= stream.size() || length < 0)
-				return false;
-
-			isBigEndian = true;
-		}
-
-		return true;
+		isBigEndian = true;
 	}
-		return true;
+
+	return true;
 }
 
 void PAC::ReadEntries(Common::SeekableReadStream &stream) {
@@ -254,8 +245,7 @@ void PAC::ReadEntries(Common::SeekableReadStream &stream) {
 					break;
 			}
 			stringBuilder.push_back(0x00);
-			    Common::String fileName = Common::String(stringBuilder.data()); //, stringBuilder.data() + stringBuilder.size());
-			fileName.trim();
+			const Common::String fileName = Common::String(stringBuilder.data());
 
 			// set position to length field
 			stream.seek(entryStartPosition + 252);
@@ -263,7 +253,9 @@ void PAC::ReadEntries(Common::SeekableReadStream &stream) {
 			// read entry length
 			int length = IsLittleEndian() ? stream.readSint32LE() : stream.readSint32BE();
 
-			if (fileName.size() == 0 || length <= 0 || length > 1024 * 1024 * 100) {
+			// The game stops at the first empty name only; empty files are real entries. Some P4
+			// archives (EFFECT/EFFPACK.BIN, two BUSTUP/*.BIN) have no terminator and end at EOF.
+			if (fileName.size() == 0 || length < 0 || length > 1024 * 1024 * 100) {
 				break;
 			}
 
@@ -285,7 +277,7 @@ void PAC::ReadEntries(Common::SeekableReadStream &stream) {
 	} else if (Version == FormatVersion::Version2 || Version == FormatVersion::Version2BE || Version == FormatVersion::Version3 || Version == FormatVersion::Version3BE) {
 		int entryCount = IsLittleEndian() ? stream.readSint32LE() : stream.readSint32BE();
 		int nameLength = 32;
-		if (Version == FormatVersion::Version3)
+		if (Version == FormatVersion::Version3 || Version == FormatVersion::Version3BE)
 			nameLength = 24;
 
 		for (int i = 0; i < entryCount; i++) {
