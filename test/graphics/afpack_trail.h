@@ -68,7 +68,7 @@ public:
 			// The newest row sits on the current blade; the alpha fades to 0 at the oldest end.
 			const Graphics::EffectVertex &first = batches[0].vertices[0];
 			TS_ASSERT_DELTA(first.x, cosf(0.3f) * 2, 1e-4f);
-			TS_ASSERT_DELTA(first.a, 150 / 255.0f, 1e-3f);
+			TS_ASSERT_DELTA(first.a, 150 / 255.0f * 254 / 255.0f, 1e-4f); // material alpha 254
 			float minAlpha = 1;
 			for (uint i = 0; i < batches[0].vertices.size(); ++i)
 				minAlpha = MIN(minAlpha, batches[0].vertices[i].a);

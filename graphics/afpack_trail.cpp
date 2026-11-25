@@ -152,8 +152,6 @@ void AfPackTrail::restart() {
 		s.cursor = 0;
 		s.waiting = s.recording = s.fading = false;
 		s.elapsed = 0;
-		s.delay = 0;
-		s.fadeFrames = 0;
 		s.clock = s.fadeStart = s.fadeDuration = 0;
 		s.writeIndex = s.count = 0;
 		run(s);
@@ -512,6 +510,7 @@ void AfPackTrail::drawSection(const Section &s, uint32 modelColor, Common::Array
 	float model[4];
 	for (int c = 0; c < 4; ++c)
 		model[c] = ((modelColor >> (8 * c)) & 0xFF) / 255.0f;
+	model[3] = MIN(model[3], 254 / 255.0f); // the material colour's alpha 255 is stored as 254
 	for (uint i = 0; i < triangles.size(); ++i) {
 		const Vertex &in = vertices[triangles[i]];
 		EffectVertex v;
