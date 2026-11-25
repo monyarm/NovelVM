@@ -172,7 +172,8 @@ void drawEffects(State &s, const Common::Array<EffectBatch> &batches, EffectText
 				for (int k = 0; k < 12; ++k)
 					verts.push_back(vertex[k]);
 			}
-			const Graphics::Surface *surface = textures && batch.texture.valid() ? textures->textureSurface(batch.texture) : nullptr;
+			const Graphics::Surface *surface = batch.texture.surface ? batch.texture.surface :
+				textures && batch.texture.valid() ? textures->textureSurface(batch.texture) : nullptr;
 			s.shader->setUniform("u_hasTexture", (unsigned int)(surface ? 1 : 0));
 			if (surface) {
 				GL_CALL(glBindTexture(GL_TEXTURE_2D, textureFor(surface)));

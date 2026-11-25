@@ -12,13 +12,14 @@ namespace Graphics {
  * Texture an effect primitive draws with: one of the 22 global effect textures
  * (effect/be_{slot+1:04d}.tmx in effect/effpack.bin), or a TMX embedded in the EPL tree.
  */
+struct Surface;
+
 struct EffectTextureRef {
 	int globalSlot = -1;
 	const Common::Array<byte> *embeddedTMX = nullptr;
-	bool valid() const { return globalSlot >= 0 || embeddedTMX; }
+	const Graphics::Surface *surface = nullptr; ///< already decoded (textures of embedded models)
+	bool valid() const { return globalSlot >= 0 || embeddedTMX || surface; }
 };
-
-struct Surface;
 
 /** Supplies decoded effect textures; billboard sizes depend on their pixel dimensions. */
 class EffectTextureSource {
