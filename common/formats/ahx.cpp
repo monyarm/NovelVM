@@ -731,6 +731,8 @@ bool parseAHXHeader(SeekableReadStream &f, AHXHeader &hdr) {
 	if (head[0x12] != 0x06) // version
 		return false;
 	byte enc = head[0x13];
+	// TODO: CRI decrypts AHX like ADX (flag 0x08-0x0F: the application's key, 0x10 and up: a key
+	// from the sample count); no real encrypted AHX exists in the corpus, so it isn't supported.
 	if (enc != 0) { // only unencrypted streams are supported
 		warning("AHX: encrypted streams (type 0x%02x) not supported", enc);
 		return false;
