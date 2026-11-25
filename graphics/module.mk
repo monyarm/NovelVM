@@ -30,6 +30,7 @@ MODULE_OBJS := \
 	rmd_render_mesh.o \
 	rmd_render.o \
 	epl_effect.o \
+	afpack_trail.o \
 	hotspot_renderer.o \
 	image-archive.o \
 	korfont.o \
