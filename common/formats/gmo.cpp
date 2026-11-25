@@ -843,6 +843,9 @@ bool GMO::evaluateMotion(uint motionIndex, float frame, BonePose &bonePose, Mate
 	materialPose.hasAmbient.clear(); materialPose.hasSpecular.clear();
 	materialPose.diffuse.clear(); materialPose.emission.clear();
 	materialPose.ambient.clear(); materialPose.specular.clear();
+	materialPose.hasTexCrop.clear(); materialPose.texCrop.clear();
+	materialPose.hasTexCrop.resize(nm, false);
+	materialPose.texCrop.resize(nm * 4, 0.0f);
 	materialPose.hasDiffuse.resize(nm, false);
 	materialPose.hasEmission.resize(nm, false);
 	materialPose.hasAmbient.resize(nm, false);
@@ -966,6 +969,7 @@ bool GMO::evaluateMotion(uint motionIndex, float frame, BonePose &bonePose, Mate
 			case kEmission: dst = &materialPose.emission[mi * 4]; flag = &materialPose.hasEmission[mi]; break;
 			case kAmbient: dst = &materialPose.ambient[mi * 4]; flag = &materialPose.hasAmbient[mi]; break;
 			case kSpecular: dst = &materialPose.specular[mi * 4]; flag = &materialPose.hasSpecular[mi]; break;
+			case kTexCrop: dst = &materialPose.texCrop[mi * 4]; flag = &materialPose.hasTexCrop[mi]; break;
 			default: break;
 			}
 			if (dst) {

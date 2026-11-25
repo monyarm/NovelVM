@@ -255,8 +255,9 @@ public:
 
 	struct MaterialPose {
 		int materialCount = 0;
-		Common::Array<bool> hasDiffuse, hasEmission, hasAmbient, hasSpecular;
+		Common::Array<bool> hasDiffuse, hasEmission, hasAmbient, hasSpecular, hasTexCrop;
 		Common::Array<float> diffuse, emission, ambient, specular; // 4 per material
+		Common::Array<float> texCrop; // 4 per material, replaces its layer's TEXCROP (UV scrolling)
 	};
 
 	/**
@@ -264,7 +265,7 @@ public:
 	 * FCURVE `times`) into pose overrides. Values are linearly interpolated
 	 * between the two surrounding keys; ANIMATE refs target either a BONE
 	 * (TRANSLATE, ROTATE_Q/ZYX/YXZ, SCALE) or a MATERIAL (DIFFUSE, EMISSION,
-	 * AMBIENT, SPECULAR). Returns false when the motion has no usable tracks.
+	 * AMBIENT, SPECULAR, TEXCROP). Returns false when the motion has no usable tracks.
 	 */
 	bool evaluateMotion(uint motionIndex, float frame, BonePose &bonePose, MaterialPose &materialPose) const;
 
