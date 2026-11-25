@@ -14,7 +14,7 @@ begin_section("AWB");
 end_section();
 
 begin_section("CPK");
-	add_person("esperknight", "", "CriPakTools: CRILAYLA decompression and the ITOC layout");
+	add_person("esperknight", "", "CriPakTools, used only to write the CPK spec; no code taken from it");
 	add_person("vgmstream contributors", "", "CPK layout reference");
 end_section();
 
