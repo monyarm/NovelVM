@@ -404,7 +404,10 @@ void MSBuildProvider::outputGlobalPropFile(const BuildSetup &setup, std::ofstrea
 	           << "\t\t\t<MultiProcessorCompilation>true</MultiProcessorCompilation>\n"
 	           << "\t\t\t<ConformanceMode>true</ConformanceMode>\n"
 	           << "\t\t\t<ObjectFileName>$(IntDir)dists\\msvc\\%(RelativeDir)</ObjectFileName>\n"
-			   << "\t\t\t<AdditionalOptions>/utf-8 " << (_msvcVersion.version >= 15 ? "/Zc:__cplusplus " : "") << warningsAsErrors << "%(AdditionalOptions)</AdditionalOptions>\n"
+			   // AGS::Shared::String has several implicit conversions, so some
+			   // string-literal ternaries are ambiguous under /std:c++17 (C2445).
+			   // Keep the pre-conformance resolution for the vendored engine.
+			   << "\t\t\t<AdditionalOptions>/utf-8 " << (_msvcVersion.version >= 15 ? "/Zc:__cplusplus /Zc:ternary- " : "") << warningsAsErrors << "%(AdditionalOptions)</AdditionalOptions>\n"
 	           << "\t\t</ClCompile>\n"
 	           << "\t\t<Link>\n"
 	           << "\t\t\t<IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>\n";
