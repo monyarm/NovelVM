@@ -1770,6 +1770,31 @@ bool RMD::evaluateAnimation(uint32 animationIndex, float time, BonePose &pose) c
 	return true;
 }
 
+bool RMD::helperWorldMatrix(uint32 index, const BonePose *pose, Matrix &out) const {
+	// TODO: models without a helper table locate helpers by the frame user data integer
+	// "per3HelperId", which is not parsed yet.
+	for (uint32 h = 0; h < _helperMatrices.size(); ++h) {
+		if (_helperMatrices[h].id != (index & 0xFFFF))
+			continue;
+		for (uint32 f = 0; f < _frames.size(); ++f) {
+			if (!_frames[f].hasHAnim || _frames[f].nameId != _helperMatrices[h].frameId)
+				continue;
+			Matrix world;
+			if (pose && f < pose->worldTransforms.size()) {
+				world = pose->worldTransforms[f];
+			} else {
+				world = frameMatrix(_frames[f]);
+				for (int32 parent = _frames[f].parent, guard = 0; parent >= 0 && guard < (int32)_frames.size(); parent = _frames[parent].parent, ++guard)
+					world = multiply(world, frameMatrix(_frames[parent]));
+			}
+			out = multiply(_helperMatrices[h].offset, world);
+			return true;
+		}
+		return false;
+	}
+	return false;
+}
+
 int32 RMD::frameForHierarchy(uint32 index) const {
 	if (_hierarchy.empty())
 		return index < _frames.size() ? (int32)index : -1;

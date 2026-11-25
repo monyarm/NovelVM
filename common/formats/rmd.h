@@ -221,6 +221,12 @@ public:
 	/** Skeletal animation played by @p slot, following instance references; -1 if none. */
 	int32 animationForSlot(uint32 slot) const;
 	bool evaluateAnimation(uint32 animationIndex, float time, BonePose &pose) const;
+	/**
+	 * World matrix of helper `index` (an effect's attachment point): the helper's offset matrix
+	 * times the world matrix of the bone it is attached to, posed by @p pose if given (else the
+	 * bind pose). False if the model has no such helper.
+	 */
+	bool helperWorldMatrix(uint32 index, const BonePose *pose, Matrix &out) const;
 	/** Frame index for an HAnim hierarchy index (animation track bone), or -1. */
 	int32 frameForHierarchy(uint32 index) const;
 
