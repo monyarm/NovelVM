@@ -1296,8 +1296,9 @@ Common::Error SMTEngine::run() {
 					if (rmdEffects[i].slot >= 0 && rmdEffects[i].slot == slot &&
 							(slot != rmdEffectSlot || (looped && (rmdEffects[i].flags & 1))))
 						rmdEffects[i].effect->restart(slot != rmdEffectSlot);
-				// Every slot start plays its weapon trail from the beginning; looping doesn't.
-				if (slot != rmdEffectSlot) {
+				// Every animation start (the demo never loops one) plays the slot's weapon trail
+				// from the beginning.
+				if (slot != rmdEffectSlot || looped) {
 					rmdTrail.reset();
 					for (uint i = 0; i < rmdModel->trailPacks().size(); ++i)
 						if (rmdModel->trailPacks()[i].slot == slot) {
@@ -1321,9 +1322,17 @@ Common::Error SMTEngine::run() {
 			// Effects run at the game's 30 ticks per second, in the model's own space.
 			const uint32 due = (g_system->getMillis() - rmdEffectStart) * 30 / 1000;
 			const Graphics::EffectCamera camera = Graphics::rmdEffectCamera(modelAngle + (float)M_PI);
-			DemoHelperContext helpers = {rmdModel, frameRmdPose};
+			const float animationTime = (g_system->getMillis() - animMotionStart) / 1000.0f;
+			Common::RMD::BonePose tickPose;
 			for (uint32 n = 0; rmdEffectTicks < due && n < 8; ++n, ++rmdEffectTicks) {
-				advanceDemoEffects(*rmdModel, rmdEffects, rmdEffectSlot, frameRmdPose, camera);
+				// Catch-up ticks sample the pose at their own time, not the frame's.
+				const Common::RMD::BonePose *pose = frameRmdPose;
+				const float tickTime = animationTime - (due - 1 - rmdEffectTicks) / 30.0f;
+				if (frameRmdPose && rmdEffectTicks + 1 < due && tickTime >= 0 &&
+						rmdModel->evaluateAnimation(animMotion, tickTime, tickPose))
+					pose = &tickPose;
+				DemoHelperContext helpers = {rmdModel, pose};
+				advanceDemoEffects(*rmdModel, rmdEffects, rmdEffectSlot, pose, camera);
 				if (rmdTrail && rmdTrail->ok() && !rmdTrail->finished())
 					rmdTrail->update(demoHelperPosition, &helpers);
 			}
