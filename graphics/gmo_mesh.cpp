@@ -262,6 +262,7 @@ void buildGMOMesh(const Common::GMO &gmo, const Common::Array<Graphics::Surface 
 				const Common::GMO::Mesh &mesh = p.meshes[mi];
 
 				float matDiff[3] = {0.85f, 0.85f, 0.85f};
+				float matAlpha = 1.0f;
 				float matAmb[3] = {0.0f, 0.0f, 0.0f};
 				float matEmi[3] = {0.0f, 0.0f, 0.0f};
 				float matSpec[3] = {1.0f, 1.0f, 1.0f};
@@ -283,6 +284,7 @@ void buildGMOMesh(const Common::GMO &gmo, const Common::Array<Graphics::Surface 
 					const Common::GMO::Material &mat = gmo.materials()[mesh.material.index];
 					if (mat.hasDiffuse) {
 						for (int i = 0; i < 3; i++) matDiff[i] = CLIP(mat.diffuse[i], 0.0f, 1.0f);
+						matAlpha = CLIP(mat.diffuse[3], 0.0f, 1.0f);
 					}
 					if (mat.hasAmbient) for (int i = 0; i < 3; i++) matAmb[i] = CLIP(mat.ambient[i], 0.0f, 1.0f);
 					if (mat.hasEmission) for (int i = 0; i < 3; i++) matEmi[i] = CLIP(mat.emission[i], 0.0f, 1.0f);
@@ -313,8 +315,10 @@ void buildGMOMesh(const Common::GMO &gmo, const Common::Array<Graphics::Surface 
 				if (materialPose && mesh.material.index >= 0 &&
 				    mesh.material.index < materialPose->materialCount) {
 					int mi = mesh.material.index;
-					if (materialPose->hasDiffuse[mi])
+					if (materialPose->hasDiffuse[mi]) {
 						for (int i = 0; i < 3; i++) matDiff[i] = CLIP(materialPose->diffuse[mi * 4 + i], 0.0f, 1.0f);
+						matAlpha = CLIP(materialPose->diffuse[mi * 4 + 3], 0.0f, 1.0f);
+					}
 					if (materialPose->hasEmission[mi])
 						for (int i = 0; i < 3; i++) matEmi[i] = CLIP(materialPose->emission[mi * 4 + i], 0.0f, 1.0f);
 					if (materialPose->hasAmbient[mi])
@@ -504,6 +508,7 @@ void buildGMOMesh(const Common::GMO &gmo, const Common::Array<Graphics::Surface 
 								t.diffuse[i] = matDiff[i]; t.ambient[i] = matAmb[i];
 								t.emission[i] = matEmi[i]; t.specular[i] = matSpec[i];
 							}
+							t.alpha = matAlpha;
 
 							t.hasCol = a.colors.size() >= a.vertexCount * 4;
 							for (int k = 0; k < 3; k++) {

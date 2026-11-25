@@ -26,7 +26,8 @@ namespace {
 // CPU GU_TFX_* emulation: texture * vertexColor * materialDiffuse, with the
 // decal/blend/replace/add variants and the MAP_FACTOR mix. The lit branch is
 // a close approximation of the CPU normal-dot/specular/reflection/bump
-// shading; the standalone demo renders unlit.
+// shading; the standalone demo renders unlit. Unlit follows the GE with
+// lighting off: the vertex colour, or the material ambient without one.
 static const char *const kGMOVertexShader =
 	"attribute vec3 a_position;\n"
 	"attribute vec3 a_normal;\n"
@@ -63,9 +64,13 @@ static const char *const kGMOFragmentShader =
 	"uniform int u_hasUv;\n"
 	"uniform int u_hasNormal;\n"
 	"uniform int u_unlit;\n"
+	"uniform int u_hasColor;\n"
+	"uniform float u_alpha;\n"
 	"void main() {\n"
 	"    vec3 frag = u_diffuse * v_color.rgb;\n"
-	"    float fa = v_color.a;\n"
+	"    if (u_unlit != 0)\n"
+	"        frag = (u_hasColor != 0) ? v_color.rgb : u_ambient;\n"
+	"    float fa = v_color.a * u_alpha;\n"
 	"    vec4 texel = vec4(1.0, 1.0, 1.0, 1.0);\n"
 	"    if (u_hasTexture != 0 && u_hasUv != 0)\n"
 	"        texel = texture2D(u_texture, v_uv);\n"
@@ -186,7 +191,8 @@ void resetResources() {
 }
 
 bool sameRunState(const Tri &a, const Tri &b) {
-	if (a.tex != b.tex || a.hasUv != b.hasUv || a.hasNormal != b.hasNormal)
+	if (a.tex != b.tex || a.hasUv != b.hasUv || a.hasNormal != b.hasNormal || a.hasCol != b.hasCol ||
+	    a.alpha != b.alpha)
 		return false;
 	if (a.texFunc != b.texFunc || a.texComp != b.texComp)
 		return false;
@@ -231,6 +237,13 @@ GLenum blendFactorToGL(uint32 factor, bool isSrc) {
 }
 
 void applyBlend(const Tri &t) {
+	// Animated material alpha fades parts without a BLEND_FUNC of their own.
+	if (!t.blendEnabled && t.alpha < 1.0f) {
+		GL_CALL(glEnable(GL_BLEND));
+		GL_CALL(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+		GL_CALL(glBlendEquation(GL_FUNC_ADD));
+		return;
+	}
 	if (!t.blendEnabled) {
 		GL_CALL(glDisable(GL_BLEND));
 		return;
@@ -419,6 +432,8 @@ void GMORenderer::render(const Common::GMO &gmo, int width, int height, float ro
 		shader->setUniform("u_hasTexture", (unsigned int)(t.tex ? 1 : 0));
 		shader->setUniform("u_hasUv", (unsigned int)(t.hasUv ? 1 : 0));
 		shader->setUniform("u_hasNormal", (unsigned int)(t.hasNormal ? 1 : 0));
+		shader->setUniform("u_hasColor", (unsigned int)(t.hasCol ? 1 : 0));
+		shader->setUniform1f("u_alpha", t.alpha);
 
 		if (t.tex) {
 			GLuint id = textureFor(t.tex);
@@ -429,6 +444,8 @@ void GMORenderer::render(const Common::GMO &gmo, int width, int height, float ro
 			applyWrap(GL_TEXTURE_WRAP_T, t.wrapV);
 		}
 
+		if (t.alpha <= 0.0f)
+			continue; // hidden by its motion (DIFFUSE alpha 0)
 		applyBlend(t);
 		// GMO layers are drawn in material order, so every surface must populate
 		// the depth buffer before later material runs can cover it.
