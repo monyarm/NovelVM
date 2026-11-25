@@ -57,7 +57,7 @@ const SnatcherGameDescription adGameDescs[] = {
 };
 
 const PlainGameDescriptor gameList[] = {
-	{ "snatcher", "Snatcher" },
+	{ "snatcher", "Snatcher", kStableGame, "https://vndb.org/v1305" },
 	{ 0, 0 }
 };
 
