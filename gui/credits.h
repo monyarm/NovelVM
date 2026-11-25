@@ -156,7 +156,7 @@ static const char *const credits[] = {
 "",
 "C1""CPK",
 "C0""esperknight",
-"C2""CriPakTools: CRILAYLA decompression and the ITOC layout",
+"C2""CriPakTools, used only to write the CPK spec; no code taken from it",
 "C0""vgmstream contributors",
 "C2""CPK layout reference",
 "",

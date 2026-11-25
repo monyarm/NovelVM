@@ -112,8 +112,8 @@ ScummVM Team
        vgmstream contributors         - AWB entry alignment reference
 
     CPK:
-       esperknight                    - CriPakTools: CRILAYLA decompression
-                                        and the ITOC layout
+       esperknight                    - CriPakTools, used only to write the
+                                        CPK spec; no code taken from it
        vgmstream contributors         - CPK layout reference
 
     DDS / S3TC:
