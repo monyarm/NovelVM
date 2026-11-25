@@ -21,239 +21,236 @@
 
 #include "common/formats/utf_table.h"
 
+#include "common/endian.h"
+
 namespace Common {
 
 namespace {
 
-enum UTFStorage : byte {
-	kStorageMask = 0xf0,
-	kStorageNone = 0x00,
-	kStorageZero = 0x10,
-	kStorageConstant = 0x30,
-	kStoragePerRow = 0x50,
-};
+const uint32 kHeaderSize = 0x20;
+// Offsets in the header are counted from this byte, not from the magic.
+const uint32 kOffsetBase = 8;
 
-enum UTFType : byte {
-	kTypeMask = 0x0f,
-	kTypeUint8 = 0,
-	kTypeUint8b = 1,
-	kTypeUint16 = 2,
-	kTypeUint16b = 3,
-	kTypeUint32 = 4,
-	kTypeUint32b = 5,
-	kTypeUint64 = 6,
-	kTypeUint64b = 7,
-	kTypeFloat = 8,
+// Storage bits, high nibble of a column descriptor.
+const byte kStorageNamed = 0x10;
+const byte kStorageInSchema = 0x20;
+const byte kStorageInRow = 0x40;
+const byte kStorageUndefined = 0x80;
+
+enum {
 	kTypeString = 0xA,
-	kTypeData = 0xB,
+	kTypeVLData = 0xB,
+	kTypeWide = 0xC,
+	kTypeCount = 0xD
 };
 
-uint32 readU32BE(const byte *p) {
-	return ((uint32)p[0] << 24) | ((uint32)p[1] << 16) | ((uint32)p[2] << 8) | (uint32)p[3];
+// Byte width of each type code, 0x0 to 0xC.
+const byte kTypeWidth[kTypeCount] = { 1, 1, 2, 2, 4, 4, 8, 8, 4, 8, 4, 8, 16 };
+
+const byte kPlainMagic[4] = { 0x40, 0x55, 0x54, 0x46 };
+const byte kMaskedMagic[4] = { 0x1F, 0x9E, 0xF3, 0xF5 };
+
+const byte kMaskSeed = 0x5F;
+const byte kMaskStep = 0x15;
+
+/**
+ * Reads the NUL-terminated string at `rel` bytes into [strings, dataStart).
+ * The string stops at dataStart if no terminator comes first.
+ */
+bool readString(const byte *table, uint32 strings, uint32 dataStart, uint32 rel, Common::String &out) {
+	if (rel > dataStart - strings)
+		return false;
+	const byte *p = table + strings + rel;
+	const byte *end = table + dataStart;
+	const byte *q = p;
+	while (q < end && *q != 0)
+		++q;
+	out = Common::String((const char *)p, (uint32)(q - p));
+	return true;
 }
 
-uint16 readU16BE(const byte *p) {
-	return (uint16)(((uint16)p[0] << 8) | p[1]);
-}
+} // End of anonymous namespace
 
-uint64 readU64BE(const byte *p) {
-	uint64 v = 0;
-	for (int i = 0; i < 8; i++)
-		v = (v << 8) | p[i];
-	return v;
-}
-
-uint32 typedSize(byte type) {
-	switch (type) {
-	case kTypeUint8:
-	case kTypeUint8b:
-		return 1;
-	case kTypeUint16:
-	case kTypeUint16b:
-		return 2;
-	case kTypeUint32:
-	case kTypeUint32b:
-	case kTypeFloat:
-	case kTypeString:
-		return 4;
-	case kTypeUint64:
-	case kTypeUint64b:
-		return 8;
-	case kTypeData:
-		return 8;
-	default:
-		return 0;
-	}
-}
-
-} // namespace
-
-Common::String UTFTable::readCString(uint32 pos) const {
-	if (pos >= _packet.size())
-		return Common::String();
-	uint32 end = pos;
-	while (end < _packet.size() && _packet[end] != 0)
-		end++;
-	return Common::String((const char *)&_packet[pos], end - pos);
-}
-
-UTFValue UTFTable::readTyped(uint32 &pos, byte type) const {
-	UTFValue v;
-	v.type = type;
-	const byte *p = _packet.data();
-	uint32 size = typedSize(type);
-	if (size == 0 || pos > _packet.size() || size > _packet.size() - pos)
-		return v;
-	v.valid = true;
-
-	switch (type) {
-	case kTypeUint8:
-	case kTypeUint8b:
-		v.u = p[pos];
-		pos += 1;
-		break;
-	case kTypeUint16:
-	case kTypeUint16b:
-		v.u = readU16BE(p + pos);
-		pos += 2;
-		break;
-	case kTypeUint32:
-	case kTypeUint32b:
-		v.u = readU32BE(p + pos);
-		pos += 4;
-		break;
-	case kTypeUint64:
-	case kTypeUint64b:
-		v.u = readU64BE(p + pos);
-		pos += 8;
-		break;
-	case kTypeFloat:
-		// Stored as a float but only ever consulted as raw bits here; no
-		// real field used by any caller so far is a float.
-		v.u = readU32BE(p + pos);
-		pos += 4;
-		break;
-	case kTypeString: {
-		uint32 strOff = readU32BE(p + pos);
-		pos += 4;
-		if (strOff > _packet.size() - _stringsOffset) {
-			v.valid = false;
-			break;
-		}
-		v.str = readCString(_stringsOffset + strOff);
-		break;
-	}
-	case kTypeData: {
-		// Byte-array columns: 8 bytes = offset (u32 BE) + length (u32 BE)
-		// into the data segment.
-		v.dataOffset = readU32BE(p + pos);
-		v.dataLength = readU32BE(p + pos + 4);
-		pos += 8;
-		v.valid = true;
-		break;
-	}
-	default:
-		v.valid = false;
-		break;
-	}
-	return v;
+void UTFTable::clear() {
+	_bytes.clear();
+	_columns.clear();
+	_rowsStart = _stringsStart = _dataStart = 0;
+	_rowWidth = _rowCount = 0;
 }
 
 bool UTFTable::parse(const byte *buf, uint32 size) {
-	if (size < 32 || memcmp(buf, "@UTF", 4) != 0)
+	clear();
+	if (!buf || size < kHeaderSize || memcmp(buf, kPlainMagic, 4) != 0)
 		return false;
 
-	_packet.resize(size);
-	memcpy(_packet.data(), buf, size);
-	const byte *p = _packet.data();
+	// Real tables declare their exact length; some writers overstate it, so
+	// never trust it beyond the buffer.
+	const uint64 declared = (uint64)READ_BE_UINT32(buf + 4) + kOffsetBase;
+	const uint64 extent = declared <= size ? declared : size;
 
-	uint32 rowsOffsetRaw = readU32BE(p + 8);
-	uint32 stringsOffsetRaw = readU32BE(p + 12);
-	uint32 dataOffsetRaw = readU32BE(p + 16);
-	if (rowsOffsetRaw > size - 8 || stringsOffsetRaw > size - 8 || dataOffsetRaw > size - 8)
+	// TODO: 0x08 is read as a version and ignored; only version 0 has been
+	// seen on real data, version 1 tables are untested.
+	const uint64 rows = (uint64)READ_BE_UINT16(buf + 0x0A) + kOffsetBase;
+	const uint64 strings = (uint64)READ_BE_UINT32(buf + 0x0C) + kOffsetBase;
+	const uint64 data = (uint64)READ_BE_UINT32(buf + 0x10) + kOffsetBase;
+	if (rows < kHeaderSize || rows > strings || strings > data || data > extent)
 		return false;
-	_rowsOffset = rowsOffsetRaw + 8;
-	_stringsOffset = stringsOffsetRaw + 8;
-	_dataOffset = dataOffsetRaw + 8;
-	// table_name (a string offset, at p+20) is unused here.
-	uint16 numColumns = readU16BE(p + 24);
-	_rowLength = readU16BE(p + 26);
-	uint32 numRows = readU32BE(p + 28);
-	if (numRows > 0x7fffffffU || (uint64)_rowLength * numRows > size - _rowsOffset)
-		return false;
-	_numRows = (int)numRows;
 
-	uint32 off = 32;
-	uint32 rowDataSize = 0;
-	_columns.clear();
-	for (uint16 i = 0; i < numColumns; i++) {
-		if (off > size - 1)
+	const uint16 columnCount = READ_BE_UINT16(buf + 0x18);
+	const uint16 rowWidth = READ_BE_UINT16(buf + 0x1A);
+	const uint32 rowCount = READ_BE_UINT32(buf + 0x1C);
+	if (rowCount > 0x7FFFFFFF)
+		return false;
+	if ((uint64)rowCount * rowWidth > strings - rows)
+		return false;
+	// Zero-width rows cost nothing to claim; cap them so callers can't be
+	// made to loop billions of times over a tiny table.
+	if (rowWidth == 0 && rowCount > extent)
+		return false;
+
+	const uint32 R = (uint32)rows;
+	const uint32 S = (uint32)strings;
+	const uint32 D = (uint32)data;
+
+	Common::Array<Column> columns;
+	columns.reserve(columnCount);
+	uint32 cursor = kHeaderSize;
+	uint32 rowOffset = 0;
+	for (uint16 i = 0; i < columnCount; ++i) {
+		if ((uint64)cursor + 5 > R)
 			return false;
-		byte flags = p[off];
-		off++;
-		if (flags == 0) {
-			if (off > size - 4)
-				return false;
-			off += 3;
-			flags = p[off];
-			off++;
+		const byte desc = buf[cursor];
+		const uint32 nameOffset = READ_BE_UINT32(buf + cursor + 1);
+		cursor += 5;
+
+		Column col;
+		col.flags = desc & 0xF0;
+		col.type = desc & 0x0F;
+		col.offset = 0;
+		if (!(col.flags & kStorageNamed) || (col.flags & kStorageUndefined) || col.type >= kTypeCount) {
+			return false;
 		}
-		if (off > size - 4)
+		if (!readString(buf, S, D, nameOffset, col.name)) {
 			return false;
-
-		UTFColumn col;
-		col.flags = flags;
-		uint32 nameOff = readU32BE(p + off);
-		off += 4;
-		if (nameOff > size - _stringsOffset)
-			return false;
-		col.name = readCString(_stringsOffset + nameOff);
-
-		if ((flags & kStorageMask) == kStorageConstant) {
-			col.constantValue = readTyped(off, flags & kTypeMask);
-			if (!col.constantValue.valid)
-				return false;
-		} else if ((flags & kStorageMask) == kStoragePerRow) {
-			uint32 width = typedSize(flags & kTypeMask);
-			if (width == 0 || width > _rowLength || rowDataSize > _rowLength - width)
-				return false;
-			rowDataSize += width;
 		}
 
-		_columns.push_back(col);
+		const uint32 width = kTypeWidth[col.type];
+		if (col.flags & kStorageInSchema) {
+			// TODO: Descriptors with both the constant and per-row bits are
+			// treated as constant; no real table with them has been seen.
+			if ((uint64)cursor + width > R) {
+				return false;
+			}
+			col.offset = cursor;
+			cursor += width;
+		} else if (col.flags & kStorageInRow) {
+			col.offset = rowOffset;
+			rowOffset += width;
+		}
+		columns.push_back(col);
 	}
 
+	_bytes.resize((uint32)extent);
+	memcpy(_bytes.data(), buf, (uint32)extent);
+	_columns = columns;
+	_rowsStart = R;
+	_stringsStart = S;
+	_dataStart = D;
+	_rowWidth = rowWidth;
+	_rowCount = rowCount;
 	return true;
 }
 
 UTFValue UTFTable::get(int row, const char *name) const {
-	if (row < 0 || row >= _numRows)
-		return UTFValue();
-	uint32 pos = _rowsOffset + (uint32)row * _rowLength;
-	UTFValue result;
+	UTFValue v;
+	if (row < 0 || (uint32)row >= _rowCount || !name)
+		return v;
 
-	for (uint32 i = 0; i < _columns.size(); i++) {
-		const UTFColumn &col = _columns[i];
-		byte storage = col.flags & kStorageMask;
-		byte type = col.flags & kTypeMask;
-
-		if (storage == kStorageConstant) {
-			if (!result.valid && col.name == name)
-				result = col.constantValue;
-			continue;
+	const Column *col = nullptr;
+	for (uint i = 0; i < _columns.size(); ++i) {
+		if (_columns[i].name == name) {
+			col = &_columns[i];
+			break;
 		}
-		if (storage == kStorageNone || storage == kStorageZero)
-			continue;
-
-		// kStoragePerRow: value lives inline in this row; must always be
-		// consumed (even when it's not the column we want) to keep `pos`
-		// advancing correctly for the columns after it.
-		UTFValue v = readTyped(pos, type);
-		if (!result.valid && col.name == name)
-			result = v;
 	}
+	if (!col)
+		return v;
 
-	return result;
+	v.type = col->type;
+	const uint32 width = kTypeWidth[col->type];
+	uint32 pos;
+	if (col->flags & kStorageInSchema) {
+		pos = col->offset;
+	} else if (col->flags & kStorageInRow) {
+		const uint64 cell = (uint64)_rowsStart + (uint64)row * _rowWidth + col->offset;
+		if (cell + width > _stringsStart)
+			return v;
+		pos = (uint32)cell;
+	} else {
+		return v;
+	}
+	return decode(col->type, pos);
 }
 
-} // namespace Common
+UTFValue UTFTable::decode(byte type, uint32 pos) const {
+	UTFValue v;
+	v.type = type;
+	const byte *p = _bytes.data() + pos;
+
+	switch (type) {
+	case kTypeString:
+		v.valid = readString(_bytes.data(), _stringsStart, _dataStart, READ_BE_UINT32(p), v.str);
+		break;
+	case kTypeVLData:
+		v.dataOffset = READ_BE_UINT32(p);
+		v.dataLength = READ_BE_UINT32(p + 4);
+		v.valid = true;
+		break;
+	case kTypeWide:
+		// No caller needs 128-bit values; report them as unreadable.
+		break;
+	default:
+		// Integers and floats: raw bits, zero-extended, no sign extension.
+		switch (kTypeWidth[type]) {
+		case 1:
+			v.u = p[0];
+			break;
+		case 2:
+			v.u = READ_BE_UINT16(p);
+			break;
+		case 4:
+			v.u = READ_BE_UINT32(p);
+			break;
+		default:
+			v.u = READ_BE_UINT64(p);
+			break;
+		}
+		v.valid = true;
+		break;
+	}
+	return v;
+}
+
+const byte *UTFTable::dataSegment() const {
+	return _bytes.empty() ? nullptr : _bytes.data() + _dataStart;
+}
+
+uint32 UTFTable::dataSegmentSize() const {
+	return _bytes.empty() ? 0 : _bytes.size() - _dataStart;
+}
+
+bool UTFTable::isMasked(const byte *buf, uint32 size) {
+	return buf && size >= 4 && memcmp(buf, kMaskedMagic, 4) == 0;
+}
+
+// TODO: The mask scheme is taken from another tool's description and has
+// not been checked against a real masked archive.
+void UTFTable::toggleMask(byte *buf, uint32 size) {
+	byte key = kMaskSeed;
+	for (uint32 i = 0; i < size; ++i) {
+		buf[i] ^= key;
+		key = (byte)(key * kMaskStep);
+	}
+}
+
+} // End of namespace Common
