@@ -4,6 +4,7 @@
 #include "common/array.h"
 #include "common/file.h"
 #include "common/formats/cpk.h"
+#include "common/formats/utf_table.h"
 #include "common/path.h"
 #include "common/str.h"
 
@@ -132,6 +133,41 @@ public:
 		// TOC members are not reachable by ID.
 		Common::CPKEntry e;
 		TS_ASSERT(!cpk.getEntryById(0, e));
+	}
+
+	void testMaskedTables() {
+		const uint32 kTocOffset = 0x100;
+		const uint32 kContentOffset = 0x400;
+		const uint32 rel = kContentOffset - kTocOffset;
+
+		Common::Array<CpkCol> toc;
+		toc.push_back(colStrs("DirName", "d", "d", "", "", "", ""));
+		toc.push_back(colStrs("FileName", "a.bin", "b.bin", "", "", "", ""));
+		toc.push_back(colUints("FileSize", kUTFUint32, 2, 2, 0, 0, 0, 0));
+		toc.push_back(colUints("ExtractSize", kUTFUint32, 2, 2, 0, 0, 0, 0));
+		toc.push_back(colUints("FileOffset", kUTFUint64, rel, rel + 2, 0, 0, 0, 0));
+		Common::Array<byte> tocPacket = buildUTF(toc);
+
+		Common::Array<CpkCol> header;
+		header.push_back(colUint("TocOffset", kUTFUint64, kTocOffset));
+		header.push_back(colUint("ContentOffset", kUTFUint64, kContentOffset));
+		header.push_back(colUint("Align", kUTFUint16, 0));
+		Common::Array<byte> headerPacket = buildUTF(header);
+
+		// Both chunk packets are stored masked; the reader must unmask them.
+		Common::UTFTable::toggleMask(headerPacket.data(), headerPacket.size());
+		Common::UTFTable::toggleMask(tocPacket.data(), tocPacket.size());
+		TS_ASSERT(Common::UTFTable::isMasked(headerPacket.data(), headerPacket.size()));
+
+		Common::Array<byte> content;
+		appendStr(content, "abcd");
+		Common::Array<byte> file = assembleWith(headerPacket, "TOC ", kTocOffset, tocPacket, kContentOffset, content);
+		Common::CPK cpk(writeTemp("novelvm_cpk_masked_test.cpk", file));
+
+		Common::ArchiveMemberList list;
+		TS_ASSERT_EQUALS(cpk.listMembers(list), 2);
+		TS_ASSERT(checkMember(cpk, "d/a.bin", "ab", 2));
+		TS_ASSERT(checkMember(cpk, "d/b.bin", "cd", 2));
 	}
 
 	void testCRILAYLADecompression() {

@@ -83,10 +83,13 @@ bool readChunkTable(Common::File &f, uint64 fileSize, uint64 chunkOffset, const 
 		return false;
 	}
 
-	// TODO: Some CPKs reportedly mask their @UTF packets. The scheme is
-	// unknown, so such tables are treated as unreadable for now.
+	// TODO: The mask scheme comes from another tool's description; no real
+	// masked archive has been seen to verify it.
+	if (UTFTable::isMasked(packet.data(), (uint32)length))
+		UTFTable::toggleMask(packet.data(), (uint32)length);
+
 	if (!hasUTFMagic(packet.data(), length)) {
-		warning("CPK: '%s' table of %s is not a plain @UTF table (masked tables are unsupported)", tag, archive.c_str());
+		warning("CPK: '%s' table of %s is not an @UTF table", tag, archive.c_str());
 		return false;
 	}
 
@@ -289,8 +292,9 @@ void CPK::load() {
 
 	if (tocOffset != 0)
 		loadToc(f, tocOffset);
-	// TODO: No real archive with both a TOC and an ITOC has been seen; both
-	// sets are simply merged.
+	// TODO: Persona 2 PSP pairs its TOC with a CpkExtendId ITOC (ID -> TOC row) that
+	// loadItoc() does not read, so its duplicate-named TOC rows past the first (two
+	// card.bin) cannot be reached; map those IDs for getEntryById().
 	if (itocOffset != 0)
 		loadItoc(f, itocOffset, contentOffset, align);
 
