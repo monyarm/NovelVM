@@ -55,6 +55,7 @@ struct EffectBatch {
 	int blendEquation = -1;      ///< blend mode whose equation to use instead (kind 26 models)
 	bool depthTest = true;
 	bool depthWrite = false;
+	float depthWriteMinAlpha = 0; ///< depth is only written where the drawn alpha reaches this
 	bool depthOnly = false;      ///< lay down depth without touching the colour buffer
 	bool cullBack = false;       ///< drop triangles whose (v1-v0)x(v2-v0) faces away from the viewer
 	bool alphaMask = false;      ///< the texture only supplies alpha; RGB is the vertex colour

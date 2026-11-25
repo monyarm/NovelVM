@@ -873,7 +873,7 @@ public:
 		for (uint b = firstBatch; b < out.size(); ++b) {
 			out[b].cullBack = true;
 			out[b].depthTest = (_header.u8(0x22) & 1) != 0;
-			out[b].depthWrite = _params.u16(0x54) == 0;
+			out[b].depthWrite = _params.u32(0x54) == 0; // the whole word, not just the list
 		}
 	}
 
@@ -1546,7 +1546,7 @@ public:
 
 	void draw(const EffectCamera &camera, uint32 nodeColor, Common::Array<EffectBatch> &out) override {
 		const int32 duration = _params.s32(0x60);
-		if (_model.mesh().empty())
+		if (_model.mesh().empty() || (duration != 0 && _elapsed > duration))
 			return;
 		float rgba[4];
 		colorToFloats(modulate(_params.sampleColor(0x00, 0x24, _elapsed, duration), nodeColor), rgba);
@@ -1556,29 +1556,32 @@ public:
 		// The list only orders the model: it draws with normal alpha blending, culls back faces,
 		// and depth-tests and writes depth when parameter 0x64 is set.
 		const bool depth = _params.u8(0x64) != 0;
-		auto states = [&](uint32 first, bool depthOnly, bool depthWrite) {
+		// Depth is only written where the alpha test (A >= 0x7F of 0x80) passes.
+		auto states = [&](uint32 first, bool depthTest, bool depthOnly, bool depthWrite, float minAlpha) {
 			for (uint b = first; b < out.size(); ++b) {
 				out[b].blendEquation = 0;
 				out[b].cullBack = true;
-				out[b].depthTest = depth || depthOnly;
+				out[b].depthTest = depthTest;
 				out[b].depthWrite = depthWrite;
+				out[b].depthWriteMinAlpha = minAlpha;
 				out[b].depthOnly = depthOnly;
 			}
 		};
+		const float kAlphaTest = 127 / 128.0f;
 		// Duration 1225 marks a translucent model: while it isn't opaque, a depth-only pass first
 		// keeps it from showing its own back surfaces, then the colour pass doesn't write depth.
 		if (duration == 1225 && rgba[3] < 1) {
 			uint32 first = out.size();
 			_model.emit(out, first, _params.u16(0x28), _rotation, scale, _position, rgba);
-			states(first, true, depth);
+			states(first, true, true, depth, 1 / 255.0f); // depth for every texel that isn't clear
 			first = out.size();
 			_model.emit(out, first, _params.u16(0x28), _rotation, scale, _position, rgba);
-			states(first, false, false);
+			states(first, true, false, false, 0);
 			return;
 		}
 		const uint32 first = out.size();
 		_model.emit(out, first, _params.u16(0x28), _rotation, scale, _position, rgba);
-		states(first, false, depth);
+		states(first, depth, false, depth, kAlphaTest);
 	}
 
 private:
@@ -1671,12 +1674,21 @@ public:
 	void draw(const EffectCamera &camera, uint32 nodeColor, Common::Array<EffectBatch> &out) override {
 		int32 frame;
 		float rgba[4];
-		if (!sample(nodeColor, frame, rgba))
+		if (!sample(nodeColor, frame, rgba)) {
+			// Keep the renderer copying frames while the echo runs, so its first visible frame
+			// has one (the game always has its display buffer).
+			const int32 duration = _params.s32(0xB8);
+			if (_age > 0 && (duration == 0 || _age - 1 <= duration)) {
+				EffectBatch request = makeBatch();
+				request.texture.previousFrame = true;
+				out.push_back(request);
+			}
 			return;
+		}
 		const int32 duration = _params.s32(0xB8);
 		const float zoom = 1 + 0.01f * _params.sampleScalar(0x34, frame, duration);
 		const float angle = 0.01f * _params.sampleScalar(0x60, frame, duration);
-		if (zoom <= 0 || zoom >= 7)
+		if (zoom == 0 || fabsf(zoom) >= 7) // a negative zoom mirrors the echo
 			return;
 		// UVs of the 640x448 screen corners (normalised, so the rotation is not aspect-correct).
 		float uv[4][2];

@@ -45,11 +45,13 @@ static const char *const kFragmentShader =
 	"uniform int u_vertexColor;\n"
 	"uniform int u_alphaMask;\n"
 	"uniform int u_flipV;\n"
+	"uniform float u_alphaMin;\n"
 	"void main() {\n"
 	"  int textured = (u_hasTexture != 0 && u_hasUv != 0) ? 1 : 0;\n"
 	"  vec4 texel = vec4(1.0);\n"
 	"  if (textured != 0) texel = texture2D(u_texture, u_flipV != 0 ? vec2(v_uv.x, 1.0 - v_uv.y) : v_uv);\n"
 	"  if (u_alphaMask != 0) texel.rgb = vec3(1.0);\n"
+	"  if (u_alphaMin > 0.0 && texel.a * v_color.a < u_alphaMin) discard;\n"
 	// Cutout masks (fences, foliage) carry binary 0/255 texture alpha
 	// independent of the material's blend state -- alpha *test* (discard),
 	// not blend, so opaque neighbors keep writing depth correctly.
@@ -199,9 +201,17 @@ void drawEffects(State &s, const Common::Array<EffectBatch> &batches, EffectText
 				GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
 				GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
 			}
-			const bool depthTest = batch.depthTest && !batch.overlay;
-			if (depthTest) { GL_CALL(glEnable(GL_DEPTH_TEST)); } else { GL_CALL(glDisable(GL_DEPTH_TEST)); }
-			GL_CALL(glDepthMask(batch.depthWrite && !batch.overlay ? GL_TRUE : GL_FALSE));
+			// The GS accepts equal depth; with the test off it still writes depth when asked to.
+			const bool depthWrite = batch.depthWrite && !batch.overlay;
+			if (batch.overlay || (!batch.depthTest && !depthWrite)) {
+				GL_CALL(glDisable(GL_DEPTH_TEST));
+			} else {
+				GL_CALL(glEnable(GL_DEPTH_TEST));
+				GL_CALL(glDepthFunc(batch.depthTest ? GL_LEQUAL : GL_ALWAYS));
+			}
+			// Alpha-gated depth writes: draw the colour without depth, then depth where alpha passes.
+			const bool gated = depthWrite && batch.depthWriteMinAlpha > 0;
+			GL_CALL(glDepthMask(depthWrite && !gated ? GL_TRUE : GL_FALSE));
 			if (batch.depthOnly) { GL_CALL(glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE)); }
 			setEffectBlend(batch.blendEquation >= 0 ? batch.blendEquation : batch.blendMode);
 			const int stride = 12 * sizeof(float); const byte *base = (const byte *)verts.data();
@@ -210,12 +220,23 @@ void drawEffects(State &s, const Common::Array<EffectBatch> &batches, EffectText
 			s.shader->enableVertexAttribute("a_uv", 2, GL_FLOAT, GL_FALSE, stride, base + 6 * sizeof(float));
 			s.shader->enableVertexAttribute("a_color", 4, GL_FLOAT, GL_FALSE, stride, base + 8 * sizeof(float));
 			s.shader->use(true);
-			GL_CALL(glDrawArrays(GL_TRIANGLES, 0, (GLsizei)batch.vertices.size()));
+			if (batch.depthOnly && gated)
+				s.shader->setUniform1f("u_alphaMin", batch.depthWriteMinAlpha);
+			if (!(batch.depthOnly && gated))
+				GL_CALL(glDrawArrays(GL_TRIANGLES, 0, (GLsizei)batch.vertices.size()));
+			if (gated) {
+				if (!batch.depthOnly) { GL_CALL(glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE)); }
+				GL_CALL(glDepthMask(GL_TRUE));
+				s.shader->setUniform1f("u_alphaMin", batch.depthWriteMinAlpha);
+				GL_CALL(glDrawArrays(GL_TRIANGLES, 0, (GLsizei)batch.vertices.size()));
+				s.shader->setUniform1f("u_alphaMin", 0.0f);
+				GL_CALL(glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE));
+			}
 			if (batch.depthOnly) { GL_CALL(glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE)); }
 		}
 	}
 	GL_CALL(glBlendEquation(GL_FUNC_ADD)); GL_CALL(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
-	GL_CALL(glEnable(GL_DEPTH_TEST)); GL_CALL(glDepthMask(GL_FALSE));
+	GL_CALL(glEnable(GL_DEPTH_TEST)); GL_CALL(glDepthMask(GL_FALSE)); GL_CALL(glDepthFunc(GL_LESS));
 	s.shader->setUniform("u_vertexColor", (unsigned int)0);
 	s.shader->setUniform("u_alphaMask", (unsigned int)0);
 	s.shader->setUniform("u_flipV", (unsigned int)0);
@@ -302,7 +323,7 @@ void RMDRenderer::render(const Common::RMD &rmd, int width, int height, float ro
 	GL_CALL(glEnable(GL_POLYGON_OFFSET_FILL));
 	GL_CALL(glClearColor(32.0f / 255.0f, 32.0f / 255.0f, 40.0f / 255.0f, 1.0f));
 	GL_CALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
-	s.shader->use(true); GL_CALL(glUniformMatrix4fv(s.shader->getUniformLocation("u_projection"), 1, GL_FALSE, proj)); s.shader->setUniform("u_texture", (unsigned int)0); s.shader->setUniform("u_unlit", (unsigned int)(unlit ? 1 : 0)); s.shader->setUniform("u_vertexColor", (unsigned int)0); s.shader->setUniform("u_alphaMask", (unsigned int)0); s.shader->setUniform("u_flipV", (unsigned int)0);
+	s.shader->use(true); GL_CALL(glUniformMatrix4fv(s.shader->getUniformLocation("u_projection"), 1, GL_FALSE, proj)); s.shader->setUniform("u_texture", (unsigned int)0); s.shader->setUniform("u_unlit", (unsigned int)(unlit ? 1 : 0)); s.shader->setUniform("u_vertexColor", (unsigned int)0); s.shader->setUniform("u_alphaMask", (unsigned int)0); s.shader->setUniform("u_flipV", (unsigned int)0); s.shader->setUniform1f("u_alphaMin", 0.0f);
 	const int stride = 12 * sizeof(float); const byte *base = (const byte *)s.verts.data(); s.shader->enableVertexAttribute("a_position", 3, GL_FLOAT, GL_FALSE, stride, base); s.shader->enableVertexAttribute("a_normal", 3, GL_FLOAT, GL_FALSE, stride, base + 3 * sizeof(float)); s.shader->enableVertexAttribute("a_uv", 2, GL_FLOAT, GL_FALSE, stride, base + 6 * sizeof(float)); s.shader->enableVertexAttribute("a_color", 4, GL_FLOAT, GL_FALSE, stride, base + 8 * sizeof(float)); GL_CALL(glActiveTexture(GL_TEXTURE0));
 	s.shader->use(true);
 	for (uint r = 0; r < s.runs.size(); ++r) { const Tri &t = s.tris[s.runs[r].first]; s.shader->setUniform("u_diffuse", Math::Vector3d(t.diffuse[0], t.diffuse[1], t.diffuse[2])); s.shader->setUniform("u_hasTexture", (unsigned int)(t.texture ? 1 : 0)); s.shader->setUniform("u_hasUv", (unsigned int)(t.hasUv ? 1 : 0)); s.shader->setUniform("u_alphaTest", (unsigned int)(t.alphaTest ? 1 : 0)); if (t.texture) { GL_CALL(glBindTexture(GL_TEXTURE_2D, textureFor(t.texture))); GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapMode(t.horizontalAddressing))); GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapMode(t.verticalAddressing))); } if (t.alpha) { GL_CALL(glEnable(GL_BLEND)); GL_CALL(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)); GL_CALL(glDepthMask(GL_FALSE)); } else { GL_CALL(glDisable(GL_BLEND)); GL_CALL(glDepthMask(GL_TRUE)); } GL_CALL(glPolygonOffset(0.0f, -(float)r * 32.0f)); GL_CALL(glDrawArrays(GL_TRIANGLES, s.runs[r].first * 3, s.runs[r].count * 3)); }
