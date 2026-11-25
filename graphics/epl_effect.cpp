@@ -364,10 +364,14 @@ public:
 					p.age = age;
 				}
 				applyKeys(p, lifetime);
-				if (preroll)
+				// A fresh particle leaves its trail alone; a prerolled one only seeds slot 0.
+				if (preroll) {
 					++p.age;
-				if (_trailLength)
-					updateTrail(i);
+					if (_trailLength) {
+						_slots[_capacity + i * _trailLength] = p;
+						_slots[_capacity + i * _trailLength].age = -1;
+					}
+				}
 				continue;
 			}
 			move(p);
@@ -479,16 +483,6 @@ protected:
 	void spawn(Particle &p) {
 		p = Particle();
 		p.age = 0;
-		const float sizeVariation = _params.f32(0x6C), angleVariation = _params.f32(0x98);
-		p.angleMode = _params.u8(0x9C);
-		p.sizeFactor = (1 - sizeVariation) + sizeVariation * EffectRandom::nextFloat();
-		if (p.angleMode != 2)
-			p.angleFactor = (1 - angleVariation) + angleVariation * EffectRandom::nextFloat();
-		if (p.angleMode == 1) {
-			p.angleOffset = 2 * kPi * EffectRandom::nextFloat();
-			if (EffectRandom::next() & 1)
-				p.angleFactor = -p.angleFactor;
-		}
 		const int32 lifetime = MAX(1, _params.s32(0xB8));
 		const float *origin = local() ? nullptr : _emitter;
 		switch (_record.sub) {
@@ -552,6 +546,17 @@ protected:
 		default:
 			break;
 		}
+		// The size/angle factors are drawn after the model's own random values.
+		const float sizeVariation = _params.f32(0x6C), angleVariation = _params.f32(0x98);
+		p.angleMode = _params.u8(0x9C);
+		p.sizeFactor = (1 - sizeVariation) + sizeVariation * EffectRandom::nextFloat();
+		if (p.angleMode != 2)
+			p.angleFactor = (1 - angleVariation) + angleVariation * EffectRandom::nextFloat();
+		if (p.angleMode == 1) {
+			p.angleOffset = 2 * kPi * EffectRandom::nextFloat();
+			if (EffectRandom::next() & 1)
+				p.angleFactor = -p.angleFactor;
+		}
 		for (int k = 0; k < 3; ++k)
 			p.previous[k] = p.position[k];
 	}
@@ -585,10 +590,10 @@ protected:
 			break;
 		}
 		case 3: {
-			const float gravity = _params.f32(0xF0), acceleration = _params.f32(0xEC);
+			const float gravity = _params.f32(0xF0);
 			p.height += p.rise * t - 0.5f * gravity * t * t;
 			p.radius += p.radiusStep * t;
-			helixPosition(p, t * (p.omega + 0.5f * acceleration * t) + p.phase);
+			helixPosition(p, p.phase); // preroll keeps the spawn angle; only height and radius advance
 			break;
 		}
 		case 5: {
@@ -689,15 +694,29 @@ protected:
 		trail[0] = head;
 		trail[0].age = -1;
 		if (_trailWidth > 1 && _trailCount >= 2 && previousHead.age >= 0) {
-			for (int32 k = 1; k < _trailWidth; ++k) {
-				const float t = (float)k / (_trailWidth + 1);
+			// With enough history the in-between slots follow a Catmull-Rom curve through the
+			// head two steps back, the previous head and the current head (doubled).
+			const bool curved = head.age >= 2 && _trailCount >= 3;
+			const Particle *older = curved && 2 * _trailWidth < (int32)_trailLength ? &trail[2 * _trailWidth] : nullptr;
+			if (curved && (!older || older->age < 0))
+				return;
+			for (int32 k = _trailWidth - 1; k >= 1; --k) {
+				const float t = (float)(_trailWidth - k) / (_trailWidth + 1); // from the previous head
 				Particle &slot = trail[k];
-				slot = head;
-				for (int a = 0; a < 3; ++a)
-					slot.position[a] = head.position[a] + (previousHead.position[a] - head.position[a]) * t;
-				slot.size = head.size + (previousHead.size - head.size) * t;
-				slot.angle = head.angle + (previousHead.angle - head.angle) * t;
-				slot.color = (lerpColor(head.color, previousHead.color, t) & 0xFFFFFF) | (previousHead.color & 0xFF000000);
+				slot = previousHead;
+				for (int a = 0; a < 3; ++a) {
+					const float p1 = previousHead.position[a], p2 = head.position[a];
+					if (older) {
+						const float p0 = older->position[a], p3 = p2;
+						slot.position[a] = 0.5f * (2 * p1 + (p2 - p0) * t + (2 * p0 - 5 * p1 + 4 * p2 - p3) * t * t +
+							(-p0 + 3 * p1 - 3 * p2 + p3) * t * t * t);
+					} else {
+						slot.position[a] = p1 + (p2 - p1) * t;
+					}
+				}
+				slot.size = previousHead.size + (head.size - previousHead.size) * t;
+				slot.angle = previousHead.angle + (head.angle - previousHead.angle) * t;
+				slot.color = (lerpColor(previousHead.color, head.color, t) & 0xFFFFFF) | (previousHead.color & 0xFF000000);
 				slot.age = head.age;
 			}
 		}
@@ -970,10 +989,10 @@ public:
 
 	void draw(const EffectCamera &camera, uint32 nodeColor, Common::Array<EffectBatch> &out) override {
 		const int32 duration = _params.s32(0x34);
-		const int32 age = _age - 1; // geometry is rebuilt before the age step
-		if (_age <= 0 || (duration != 0 && age > duration) || (_record.sub != 1 && _record.sub != 3))
+		const int32 age = _age - 1; // geometry is rebuilt before the age step, colour after it
+		if (_age <= 0 || (duration != 0 && _age > duration) || (_record.sub != 1 && _record.sub != 3))
 			return;
-		const uint32 material = modulate(_params.sampleColor(0x00, 0x24, age, duration), nodeColor);
+		const uint32 material = modulate(_params.sampleColor(0x00, 0x24, _age, duration), nodeColor);
 		if ((material >> 24) == 0)
 			return;
 		const uint32 tail = _record.sub == 1 ? 0x60 : 0x5C;
@@ -1043,16 +1062,24 @@ public:
 		int32 births = burst ? (int32)_quads.size() : _params.s32(0x50);
 		for (uint i = 0; i < _quads.size(); ++i) {
 			Quad &q = _quads[i];
-			if (q.age >= life)
+			// Death and birth each take a frame of their own; geometry is first built the frame after birth.
+			if (q.age >= life) {
 				q.age = _params.u8(0x54) ? -1 : -2;
-			if (q.age == -1 && births > 0) {
-				--births;
-				spawn(q, life);
-				if (burst)
-					preAdvance(q, (int32)(EffectRandom::next() % (uint32)life));
+				q.built = false;
+				continue;
+			}
+			if (q.age == -1) {
+				if (births > 0) {
+					--births;
+					spawn(q, life);
+					if (burst)
+						preAdvance(q, (int32)(EffectRandom::next() % (uint32)life));
+				}
+				continue;
 			}
 			if (q.age >= 0) {
 				step(q);
+				q.built = true;
 				++q.age;
 			}
 		}
@@ -1061,9 +1088,9 @@ public:
 
 	void draw(const EffectCamera &camera, uint32 nodeColor, Common::Array<EffectBatch> &out) override {
 		const int32 duration = _params.s32(0x34), life = _params.s32(0x4C);
-		if (_frame <= 0 || (duration != 0 && _frame - 1 > duration) || life <= 0 || !supported())
+		if (_frame <= 0 || (duration != 0 && _frame > duration) || life <= 0 || !supported())
 			return;
-		const uint32 material = modulate(_params.sampleColor(0x00, 0x24, _frame - 1, duration), nodeColor);
+		const uint32 material = modulate(_params.sampleColor(0x00, 0x24, _frame, duration), nodeColor);
 		EffectBatch batch;
 		batch.blendMode = _params.u16(0x28);
 		batch.depthTest = _params.u8(0x56) != 0;
@@ -1071,7 +1098,7 @@ public:
 		const uint32 innerColor = _params.u32(0x58), outerColor = _params.u32(0x5C);
 		for (uint i = 0; i < _quads.size(); ++i) {
 			const Quad &q = _quads[i];
-			if (q.age <= 0)
+			if (q.age <= 0 || !q.built)
 				continue;
 			const float env = envelope(q.age - 1, life);
 			const bool odd = (i & 1) != 0;
@@ -1084,7 +1111,7 @@ public:
 					v[k].u = v[k].v = 0;
 				}
 				v[0].color = v[1].color = scaleRGB(outerColor, env, 0);
-				v[2].color = v[4].color = (uint32)(255 * env * (odd ? 0.5f : 1.0f)) << 24;
+				v[2].color = v[4].color = (uint32)((odd ? 128 : 255) * env) << 24;
 				v[3].color = scaleRGB(innerColor, env, odd ? 0xFF : 0x40);
 				static const int kRays[9] = {0, 3, 2, 0, 1, 3, 1, 4, 3};
 				emit(batch, v, kRays, 9, material);
@@ -1111,6 +1138,7 @@ public:
 private:
 	struct Quad {
 		int32 age = -1;
+		bool built = false;
 		float phase = 0, omega = 0;
 		float width = 0, length = 0, lengthStep = 0, radius = 0, radiusStep = 0, tilt = 0, tiltStep = 0;
 		float distance = 0, speed = 0;
@@ -1149,7 +1177,8 @@ private:
 		q.phase = 2 * kPi * EffectRandom::nextFloat();
 		switch (_record.sub) {
 		case 1: {
-			q.omega = vary(_params.f32(0x74), _params.f32(0x78)) * randomSign();
+			q.omega = vary(_params.f32(0x74), _params.f32(0x78)); // variation first, then the sign
+			q.omega *= randomSign();
 			q.radius = vary(_params.f32(0x6C), _params.f32(0x70));
 			const float factor = vary(1.0f, _params.f32(0x68));
 			q.width = _params.f32(0x60) * factor;
@@ -1157,27 +1186,28 @@ private:
 			break;
 		}
 		case 4: {
-			q.omega = vary(_params.f32(0x74), _params.f32(0x78)) * randomSign();
+			q.omega = vary(_params.f32(0x74), _params.f32(0x78)); // variation first, then the sign
+			q.omega *= randomSign();
 			const int32 grow = MAX(1, _params.s32(0x70));
 			q.lengthStep = vary(_params.f32(0x68), _params.f32(0x6C)) / grow;
 			q.width = vary(_params.f32(0x60), _params.f32(0x64));
 			break;
 		}
 		case 5:
-			q.width = vary(_params.f32(0x60), _params.f32(0x64));
 			q.length = vary(_params.f32(0x68), _params.f32(0x6C));
 			q.distance = vary(_params.f32(0x70), _params.f32(0x74));
 			q.speed = vary(_params.f32(0x78), _params.f32(0x7C));
+			q.width = vary(_params.f32(0x60), _params.f32(0x64));
 			break;
 		case 6: {
 			auto pair = [&](uint32 off, float &value, float &delta) {
 				value = vary(_params.f32(off), _params.f32(off + 4));
 				delta = (vary(_params.f32(off + 8), _params.f32(off + 12)) - value) / life;
 			};
-			q.width = vary(_params.f32(0x60), _params.f32(0x64));
 			pair(0x68, q.length, q.lengthStep);
 			pair(0x78, q.radius, q.radiusStep);
 			pair(0x88, q.tilt, q.tiltStep);
+			q.width = vary(_params.f32(0x60), _params.f32(0x64));
 			q.omega = vary(_params.f32(0x98), _params.f32(0x9C));
 			break;
 		}
@@ -1199,7 +1229,7 @@ private:
 	}
 
 	float angle(const Quad &q, float accel) const {
-		const float sign = q.omega < 0 ? -1.0f : 1.0f;
+		const float sign = q.omega > 0 ? 1.0f : -1.0f; // the game takes the minus branch at 0
 		return q.phase + q.age * (q.omega + sign * 0.5f * accel * q.age);
 	}
 
@@ -1298,19 +1328,27 @@ public:
 		int32 births = burst ? (int32)_strips.size() : _params.s32(0x84);
 		for (uint i = 0; i < _strips.size(); ++i) {
 			Strip &s = _strips[i];
-			if (s.age >= life)
+			// Death and birth each take a frame of their own; a strip is first built the frame after birth.
+			if (s.age >= life) {
 				s.age = _params.u8(0x88) ? -1 : -2;
-			if (s.age == -1 && births > 0) {
-				--births;
-				spawn(s, life);
-				if (burst) {
-					s.age = (int32)(EffectRandom::next() % (uint32)life);
-					s.radius += s.radiusStep * s.age;
-					s.height += s.heightStep * s.age;
+				s.built = false;
+				continue;
+			}
+			if (s.age == -1) {
+				if (births > 0) {
+					--births;
+					spawn(s, life);
+					if (burst) {
+						s.age = (int32)(EffectRandom::next() % (uint32)life);
+						s.radius += s.radiusStep * s.age;
+						s.height += s.heightStep * s.age;
+					}
 				}
+				continue;
 			}
 			if (s.age >= 0) {
 				build(s);
+				s.built = true;
 				++s.age;
 			}
 		}
@@ -1319,9 +1357,9 @@ public:
 
 	void draw(const EffectCamera &camera, uint32 nodeColor, Common::Array<EffectBatch> &out) override {
 		const int32 duration = _params.s32(0x34), life = _params.s32(0x80);
-		if (_frame <= 0 || (duration != 0 && _frame - 1 > duration) || life <= 0 || _record.sub != 1)
+		if (_frame <= 0 || (duration != 0 && _frame > duration) || life <= 0 || _record.sub != 1)
 			return;
-		const uint32 global = modulate(_params.sampleColor(0x00, 0x24, _frame - 1, duration), nodeColor);
+		const uint32 global = modulate(_params.sampleColor(0x00, 0x24, _frame, duration), nodeColor);
 		EffectBatch batch;
 		batch.blendMode = _params.u16(0x28);
 		batch.depthTest = _params.u8(0xB9) != 0;
@@ -1332,9 +1370,9 @@ public:
 		static const int kStrip[18] = {0, 1, 5, 0, 5, 4, 1, 2, 6, 1, 6, 5, 2, 3, 7, 2, 7, 6};
 		for (uint i = 0; i < _strips.size(); ++i) {
 			const Strip &s = _strips[i];
-			if (s.age <= 0)
+			if (s.age <= 0 || !s.built || s.age >= life) // a strip on its last built frame has colour 0
 				continue;
-			const uint32 material = modulate(_params.sampleColor(0x3C, 0x60, s.age - 1, life), global);
+			const uint32 material = modulate(_params.sampleColor(0x3C, 0x60, s.age, life), global);
 			Vertex rows[8];
 			for (uint32 seg = 0; seg < _segments; ++seg) {
 				for (uint32 r = 0; r < 2; ++r) {
@@ -1368,6 +1406,7 @@ private:
 	};
 	struct Strip {
 		int32 age = -1;
+		bool built = false;
 		float radius = 0, radiusStep = 0, height = 0, heightStep = 0, swell = 0;
 		float phase = 0, omega = 0, width = 0, twist = 0, v = 0;
 		Common::Array<Row> rows;
@@ -1449,7 +1488,7 @@ public:
 		const float size = _params.sampleScalar(0x34, age, duration) * _params.f32(0x90);
 		const float hx = texW / 32.0f * size, hy = texH / 32.0f * size;
 		const float spin = _params.sampleScalar(0x60, age, duration), c = cosf(spin), s = sinf(spin);
-		static const float kCorner[4][4] = {{-1, -1, 0, 0}, {1, -1, 1, 0}, {-1, 1, 0, 1}, {1, 1, 1, 1}};
+		static const float kCorner[4][4] = {{-1, -1, 0, 1}, {1, -1, 1, 1}, {-1, 1, 0, 0}, {1, 1, 1, 0}};
 		Vertex v[4];
 		for (int k = 0; k < 4; ++k) {
 			const float x = kCorner[k][0] * hx, z = kCorner[k][1] * hy;
@@ -1737,6 +1776,9 @@ void EPLEffect::placeCameraDependent(const EffectCamera &camera) {
 	if (_root.flags & (Common::EPL::kStateFaceCamera | Common::EPL::kStateFaceCameraYaw)) {
 		Child root;
 		root.node.state = _root;
+		// For the root, the orientation slot holds the current world rotation.
+		for (int k = 0; k < 4; ++k)
+			root.node.state.orientation[k] = _rotation[k];
 		float aim[4], saved[4];
 		resolveOrientation(root, o, camera, aim);
 		for (int k = 0; k < 4; ++k)
