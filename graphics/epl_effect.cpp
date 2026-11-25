@@ -297,6 +297,7 @@ public:
 	}
 
 	void reset() override { _ticks = 0; }
+	void clearHistory() override { _accumulator = 0; }
 	void setPosition(const float p[3]) override { for (int i = 0; i < 3; ++i) _emitter[i] = p[i]; }
 	void setRotation(const float q[4]) override { for (int i = 0; i < 4; ++i) _rotation[i] = q[i]; }
 	void setScale(float scale) override {
@@ -407,10 +408,13 @@ public:
 			}
 			float angle = p.angle;
 			if (p.angleMode == 2) {
-				// Rotation follows the particle's on-screen motion since the previous frame.
+				// Rotation follows the particle's on-screen motion since the previous frame, measured
+				// from the new position back to the old one on the raw (unposed) positions.
+				// shortcut: the game projects with its perspective camera; this uses the camera's
+				// screen axes. No corpus particle uses this mode.
 				float d[3];
 				for (int k = 0; k < 3; ++k)
-					d[k] = p.position[k] - p.previous[k];
+					d[k] = p.previous[k] - p.position[k];
 				const float sx = d[0] * camera.right[0] + d[1] * camera.right[1] + d[2] * camera.right[2];
 				const float sy = d[0] * camera.up[0] + d[1] * camera.up[1] + d[2] * camera.up[2];
 				angle = (sx != 0 || sy != 0) ? atan2f(sy, sx) : 0;
@@ -1818,11 +1822,16 @@ void EPLEffect::advance(const EffectCamera &camera) {
 			child.primitive->advance();
 	}
 	++_frame;
+	_advancedSinceDraw = true;
 }
 
 void EPLEffect::draw(const EffectCamera &camera, Common::Array<EffectBatch> &out) {
 	if (_frame <= 0)
 		return;
+	// Frames drawn without a tick in between still re-aim the camera-facing nodes.
+	if (!_advancedSinceDraw)
+		placeCameraDependent(camera);
+	_advancedSinceDraw = false;
 	for (uint i = 0; i < _children.size(); ++i) {
 		Child &child = _children[i];
 		if (child.primitive && _frame - 1 >= child.node.startFrame && !(child.node.flags & 2))
@@ -1830,10 +1839,13 @@ void EPLEffect::draw(const EffectCamera &camera, Common::Array<EffectBatch> &out
 	}
 }
 
-void EPLEffect::restart() {
+void EPLEffect::restart(bool fresh) {
 	for (uint i = 0; i < _children.size(); ++i)
-		if (_children[i].primitive)
+		if (_children[i].primitive) {
 			_children[i].primitive->reset();
+			if (fresh)
+				_children[i].primitive->clearHistory();
+		}
 	_frame = 0;
 }
 
