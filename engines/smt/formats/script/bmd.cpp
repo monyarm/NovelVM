@@ -25,8 +25,20 @@ BMD::BMD(Common::SeekableReadStream *stream) {
 	readFile(stream);
 }
 
+namespace {
+
+// Dialog and option names are 24 bytes, NUL padded.
+Common::String readName(Common::SeekableReadStream *stream) {
+	char name[25] = {};
+	stream->read(name, 24);
+	return Common::String(name);
+}
+
+} // End of anonymous namespace
+
 void BMD::readFile(Common::SeekableReadStream *stream) {
-	readHeader(stream);
+	if (!readHeader(stream))
+		return;
 	readRelocationTable(stream);
 	readDialogHeaders(stream);
 	readSpeakerTableHeader(stream);
@@ -50,7 +62,7 @@ void BMD::readFile(Common::SeekableReadStream *stream) {
 	// }
 }
 
-void BMD::readHeader(Common::SeekableReadStream *stream) {
+bool BMD::readHeader(Common::SeekableReadStream *stream) {
 	mPositionBase = stream->pos();
 	header.FileType = stream->readByte();
 	header.IsCompressed = stream->readByte() != 0;
@@ -61,7 +73,8 @@ void BMD::readHeader(Common::SeekableReadStream *stream) {
 	header.RelocationTable.Offset = stream->readSint32LE();
 	header.RelocationTableSize = stream->readSint32LE();
 	header.DialogCount = stream->readSint32LE();
-	header.IsRelocated = stream->readSint16LE() != 0;
+	header.IsRelocated = stream->readByte() != 0; // 0x1D is padding
+	stream->readByte();
 	header.Field1E = stream->readSint16LE();
 
 	if (memcmp(header.Magic, BMDHeader::MAGIC_V1, 4) == 0 || memcmp(header.Magic, BMDHeader::MAGIC_V0, 4) == 0) {
@@ -71,7 +84,9 @@ void BMD::readHeader(Common::SeekableReadStream *stream) {
 		swapHeader();
 	} else {
 		warning("BMD Header magic value does not match");
+		return false;
 	}
+	return true;
 }
 
 void BMD::readRelocationTable(Common::SeekableReadStream *stream) {
@@ -92,18 +107,12 @@ void BMD::readDialogHeaders(Common::SeekableReadStream *stream) {
 
 		if (dialogHeaders[i].Dialog.Offset != 0) {
 
-			switch (dialogHeaders[i].DialogKind) {
-			case BinaryDialogKind::Message:
-				readMessageDialog(stream, &dialogHeaders[i].Dialog.Value.bmd, dialogHeaders[i].Dialog.Offset);
-
-				break;
-			case BinaryDialogKind::Selection:
+			// The game treats kind 1 as a selection and every other kind as a message.
+			if (dialogHeaders[i].DialogKind == BinaryDialogKind::Selection) {
 				readSelectionDialog(stream, &dialogHeaders[i].Dialog.Value.bsd, dialogHeaders[i].Dialog.Offset);
-
-				break;
-			default:
-				error("Unknown message type: %#08x", dialogHeaders[i].DialogKind);
-				break;
+			} else {
+				dialogHeaders[i].DialogKind = BinaryDialogKind::Message;
+				readMessageDialog(stream, &dialogHeaders[i].Dialog.Value.bmd, dialogHeaders[i].Dialog.Offset);
 			}
 		}
 	}
@@ -160,18 +169,16 @@ void BMD::readMessageDialog(Common::SeekableReadStream *stream, BinaryMessageDia
 
 	int oldPos = stream->pos();
 	stream->seek(mPositionBase + BMDHeader::SIZE + offset);
-	const char *_name = new const char[24]();
-	stream->read((void *)_name, 24);
-	message->Name = Common::String(_name, 24);
-	//debug("%s", _name);
+	message->Name = readName(stream);
 	message->PageCount = (Endianness ? stream->readSint16BE() : stream->readSint16LE());
-	// speakerId = 0xFFFF = use no speaker name?
-	// speakerId = 0x8000 = use variable speaker name?
+	// 0xFFFF: no speaker name; bit 0x8000: the name is the window's runtime string slot given
+	// by the low 15 bits (see getSpeaker); otherwise an index into the speaker name table.
 	message->SpeakerId = (Endianness ? stream->readUint16BE() : stream->readUint16LE());
 
 	if (message->PageCount > 0) {
 		message->PageStartAddresses = Common::Array<int32>(message->PageCount);
-		stream->read(message->PageStartAddresses.data(), message->PageCount * 4);
+		for (int i = 0; i < message->PageCount; ++i)
+			message->PageStartAddresses[i] = Endianness ? stream->readSint32BE() : stream->readSint32LE();
 		message->TextBufferSize = (Endianness ? stream->readSint32BE() : stream->readSint32LE());
 		message->TextBuffer = Common::Array<byte>(message->TextBufferSize);
 		stream->read(message->TextBuffer.data(), message->TextBufferSize);
@@ -186,18 +193,18 @@ void BMD::readMessageDialog(Common::SeekableReadStream *stream, BinaryMessageDia
 
 	stream->seek(oldPos);
 }
+// TODO: message text is kept as raw bytes and not decoded. As P4 reads it: 0x00 ends a string,
+// 0x0A is a newline, 0x80-0xEF starts a two-byte glyph, other bytes below 0x80 are single
+// characters, and 0xFn starts a function call: the next byte is the group (top 3 bits) and
+// function index (low 5 bits), and the call is n * 2 bytes long in all.
 void BMD::ParsePages(Common::Array<int> lineStartAddresses, Common::Array<byte> buffer, BinaryFormatVersion version){
-	
 }
 
 void BMD::readSelectionDialog(Common::SeekableReadStream *stream, BinarySelectionDialog *message, int offset) {
 	int oldPos = stream->pos();
 	stream->seek(mPositionBase + BMDHeader::SIZE + offset);
 
-	const char *_name = new const char[24]();
-	stream->read((void *)_name, 24);
-	message->Name = Common::String(_name, 24);
-	//debug("%s", _name);
+	message->Name = readName(stream);
 
 	message->Field18 = (Endianness ? stream->readSint16BE() : stream->readSint16LE());
 	message->OptionCount = (Endianness ? stream->readSint16BE() : stream->readSint16LE());
@@ -205,7 +212,8 @@ void BMD::readSelectionDialog(Common::SeekableReadStream *stream, BinarySelectio
 	message->Field1E = (Endianness ? stream->readSint16BE() : stream->readSint16LE());
 
 	message->OptionStartAddresses = Common::Array<int32>(message->OptionCount);
-	stream->read(message->OptionStartAddresses.data(), message->OptionCount * 4);
+	for (int i = 0; i < message->OptionCount; ++i)
+		message->OptionStartAddresses[i] = Endianness ? stream->readSint32BE() : stream->readSint32LE();
 	message->TextBufferSize = (Endianness ? stream->readSint32BE() : stream->readSint32LE());
 	message->TextBuffer = Common::Array<byte>(message->TextBufferSize);
 	stream->read(message->TextBuffer.data(), message->TextBufferSize);
@@ -235,7 +243,9 @@ void BMD::swapHeader() {
 
 Common::String BMD::getSpeaker(int index) {
 
-	if (index >= 0 && (uint)index <= speakerTableHeader.SpeakerNameArray.Value.size()) {
+	// TODO: speaker ids with bit 0x8000 name a runtime string slot of the message window (P4's
+	// FACILITY/MES/P4_COMBINE_MSG.BMD uses 0x8001); there is no such slot here, so they get "".
+	if (index >= 0 && (uint)index < speakerTableHeader.SpeakerNameArray.Value.size()) {
 		return Common::String((const char *)speakerTableHeader.SpeakerNameArray.Value[index].Value.data(), speakerTableHeader.SpeakerNameArray.Value[index].Value.size());
 	}
 	return "";
