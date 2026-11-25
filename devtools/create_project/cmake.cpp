@@ -354,6 +354,10 @@ void CMakeProvider::createProjectFile(const std::string &name, const std::string
 
 void CMakeProvider::writeWarnings(std::ofstream &output) const {
 	output << "if (MSVC)\n";
+	// AGS's String class has implicit conversions to const char *, Common::String
+	// and bool. Under /std:c++17 MSVC reports C2445 for ternaries mixing it with
+	// string literals, so keep the pre-conformance resolution for CMake builds too.
+	output << "\tadd_compile_options(/Zc:ternary-)\n";
 	// TODO: Support MSVC warnings
 	output << "else()\n";
 	output << "\tset(CMAKE_CXX_FLAGS \"${CMAKE_CXX_FLAGS}";
