@@ -64,6 +64,8 @@ public:
 	virtual void advance() = 0;
 	virtual void draw(const EffectCamera &camera, uint32 nodeColor, Common::Array<EffectBatch> &out) = 0;
 	virtual void reset() = 0;
+	/** Also forget state the game only rebuilds with a new instance (on a slot switch). */
+	virtual void clearHistory() {}
 	virtual void setPosition(const float position[3]) = 0;
 	virtual void setRotation(const float rotation[4]) = 0;
 	virtual void setScale(float scale) = 0;
@@ -86,8 +88,11 @@ public:
 	/** One tick: camera-dependent placement, then every started node's primitive advances. */
 	void advance(const EffectCamera &camera);
 	void draw(const EffectCamera &camera, Common::Array<EffectBatch> &out);
-	/** Restart every primitive from frame 0. */
-	void restart();
+	/**
+	 * Restart every primitive from frame 0. `fresh`: as the game's slot switch, which builds new
+	 * instances; otherwise as its restart-on-loop, which keeps e.g. emitter rate remainders.
+	 */
+	void restart(bool fresh = false);
 
 private:
 	struct Child {
@@ -101,6 +106,7 @@ private:
 	float _position[3] = {0, 0, 0};
 	float _rotation[4] = {0, 0, 0, 1};
 	int32 _frame = 0;
+	bool _advancedSinceDraw = false;
 	Common::Array<Child> _children;
 
 	void applyRotation(const float rotation[4]);
