@@ -3,7 +3,10 @@
 #include <cmath>
 
 #include "common/endian.h"
+#include "common/memstream.h"
 #include "common/util.h"
+#include "graphics/rmd_render_mesh.h"
+#include "graphics/surface.h"
 
 namespace Graphics {
 
@@ -276,16 +279,19 @@ EffectTextureRef textureFor(const Common::EPL::Record &record) {
 
 class ParticleEmitter : public EffectPrimitive {
 public:
-	ParticleEmitter(const Common::EPL::Record &record, EffectTextureSource *textures)
+	/** Emitter parameters start at `paramOffset` in the record's parameter block. */
+	ParticleEmitter(const Common::EPL::Record &record, EffectTextureSource *textures, uint32 paramOffset = 0,
+			uint32 maxCapacity = 300, bool trails = true)
 			: _record(record), _textures(textures) {
-		_original.bytes = record.parameters;
+		if (paramOffset < record.parameters.size())
+			_original.bytes = Common::Array<byte>(record.parameters.data() + paramOffset, record.parameters.size() - paramOffset);
 		_params = _original;
 		_texture = textureFor(_record);
 		const int32 emit = _params.s32(0x20), life = _params.s32(0xB8);
 		const uint32 rate = _params.u32(0x24);
-		_capacity = (uint32)MIN<int64>(300, (int64)(emit ? emit : life) * rate);
-		_trailCount = MAX(0, _params.s32(0xC0));
-		_trailWidth = MAX(0, _params.s32(0xC4));
+		_capacity = (uint32)CLIP<int64>((int64)(emit ? emit : life) * rate, 0, maxCapacity);
+		_trailCount = trails ? MAX(0, _params.s32(0xC0)) : 0;
+		_trailWidth = trails ? MAX(0, _params.s32(0xC4)) : 0;
 		_trailLength = (uint32)(_trailCount * _trailWidth);
 		_slots.resize(_capacity * (_trailLength + 1));
 	}
@@ -299,6 +305,7 @@ public:
 		static const uint32 kWave[] = {0xC8, 0xCC, 0xD4, 0xD8, 0xE0};
 		static const uint32 kHelix[] = {0xC8, 0xCC, 0xD4, 0xE4, 0xF0};
 		static const uint32 kCone[] = {0xC8, 0xD8, 0xE0, 0xE4};
+		static const uint32 kBounce[] = {0xC8, 0xDC, 0xE4, 0xE8};
 		_params = _original;
 		for (uint32 off : kSize)
 			_params.setF32(off, _original.f32(off) * scale);
@@ -308,6 +315,7 @@ public:
 		case 1: fields = kWave; count = ARRAYSIZE(kWave); break;
 		case 3: fields = kHelix; count = ARRAYSIZE(kHelix); break;
 		case 5: fields = kCone; count = ARRAYSIZE(kCone); break;
+		case 8: fields = kBounce; count = ARRAYSIZE(kBounce); break;
 		default: break;
 		}
 		for (uint32 i = 0; i < count; ++i)
@@ -327,7 +335,7 @@ public:
 		uint32 budget;
 		if (emitDuration != 0 && _ticks >= emitDuration) {
 			budget = 0;
-		} else if (_ticks == 0 && _params.u8(0xBD)) {
+		} else if (_ticks == 0 && _params.u8(0xBD) && _record.sub != 8) {
 			budget = rateVariation > 0 ? (uint32)(_capacity * (1.1f - rateVariation) * EffectRandom::nextFloat()) : _capacity;
 			preroll = true;
 		} else {
@@ -349,6 +357,7 @@ public:
 					continue;
 				--budget;
 				spawn(p);
+				spawned(i);
 				if (preroll) {
 					const int32 age = (int32)(EffectRandom::next() % (uint32)lifetime);
 					prerollAdvance(p, age);
@@ -425,7 +434,7 @@ public:
 			out.push_back(batch);
 	}
 
-private:
+protected:
 	struct Particle {
 		float position[3] = {0, 0, 0};
 		float previous[3] = {0, 0, 0};
@@ -437,7 +446,7 @@ private:
 		// model state
 		float axis[3] = {0, 0, 0}, wobble[3] = {0, 0, 0};
 		float speed = 0, amplitude = 0, amplitudeStep = 0, phase = 0, phaseStep = 0, previousSin = 0;
-		float radius = 0, radiusStep = 0, height = 0, rise = 0, omega = 0;
+		float radius = 0, radiusStep = 0, height = 0, rise = 0, omega = 0, bounce = 0;
 		float spawnRotation[4] = {0, 0, 0, 1}, spawnPosition[3] = {0, 0, 0};
 	};
 
@@ -453,7 +462,9 @@ private:
 	int32 _ticks = 0;
 	float _accumulator = 0;
 
-	bool supported() const { return _record.sub == 1 || _record.sub == 3 || _record.sub == 5; }
+	bool supported() const { return _record.sub == 1 || _record.sub == 3 || _record.sub == 5 || _record.sub == 8; }
+	/** Called after primary particle slot `index` is born. */
+	virtual void spawned(uint32 index) {}
 	bool local() const { return _params.u8(0xBC) != 0; }
 
 	void toWorld(const float in[3], float out[3]) const {
@@ -511,6 +522,19 @@ private:
 			for (int k = 0; k < 3; ++k)
 				p.spawnPosition[k] = _emitter[k];
 			helixPosition(p, p.phase);
+			break;
+		}
+		case 8: { // bounce: launched downward within the cone, bouncing off a floor height
+			const float cone = vary(_params.f32(0xD0), _params.f32(0xD4));
+			float d[3] = {cone * signedRand(), -(1 - cone), cone * signedRand()};
+			normalize(d);
+			toWorld(d, p.axis);
+			const float speed = _params.f32(0xDC);
+			p.speed = fabsf(vary(speed, _params.f32(0xE0)));
+			p.bounce = -vary(_params.f32(0xEC), _params.f32(0xF0));
+			const float spread = vary(_params.f32(0xC8), _params.f32(0xCC)) * (speed < 0 ? -1 : 1);
+			for (int k = 0; k < 3; ++k)
+				p.position[k] = p.axis[k] * spread + (origin ? origin[k] : 0);
 			break;
 		}
 		case 5: { // cone: launched along a random direction within the cone
@@ -604,6 +628,20 @@ private:
 			helixPosition(p, theta);
 			break;
 		}
+		case 8: {
+			const float step = MAX(0.0f, p.speed + _params.f32(0xE4) * age);
+			p.axis[1] -= _params.f32(0xE8);
+			p.position[0] += p.axis[0] * step;
+			p.position[1] += p.axis[1];
+			p.position[2] += p.axis[2] * step;
+			const float floor = _params.f32(0xD8);
+			if (p.position[1] < floor) {
+				p.bounce *= _params.f32(0xF4);
+				p.axis[1] *= p.bounce;
+				p.position[1] = floor + p.bounce * (p.position[1] - floor);
+			}
+			break;
+		}
 		case 5: {
 			const float step = MAX(0.0f, p.speed + _params.f32(0xE0) * age);
 			for (int k = 0; k < 3; ++k)
@@ -663,6 +701,161 @@ private:
 				slot.age = head.age;
 			}
 		}
+	}
+};
+
+// Kind 28: the particle emitter (after a 0x44-byte header) drawing a small embedded RW model per
+// particle, spinning about a per-particle axis and tinted by an optional six-colour palette.
+class ObjectParticleEmitter : public ParticleEmitter {
+public:
+	ObjectParticleEmitter(const Common::EPL::Record &record, EffectTextureSource *textures)
+			: ParticleEmitter(record, textures, 0x44, 100, false) {
+		_header.bytes = record.parameters;
+		_header.bytes.resize(MIN<uint>(record.parameters.size(), 0x44));
+		_spin.resize(_slots.size());
+		if (record.resourceKind != Common::EPL::kResourceRWStream || record.resource.empty())
+			return;
+		// The embedded stream (texture dictionary + clump) parses like an RMD without Persona chunks.
+		Common::MemoryReadStream stream(record.resource.data(), record.resource.size());
+		Common::RMD model(&stream);
+		if (!model.ok())
+			return;
+		_surfaces.resize(model.textures().size());
+		for (uint i = 0; i < _surfaces.size(); ++i)
+			_surfaces[i] = model.getTextureSurface(i);
+		RMDRenderMesh mesh;
+		assembleRMDMesh(model, _surfaces, 1, 1, 0.0f, nullptr, nullptr, mesh, nullptr, nullptr, false);
+		_mesh = mesh.triangles;
+	}
+	~ObjectParticleEmitter() override {
+		for (uint i = 0; i < _surfaces.size(); ++i)
+			if (_surfaces[i]) {
+				_surfaces[i]->free();
+				delete _surfaces[i];
+			}
+	}
+
+	void setScale(float scale) override {
+		ParticleEmitter::setScale(scale);
+		_instanceScale = scale;
+	}
+
+	void draw(const EffectCamera &camera, uint32 nodeColor, Common::Array<EffectBatch> &out) override {
+		if (_ticks == 0 || _mesh.empty())
+			return;
+		const float spinAccel = _header.f32(0x1C);
+		const bool normaliseSize = _header.u16(0x20) != 0;
+		const uint32 firstBatch = out.size();
+		for (uint i = 0; i < _capacity; ++i) {
+			const Particle &p = _slots[i];
+			if (p.age < 0)
+				continue;
+			const Spin &spin = _spin[i];
+			// Spin about the particle's axis (none while the spin angle is negative), then the
+			// emitter rotation; uniform size; particle position (local mode: in the emitter pose).
+			const float f = spin.omega * p.age + 0.5f * spinAccel * p.age * p.age;
+			float q[4] = {0, 0, 0, 1};
+			if (f >= 0) {
+				const float half = (f + spin.startAngle) / 2;
+				for (int k = 0; k < 3; ++k)
+					q[k] = spin.axis[k] * sinf(half);
+				q[3] = cosf(half);
+			}
+			float rotation[4];
+			multiply(q, _rotation, rotation);
+			const float size = normaliseSize && _instanceScale != 0 ? p.size / _instanceScale : p.size;
+			float position[3] = {p.position[0], p.position[1], p.position[2]};
+			if (local()) {
+				float r[3];
+				rotate(_rotation, position, r);
+				for (int k = 0; k < 3; ++k)
+					position[k] = r[k] + _emitter[k];
+			}
+			float rgba[4];
+			colorToFloats(modulate(modulate(p.color, nodeColor), paletteColor(spin.palette, p.age)), rgba);
+			for (uint t = 0; t < _mesh.size(); ++t) {
+				const RMDRenderTriangle &tri = _mesh[t];
+				EffectBatch *batch = nullptr;
+				for (uint b = firstBatch; b < out.size() && !batch; ++b)
+					if (out[b].texture.surface == tri.texture)
+						batch = &out[b];
+				if (!batch) {
+					out.push_back(EffectBatch());
+					batch = &out.back();
+					batch->blendMode = _params.u16(0x54);
+					batch->texture.surface = tri.texture;
+				}
+				for (int k = 0; k < 3; ++k) {
+					const RMDRenderVertex &in = tri.v[k];
+					const float scaled[3] = {in.x * size, in.y * size, in.z * size};
+					float world[3];
+					rotate(rotation, scaled, world);
+					EffectVertex v;
+					v.x = world[0] + position[0];
+					v.y = world[1] + position[1];
+					v.z = world[2] + position[2];
+					v.u = in.u;
+					v.v = in.v;
+					// The game overrides the material colours; prelight only tints untextured meshes
+					// (textured ones can carry black prelight, as RMDRenderer notes).
+					const bool prelit = tri.texture == nullptr;
+					v.r = rgba[0] * (prelit ? in.r : 1); v.g = rgba[1] * (prelit ? in.g : 1); v.b = rgba[2] * (prelit ? in.b : 1);
+					v.a = rgba[3] * in.a;
+					batch->vertices.push_back(v);
+				}
+			}
+		}
+		// shortcut: the game culls back faces and writes depth for these meshes; effect batches
+		// do neither, which only matters where the particles overlap themselves.
+	}
+
+private:
+	struct Spin {
+		float axis[3] = {0, 1, 0};
+		float omega = 0, startAngle = 0;
+		int32 palette = 0;
+	};
+	Params _header;
+	Common::Array<Spin> _spin;
+	Common::Array<Graphics::Surface *> _surfaces;
+	Common::Array<RMDRenderTriangle> _mesh;
+	float _instanceScale = 1;
+
+	void spawned(uint32 index) override {
+		Spin &s = _spin[index];
+		s = Spin();
+		if (_header.u8(0x00)) {
+			float axis[3] = {signedRand(), signedRand(), signedRand()};
+			const float length = sqrtf(axis[0] * axis[0] + axis[1] * axis[1] + axis[2] * axis[2]);
+			if (length > 0)
+				for (int k = 0; k < 3; ++k)
+					s.axis[k] = axis[k] / length;
+		} else {
+			float axis[3] = {_header.f32(0x04), _header.f32(0x08), _header.f32(0x0C)};
+			normalize(axis);
+			if (axis[0] != 0 || axis[1] != 0 || axis[2] != 0)
+				for (int k = 0; k < 3; ++k)
+					s.axis[k] = axis[k];
+		}
+		s.omega = vary(_header.f32(0x14), _header.f32(0x18));
+		s.startAngle = 2 * kPi * EffectRandom::nextFloat();
+		const int32 mode = _header.s32(0x24);
+		if (mode == 1)
+			s.palette = (int32)(EffectRandom::next() % 6);
+		else if (mode == 2)
+			s.palette = (int32)(index % 6);
+		else
+			s.palette = -1;
+	}
+
+	uint32 paletteColor(int32 start, int32 age) const {
+		if (start < 0)
+			return 0xFFFFFFFF;
+		const int32 segment = MAX(1, _header.s32(0x28) / 6);
+		const int32 i = (start + age / segment) % 6;
+		const float t = (float)(age % segment) / segment;
+		const uint32 a = _header.u32(0x2C + 4 * i), b = _header.u32(0x2C + 4 * ((i + 1) % 6));
+		return (lerpColor(a, b, t) & 0xFFFFFF) | 0xFF000000;
 	}
 };
 
@@ -1253,11 +1446,13 @@ EffectPrimitive *createPrimitive(const Common::EPL::Record &record, EffectTextur
 		return new FlashQuads(record, textures);
 	case Common::EPL::kWind:
 		return new WindFunnel(record);
+	case Common::EPL::kObjectParticle:
+		return new ObjectParticleEmitter(record, textures);
 	case Common::EPL::kBoard:
 		return new Board(record, textures);
 	default:
-		// TODO: model (26, an embedded mini-RMD), object particles (28, mesh particles) and the
-		// screen blur/filter kinds (4, 5) are parsed but not drawn.
+		// TODO: model (26, an embedded mini-RMD) and the screen blur/filter kinds (4, 5) are
+		// parsed but not drawn.
 		return nullptr;
 	}
 }

@@ -191,6 +191,45 @@ public:
 		TS_ASSERT_DELTA(maxZ, 6.0f, 1e-4f);
 	}
 
+	void testBounceParticlesStayAboveFloor() {
+		// Bounce model (sub 8): falling particles never end a tick below the floor (y = 2).
+		Common::Array<byte> d = makeTree(1, 8, 0xF8 + 4);
+		const uint32 r = 0x90 + 0xC0, p = r + 0x2C;
+		d[r + 0x1C] = 4;
+		put32(d, r + 0x20, 0x2C + 0xF8);
+		put32(d, r + 0x24, 4);
+		put32(d, p + 0x24, 1);              // rate
+		put32(d, p + 0x50, 255);
+		putFloat(d, p + 0x5C, 1.0f);
+		putFloat(d, p + 0x64, 1.0f);
+		putFloat(d, p + 0x68, 1.0f);
+		put32(d, p + 0xB8, 60);             // lifetime
+		putFloat(d, p + 0xD0, 0.3f);        // cone
+		putFloat(d, p + 0xD8, 2.0f);        // floor
+		putFloat(d, p + 0xDC, 1.0f);        // speed
+		putFloat(d, p + 0xE8, 0.5f);        // gravity
+		putFloat(d, p + 0xEC, 0.5f);        // bounce
+		putFloat(d, p + 0xF4, 0.8f);        // bounce decay
+		Common::EPL epl(d.data(), d.size());
+		TS_ASSERT(epl.ok());
+		FixedTextures textures;
+		Graphics::EPLEffect effect(epl, &textures);
+		const float position[3] = {0, 20, 0}, identity[4] = {0, 0, 0, 1};
+		effect.setPose(position, identity);
+		Graphics::EffectCamera camera;
+		float minY = 1e9f;
+		for (int i = 0; i < 40; ++i) {
+			effect.advance(camera);
+			Common::Array<Graphics::EffectBatch> batches;
+			effect.draw(camera, batches);
+			for (uint b = 0; b < batches.size(); ++b)
+				for (uint v = 0; v < batches[b].vertices.size(); v += 6) // first corner: centre - 1 in y
+					minY = MIN(minY, batches[b].vertices[v].y + 1.0f);
+		}
+		TS_ASSERT_LESS_THAN(minY, 4.0f);              // they did reach the floor ...
+		TS_ASSERT_LESS_THAN_EQUALS(2.0f - 1e-3f, minY); // ... and never sank through it
+	}
+
 	void testParticlesSpawnAtNodeAndBillboard() {
 		Common::Array<byte> d = makeParticleTree();
 		Common::EPL epl(d.data(), d.size());

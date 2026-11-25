@@ -34,7 +34,8 @@ void assembleRMDMesh(const Common::RMD &rmd, const Common::Array<Graphics::Surfa
 					 int width, int height, float rotY, const Common::RMD::BonePose *pose,
 					 const RMDBounds *fixed, RMDRenderMesh &out,
 					 const Common::RMD::MaterialPose *materialPose = nullptr,
-					 const Common::Array<EffectBatch> *effects = nullptr);
+					 const Common::Array<EffectBatch> *effects = nullptr,
+					 bool fitToScreen = true); ///< false: leave vertices in (spun) model space
 
 } // namespace Graphics
 

@@ -50,7 +50,7 @@ int textureIndex(const Common::RMD &rmd, const Common::RMD::Material &material) 
 void assembleRMDMesh(const Common::RMD &rmd, const Common::Array<Graphics::Surface *> &textures,
 					 int width, int height, float rotY, const Common::RMD::BonePose *pose,
 					 const RMDBounds *fixed, RMDRenderMesh &out, const Common::RMD::MaterialPose *materialPose,
-					 const Common::Array<EffectBatch> *effects) {
+					 const Common::Array<EffectBatch> *effects, bool fitToScreen) {
 	const Common::Array<float> *uvTransforms = materialPose ? &materialPose->uvTransforms : nullptr;
 	out.triangles.clear();
 	out.bounds = RMDBounds();
@@ -230,6 +230,8 @@ void assembleRMDMesh(const Common::RMD &rmd, const Common::Array<Graphics::Surfa
 	if (minX > maxX)
 		return;
 	out.bounds.minX = minX; out.bounds.maxX = maxX; out.bounds.minY = minY; out.bounds.maxY = maxY; out.bounds.minZ = minZ; out.bounds.maxZ = maxZ; out.bounds.valid = true;
+	if (!fitToScreen)
+		return;
 	float cx = (minX + maxX) * 0.5f, cy = (minY + maxY) * 0.5f;
 	float spanX = MAX(maxX - minX, maxZ - minZ), spanY = maxY - minY;
 	float scale = MIN(height * 0.85f / MAX(spanY, 0.0001f), width * 0.95f / MAX(spanX, 0.0001f));
