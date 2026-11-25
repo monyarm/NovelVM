@@ -43,10 +43,13 @@ static const char *const kFragmentShader =
 	"uniform int u_unlit;\n"
 	"uniform int u_alphaTest;\n"
 	"uniform int u_vertexColor;\n"
+	"uniform int u_alphaMask;\n"
+	"uniform int u_flipV;\n"
 	"void main() {\n"
 	"  int textured = (u_hasTexture != 0 && u_hasUv != 0) ? 1 : 0;\n"
 	"  vec4 texel = vec4(1.0);\n"
-	"  if (textured != 0) texel = texture2D(u_texture, v_uv);\n"
+	"  if (textured != 0) texel = texture2D(u_texture, u_flipV != 0 ? vec2(v_uv.x, 1.0 - v_uv.y) : v_uv);\n"
+	"  if (u_alphaMask != 0) texel.rgb = vec3(1.0);\n"
 	// Cutout masks (fences, foliage) carry binary 0/255 texture alpha
 	// independent of the material's blend state -- alpha *test* (discard),
 	// not blend, so opaque neighbors keep writing depth correctly.
@@ -79,6 +82,8 @@ struct State {
 	Common::Array<Tri> tris;
 	Common::Array<float> verts;
 	Common::Array<DrawRun> runs;
+	GLuint previousFrame = 0; ///< copy of the last completed frame, for screen echo effects
+	bool hasPreviousFrame = false;
 };
 
 State &state() { static State s; return s; }
@@ -104,6 +109,8 @@ void build(const Common::RMD &rmd, const Common::Array<Graphics::Surface *> &tex
 void reset() {
 	State &s = state();
 	for (uint i = 0; i < s.glTextures.size(); ++i) GL_CALL(glDeleteTextures(1, &s.glTextures[i].id));
+	if (s.previousFrame) { GL_CALL(glDeleteTextures(1, &s.previousFrame)); s.previousFrame = 0; }
+	s.hasPreviousFrame = false;
 	s.glTextures.clear(); freeTextures(s.textures); s.model = nullptr;
 }
 
@@ -153,17 +160,19 @@ void setEffectBlend(int mode) {
 void drawEffects(State &s, const Common::Array<EffectBatch> &batches, EffectTextureSource *textures) {
 	if (batches.empty())
 		return;
-	// All effect lists: no depth writes, no culling, wrapped bilinear textures, vertex colours.
-	GL_CALL(glEnable(GL_BLEND)); GL_CALL(glDepthMask(GL_FALSE));
+	// Effect lists: bilinear textures, vertex colours, no culling (culled batches arrive pre-culled).
+	GL_CALL(glEnable(GL_BLEND));
 	s.shader->setUniform("u_vertexColor", (unsigned int)1);
 	s.shader->setUniform("u_diffuse", Math::Vector3d(1, 1, 1));
 	s.shader->setUniform("u_alphaTest", (unsigned int)0);
 	s.shader->setUniform("u_hasUv", (unsigned int)1);
 	Common::Array<float> verts;
+	// The 3D effect lists first, then the screen filter lists, each in the game's list order.
+	for (int overlay = 0; overlay < 2; ++overlay)
 	for (int order = 0; order < 7; ++order) {
 		for (uint b = 0; b < batches.size(); ++b) {
 			const EffectBatch &batch = batches[b];
-			if (batch.blendMode != kEffectDrawOrder[order] || batch.vertices.empty())
+			if (batch.overlay != (overlay != 0) || batch.blendMode != kEffectDrawOrder[order] || batch.vertices.empty())
 				continue;
 			verts.clear();
 			for (uint i = 0; i < batch.vertices.size(); ++i) {
@@ -172,16 +181,29 @@ void drawEffects(State &s, const Common::Array<EffectBatch> &batches, EffectText
 				for (int k = 0; k < 12; ++k)
 					verts.push_back(vertex[k]);
 			}
-			const Graphics::Surface *surface = batch.texture.surface ? batch.texture.surface :
-				textures && batch.texture.valid() ? textures->textureSurface(batch.texture) : nullptr;
-			s.shader->setUniform("u_hasTexture", (unsigned int)(surface ? 1 : 0));
-			if (surface) {
-				GL_CALL(glBindTexture(GL_TEXTURE_2D, textureFor(surface)));
+			GLuint texture = 0;
+			if (batch.texture.previousFrame) {
+				texture = s.hasPreviousFrame ? s.previousFrame : 0;
+				if (!texture)
+					continue; // nothing to echo on the very first frame
+			} else {
+				const Graphics::Surface *surface = batch.texture.surface ? batch.texture.surface :
+					textures && batch.texture.valid() ? textures->textureSurface(batch.texture) : nullptr;
+				texture = surface ? textureFor(surface) : 0;
+			}
+			s.shader->setUniform("u_hasTexture", (unsigned int)(texture ? 1 : 0));
+			s.shader->setUniform("u_alphaMask", (unsigned int)(batch.alphaMask ? 1 : 0));
+			s.shader->setUniform("u_flipV", (unsigned int)(batch.texture.previousFrame ? 1 : 0));
+			if (texture) {
+				GL_CALL(glBindTexture(GL_TEXTURE_2D, texture));
 				GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
 				GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
 			}
-			if (batch.depthTest) { GL_CALL(glEnable(GL_DEPTH_TEST)); } else { GL_CALL(glDisable(GL_DEPTH_TEST)); }
-			setEffectBlend(batch.blendMode);
+			const bool depthTest = batch.depthTest && !batch.overlay;
+			if (depthTest) { GL_CALL(glEnable(GL_DEPTH_TEST)); } else { GL_CALL(glDisable(GL_DEPTH_TEST)); }
+			GL_CALL(glDepthMask(batch.depthWrite && !batch.overlay ? GL_TRUE : GL_FALSE));
+			if (batch.depthOnly) { GL_CALL(glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE)); }
+			setEffectBlend(batch.blendEquation >= 0 ? batch.blendEquation : batch.blendMode);
 			const int stride = 12 * sizeof(float); const byte *base = (const byte *)verts.data();
 			s.shader->enableVertexAttribute("a_position", 3, GL_FLOAT, GL_FALSE, stride, base);
 			s.shader->enableVertexAttribute("a_normal", 3, GL_FLOAT, GL_FALSE, stride, base + 3 * sizeof(float));
@@ -189,11 +211,32 @@ void drawEffects(State &s, const Common::Array<EffectBatch> &batches, EffectText
 			s.shader->enableVertexAttribute("a_color", 4, GL_FLOAT, GL_FALSE, stride, base + 8 * sizeof(float));
 			s.shader->use(true);
 			GL_CALL(glDrawArrays(GL_TRIANGLES, 0, (GLsizei)batch.vertices.size()));
+			if (batch.depthOnly) { GL_CALL(glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE)); }
 		}
 	}
 	GL_CALL(glBlendEquation(GL_FUNC_ADD)); GL_CALL(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
-	GL_CALL(glEnable(GL_DEPTH_TEST));
+	GL_CALL(glEnable(GL_DEPTH_TEST)); GL_CALL(glDepthMask(GL_FALSE));
 	s.shader->setUniform("u_vertexColor", (unsigned int)0);
+	s.shader->setUniform("u_alphaMask", (unsigned int)0);
+	s.shader->setUniform("u_flipV", (unsigned int)0);
+}
+
+/** Keep the finished frame for effects that echo the previous frame (only while one is shown). */
+void capturePreviousFrame(State &s, const Common::Array<EffectBatch> &batches, int width, int height) {
+	bool wanted = false;
+	for (uint b = 0; b < batches.size() && !wanted; ++b)
+		wanted = batches[b].texture.previousFrame;
+	if (!wanted) {
+		s.hasPreviousFrame = false;
+		return;
+	}
+	if (!s.previousFrame)
+		GL_CALL(glGenTextures(1, &s.previousFrame));
+	GL_CALL(glBindTexture(GL_TEXTURE_2D, s.previousFrame));
+	GL_CALL(glCopyTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 0, 0, width, height, 0)); // RGB: alpha reads as 1
+	GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
+	GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
+	s.hasPreviousFrame = true;
 }
 
 } // namespace
@@ -259,13 +302,14 @@ void RMDRenderer::render(const Common::RMD &rmd, int width, int height, float ro
 	GL_CALL(glEnable(GL_POLYGON_OFFSET_FILL));
 	GL_CALL(glClearColor(32.0f / 255.0f, 32.0f / 255.0f, 40.0f / 255.0f, 1.0f));
 	GL_CALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
-	s.shader->use(true); GL_CALL(glUniformMatrix4fv(s.shader->getUniformLocation("u_projection"), 1, GL_FALSE, proj)); s.shader->setUniform("u_texture", (unsigned int)0); s.shader->setUniform("u_unlit", (unsigned int)(unlit ? 1 : 0)); s.shader->setUniform("u_vertexColor", (unsigned int)0);
+	s.shader->use(true); GL_CALL(glUniformMatrix4fv(s.shader->getUniformLocation("u_projection"), 1, GL_FALSE, proj)); s.shader->setUniform("u_texture", (unsigned int)0); s.shader->setUniform("u_unlit", (unsigned int)(unlit ? 1 : 0)); s.shader->setUniform("u_vertexColor", (unsigned int)0); s.shader->setUniform("u_alphaMask", (unsigned int)0); s.shader->setUniform("u_flipV", (unsigned int)0);
 	const int stride = 12 * sizeof(float); const byte *base = (const byte *)s.verts.data(); s.shader->enableVertexAttribute("a_position", 3, GL_FLOAT, GL_FALSE, stride, base); s.shader->enableVertexAttribute("a_normal", 3, GL_FLOAT, GL_FALSE, stride, base + 3 * sizeof(float)); s.shader->enableVertexAttribute("a_uv", 2, GL_FLOAT, GL_FALSE, stride, base + 6 * sizeof(float)); s.shader->enableVertexAttribute("a_color", 4, GL_FLOAT, GL_FALSE, stride, base + 8 * sizeof(float)); GL_CALL(glActiveTexture(GL_TEXTURE0));
 	s.shader->use(true);
 	for (uint r = 0; r < s.runs.size(); ++r) { const Tri &t = s.tris[s.runs[r].first]; s.shader->setUniform("u_diffuse", Math::Vector3d(t.diffuse[0], t.diffuse[1], t.diffuse[2])); s.shader->setUniform("u_hasTexture", (unsigned int)(t.texture ? 1 : 0)); s.shader->setUniform("u_hasUv", (unsigned int)(t.hasUv ? 1 : 0)); s.shader->setUniform("u_alphaTest", (unsigned int)(t.alphaTest ? 1 : 0)); if (t.texture) { GL_CALL(glBindTexture(GL_TEXTURE_2D, textureFor(t.texture))); GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapMode(t.horizontalAddressing))); GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapMode(t.verticalAddressing))); } if (t.alpha) { GL_CALL(glEnable(GL_BLEND)); GL_CALL(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)); GL_CALL(glDepthMask(GL_FALSE)); } else { GL_CALL(glDisable(GL_BLEND)); GL_CALL(glDepthMask(GL_TRUE)); } GL_CALL(glPolygonOffset(0.0f, -(float)r * 32.0f)); GL_CALL(glDrawArrays(GL_TRIANGLES, s.runs[r].first * 3, s.runs[r].count * 3)); }
 	GL_CALL(glPolygonOffset(0.0f, 0.0f));
 	GL_CALL(glDisable(GL_POLYGON_OFFSET_FILL));
 	drawEffects(s, effectBatches, effectTextures);
+	capturePreviousFrame(s, effectBatches, width, height);
 	GL_CALL(glDepthMask(previousDepthMask));
 	GL_CALL(glClearColor(0.0f, 0.0f, 0.0f, 1.0f));
 }

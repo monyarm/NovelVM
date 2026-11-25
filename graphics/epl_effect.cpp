@@ -868,8 +868,13 @@ public:
 			colorToFloats(modulate(modulate(p.color, nodeColor), paletteColor(spin.palette, p.age)), rgba);
 			_model.emit(out, firstBatch, _params.u16(0x54), rotation, size, position, rgba);
 		}
-		// shortcut: the game culls back faces and writes depth for these meshes; effect batches
-		// do neither, which only matters where the particles overlap themselves.
+		// The meshes cull back faces, depth-test per header byte 0x22, and in blend mode 0 also
+		// write depth.
+		for (uint b = firstBatch; b < out.size(); ++b) {
+			out[b].cullBack = true;
+			out[b].depthTest = (_header.u8(0x22) & 1) != 0;
+			out[b].depthWrite = _params.u16(0x54) == 0;
+		}
 	}
 
 private:
@@ -1543,12 +1548,37 @@ public:
 		const int32 duration = _params.s32(0x60);
 		if (_model.mesh().empty())
 			return;
-		// TODO: duration 1225 switches the model to alpha blending and parameter 0x64 sets model
-		// flags 0x18; neither is modelled, the model is drawn in its effect draw list.
 		float rgba[4];
 		colorToFloats(modulate(_params.sampleColor(0x00, 0x24, _elapsed, duration), nodeColor), rgba);
+		if (rgba[3] <= 0)
+			return; // a fully transparent model isn't queued
 		const float scale = (_scale[0] + _scale[1] + _scale[2]) / 3 * _params.sampleScalar(0x34, _elapsed, duration) / 10;
-		_model.emit(out, out.size(), _params.u16(0x28), _rotation, scale, _position, rgba);
+		// The list only orders the model: it draws with normal alpha blending, culls back faces,
+		// and depth-tests and writes depth when parameter 0x64 is set.
+		const bool depth = _params.u8(0x64) != 0;
+		auto states = [&](uint32 first, bool depthOnly, bool depthWrite) {
+			for (uint b = first; b < out.size(); ++b) {
+				out[b].blendEquation = 0;
+				out[b].cullBack = true;
+				out[b].depthTest = depth || depthOnly;
+				out[b].depthWrite = depthWrite;
+				out[b].depthOnly = depthOnly;
+			}
+		};
+		// Duration 1225 marks a translucent model: while it isn't opaque, a depth-only pass first
+		// keeps it from showing its own back surfaces, then the colour pass doesn't write depth.
+		if (duration == 1225 && rgba[3] < 1) {
+			uint32 first = out.size();
+			_model.emit(out, first, _params.u16(0x28), _rotation, scale, _position, rgba);
+			states(first, true, depth);
+			first = out.size();
+			_model.emit(out, first, _params.u16(0x28), _rotation, scale, _position, rgba);
+			states(first, false, false);
+			return;
+		}
+		const uint32 first = out.size();
+		_model.emit(out, first, _params.u16(0x28), _rotation, scale, _position, rgba);
+		states(first, false, depth);
 	}
 
 private:
@@ -1556,45 +1586,149 @@ private:
 	int32 _elapsed = 0;
 };
 
-// Kind 5 sub 1: the whole screen filled with the sampled colour (a flash or fade).
-class ScreenFlash : public EffectPrimitive {
+// Kinds 4 and 5: screen filters, drawn after every 3D effect list without depth. They sample
+// at the frame before the age step and stop (alpha 0) once it passes the duration; a duration of
+// 0 holds frame 0 forever.
+class ScreenFilter : public EffectPrimitive {
 public:
-	explicit ScreenFlash(const Common::EPL::Record &record) { _params.bytes = record.parameters; }
+	explicit ScreenFilter(const Common::EPL::Record &record) : _record(record) { _params.bytes = record.parameters; }
 
 	void reset() override { _age = 0; }
 	void advance() override { ++_age; }
-	void setPosition(const float position[3]) override {}
+	void setPosition(const float position[3]) override { for (int k = 0; k < 3; ++k) _position[k] = position[k]; }
 	void setRotation(const float rotation[4]) override {}
-	void setScale(float scale) override {}
+	void setScale(float scale) override { _scale = scale; }
 
-	void draw(const EffectCamera &camera, uint32 nodeColor, Common::Array<EffectBatch> &out) override {
-		const int32 duration = _params.s32(0xB8), age = _age - 1;
-		if (_age <= 0 || (duration > 0 && age > duration))
-			return;
-		float rgba[4];
-		colorToFloats(modulate(_params.sampleColor(0x00, 0x24, age, duration), nodeColor), rgba);
-		if (rgba[3] <= 0)
-			return;
+protected:
+	Common::EPL::Record _record;
+	Params _params;
+	int32 _age = 0;
+	float _position[3] = {0, 0, 0};
+	float _scale = 1;
+
+	/** Frame and colour (0..1) of the last update; false when nothing is to be drawn. */
+	bool sample(uint32 nodeColor, int32 &frame, float rgba[4]) const {
+		if (_age <= 0)
+			return false;
+		const int32 duration = _params.s32(0xB8);
+		frame = duration == 0 ? 0 : _age - 1;
+		if (frame > duration)
+			return false;
+		colorToFloats(modulate(_params.sampleColor(0x00, 0x24, frame, duration), nodeColor), rgba);
+		return rgba[3] > 0;
+	}
+
+	EffectBatch makeBatch() const {
 		EffectBatch batch;
 		batch.blendMode = _params.u16(0x28);
 		batch.depthTest = false;
-		batch.screenSpace = true;
-		static const float kCorners[6][2] = {{0, 0}, {1, 0}, {1, 1}, {0, 0}, {1, 1}, {0, 1}};
-		for (int k = 0; k < 6; ++k) {
+		batch.overlay = true;
+		return batch;
+	}
+
+	/** Quad (x0, y0)-(x1, y1) with UVs per corner: top left, bottom left, bottom right, top right. */
+	static void quad(EffectBatch &batch, float x0, float y0, float x1, float y1, const float uv[4][2], const float rgba[4]) {
+		const float corners[4][2] = {{x0, y0}, {x0, y1}, {x1, y1}, {x1, y0}};
+		static const int kOrder[6] = {0, 1, 2, 0, 2, 3};
+		for (int i = 0; i < 6; ++i) {
+			const int k = kOrder[i];
 			EffectVertex v;
-			v.x = kCorners[k][0];
-			v.y = kCorners[k][1];
+			v.x = corners[k][0];
+			v.y = corners[k][1];
 			v.z = 0;
-			v.u = v.v = 0;
+			v.u = uv[k][0];
+			v.v = uv[k][1];
 			v.r = rgba[0]; v.g = rgba[1]; v.b = rgba[2]; v.a = rgba[3];
 			batch.vertices.push_back(v);
+		}
+	}
+};
+
+// Kind 5 sub 1: the whole screen filled with the sampled colour (a flash or fade).
+class ScreenFlash : public ScreenFilter {
+public:
+	using ScreenFilter::ScreenFilter;
+
+	void draw(const EffectCamera &camera, uint32 nodeColor, Common::Array<EffectBatch> &out) override {
+		int32 frame;
+		float rgba[4];
+		if (!sample(nodeColor, frame, rgba))
+			return;
+		EffectBatch batch = makeBatch();
+		batch.screenSpace = true;
+		static const float kUV[4][2] = {{0, 0}, {0, 1}, {1, 1}, {1, 0}};
+		quad(batch, 0, 0, 1, 1, kUV, rgba);
+		out.push_back(batch);
+	}
+};
+
+// Kind 4 sub 1: the previous frame over the whole screen, zoomed and rotated about its centre
+// (zoom > 1 shrinks it toward the centre), tinted by the sampled colour.
+class ScreenEcho : public ScreenFilter {
+public:
+	using ScreenFilter::ScreenFilter;
+
+	void draw(const EffectCamera &camera, uint32 nodeColor, Common::Array<EffectBatch> &out) override {
+		int32 frame;
+		float rgba[4];
+		if (!sample(nodeColor, frame, rgba))
+			return;
+		const int32 duration = _params.s32(0xB8);
+		const float zoom = 1 + 0.01f * _params.sampleScalar(0x34, frame, duration);
+		const float angle = 0.01f * _params.sampleScalar(0x60, frame, duration);
+		if (zoom <= 0 || zoom >= 7)
+			return;
+		// UVs of the 640x448 screen corners (normalised, so the rotation is not aspect-correct).
+		float uv[4][2];
+		static const float kCorners[4][2] = {{0, 0}, {0, 1}, {1, 1}, {1, 0}};
+		const float c = cosf(angle), s = sinf(angle);
+		for (int k = 0; k < 4; ++k) {
+			const float du = zoom * (kCorners[k][0] - 0.5f), dv = zoom * (kCorners[k][1] - 0.5f);
+			uv[k][0] = 0.5f + du * c - dv * s;
+			uv[k][1] = 0.5f + du * s + dv * c;
+		}
+		EffectBatch batch = makeBatch();
+		batch.screenSpace = true;
+		batch.texture.previousFrame = true;
+		quad(batch, 0, 0, 1, 1, uv, rgba);
+		out.push_back(batch);
+	}
+};
+
+// Kind 5 sub 2: a square of the sampled colour masked by its texture's alpha, centred on the
+// screen or on the effect's projected position.
+class ScreenSprite : public ScreenFilter {
+public:
+	explicit ScreenSprite(const Common::EPL::Record &record) : ScreenFilter(record), _texture(textureFor(_record)) {}
+
+	void draw(const EffectCamera &camera, uint32 nodeColor, Common::Array<EffectBatch> &out) override {
+		int32 frame;
+		float rgba[4];
+		if (!sample(nodeColor, frame, rgba))
+			return;
+		const float radius = _params.sampleScalar(0x8C, frame, _params.s32(0xB8));
+		EffectBatch batch = makeBatch();
+		batch.texture = _texture;
+		batch.alphaMask = true;
+		static const float kUV[4][2] = {{0, 0}, {0, 1}, {1, 1}, {1, 0}};
+		if (_params.u8(0xBC)) {
+			batch.screenSpace = true;
+			const float hx = radius / 640, hy = radius / 448;
+			quad(batch, 0.5f - hx, 0.5f - hy, 0.5f + hx, 0.5f + hy, kUV, rgba);
+		} else {
+			// shortcut: the game sizes this 650 * radius * scale / camera distance pixels (at most
+			// 1500); the demo has no perspective camera, so a distance of 650 is assumed.
+			const float h = MIN(radius * _scale, 1500.0f);
+			batch.anchored = true;
+			for (int k = 0; k < 3; ++k)
+				batch.anchor[k] = _position[k];
+			quad(batch, -h, -h, h, h, kUV, rgba);
 		}
 		out.push_back(batch);
 	}
 
 private:
-	Params _params;
-	int32 _age = 0;
+	EffectTextureRef _texture;
 };
 
 EffectPrimitive *createPrimitive(const Common::EPL::Record &record, EffectTextureSource *textures) {
@@ -1614,9 +1748,13 @@ EffectPrimitive *createPrimitive(const Common::EPL::Record &record, EffectTextur
 	case Common::EPL::kScreenFilter:
 		if (record.sub == 1)
 			return new ScreenFlash(record);
-		return nullptr; // TODO: sub 2, an anchored and scaled screen rectangle
+		if (record.sub == 2)
+			return new ScreenSprite(record);
+		return nullptr; // not used by any P3 FES/P4 RMD
 	case Common::EPL::kScreenBlur:
-		return nullptr; // TODO: zoom/rotate blur of the previous frame, needs a framebuffer copy
+		if (record.sub == 1)
+			return new ScreenEcho(record);
+		return nullptr; // subs 2-5 are not used by any P3 FES/P4 RMD
 	case Common::EPL::kBoard:
 		return new Board(record, textures);
 	default:

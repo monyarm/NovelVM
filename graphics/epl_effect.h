@@ -18,7 +18,8 @@ struct EffectTextureRef {
 	int globalSlot = -1;
 	const Common::Array<byte> *embeddedTMX = nullptr;
 	const Graphics::Surface *surface = nullptr; ///< already decoded (textures of embedded models)
-	bool valid() const { return globalSlot >= 0 || embeddedTMX || surface; }
+	bool previousFrame = false; ///< the last completed frame (UV 0,0 = its top left)
+	bool valid() const { return globalSlot >= 0 || embeddedTMX || surface || previousFrame; }
 };
 
 /** Supplies decoded effect textures; billboard sizes depend on their pixel dimensions. */
@@ -50,9 +51,17 @@ struct EffectVertex {
  * Draw order: 0, 1, 4, 5, 2, 6, 3.
  */
 struct EffectBatch {
-	int blendMode = 0;
+	int blendMode = 0;           ///< draw list (order); also the blend equation unless overridden
+	int blendEquation = -1;      ///< blend mode whose equation to use instead (kind 26 models)
 	bool depthTest = true;
-	bool screenSpace = false; ///< x, y are fractions of the screen (0, 0 = top left); z unused
+	bool depthWrite = false;
+	bool depthOnly = false;      ///< lay down depth without touching the colour buffer
+	bool cullBack = false;       ///< drop triangles whose (v1-v0)x(v2-v0) faces away from the viewer
+	bool alphaMask = false;      ///< the texture only supplies alpha; RGB is the vertex colour
+	bool overlay = false;        ///< a screen filter list: drawn after every 3D effect list, no depth
+	bool screenSpace = false;    ///< x, y are fractions of the screen (0, 0 = top left); z unused
+	bool anchored = false;       ///< x, y are 640x448 screen pixel offsets around `anchor`; z unused
+	float anchor[3] = {0, 0, 0}; ///< effect-space point the anchored offsets are around
 	EffectTextureRef texture;
 	Common::Array<EffectVertex> vertices;
 };

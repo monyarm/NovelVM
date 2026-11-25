@@ -240,6 +240,25 @@ void assembleRMDMesh(const Common::RMD &rmd, const Common::Array<Graphics::Surfa
 	// Effects live in model space: same spin and fit, without widening the model's bounds.
 	if (effects) {
 		out.effects = *effects;
+		for (uint b = 0; b < out.effects.size(); ++b) {
+			Common::Array<EffectVertex> &vs = out.effects[b].vertices;
+			if (!out.effects[b].cullBack)
+				continue;
+			// The viewer looks along +z after the spin: a front face's normal has z < 0.
+			Common::Array<EffectVertex> kept;
+			for (uint i = 0; i + 2 < vs.size(); i += 3) {
+				float p[3][3];
+				for (int k = 0; k < 3; ++k) {
+					const Common::RMD::Vec3 in = {vs[i + k].x, vs[i + k].y, vs[i + k].z};
+					transform(spin, in, p[k][0], p[k][1], p[k][2]);
+				}
+				const float ax = p[1][0] - p[0][0], ay = p[1][1] - p[0][1], bx = p[2][0] - p[0][0], by = p[2][1] - p[0][1];
+				if (ax * by - ay * bx <= 0)
+					for (int k = 0; k < 3; ++k)
+						kept.push_back(vs[i + k]);
+			}
+			vs = kept;
+		}
 		for (uint b = 0; b < out.effects.size(); ++b)
 			for (uint i = 0; i < out.effects[b].vertices.size(); ++i) {
 				EffectVertex &v = out.effects[b].vertices[i];
@@ -247,6 +266,16 @@ void assembleRMDMesh(const Common::RMD &rmd, const Common::Array<Graphics::Surfa
 					v.x *= width;
 					v.y *= height;
 					v.z = minZ; // inside the depth range; screen-space batches don't depth test
+					continue;
+				}
+				if (out.effects[b].anchored) {
+					const float *a = out.effects[b].anchor;
+					const Common::RMD::Vec3 p = {a[0], a[1], a[2]};
+					float x, y, z;
+					transform(spin, p, x, y, z);
+					v.x = width * 0.5f + (x - cx) * scale + v.x * width / 640.0f;
+					v.y = height * 0.5f - (y - cy) * scale + v.y * height / 448.0f;
+					v.z = minZ;
 					continue;
 				}
 				const Common::RMD::Vec3 p = {v.x, v.y, v.z};
