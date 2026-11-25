@@ -88,16 +88,121 @@ public:
 		}
 	}
 
+	void testTOCNamedEntries() {
+		const uint32 kTocOffset = 0x100;
+		const uint32 kContentOffset = 0x800;
+		const uint32 rel = kContentOffset - kTocOffset; // FileOffset counts from the TOC chunk
+
+		Common::Array<CpkCol> toc;
+		toc.push_back(colStrs("DirName", "data/a", "\\win", "DATA/A", "data", "", ""));
+		toc.push_back(colStrs("FileName", "X.BIN", "b.bin", "x.bin", "far.bin", "", "top.bin"));
+		toc.push_back(colUints("FileSize", kUTFUint32, 4, 2, 2, 4, 2, 2));
+		toc.push_back(colUints("ExtractSize", kUTFUint32, 4, 2, 2, 4, 2, 2));
+		toc.push_back(colUints("FileOffset", kUTFUint64, rel, rel + 4, rel + 6, 0x10000, rel, rel + 6));
+		Common::Array<byte> tocPacket = buildUTF(toc);
+
+		Common::Array<CpkCol> header;
+		header.push_back(colUint("TocOffset", kUTFUint64, kTocOffset));
+		header.push_back(colUint("ContentOffset", kUTFUint64, kContentOffset));
+		header.push_back(colUint("Align", kUTFUint16, 0));
+		Common::Array<byte> headerPacket = buildUTF(header);
+
+		Common::Array<byte> content;
+		appendStr(content, "abcdefgh");
+		TS_ASSERT(kTocOffset + 0x10 + tocPacket.size() <= kContentOffset);
+		Common::Array<byte> file = assembleWith(headerPacket, "TOC ", kTocOffset, tocPacket, kContentOffset, content);
+		Common::CPK cpk(writeTemp("novelvm_cpk_toc_test.cpk", file));
+
+		// Duplicate (by case), out-of-range and nameless rows are dropped.
+		Common::ArchiveMemberList list;
+		TS_ASSERT_EQUALS(cpk.listMembers(list), 3);
+		Common::ArchiveMemberList::const_iterator it = list.begin();
+		if (list.size() == 3) {
+			TS_ASSERT_EQUALS((*it++)->getPathInArchive().toString('/'), Common::String("data/a/X.BIN"));
+			TS_ASSERT_EQUALS((*it++)->getPathInArchive().toString('/'), Common::String("win/b.bin"));
+			TS_ASSERT_EQUALS((*it++)->getPathInArchive().toString('/'), Common::String("top.bin"));
+		}
+
+		TS_ASSERT(cpk.hasFile(Common::Path("DATA/A/x.bin")));
+		TS_ASSERT(!cpk.hasFile(Common::Path("data/far.bin")));
+		TS_ASSERT(checkMember(cpk, "data/a/x.bin", "abcd", 4));
+		TS_ASSERT(checkMember(cpk, "win/b.bin", "ef", 2));
+		TS_ASSERT(checkMember(cpk, "top.bin", "gh", 2));
+
+		// TOC members are not reachable by ID.
+		Common::CPKEntry e;
+		TS_ASSERT(!cpk.getEntryById(0, e));
+	}
+
+	void testCRILAYLADecompression() {
+		const uint32 kItocOffset = 0x100;
+		const uint32 kContentOffset = 0x400;
+
+		// Three literals, then a back-reference (distance 3, length 5) that
+		// overlaps its own output: the 8 decoded bytes are "YXZYXZYX".
+		Common::Array<byte> bits;
+		pushBits(bits, 0, 1); pushBits(bits, 'X', 8);
+		pushBits(bits, 0, 1); pushBits(bits, 'Y', 8);
+		pushBits(bits, 0, 1); pushBits(bits, 'Z', 8);
+		pushBits(bits, 1, 1); pushBits(bits, 0, 13); pushBits(bits, 2, 2);
+		Common::Array<byte> good = buildCrilayla(8, packBits(bits));
+
+		// Same header, but the stream ends after the literals.
+		Common::Array<byte> shortBits;
+		for (uint32 i = 0; i < 27; i++)
+			shortBits.push_back(bits[i]);
+		Common::Array<byte> bad = buildCrilayla(8, packBits(shortBits));
+
+		Common::Array<byte> content;
+		appendBytes(content, good);
+		appendBytes(content, bad);
+
+		Common::Array<CpkCol> sub;
+		sub.push_back(colUints("ID", kUTFUint16, 0, 1));
+		sub.push_back(colUints("FileSize", kUTFUint32, good.size(), bad.size()));
+		sub.push_back(colUints("ExtractSize", kUTFUint32, 0x108, 0x108));
+		Common::Array<CpkCol> itocInfo;
+		itocInfo.push_back(colData("DataH", buildUTF(sub)));
+		Common::Array<byte> itocPacket = buildUTF(itocInfo);
+
+		Common::Array<CpkCol> header;
+		header.push_back(colUint("ItocOffset", kUTFUint64, kItocOffset));
+		header.push_back(colUint("ContentOffset", kUTFUint64, kContentOffset));
+		Common::Array<byte> headerPacket = buildUTF(header);
+
+		TS_ASSERT(kItocOffset + 0x10 + itocPacket.size() <= kContentOffset);
+		Common::Array<byte> file = assembleWith(headerPacket, "ITOC", kItocOffset, itocPacket, kContentOffset, content);
+		Common::CPK cpk(writeTemp("novelvm_cpk_crilayla_test.cpk", file));
+
+		Common::SeekableReadStream *rs = cpk.createReadStreamForMember(Common::Path("0"));
+		TS_ASSERT(rs != nullptr);
+		if (rs) {
+			TS_ASSERT_EQUALS(rs->size(), 0x108);
+			byte buf[0x108];
+			TS_ASSERT_EQUALS(rs->read(buf, sizeof(buf)), sizeof(buf));
+			bool prefixOk = true;
+			for (uint32 i = 0; i < 0x100; i++)
+				prefixOk = prefixOk && buf[i] == (byte)(i ^ 0x5A);
+			TS_ASSERT(prefixOk);
+			TS_ASSERT_EQUALS(memcmp(buf + 0x100, "YXZYXZYX", 8), 0);
+			delete rs;
+		}
+
+		TS_ASSERT(cpk.createReadStreamForMember(Common::Path("1")) == nullptr);
+	}
+
 private:
 	static const byte kUTFUint16 = 0x02;
 	static const byte kUTFUint32 = 0x04;
 	static const byte kUTFUint64 = 0x06;
+	static const byte kUTFString = 0x0A;
 	static const byte kUTFData = 0x0B;
 
 	struct CpkCol {
 		Common::String name;
 		byte type;
 		Common::Array<uint64> uints;
+		Common::Array<Common::String> strs;
 		Common::Array<Common::Array<byte> > data;
 	};
 
@@ -135,6 +240,7 @@ private:
 		case kUTFUint16: return 2;
 		case kUTFUint32: return 4;
 		case kUTFUint64: return 8;
+		case kUTFString: return 4;
 		case kUTFData: return 8;
 		default: return 0;
 		}
@@ -146,6 +252,113 @@ private:
 		c.type = type;
 		c.uints.push_back(value);
 		return c;
+	}
+
+	static CpkCol colUints(const char *name, byte type, uint64 a, uint64 b) {
+		CpkCol c;
+		c.name = name;
+		c.type = type;
+		c.uints.push_back(a);
+		c.uints.push_back(b);
+		return c;
+	}
+
+	static CpkCol colUints(const char *name, byte type, uint64 a, uint64 b, uint64 c2, uint64 d, uint64 e, uint64 f) {
+		CpkCol c = colUints(name, type, a, b);
+		c.uints.push_back(c2);
+		c.uints.push_back(d);
+		c.uints.push_back(e);
+		c.uints.push_back(f);
+		return c;
+	}
+
+	static CpkCol colStrs(const char *name, const char *a, const char *b, const char *c2, const char *d, const char *e, const char *f) {
+		CpkCol c;
+		c.name = name;
+		c.type = kUTFString;
+		c.strs.push_back(a);
+		c.strs.push_back(b);
+		c.strs.push_back(c2);
+		c.strs.push_back(d);
+		c.strs.push_back(e);
+		c.strs.push_back(f);
+		return c;
+	}
+
+	static void appendStr(Common::Array<byte> &out, const char *s) {
+		for (; *s; s++)
+			out.push_back((byte)*s);
+	}
+
+	static void appendBytes(Common::Array<byte> &out, const Common::Array<byte> &in) {
+		for (uint32 i = 0; i < in.size(); i++)
+			out.push_back(in[i]);
+	}
+
+	static void pushBits(Common::Array<byte> &bits, uint32 value, int width) {
+		for (int i = width - 1; i >= 0; i--)
+			bits.push_back((byte)((value >> i) & 1));
+	}
+
+	// CRILAYLA consumes its stream from the last byte backwards, MSB first:
+	// pack in consumption order, then reverse the byte order.
+	static Common::Array<byte> packBits(const Common::Array<byte> &bits) {
+		const uint32 n = (bits.size() + 7) / 8;
+		Common::Array<byte> fwd(n, (byte)0);
+		for (uint32 i = 0; i < bits.size(); i++)
+			if (bits[i])
+				fwd[i / 8] |= (byte)(0x80 >> (i % 8));
+		Common::Array<byte> out(n, (byte)0);
+		for (uint32 i = 0; i < n; i++)
+			out[n - 1 - i] = fwd[i];
+		return out;
+	}
+
+	// "CRILAYLA", U, C, the stream, then the 0x100-byte raw prefix.
+	static Common::Array<byte> buildCrilayla(uint32 u, const Common::Array<byte> &stream) {
+		Common::Array<byte> out(0x10, (byte)0);
+		memcpy(out.data(), "CRILAYLA", 8);
+		w32le(out.data() + 8, u);
+		w32le(out.data() + 12, stream.size());
+		appendBytes(out, stream);
+		for (uint32 i = 0; i < 0x100; i++)
+			out.push_back((byte)(i ^ 0x5A));
+		return out;
+	}
+
+	static Common::Array<byte> assembleWith(const Common::Array<byte> &headerPacket, const char *tag,
+			uint32 tableOffset, const Common::Array<byte> &tablePacket, uint32 contentOffset,
+			const Common::Array<byte> &content) {
+		Common::Array<byte> out(contentOffset + content.size(), (byte)0);
+		memcpy(out.data(), "CPK ", 4);
+		writePacket(out, 0x00, headerPacket);
+		memcpy(out.data() + tableOffset, tag, 4);
+		writePacket(out, tableOffset, tablePacket);
+		if (!content.empty())
+			memcpy(out.data() + contentOffset, content.data(), content.size());
+		return out;
+	}
+
+	static Common::String writeTemp(const char *name, const Common::Array<byte> &file) {
+		Common::DumpFile out;
+		if (out.open(Common::Path("/tmp").appendComponent(name))) {
+			out.write(file.data(), file.size());
+			out.close();
+		}
+		// Re-add the directory so its cached listing includes the file just written.
+		SearchMan.remove("novelvm_cpk_tmp");
+		SearchMan.addDirectory("novelvm_cpk_tmp", Common::Path("/tmp"), 1, 1);
+		return name;
+	}
+
+	static bool checkMember(const Common::CPK &cpk, const char *path, const char *expect, uint32 len) {
+		Common::SeekableReadStream *rs = cpk.createReadStreamForMember(Common::Path(path));
+		if (!rs)
+			return false;
+		byte buf[16];
+		bool ok = rs->size() == (int64)len && len <= sizeof(buf) && rs->read(buf, len) == len && memcmp(buf, expect, len) == 0;
+		delete rs;
+		return ok;
 	}
 
 	static CpkCol colData(const char *name, const Common::Array<byte> &value) {
@@ -162,7 +375,8 @@ private:
 		const uint32 numCols = cols.size();
 		uint32 numRows = 0;
 		for (uint32 i = 0; i < numCols; i++) {
-			uint32 n = (cols[i].type == kUTFData) ? cols[i].data.size() : cols[i].uints.size();
+			uint32 n = (cols[i].type == kUTFData) ? cols[i].data.size()
+				: (cols[i].type == kUTFString) ? cols[i].strs.size() : cols[i].uints.size();
 			if (n > numRows)
 				numRows = n;
 		}
@@ -175,6 +389,19 @@ private:
 			for (uint32 j = 0; j < s.size(); j++)
 				stringData.push_back((byte)s[j]);
 			stringData.push_back(0);
+		}
+
+		Common::Array<Common::Array<uint32> > strOff(numCols);
+		for (uint32 i = 0; i < numCols; i++) {
+			if (cols[i].type != kUTFString)
+				continue;
+			for (uint32 r = 0; r < cols[i].strs.size(); r++) {
+				strOff[i].push_back(stringData.size());
+				const Common::String &s = cols[i].strs[r];
+				for (uint32 j = 0; j < s.size(); j++)
+					stringData.push_back((byte)s[j]);
+				stringData.push_back(0);
+			}
 		}
 
 		Common::Array<byte> data;
@@ -214,6 +441,10 @@ private:
 				case kUTFUint64:
 					w64be(p, cols[i].uints[r]);
 					pos += 8;
+					break;
+				case kUTFString:
+					w32be(p, strOff[i][r]);
+					pos += 4;
 					break;
 				case kUTFData:
 					w32be(p, dataOff[i][r]);

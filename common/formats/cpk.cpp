@@ -1,359 +1,433 @@
+/* ScummVM - Graphic Adventure Engine
+ *
+ * ScummVM is the legal property of its developers, whose names
+ * are too numerous to list here. Please refer to the COPYRIGHT
+ * file distributed with this source distribution.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
 #include "common/formats/cpk.h"
 
 #include "common/algorithm.h"
 #include "common/debug.h"
+#include "common/endian.h"
 #include "common/file.h"
 #include "common/formats/utf_table.h"
 #include "common/memstream.h"
+#include "common/textconsole.h"
 
 namespace Common {
 
 namespace {
 
-const uint64 kNoOffset = 0xFFFFFFFFFFFFFFFFULL;
+const uint32 kChunkHeaderSize = 0x10;
+const uint32 kCrilaylaHeaderSize = 0x10;
+const uint32 kCrilaylaPrefixSize = 0x100;
+// Bounds the output allocation; real compressed members stay below 4 MiB.
+const uint64 kMaxExtractSize = 512 * 1024 * 1024;
 
-Common::Array<byte> decryptUTF(const Common::Array<byte> &input) {
-	Common::Array<byte> result(input.size());
-	uint32 m = 0x0000655f;
-	const uint32 t = 0x00004115;
-	for (uint32 i = 0; i < input.size(); i++) {
-		result[i] = input[i] ^ (byte)(m & 0xff);
-		m = m * t;
+bool hasUTFMagic(const byte *buf, uint64 size) {
+	return size >= 4 && memcmp(buf, "@UTF", 4) == 0;
+}
+
+/**
+ * Reads the chunk at chunkOffset (16-byte header + @UTF packet) and parses
+ * its table. Every failure is reported as "table unreadable".
+ */
+bool readChunkTable(Common::File &f, uint64 fileSize, uint64 chunkOffset, const char *tag,
+		bool requireTag, const Common::String &archive, UTFTable &table) {
+	if (chunkOffset > fileSize || fileSize - chunkOffset < kChunkHeaderSize) {
+		warning("CPK: '%s' chunk of %s lies outside the file", tag, archive.c_str());
+		return false;
 	}
-	return result;
-}
 
-// Reads the little-endian "packet" framing CRI wraps every @UTF table in
-// ("CPK "/"TOC "/etc. magic already consumed by the caller): a uint32
-// sentinel (always 0xff for real, uncompressed CPKs seen so far), a
-// uint64 packet size, then the packet bytes -- XOR-"decrypted" (see
-// decryptUTF) if they don't already start with the "@UTF" magic.
-bool readUTFPacket(Common::SeekableReadStream &s, UTFTable &table) {
-	s.readSint32LE(); // sentinel, unused
-	int64 utfSize = s.readSint64LE();
-	if (utfSize <= 0 || utfSize > 0xffffffffLL || s.size() < s.pos() || utfSize > s.size() - s.pos())
+	byte hdr[kChunkHeaderSize];
+	if (!f.seek((int64)chunkOffset) || f.read(hdr, kChunkHeaderSize) != kChunkHeaderSize) {
+		warning("CPK: cannot read '%s' chunk header of %s", tag, archive.c_str());
 		return false;
+	}
 
-	Common::Array<byte> packet((uint32)utfSize);
-	if (s.read(packet.data(), packet.size()) != packet.size())
-		return false;
-
-	if (packet.size() < 4 || memcmp(packet.data(), "@UTF", 4) != 0)
-		packet = decryptUTF(packet);
-
-	return table.parse(packet.data(), packet.size());
-}
-
-bool getNextBits(const byte *input, uint32 inputSize, int &inputOffset, byte &bitPool, int &bitsLeft, int bitCount, uint16 &outBits) {
-	outBits = 0;
-	int produced = 0;
-
-	while (produced < bitCount) {
-		if (bitsLeft == 0) {
-			if (inputOffset < 0 || (uint32)inputOffset >= inputSize)
-				return false;
-			bitPool = input[inputOffset];
-			bitsLeft = 8;
-			inputOffset--;
+	// Only the archive header's tag is authoritative; other chunk tags vary
+	// (e.g. TOC/ETOC) and a mismatch alone is not worth losing the table over.
+	if (memcmp(hdr, tag, 4) != 0) {
+		if (requireTag) {
+			warning("CPK: %s is not a CPK archive", archive.c_str());
+			return false;
 		}
-
-		int take = MIN(bitsLeft, bitCount - produced);
-		outBits <<= take;
-		outBits |= (uint16)((bitPool >> (bitsLeft - take)) & ((1 << take) - 1));
-		bitsLeft -= take;
-		produced += take;
+		warning("CPK: unexpected tag on '%s' chunk of %s", tag, archive.c_str());
 	}
 
+	const uint64 length = READ_LE_UINT64(hdr + 8);
+	const uint64 avail = fileSize - chunkOffset - kChunkHeaderSize;
+	if (length == 0 || length > avail || length > 0xFFFFFFFFULL) {
+		warning("CPK: bad '%s' packet length in %s", tag, archive.c_str());
+		return false;
+	}
+
+	Common::Array<byte> packet((uint32)length);
+	if (f.read(packet.data(), (uint32)length) != (uint32)length) {
+		warning("CPK: short read of '%s' packet in %s", tag, archive.c_str());
+		return false;
+	}
+
+	// TODO: Some CPKs reportedly mask their @UTF packets. The scheme is
+	// unknown, so such tables are treated as unreadable for now.
+	if (!hasUTFMagic(packet.data(), length)) {
+		warning("CPK: '%s' table of %s is not a plain @UTF table (masked tables are unsupported)", tag, archive.c_str());
+		return false;
+	}
+
+	if (!table.parse(packet.data(), (uint32)length)) {
+		warning("CPK: cannot parse '%s' table of %s", tag, archive.c_str());
+		return false;
+	}
 	return true;
 }
 
-// CRI's CRILAYLA compression: an LZ77-style scheme with the compressed
-// stream read back-to-front. Ported from CriPakTools' LibCPK
-// (DecompressCRILAYLA) and verified byte-length-exact against a real
-// CRILAYLA-compressed entry from Persona 3 Portable's umd0.cpk.
-//
-// The real decompressed body size is self-declared in the compressed
-// stream's own header (immediately after the "CRILAYLA" magic), not in the
-// TOC's ExtractSize field -- real data showed ExtractSize is that body size
-// plus the fixed 0x100-byte header block copied below, not the body size
-// alone.
-Common::Array<byte> decompressCRILAYLA(const Common::Array<byte> &input) {
-	if (input.size() < 0x110)
-		return Common::Array<byte>();
+/**
+ * CRILAYLA bit stream reader. The stream is consumed from its last byte
+ * towards its first, and each byte from its most significant bit down.
+ */
+class CrilaylaBitReader {
+public:
+	CrilaylaBitReader(const byte *data, uint32 end, uint32 floor) :
+		_data(data), _next(end), _floor(floor), _cur(0), _bitsLeft(0), _failed(false) {}
 
-	// Header fields after the 8-byte "CRILAYLA" magic are little-endian.
-	uint32 bodySize = (uint32)(input[8] | (input[9] << 8) | (input[10] << 16) | (input[11] << 24));
-	int32 headerOffset = (int32)(input[12] | (input[13] << 8) | (input[14] << 16) | (input[15] << 24));
-
-	if (headerOffset < 0 || (uint32)headerOffset > input.size() - 0x110)
-		return Common::Array<byte>();
-	if (bodySize > 0x7fffffffU - 0x100 || input.size() > 0x7fffffffU)
-		return Common::Array<byte>();
-
-	Common::Array<byte> result(bodySize + 0x100);
-	memcpy(result.data(), input.data() + headerOffset + 0x10, 0x100);
-
-	int inputOffset = (int)input.size() - 0x100 - 1;
-	int outputEnd = 0x100 + (int)bodySize - 1;
-	byte bitPool = 0;
-	int bitsLeft = 0;
-	int bytesOutput = 0;
-	const int vleLens[4] = {2, 3, 5, 8};
-	uint16 bits;
-
-	while (bytesOutput < (int)bodySize) {
-		if (!getNextBits(input.data(), input.size(), inputOffset, bitPool, bitsLeft, 1, bits))
-			return Common::Array<byte>();
-		if (bits > 0) {
-			if (!getNextBits(input.data(), input.size(), inputOffset, bitPool, bitsLeft, 13, bits))
-				return Common::Array<byte>();
-			int backrefOffset = outputEnd - bytesOutput + bits + 3;
-			uint32 backrefLen = 3;
-			int vleLevel;
-
-			for (vleLevel = 0; vleLevel < 4; vleLevel++) {
-				if (!getNextBits(input.data(), input.size(), inputOffset, bitPool, bitsLeft, vleLens[vleLevel], bits))
-					return Common::Array<byte>();
-				uint32 thisLevel = bits;
-				if (backrefLen > 0x7fffffffU - thisLevel)
-					return Common::Array<byte>();
-				backrefLen += thisLevel;
-				if (thisLevel != (uint32)((1 << vleLens[vleLevel]) - 1))
-					break;
+	uint32 read(int width) {
+		uint32 value = 0;
+		for (int i = 0; i < width; i++) {
+			if (_bitsLeft == 0) {
+				if (_next <= _floor) {
+					_failed = true;
+					return 0;
+				}
+				_cur = _data[--_next];
+				_bitsLeft = 8;
 			}
-			if (vleLevel == 4) {
-				uint32 thisLevel;
-				do {
-					if (!getNextBits(input.data(), input.size(), inputOffset, bitPool, bitsLeft, 8, bits))
-						return Common::Array<byte>();
-					thisLevel = bits;
-					if (backrefLen > 0x7fffffffU - thisLevel)
-						return Common::Array<byte>();
-					backrefLen += thisLevel;
-				} while (thisLevel == 255);
-			}
-
-			uint32 copyLength = MIN(backrefLen, bodySize - bytesOutput);
-			if (backrefOffset < 0 || backrefOffset > outputEnd || backrefOffset < (int)copyLength - 1)
-				return Common::Array<byte>();
-			for (uint32 i = 0; i < copyLength; i++) {
-				result[outputEnd - bytesOutput] = result[backrefOffset--];
-				bytesOutput++;
-			}
-		} else {
-			if (!getNextBits(input.data(), input.size(), inputOffset, bitPool, bitsLeft, 8, bits))
-				return Common::Array<byte>();
-			result[outputEnd - bytesOutput] = (byte)bits;
-			bytesOutput++;
+			_bitsLeft--;
+			value = (value << 1) | ((_cur >> _bitsLeft) & 1);
 		}
+		return value;
 	}
 
-	return result;
-}
+	bool failed() const { return _failed; }
 
-// One ID/FileSize/ExtractSize row of a CpkItocL/CpkItocH sub-table. The
-// ITOC records no explicit offset: files are packed back-to-back in ID order
-// from ContentOffset, each aligned to the header's Align (see CPK::loadITOC).
-struct ITOCSizeEntry {
-	uint32 id = 0;
-	uint32 size = 0;
-	uint32 extractSize = 0;
+private:
+	const byte *_data;
+	uint32 _next;   // index of the byte after the next one to consume
+	uint32 _floor;  // lowest index the stream may consume
+	byte _cur;
+	int _bitsLeft;
+	bool _failed;
 };
 
-bool itocSizeEntryLess(const ITOCSizeEntry &a, const ITOCSizeEntry &b) {
-	return a.id < b.id;
-}
-
-// Parses a CpkItocL/CpkItocH @UTF blob. `data`/`size` come from another
-// UTFTable's data segment, so the caller must keep that table alive.
-bool parseITOCData(const byte *data, uint32 size, Common::Array<ITOCSizeEntry> &out) {
-	UTFTable table;
-	if (!table.parse(data, size))
+/**
+ * Decompresses a CRILAYLA member of srcSize stored bytes into dst, which
+ * must hold extractSize bytes. Returns false on any malformed input.
+ */
+bool decompressCrilayla(const byte *src, uint32 srcSize, byte *dst, uint32 extractSize) {
+	if (srcSize < kCrilaylaHeaderSize || memcmp(src, "CRILAYLA", 8) != 0)
 		return false;
 
-	for (int i = 0; i < table.numRows(); i++) {
-		UTFValue id = table.get(i, "ID");
-		UTFValue fileSize = table.get(i, "FileSize");
-		if (!id.valid || !fileSize.valid)
-			continue;
+	const uint32 u = READ_LE_UINT32(src + 8);
+	const uint32 c = READ_LE_UINT32(src + 12);
+	// Trailing bytes after the raw prefix are tolerated.
+	if ((uint64)kCrilaylaHeaderSize + c + kCrilaylaPrefixSize > srcSize)
+		return false;
+	// The header must agree with the table so the allocation stays bounded by it.
+	if ((uint64)kCrilaylaPrefixSize + u != extractSize)
+		return false;
 
-		UTFValue extractSize = table.get(i, "ExtractSize");
-		ITOCSizeEntry entry;
-		entry.id = (uint32)id.u;
-		entry.size = (uint32)fileSize.u;
-		entry.extractSize = extractSize.valid ? (uint32)extractSize.u : entry.size;
-		out.push_back(entry);
+	// The first 0x100 output bytes are stored raw after the bit stream.
+	memcpy(dst, src + kCrilaylaHeaderSize + c, kCrilaylaPrefixSize);
+
+	// The rest of the output is produced back to front.
+	CrilaylaBitReader bits(src, kCrilaylaHeaderSize + c, kCrilaylaHeaderSize);
+	const int64 end = (int64)extractSize;
+	int64 pos = end - 1;
+	while (pos >= (int64)kCrilaylaPrefixSize) {
+		const uint32 flag = bits.read(1);
+		if (bits.failed())
+			return false;
+
+		if (flag == 0) {
+			const uint32 literal = bits.read(8);
+			if (bits.failed())
+				return false;
+			dst[pos--] = (byte)literal;
+			continue;
+		}
+
+		const int64 distance = (int64)bits.read(13) + 3;
+		if (bits.failed())
+			return false;
+
+		// Length grows through 2-, 3- and 5-bit fields, then 8-bit fields, each
+		// only continuing while the previous one was all ones. Stop as soon as
+		// the run cannot fit, so a hostile chain of 0xFF fields ends early.
+		const int64 remaining = pos - (int64)kCrilaylaPrefixSize + 1;
+		int64 length = 3;
+		static const int kWidths[] = { 2, 3, 5 };
+		bool more = true;
+		for (int i = 0; i < 3 && more; i++) {
+			const uint32 v = bits.read(kWidths[i]);
+			if (bits.failed())
+				return false;
+			length += v;
+			more = (v == (1u << kWidths[i]) - 1);
+		}
+		while (more && length <= remaining) {
+			const uint32 v = bits.read(8);
+			if (bits.failed())
+				return false;
+			length += v;
+			more = (v == 0xFF);
+		}
+		if (length > remaining)
+			return false;
+
+		int64 from = pos + distance;
+		if (from >= end)
+			return false;
+
+		// Byte by byte on purpose: runs may overlap their own output.
+		for (int64 i = 0; i < length; i++)
+			dst[pos--] = dst[from--];
 	}
 	return true;
+}
+
+struct ItocRow {
+	uint64 id;
+	uint64 fileSize;
+	uint64 extractSize;
+	uint32 seq; // collection order, so the sort keeps the first duplicate first
+};
+
+bool itocRowLess(const ItocRow &a, const ItocRow &b) {
+	if (a.id != b.id)
+		return a.id < b.id;
+	return a.seq < b.seq;
+}
+
+void collectItocRows(const UTFTable &info, const char *column, const Common::String &archive, Common::Array<ItocRow> &rows) {
+	const UTFValue v = info.get(0, column);
+	if (!v.valid || v.dataLength == 0)
+		return;
+
+	if ((uint64)v.dataOffset + v.dataLength > info.dataSegmentSize()) {
+		warning("CPK: ITOC %s table of %s lies outside its data segment", column, archive.c_str());
+		return;
+	}
+
+	const byte *buf = info.dataSegment() + v.dataOffset;
+	UTFTable sub;
+	if (!hasUTFMagic(buf, v.dataLength) || !sub.parse(buf, v.dataLength)) {
+		warning("CPK: cannot parse ITOC %s table of %s", column, archive.c_str());
+		return;
+	}
+
+	for (int r = 0; r < sub.numRows(); r++) {
+		ItocRow row;
+		row.id = sub.get(r, "ID").asUint();
+		row.fileSize = sub.get(r, "FileSize").asUint();
+		row.extractSize = sub.get(r, "ExtractSize").asUint();
+		row.seq = rows.size();
+		rows.push_back(row);
+	}
 }
 
 } // namespace
 
-CPK::CPK(const Common::String &filename) : _filename(filename) {
+CPK::CPK(const Common::String &filename) : _filename(filename), _fileSize(0) {
 	load();
 }
 
 CPK::~CPK() {
 }
 
-bool CPK::load() {
+void CPK::load() {
 	Common::File f;
 	if (!f.open(Common::Path(_filename))) {
-		warning("CPK::CPK(): Could not open %s", _filename.c_str());
-		return false;
+		warning("CPK: could not open %s", _filename.c_str());
+		return;
 	}
 
-	char magic[4];
-	if (f.read(magic, 4) != 4 || memcmp(magic, "CPK ", 4) != 0) {
-		warning("CPK::CPK(): '%s' is not a CPK archive", _filename.c_str());
-		return false;
+	const int64 size = f.size();
+	if (size < (int64)kChunkHeaderSize) {
+		warning("CPK: %s is too small to be a CPK archive", _filename.c_str());
+		return;
 	}
+	_fileSize = (uint64)size;
 
 	UTFTable header;
-	if (!readUTFPacket(f, header)) {
-		warning("CPK::CPK(): failed to parse header @UTF table in %s", _filename.c_str());
-		return false;
+	if (!readChunkTable(f, _fileSize, 0, "CPK ", true, _filename, header))
+		return;
+	if (header.numRows() < 1) {
+		warning("CPK: empty header table in %s", _filename.c_str());
+		return;
 	}
 
-	uint64 tocOffset = header.get(0, "TocOffset").asUint(kNoOffset);
-	uint64 itocOffset = header.get(0, "ItocOffset").asUint(kNoOffset);
-	uint64 contentOffset = header.get(0, "ContentOffset").asUint(kNoOffset);
-	uint16 align = (uint16)header.get(0, "Align").asUint(1);
+	// Files is only the declared count; the table row counts are what matter.
+	const uint64 tocOffset = header.get(0, "TocOffset").asUint();
+	const uint64 itocOffset = header.get(0, "ItocOffset").asUint();
+	const uint64 contentOffset = header.get(0, "ContentOffset").asUint();
+	const uint64 align = header.get(0, "Align").asUint();
 
-	if (tocOffset == kNoOffset) {
-		// No directory tree: fall back to the numeric-ID ITOC when present.
-		if (itocOffset != kNoOffset)
-			return loadITOC(f, itocOffset, contentOffset, align);
+	if (tocOffset != 0)
+		loadToc(f, tocOffset);
+	// TODO: No real archive with both a TOC and an ITOC has been seen; both
+	// sets are simply merged.
+	if (itocOffset != 0)
+		loadItoc(f, itocOffset, contentOffset, align);
 
-		warning("CPK::CPK(): %s has neither a TocOffset nor an ItocOffset", _filename.c_str());
-		return false;
-	}
+	debug(1, "CPK: %s: %u members", _filename.c_str(), _entries.size());
+}
 
-	f.seek(tocOffset);
-	char tocMagic[4];
-	if (f.read(tocMagic, 4) != 4 || memcmp(tocMagic, "TOC ", 4) != 0) {
-		warning("CPK::CPK(): bad TOC magic in %s", _filename.c_str());
-		return false;
-	}
-
+void CPK::loadToc(Common::File &f, uint64 tocOffset) {
 	UTFTable toc;
-	if (!readUTFPacket(f, toc)) {
-		warning("CPK::CPK(): failed to parse TOC @UTF table in %s", _filename.c_str());
-		return false;
-	}
+	if (!readChunkTable(f, _fileSize, tocOffset, "TOC ", false, _filename, toc))
+		return;
 
-	// Real per-entry offsets in the TOC are relative to this, not to the
-	// start of the file -- see CriPakTools' ReadTOC. Verified against real
-	// umd0.cpk data: TocOffset=0x800, ContentOffset=0x39FC0, so
-	// addOffset=min(ContentOffset, min(TocOffset,0x800))=0x800.
-	uint64 fToc = tocOffset <= 0x800 ? tocOffset : 0x800;
-	uint64 addOffset = contentOffset < fToc ? contentOffset : fToc;
+	for (int r = 0; r < toc.numRows(); r++) {
+		const Common::String dir = toc.get(r, "DirName").asString();
+		const Common::String file = toc.get(r, "FileName").asString();
+		Common::String joined = dir.empty() ? file : dir + "/" + file;
 
-	for (int i = 0; i < toc.numRows(); i++) {
-		Common::String dirName = toc.get(i, "DirName").asString();
-		Common::String fileName = toc.get(i, "FileName").asString();
-		if (fileName.empty())
+		Common::String path;
+		for (uint i = 0; i < joined.size(); i++) {
+			const char ch = (joined[i] == '\\') ? '/' : joined[i];
+			if (ch == '/' && path.empty())
+				continue; // strip leading separators
+			path += ch;
+		}
+		if (path.empty()) {
+			warning("CPK: TOC row %d of %s has no name, skipping", r, _filename.c_str());
 			continue;
+		}
 
-		UTFValue fileSizeVal = toc.get(i, "FileSize");
-		UTFValue extractSizeVal = toc.get(i, "ExtractSize");
-		UTFValue offsetVal = toc.get(i, "FileOffset");
+		const uint64 relOffset = toc.get(r, "FileOffset").asUint();
+		const uint64 fileSize = toc.get(r, "FileSize").asUint();
+		const uint64 extractSize = toc.get(r, "ExtractSize").asUint();
+		// FileOffset counts from the TOC chunk, not from ContentOffset.
+		if (relOffset > ~(uint64)0 - tocOffset || fileSize > 0xFFFFFFFFULL || extractSize > 0xFFFFFFFFULL) {
+			warning("CPK: TOC entry '%s' of %s has an invalid offset or size, skipping", path.c_str(), _filename.c_str());
+			continue;
+		}
 
 		CPKEntry entry;
-		entry.name = dirName.empty() ? fileName : dirName + "/" + fileName;
-		entry.offset = offsetVal.asUint(0) + addOffset;
-		entry.size = (uint32)fileSizeVal.asUint(0);
-		entry.extractSize = extractSizeVal.valid ? (uint32)extractSizeVal.u : entry.size;
-
-		_entries[entry.name] = entry;
+		entry.name = path;
+		entry.offset = tocOffset + relOffset;
+		entry.size = (uint32)fileSize;
+		entry.extractSize = (uint32)extractSize;
+		addEntry(entry, false);
 	}
-
-	return true;
 }
 
-// TODO: verify the ITOC path below against a real ITOC-keyed CPK (P3P's CPKs are TOC-only).
-// ITOC path: implemented from the documented CRI layout (CriPakTools'
-// ReadITOC and vgmstream's cpk.c), but never verified against a real
-// ITOC-keyed archive -- none was available in the test corpus. The layout is
-// an "ITOC" magic followed by the same packet framing as TOC, wrapping a
-// CpkItocInfo @UTF table: FilesL/FilesH plus DataL/DataH vldata columns, each
-// of which is itself a CpkItocL/CpkItocH @UTF table of ID/FileSize/
-// ExtractSize rows. Records carry no explicit offset, so files are laid out
-// back-to-back in ascending ID order starting at ContentOffset, each rounded
-// up to `align`.
-bool CPK::loadITOC(Common::SeekableReadStream &f, uint64 itocOffset, uint64 contentOffset, uint16 align) {
-	f.seek(itocOffset);
-	char magic[4];
-	if (f.read(magic, 4) != 4 || memcmp(magic, "ITOC", 4) != 0) {
-		warning("CPK::CPK(): bad ITOC magic in %s", _filename.c_str());
-		return false;
+void CPK::loadItoc(Common::File &f, uint64 itocOffset, uint64 contentOffset, uint64 align) {
+	// TODO: The ITOC layout follows other readers and a synthetic test only;
+	// it has not been checked against a real ITOC archive.
+	UTFTable info;
+	if (!readChunkTable(f, _fileSize, itocOffset, "ITOC", false, _filename, info))
+		return;
+	if (info.numRows() < 1) {
+		warning("CPK: empty ITOC table in %s", _filename.c_str());
+		return;
 	}
 
-	UTFTable itoc;
-	if (!readUTFPacket(f, itoc)) {
-		warning("CPK::CPK(): failed to parse ITOC @UTF table in %s", _filename.c_str());
-		return false;
-	}
+	// Small and large members are interleaved by ID, so pool both before sorting.
+	Common::Array<ItocRow> rows;
+	collectItocRows(info, "DataL", _filename, rows);
+	collectItocRows(info, "DataH", _filename, rows);
+	Common::sort(rows.begin(), rows.end(), itocRowLess);
 
-	const byte *dataSegment = itoc.dataSegment();
-	uint32 dataSegmentSize = itoc.dataSegmentSize();
-	Common::Array<ITOCSizeEntry> sizes;
-	static const char *const kSubTables[2] = { "DataL", "DataH" };
-	for (int t = 0; t < 2; t++) {
-		UTFValue sub = itoc.get(0, kSubTables[t]);
-		if (!sub.valid)
+	// Members sit back to back from ContentOffset in ascending-ID order, each
+	// start rounded up to Align.
+	uint64 offset = contentOffset;
+	for (uint i = 0; i < rows.size(); i++) {
+		const ItocRow &row = rows[i];
+		// TODO: Unclear what real archives do with duplicate IDs; keep the first.
+		if (i > 0 && row.id == rows[i - 1].id) {
+			warning("CPK: duplicate ITOC ID %llu in %s, skipping", (unsigned long long)row.id, _filename.c_str());
 			continue;
-		if (sub.dataOffset > dataSegmentSize || sub.dataLength > dataSegmentSize - sub.dataOffset)
-			continue;
-		parseITOCData(dataSegment + sub.dataOffset, sub.dataLength, sizes);
+		}
+		if (offset > _fileSize || row.fileSize > 0xFFFFFFFFULL) {
+			warning("CPK: ITOC of %s runs past the file, dropping %u entries", _filename.c_str(), rows.size() - i);
+			break;
+		}
+
+		if (row.id > 0xFFFFFFFFULL || row.extractSize > 0xFFFFFFFFULL) {
+			warning("CPK: ITOC entry %llu of %s has an invalid ID or size, skipping", (unsigned long long)row.id, _filename.c_str());
+		} else {
+			CPKEntry entry;
+			entry.name = Common::String::format("%u", (uint32)row.id);
+			entry.offset = offset;
+			entry.size = (uint32)row.fileSize;
+			entry.extractSize = (uint32)row.extractSize;
+			entry.id = (uint32)row.id;
+			entry.hasId = true;
+			addEntry(entry, true);
+		}
+
+		// offset <= _fileSize and fileSize < 2^32, so neither step can wrap
+		// unless Align itself is absurd; that case ends the loop next round.
+		offset += row.fileSize;
+		if (align > 0 && offset % align != 0) {
+			const uint64 pad = align - offset % align;
+			if (pad > ~(uint64)0 - offset)
+				offset = ~(uint64)0;
+			else
+				offset += pad;
+		}
 	}
-
-	if (sizes.empty()) {
-		warning("CPK::CPK(): ITOC in %s has no usable entries", _filename.c_str());
-		return false;
-	}
-
-	Common::sort(sizes.begin(), sizes.end(), itocSizeEntryLess);
-
-	uint64 baseOffset = (contentOffset == kNoOffset) ? 0 : contentOffset;
-	for (uint32 i = 0; i < sizes.size(); i++) {
-		CPKEntry entry;
-		entry.name = Common::String::format("%u", sizes[i].id);
-		entry.offset = baseOffset;
-		entry.size = sizes[i].size;
-		entry.extractSize = sizes[i].extractSize;
-		entry.id = sizes[i].id;
-		entry.hasId = true;
-
-		_entries[entry.name] = entry;
-		_entriesById[entry.id] = entry;
-
-		baseOffset += sizes[i].size;
-		if (align > 1 && (baseOffset % align))
-			baseOffset += align - (baseOffset % align);
-	}
-
-	return true;
 }
 
-bool CPK::getEntryById(uint32 id, CPKEntry &entry) const {
-	if (!_entriesById.contains(id))
+bool CPK::addEntry(const CPKEntry &entry, bool isItoc) {
+	if (entry.offset > _fileSize || entry.size > _fileSize - entry.offset) {
+		warning("CPK: entry '%s' of %s lies outside the file, skipping", entry.name.c_str(), _filename.c_str());
 		return false;
-	entry = _entriesById[id];
+	}
+
+	const bool nameTaken = _byName.contains(entry.name);
+	if (nameTaken && !isItoc) {
+		warning("CPK: duplicate TOC path '%s' in %s, keeping the first", entry.name.c_str(), _filename.c_str());
+		return false;
+	}
+
+	const uint32 idx = _entries.size();
+	_entries.push_back(entry);
+	// A TOC member keeps its name over an ITOC ID name; the ITOC entry is
+	// then only reachable by ID.
+	if (!nameTaken) {
+		_byName[entry.name] = idx;
+		_named.push_back(idx);
+	}
+	if (isItoc)
+		_byId[entry.id] = idx;
 	return true;
 }
 
 bool CPK::hasFile(const Common::Path &name) const {
-	return _entries.contains(name.toString());
+	return _byName.contains(name.toString('/'));
 }
 
 int CPK::listMembers(Common::ArchiveMemberList &list) const {
-	int matches = 0;
-	for (CPKEntryMap::const_iterator it = _entries.begin(); it != _entries.end(); ++it) {
-		list.push_back(Common::ArchiveMemberList::value_type(new Common::GenericArchiveMember(Common::Path(it->_value.name), *this)));
-		matches++;
-	}
-	return matches;
+	for (uint i = 0; i < _named.size(); i++)
+		list.push_back(Common::ArchiveMemberList::value_type(new Common::GenericArchiveMember(Common::Path(_entries[_named[i]].name), *this)));
+	return _named.size();
 }
 
 const Common::ArchiveMemberPtr CPK::getMember(const Common::Path &name) const {
@@ -363,32 +437,59 @@ const Common::ArchiveMemberPtr CPK::getMember(const Common::Path &name) const {
 }
 
 Common::SeekableReadStream *CPK::createReadStreamForMember(const Common::Path &name) const {
-	if (!_entries.contains(name.toString()))
+	NameMap::const_iterator it = _byName.find(name.toString('/'));
+	if (it == _byName.end())
 		return nullptr;
+	const CPKEntry &entry = _entries[it->_value];
 
-	const CPKEntry &entry = _entries[name.toString()];
-
-	Common::File f;
-	if (!f.open(Common::Path(_filename)))
+	const bool compressed = entry.extractSize != entry.size;
+	if (compressed && (entry.extractSize > kMaxExtractSize || entry.extractSize < kCrilaylaPrefixSize)) {
+		warning("CPK: implausible extracted size for '%s' in %s", entry.name.c_str(), _filename.c_str());
 		return nullptr;
-	f.seek(entry.offset);
-
-	Common::Array<byte> raw(entry.size);
-	if (f.read(raw.data(), entry.size) != entry.size)
-		return nullptr;
-
-	if (entry.extractSize != entry.size && entry.size >= 8 && memcmp(raw.data(), "CRILAYLA", 8) == 0) {
-		Common::Array<byte> decompressed = decompressCRILAYLA(raw);
-		if (decompressed.empty())
-			return nullptr;
-		byte *data = new byte[decompressed.size()];
-		memcpy(data, decompressed.data(), decompressed.size());
-		return new Common::MemoryReadStream(data, decompressed.size(), DisposeAfterUse::YES);
 	}
 
-	byte *data = new byte[raw.size()];
-	memcpy(data, raw.data(), raw.size());
-	return new Common::MemoryReadStream(data, raw.size(), DisposeAfterUse::YES);
+	Common::File f;
+	if (!f.open(Common::Path(_filename)) || !f.seek((int64)entry.offset)) {
+		warning("CPK: cannot reopen %s", _filename.c_str());
+		return nullptr;
+	}
+
+	// malloc because MemoryReadStream releases its buffer with free(); keep
+	// it non-null for empty members.
+	byte *stored = (byte *)malloc(entry.size ? entry.size : 1);
+	if (!stored)
+		return nullptr;
+	if (f.read(stored, entry.size) != entry.size) {
+		warning("CPK: short read of '%s' in %s", entry.name.c_str(), _filename.c_str());
+		free(stored);
+		return nullptr;
+	}
+
+	// Equal sizes mean stored raw; do not sniff for CRILAYLA in that case.
+	if (!compressed)
+		return new Common::MemoryReadStream(stored, entry.size, DisposeAfterUse::YES);
+
+	byte *out = (byte *)malloc(entry.extractSize);
+	if (!out) {
+		free(stored);
+		return nullptr;
+	}
+	const bool ok = decompressCrilayla(stored, entry.size, out, entry.extractSize);
+	free(stored);
+	if (!ok) {
+		warning("CPK: cannot decompress '%s' in %s", entry.name.c_str(), _filename.c_str());
+		free(out);
+		return nullptr;
+	}
+	return new Common::MemoryReadStream(out, entry.extractSize, DisposeAfterUse::YES);
+}
+
+bool CPK::getEntryById(uint32 id, CPKEntry &entry) const {
+	IdMap::const_iterator it = _byId.find(id);
+	if (it == _byId.end())
+		return false;
+	entry = _entries[it->_value];
+	return true;
 }
 
 CPK *makeCPKArchive(const Common::String &name) {
