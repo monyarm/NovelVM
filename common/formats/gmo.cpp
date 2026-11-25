@@ -548,28 +548,26 @@ void GMO::parsePart(const Chunk &c, Part &part) {
 					byte r = 0, g = 0, b = 0, al = 255;
 					const byte *cp = _data + vStart + colorOff;
 					const uint16 raw = READ_LE_UINT16(cp);
+					// GE colours are little-endian with red in the low bits (checked against Noesis'
+					// export of real P3P field objects: raw 0xf999 is grey 9,9,9 with alpha 15).
 					switch (colorType) {
 					case 4: // 5650
-						r = (byte)(((raw >> 11) & 0x1F) << 3);
+						r = (byte)((raw & 0x1F) << 3);
 						g = (byte)(((raw >> 5) & 0x3F) << 2);
-						b = (byte)((raw & 0x1F) << 3);
+						b = (byte)(((raw >> 11) & 0x1F) << 3);
 						break;
-					case 5: { // 5551
-						uint16 sw = (uint16)((raw >> 8) | (raw << 8)); // byte-swap to match PS2
-						r = (byte)(((sw >> 10) & 0x1F) << 3);
-						g = (byte)(((sw >> 5) & 0x1F) << 3);
-						b = (byte)((sw & 0x1F) << 3);
-						al = (sw & 0x8000) ? 255 : 0;
+					case 5: // 5551
+						r = (byte)((raw & 0x1F) << 3);
+						g = (byte)(((raw >> 5) & 0x1F) << 3);
+						b = (byte)(((raw >> 10) & 0x1F) << 3);
+						al = (raw & 0x8000) ? 255 : 0;
 						break;
-					}
-					case 6: { // 4444
-						uint16 sw = (uint16)((raw >> 8) | (raw << 8));
-						r = (byte)(((sw >> 12) & 0xF) * 17);
-						g = (byte)(((sw >> 8) & 0xF) * 17);
-						b = (byte)(((sw >> 4) & 0xF) * 17);
-						al = (byte)((sw & 0xF) * 17);
+					case 6: // 4444
+						r = (byte)((raw & 0xF) * 17);
+						g = (byte)(((raw >> 4) & 0xF) * 17);
+						b = (byte)(((raw >> 8) & 0xF) * 17);
+						al = (byte)(((raw >> 12) & 0xF) * 17);
 						break;
-					}
 					default: // 8888
 						r = cp[0]; g = cp[1]; b = cp[2]; al = cp[3];
 						break;

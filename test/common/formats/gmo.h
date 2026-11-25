@@ -329,6 +329,39 @@ public:
 		TS_ASSERT_DELTA(arr.positions[5], 0.25f, 1e-6f);
 	}
 
+	// 16-bit GE colours are little-endian, red in the low bits: P3P's field object fobj001 has
+	// raw 0x7fda, which Noesis (and the GE) read as R 10, G 13, B 15, A 7 (of 15).
+	void testColor4444IsRedLow() {
+		byte arena[256];
+		byte *w = arena;
+		const char magic[] = "OMG.00.1PSP";
+		for (int i = 0; i < 16; i++) w8(w, i < 11 ? (byte)magic[i] : 0);
+		uint32 c, d;
+		byte *fileStart = fullHeader(w, 0x0002, nullptr, c, d);
+		byte *modelStart = fullHeader(w, 0x0003, "m", c, d);
+		byte *partStart = fullHeader(w, 0x0005, "p", c, d);
+		byte *arrStart = fullHeader(w, 0x0007, "a", c, d);
+		w32(w, (6 << 2) | (2 << 7)); // RGBA4444 colour, 16-bit position: 2 + 6 = 8 bytes
+		w32(w, 1); w32(w, 0); w32(w, 0);
+		w16(w, 0x7fda);
+		w16(w, 0); w16(w, 0); w16(w, 0);
+		patchNext(arrStart, w);
+		patchNext(partStart, w);
+		patchNext(modelStart, w);
+		patchNext(fileStart, w);
+		Common::MemoryReadStream stream(arena, (uint32)(w - arena), DisposeAfterUse::NO);
+		Common::GMO gmo(&stream);
+		if (gmo.parts().size() != 1 || gmo.parts()[0].arrays.size() != 1 || gmo.parts()[0].arrays[0].colors.size() != 4) {
+			TS_FAIL("vertex colour not parsed");
+			return;
+		}
+		const Common::Array<float> &col = gmo.parts()[0].arrays[0].colors;
+		TS_ASSERT_DELTA(col[0], 10 / 15.0f, 1e-6f);
+		TS_ASSERT_DELTA(col[1], 13 / 15.0f, 1e-6f);
+		TS_ASSERT_DELTA(col[2], 15 / 15.0f, 1e-6f);
+		TS_ASSERT_DELTA(col[3], 7 / 15.0f, 1e-6f);
+	}
+
 	void testRejectsBadMagic() {
 		byte buf[32] = {0};
 		buf[0] = 'X'; buf[1] = 'M'; buf[2] = 'G'; buf[3] = '.';
