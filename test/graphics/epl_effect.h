@@ -230,6 +230,39 @@ public:
 		TS_ASSERT_LESS_THAN_EQUALS(2.0f - 1e-3f, minY); // ... and never sank through it
 	}
 
+	void testScreenEchoZoomsPreviousFrame() {
+		// Kind 4 sub 1: zoom key 100 -> zoom 2, so the screen corners sample half a frame outside.
+		Common::Array<byte> d = makeTree(4, 1, 0xE8);
+		const uint32 p = 0x90 + 0xC0 + 0x2C;
+		put32(d, p + 0x04, 0x00FFFFFF);
+		put32(d, p + 0x24, 255);
+		d[p + 0x28] = 2;
+		putFloat(d, p + 0x30, 1.0f);
+		putFloat(d, p + 0x38, 100.0f);
+		put32(d, p + 0xB8, 10);
+		Common::EPL epl(d.data(), d.size());
+		TS_ASSERT(epl.ok());
+		Graphics::EPLEffect effect(epl, nullptr);
+		Graphics::EffectCamera camera;
+		effect.advance(camera);
+		Common::Array<Graphics::EffectBatch> batches;
+		effect.draw(camera, batches);
+		TS_ASSERT_EQUALS(batches.size(), 1u);
+		if (batches.size() != 1)
+			return;
+		const Graphics::EffectBatch &batch = batches[0];
+		TS_ASSERT(batch.overlay && batch.screenSpace && batch.texture.previousFrame);
+		TS_ASSERT_EQUALS(batch.vertices.size(), 6u);
+		TS_ASSERT_DELTA(batch.vertices[0].x, 0.0f, 1e-6f); // top left corner ...
+		TS_ASSERT_DELTA(batch.vertices[0].u, -0.5f, 1e-5f); // ... samples (-0.5, -0.5)
+		TS_ASSERT_DELTA(batch.vertices[0].v, -0.5f, 1e-5f);
+		for (int i = 0; i < 11; ++i) // past the duration nothing is drawn
+			effect.advance(camera);
+		batches.clear();
+		effect.draw(camera, batches);
+		TS_ASSERT(batches.empty());
+	}
+
 	void testParticlesSpawnAtNodeAndBillboard() {
 		Common::Array<byte> d = makeParticleTree();
 		Common::EPL epl(d.data(), d.size());
