@@ -350,16 +350,20 @@ Flow:
 
 The bot never auto-merges and never pushes to `master`.
 
-Authentication is a fine-grained PAT stored as `SYNC_BOT_TOKEN` with
-`Contents: RW`, `Pull requests: RW`, and `Workflows: RW`. A PAT is used
-because GitHub suppresses workflow runs for events caused by `GITHUB_TOKEN`, so
-a `GITHUB_TOKEN`-created PR would get no CI. The token is passed to
-`actions/checkout`, `git push`, and `gh`, and must be rotated yearly; an
-expired token fails the job without touching the PR.
+Authentication is a GitHub App installed on the repository. The workflow calls
+`actions/create-github-app-token` with the `SYNC_BOT_APP_ID` and
+`SYNC_BOT_PRIVATE_KEY` secrets and passes the resulting installation token to
+`actions/checkout`, `git push`, and `gh`. The app needs `Contents: RW`,
+`Pull requests: RW`, and `Workflows: RW`; `Metadata` stays read-only.
+
+An app token is used because GitHub suppresses workflow runs for events caused
+by `GITHUB_TOKEN`, so a `GITHUB_TOKEN`-created PR would get no CI. Tokens are
+minted per run and expire after an hour, so there is nothing to rotate.
 
 One-time repository setup: protect `master` (require a pull request and CI,
-include administrators) so the PAT cannot push to it directly. The bot only
-writes `automation/upstream-sync`.
+include administrators). Keep the app out of the ruleset's bypass list; only
+the human owner may bypass it. The bot only writes
+`automation/upstream-sync`.
 
 The branch is bot-owned and force-pushed weekly, so human edits on it are
 replaced on the next run. A conflict resolution must be merged into `master`
