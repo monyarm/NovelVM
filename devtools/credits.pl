@@ -1319,4 +1319,11 @@ begin_credits("Credits");
 
 	end_section();
 
+	begin_section("NovelVM Contributors");
+		begin_persons();
+			add_person("monyarm", "", "Main NovelVM Developer");
+			add_person("FakeShemp", "", "novelvm.xpm");
+		end_persons();
+	end_section();
+
 end_credits();
