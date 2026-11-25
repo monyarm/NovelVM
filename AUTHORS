@@ -80,7 +80,11 @@ ScummVM Team
        monyarm                        - Engine
        Persona Modding community      - TGE, Shrinefox, Meloman19 and others;
                                         source code for their tools
-       Benjamin Dobell, Glass Echidna - s3tc
+
+  NovelVM Middleware
+  ------------------
+    DDS / S3TC:
+       Benjamin Dobell, Glass Echidna - S3TC/DDS texture decompression
 
   Backend Teams
   -------------

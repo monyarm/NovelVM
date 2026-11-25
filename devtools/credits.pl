@@ -548,6 +548,15 @@ begin_credits("Credits");
 		end_section();
 
 
+		begin_section("NovelVM Middleware");
+			my $middleware = "common/formats/credits.pl";
+			if (-e $middleware) {
+				my $credits_pl = readfile($middleware);
+				eval $credits_pl;
+			}
+		end_section();
+
+
 		begin_section("Backend Teams", "backend_teams");
 			begin_section("Atari");
 				add_person("Miro Krop&aacute;&#269;ek", "mikrosk", "");
