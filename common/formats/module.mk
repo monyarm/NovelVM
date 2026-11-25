@@ -33,6 +33,7 @@ MODULE_OBJS := \
 	cri_mask.o \
 	gmo.o \
 	rmd.o \
+	epl.o \
 	gim.o \
 	amd.o
 
