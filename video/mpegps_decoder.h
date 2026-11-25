@@ -289,6 +289,7 @@ private:
 
 		byte *_frameBuffer;
 		uint32 _frameBufPos;
+		uint32 _samplesDecoded = 0;
 		int32 _hist1[2];
 		int32 _hist2[2];
 	};
@@ -381,6 +382,7 @@ private:
 	// A map from stream types to stream handlers
 	typedef Common::HashMap<int, MPEGStream *> StreamMap;
 	StreamMap _streamMap;
+	bool _hasADXTrack = false; ///< SFD: only the first embedded ADX stream is played
 
 	// Optional container-supplied ATRAC audio parameters (see setATRACAudioInfo).
 	bool _hasATRACInfo = false;

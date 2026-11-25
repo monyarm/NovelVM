@@ -118,6 +118,7 @@ void MPEGPSDecoder::close() {
 	VideoDecoder::close();
 	_demuxer->close();
 	_streamMap.clear();
+	_hasADXTrack = false;
 }
 
 MPEGPSDecoder::MPEGStream *MPEGPSDecoder::getStream(uint32 startCode, Common::SeekableReadStream *packet) {
@@ -211,7 +212,6 @@ MPEGPSDecoder::MPEGStream *MPEGPSDecoder::getStream(uint32 startCode, Common::Se
 			}
 		} else if (startCode >= 0x1E0 && startCode <= 0x1EF) {
 			// Video stream
-			// TODO: Encrypted ADX inside SFD is untested (no encrypted sample in the corpus).
 			// TODO: Multiple video streams
 			warning("Found extra video stream 0x%04X", startCode);
 			_streamMap[startCode] = 0;
@@ -221,13 +221,18 @@ MPEGPSDecoder::MPEGStream *MPEGPSDecoder::getStream(uint32 startCode, Common::Se
 			// instead of real MPEG audio. Real ADX starts with magic
 			// 0x8000; MPEG audio never does (its sync word starts with
 			// 11 set bits), so this check is unambiguous.
+			// TODO: encrypted ADX inside SFD is not decrypted (no encrypted sample in the corpus).
+			// CRI's player plays one audio stream: the first one found.
 			Common::ADXFrameInfo adxInfo;
-			if (packet->readUint16BE() == 0x8000) {
+			if (_hasADXTrack) {
+				_streamMap[startCode] = 0;
+			} else if (packet->readUint16BE() == 0x8000) {
 				packet->seek(0);
 				const bool validHeader = Common::parseADXFrameInfo(*packet, adxInfo);
 				packet->seek(0);
 				if (validHeader) {
 					ADXAudioTrack *audioTrack = new ADXAudioTrack(*packet, getSoundType());
+					_hasADXTrack = true;
 					stream = audioTrack;
 					_streamMap[startCode] = audioTrack;
 					addTrack(audioTrack);
@@ -1166,7 +1171,10 @@ MPEGPSDecoder::ADXAudioTrack::ADXAudioTrack(Common::SeekableReadStream &firstPac
 	_audStream = Audio::makePacketizedRawStream(_info.sampleRate, flags);
 	_frameBuffer = new byte[_info.frameSize()];
 	_frameBufPos = 0;
-	_hist1[0] = _hist1[1] = _hist2[0] = _hist2[1] = 0;
+	for (int c = 0; c < 2; ++c) {
+		_hist1[c] = _info.history[c][0];
+		_hist2[c] = _info.history[c][1];
+	}
 	_isFirstPacket = true;
 }
 
@@ -1194,10 +1202,19 @@ bool MPEGPSDecoder::ADXAudioTrack::sendPacket(Common::SeekableReadStream *packet
 		if (_frameBufPos < frameSize)
 			break;
 
-		int16 *pcm = (int16 *)malloc(sampleBytesPerFrame);
-		Common::decodeADXFrame(_frameBuffer, _info, _hist1, _hist2, pcm);
-		_audStream->queuePacket(new Common::MemoryReadStream((byte *)pcm, sampleBytesPerFrame, DisposeAfterUse::YES));
 		_frameBufPos = 0;
+		// Stop at the end marker or the header's sample count, like CRI's player.
+		if (_samplesDecoded >= _info.sampleCount)
+			break;
+		int16 *pcm = (int16 *)malloc(sampleBytesPerFrame);
+		if (!Common::decodeADXFrame(_frameBuffer, _info, _hist1, _hist2, pcm)) {
+			free(pcm);
+			_samplesDecoded = _info.sampleCount;
+			break;
+		}
+		const uint32 samples = MIN(_info.samplesPerFrame(), _info.sampleCount - _samplesDecoded);
+		_samplesDecoded += samples;
+		_audStream->queuePacket(new Common::MemoryReadStream((byte *)pcm, samples * _info.channelCount * sizeof(int16), DisposeAfterUse::YES));
 	}
 
 	delete packet;
