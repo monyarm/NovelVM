@@ -269,7 +269,7 @@ bool GMORenderer::isAvailable() {
 }
 
 void GMORenderer::computeBounds(const Common::GMO &gmo, int width, int height, float rotY,
-                                bool atlus180Z, const Common::GMO::BonePose *bonePose,
+                                const Common::GMO::BonePose *bonePose,
                                 const Common::GMO::MaterialPose *materialPose, GMOBounds *outBounds) {
 	if (outBounds)
 		*outBounds = GMOBounds();
@@ -279,7 +279,7 @@ void GMORenderer::computeBounds(const Common::GMO &gmo, int width, int height, f
 	Common::Array<Graphics::Surface *> textures;
 	decodeGMOTextures(gmo, textures);
 	Common::Array<Tri> tris;
-	buildGMOMesh(gmo, textures, width, height, rotY, atlus180Z, bonePose, materialPose,
+	buildGMOMesh(gmo, textures, width, height, rotY, bonePose, materialPose,
 	             nullptr, outBounds, tris);
 	freeGMOTextures(textures);
 }
@@ -288,7 +288,7 @@ void GMORenderer::invalidate() {
 	resetResources();
 }
 
-void GMORenderer::render(const Common::GMO &gmo, int width, int height, float rotY, bool atlus180Z,
+void GMORenderer::render(const Common::GMO &gmo, int width, int height, float rotY,
                            const Common::GMO::BonePose *bonePose, const Common::GMO::MaterialPose *materialPose,
                            const GMOBounds *fixedBounds, GMOBounds *outBounds,
                            bool unlit) {
@@ -310,7 +310,7 @@ void GMORenderer::render(const Common::GMO &gmo, int width, int height, float ro
 		st.gmo = &gmo;
 	}
 
-	buildGMOMesh(gmo, st.textures, width, height, rotY, atlus180Z, bonePose, materialPose,
+	buildGMOMesh(gmo, st.textures, width, height, rotY, bonePose, materialPose,
 	             fixedBounds, outBounds, st.tris);
 
 	// Interleave 12 floats per vertex (position, normal, uv, color) and group

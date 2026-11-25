@@ -42,11 +42,10 @@ public:
 	/**
 	 * Render `gmo` into the currently bound GL render target, sized
 	 * width x height. `rotY` rotates the model about world Y (radians);
-	 * `atlus180Z` applies the Persona model twist; `fixedBounds` keeps the
+	 * `fixedBounds` keeps the
 	 * framing constant; `outBounds` receives the computed world bounds.
 	 */
 	static void render(const Common::GMO &gmo, int width, int height, float rotY = 0.0f,
-	                   bool atlus180Z = false,
 	                   const Common::GMO::BonePose *bonePose = nullptr,
 	                   const Common::GMO::MaterialPose *materialPose = nullptr,
 	                   const GMOBounds *fixedBounds = nullptr,
@@ -58,7 +57,7 @@ public:
 	 * so callers can fix the camera before the first GL frame.
 	 */
 	static void computeBounds(const Common::GMO &gmo, int width, int height, float rotY,
-	                          bool atlus180Z, const Common::GMO::BonePose *bonePose,
+	                          const Common::GMO::BonePose *bonePose,
 	                          const Common::GMO::MaterialPose *materialPose, GMOBounds *outBounds);
 
 	/** Drop cached textures before the caller replaces the GMO object. */
