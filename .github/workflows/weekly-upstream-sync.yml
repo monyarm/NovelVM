@@ -1,0 +1,150 @@
+name: Weekly upstream sync
+
+on:
+  schedule:
+    # Mondays at 06:00 UTC.
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+concurrency:
+  group: upstream-sync
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  sync:
+    name: Sync with ScummVM
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Check out master
+        uses: actions/checkout@v4
+        with:
+          ref: master
+          fetch-depth: 0
+          token: ${{ secrets.SYNC_BOT_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name 'NovelVM Sync Bot'
+          git config user.email 'sync-bot@users.noreply.github.com'
+          git config commit.gpgsign false
+
+      - name: Test the sync tooling
+        run: bash devtools/test-sync-upstream.sh
+
+      - name: Run the sync
+        id: sync
+        env:
+          NOVELVM_SCUMMVM_REMOTE_URL: https://github.com/scummvm/scummvm.git
+        run: |
+          set -euo pipefail
+          git switch -c automation/upstream-sync
+
+          set +e
+          ./sync-upstream.sh 2>&1 | tee /tmp/sync.log
+          code=${PIPESTATUS[0]}
+          set -e
+
+          echo "exit-code=$code" >> "$GITHUB_OUTPUT"
+          echo "old=$(git show origin/master:.novelvm-sync | sed -n 's/^upstream=//p')" >> "$GITHUB_OUTPUT"
+          echo "new=$(git rev-parse scummvm/master)" >> "$GITHUB_OUTPUT"
+
+          case "$code" in
+            0)
+              if [ "$(git rev-parse HEAD)" = "$(git rev-parse origin/master)" ]; then
+                echo "no upstream changes" >> "$GITHUB_OUTPUT"
+                exit 0
+              fi
+              ;;
+            3)
+              ./sync-upstream.sh --continue 2>&1 | tee -a /tmp/sync.log
+              ;;
+            2)
+              git diff --name-only --diff-filter=U > /tmp/conflicts.txt
+              git add -A
+              git commit -m "SYNC: Upstream sync attempt (conflicts)" \
+                -m "Conflict markers are committed for manual review; this branch is not a merge."
+              ;;
+            4)
+              echo "sync policy stop; not pushing" >&2
+              exit 1
+              ;;
+            *)
+              echo "sync failed with exit code $code" >&2
+              exit 1
+              ;;
+          esac
+
+          if [ "$(git rev-parse HEAD)" = "$(git rev-parse origin/master)" ]; then
+            echo "no upstream changes" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+          echo "title=$(git log -1 --format=%s)" >> "$GITHUB_OUTPUT"
+
+      - name: Push the sync branch
+        if: steps.sync.outputs.changed == 'true'
+        run: git push --force origin automation/upstream-sync
+
+      - name: Open or update the draft pull request
+        if: steps.sync.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.SYNC_BOT_TOKEN }}
+          OLD: ${{ steps.sync.outputs.old }}
+          NEW: ${{ steps.sync.outputs.new }}
+          SYNC_TITLE: ${{ steps.sync.outputs.title }}
+        run: |
+          set -euo pipefail
+
+          {
+            echo 'Automated upstream sync. **This branch is force-pushed weekly; any human edits will be replaced.**'
+            echo
+            echo "- Upstream range: \`${OLD:-unknown}..${NEW}\`"
+            echo "- Workflow run: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+            echo
+            echo '### Changed paths'
+            echo '```'
+            git diff --stat "origin/master...HEAD" | tail -n 20
+            echo '```'
+            echo
+            echo '### Engines added'
+            git diff --diff-filter=A --name-only "origin/master...HEAD" -- engines \
+              | cut -d/ -f2 | sort -u | sed 's/^/- /' || true
+            echo
+            echo '### Engines removed'
+            git diff --diff-filter=D --name-only "origin/master...HEAD" -- engines \
+              | cut -d/ -f2 | sort -u | sed 's/^/- /' || true
+            echo
+            if [ -s /tmp/conflicts.txt ]; then
+              echo '### Conflicts'
+              echo 'The sync stopped with conflicts. Conflict markers are committed; resolve them manually.'
+              echo '```'
+              cat /tmp/conflicts.txt
+              echo '```'
+            else
+              echo '### Review gate'
+              echo 'No text conflicts. Review the gate and table delta below before merging.'
+            fi
+            echo
+            echo '### Gate and table delta'
+            echo '```'
+            grep -Ei 'gate|table|added:|removed:' /tmp/sync.log | tail -n 40 || true
+            echo '```'
+            echo
+            echo '### Sync log'
+            echo '```'
+            tail -n 80 /tmp/sync.log
+            echo '```'
+          } > /tmp/pr-body.md
+
+          pr=$(gh pr list --head automation/upstream-sync --state open --json number --jq '.[0].number // empty')
+          if [ -n "$pr" ]; then
+            gh pr edit "$pr" --title "$SYNC_TITLE" --body-file /tmp/pr-body.md
+          else
+            gh pr create --draft --base master --head automation/upstream-sync \
+              --title "$SYNC_TITLE" --body-file /tmp/pr-body.md
+          fi
