@@ -549,9 +549,12 @@ begin_credits("Credits");
 
 
 		begin_section("NovelVM Middleware");
-			my $middleware = "common/formats/credits.pl";
-			if (-e $middleware) {
-				my $credits_pl = readfile($middleware);
+			# read every middleware credits file below the shared code; each one
+			# opens a section per format it credits
+			my @middleware = `find common audio video graphics image -name credits.pl | sort`;
+			foreach my $file (@middleware) {
+				$file =~ s/\R//g;
+				my $credits_pl = readfile($file);
 				eval $credits_pl;
 			}
 		end_section();
