@@ -13,6 +13,9 @@
 #include "graphics/opengl/shader.h"
 #include "graphics/opengl/system_headers.h"
 
+// TODO: shader GL only; there is no software or fixed-function (USE_OPENGL_GAME) fallback, and
+// the PSP GU blend maths and per-pixel depth test are approximated.
+
 namespace Graphics {
 
 namespace {

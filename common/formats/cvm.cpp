@@ -2,6 +2,9 @@
 
 #include "common/formats/cvm.h"
 
+// TODO: every real CVM has structured, non-zero data at header offset 0x1000 whose purpose is
+// unknown; nothing here needs it, so it is not parsed.
+
 namespace Common {
 
 CVM::CVM(const Common::String &filename) : _cvmFilename(filename) {

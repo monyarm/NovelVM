@@ -2,6 +2,12 @@
 
 #include "common/endian.h"
 
+// TODO: EPL trees are only read from RMD effect blocks. Not read anywhere yet:
+// - P3 FES battle effect containers (BATTLE/EFFECT/*.BED in BTL.CVM, magic "BED400": a table
+//   of 24-byte entries pointing at embedded EPL blocks; most entry fields are not understood),
+// - standalone .EPL files (FIELD/BTL_EFFECT/BTL_EFF.PAC, ICON/, EVENT/SYS/, FACILITY/EFFECT/),
+// - EPL entries of .PM1 event containers, whose 4-word "EPLHead" records are not understood.
+
 namespace Common {
 
 namespace {

@@ -8,6 +8,9 @@
 #include "common/textconsole.h"
 #include "common/util.h"
 
+// TODO: loops are only verified on a file whose loop end is also its last sample; a loop that
+// ends earlier has no real sample to check against.
+
 namespace Common {
 
 namespace {

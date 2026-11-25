@@ -1264,6 +1264,8 @@ void RMD::parsePersonaAnimation(const Node &node) {
 		bool valid = true;
 		for (uint32 i = 0; i < keyCount && valid; ++i) {
 			const uint32 offset = p + 20 + i * 52;
+			// TODO: only time, rotation, translation and the previous-key link of the 52 bytes are
+			// used; the four remaining words' meaning (title-specific extras) is unknown.
 			AnimationKey key;
 			key.time = readFloatLE(_data, offset);
 			// P3 FES uses this exact non-finite quartet for translation-only keys.
