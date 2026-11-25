@@ -22,6 +22,7 @@
 #include "graphics/rmd_render.h"
 #include "graphics/rmd_render_mesh.h"
 #include "graphics/epl_effect.h"
+#include "graphics/afpack_trail.h"
 #include "common/formats/epl.h"
 #ifdef USE_OPENGL_SHADERS
 #include "graphics/opengl/blitter.h"
@@ -293,12 +294,15 @@ Common::RMD *loadRmdEntry(const RmdEntry &entry) {
 class DemoEffectTextures : public Graphics::EffectTextureSource {
 public:
 	explicit DemoEffectTextures(Common::Archive *data) {
-		_global.resize(22, nullptr);
+		_global.resize(Graphics::kTrailTextureSlot + 1, nullptr);
+		Common::ScopedPtr<Common::SeekableReadStream> trail(data ? data->createReadStreamForMember(Common::Path("effect/z0.tmx")) : nullptr);
+		if (trail)
+			_global[Graphics::kTrailTextureSlot] = decode(*trail);
 		Common::SeekableReadStream *stream = data ? data->createReadStreamForMember(Common::Path("effect/effpack.bin")) : nullptr;
 		if (!stream)
 			return;
 		SMT::Format::Archive::PAC pack(stream);
-		for (uint i = 0; i < _global.size(); ++i) {
+		for (uint i = 0; i < 22; ++i) {
 			Common::ScopedPtr<Common::SeekableReadStream> member(pack.createReadStreamForMember(Common::Path(Common::String::format("be_%04u.tmx", i + 1))));
 			if (member)
 				_global[i] = decode(*member);
@@ -377,6 +381,21 @@ void advanceDemoEffects(const Common::RMD &model, Common::Array<DemoEffect> &eff
 		e.effect->setPose(position, rotation);
 		e.effect->advance(camera);
 	}
+}
+
+struct DemoHelperContext {
+	const Common::RMD *model;
+	const Common::RMD::BonePose *pose;
+};
+
+bool demoHelperPosition(void *context, uint32 helper, float position[3]) {
+	const DemoHelperContext *c = (const DemoHelperContext *)context;
+	Common::RMD::Matrix m;
+	if (!c->model->helperWorldMatrix(helper, c->pose, m))
+		return false;
+	for (int k = 0; k < 3; ++k)
+		position[k] = m.m[12 + k];
+	return true;
 }
 
 bool rmdMatches(const RmdEntry &entry, const Common::String &name) {
@@ -514,12 +533,14 @@ Common::Error SMTEngine::run() {
 	Common::ScopedPtr<DemoEffectTextures> effectTextures;
 	Common::Array<DemoEffect> rmdEffects;
 	int32 rmdEffectSlot = -1;
+	Common::ScopedPtr<Graphics::AfPackTrail> rmdTrail; // the playing slot's weapon trail
 	uint32 rmdEffectTicks = 0, rmdEffectStart = 0;
 	auto clearRmdEffects = [&]() {
 		for (uint i = 0; i < rmdEffects.size(); ++i)
 			delete rmdEffects[i].effect;
 		rmdEffects.clear();
 		rmdEffectSlot = -1;
+		rmdTrail.reset();
 		if (effectTextures)
 			effectTextures->clearEmbedded();
 	};
@@ -1275,6 +1296,16 @@ Common::Error SMTEngine::run() {
 					if (rmdEffects[i].slot >= 0 && rmdEffects[i].slot == slot &&
 							(slot != rmdEffectSlot || (looped && (rmdEffects[i].flags & 1))))
 						rmdEffects[i].effect->restart();
+				// Every slot start plays its weapon trail from the beginning; looping doesn't.
+				if (slot != rmdEffectSlot) {
+					rmdTrail.reset();
+					for (uint i = 0; i < rmdModel->trailPacks().size(); ++i)
+						if (rmdModel->trailPacks()[i].slot == slot) {
+							const Common::Array<byte> &payload = rmdModel->trailPacks()[i].payload;
+							rmdTrail.reset(new Graphics::AfPackTrail(payload.data(), payload.size()));
+							break;
+						}
+				}
 				rmdEffectSlot = slot;
 				animLabel = Common::String::format("Animation %d/%u (time %.1f)",
 				                                   animMotion + 1, (unsigned)animations.size(), time);
@@ -1290,8 +1321,12 @@ Common::Error SMTEngine::run() {
 			// Effects run at the game's 30 ticks per second, in the model's own space.
 			const uint32 due = (g_system->getMillis() - rmdEffectStart) * 30 / 1000;
 			const Graphics::EffectCamera camera = Graphics::rmdEffectCamera(modelAngle + (float)M_PI);
-			for (uint32 n = 0; rmdEffectTicks < due && n < 8; ++n, ++rmdEffectTicks)
+			DemoHelperContext helpers = {rmdModel, frameRmdPose};
+			for (uint32 n = 0; rmdEffectTicks < due && n < 8; ++n, ++rmdEffectTicks) {
 				advanceDemoEffects(*rmdModel, rmdEffects, rmdEffectSlot, frameRmdPose, camera);
+				if (rmdTrail && rmdTrail->ok() && !rmdTrail->finished())
+					rmdTrail->update(demoHelperPosition, &helpers);
+			}
 			rmdEffectTicks = MAX(rmdEffectTicks, due > 8 ? due - 8 : 0); // don't fall behind after a stall
 			return;
 		}
@@ -1438,6 +1473,8 @@ Common::Error SMTEngine::run() {
 				for (uint i = 0; i < rmdEffects.size(); ++i)
 					if (rmdEffects[i].slot < 0 || rmdEffects[i].slot == rmdEffectSlot)
 						rmdEffects[i].effect->draw(camera, effectBatches);
+				if (rmdTrail && rmdTrail->ok())
+					rmdTrail->draw(0xFFFFFFFF, effectBatches);
 				Graphics::RMDRenderer::render(*rmdModel, screenWidth, screenHeight, modelAngle + (float)M_PI,
 				                              frameRmdPose, rmdFixedBounds.valid ? &rmdFixedBounds : nullptr,
 				                              &rmdFixedBounds, true /* unlit standalone demo */, frameRmdMaterials,
