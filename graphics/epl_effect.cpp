@@ -704,6 +704,94 @@ protected:
 	}
 };
 
+/**
+ * A small RenderWare model embedded in an effect (texture dictionary + clump, optionally an
+ * animation): it parses like an RMD without Persona chunks. Drawn as effect triangles.
+ */
+class EmbeddedModel : Common::NonCopyable {
+public:
+	~EmbeddedModel() {
+		for (uint i = 0; i < _surfaces.size(); ++i)
+			if (_surfaces[i]) {
+				_surfaces[i]->free();
+				delete _surfaces[i];
+			}
+	}
+
+	void load(const Common::Array<byte> &stream) {
+		if (stream.empty())
+			return;
+		Common::MemoryReadStream in(stream.data(), stream.size());
+		_rmd.reset(new Common::RMD(&in));
+		if (!_rmd->ok()) {
+			_rmd.reset();
+			return;
+		}
+		_surfaces.resize(_rmd->textures().size());
+		for (uint i = 0; i < _surfaces.size(); ++i)
+			_surfaces[i] = _rmd->getTextureSurface(i);
+		pose(-1);
+	}
+
+	/** Rebuild the model-space mesh at `time` seconds of animation 0 (< 0: bind pose). */
+	void pose(float time) {
+		if (!_rmd)
+			return;
+		Common::RMD::BonePose bones;
+		const bool animated = time >= 0 && !_rmd->animations().empty() && _rmd->animations()[0].duration > 0 &&
+			_rmd->evaluateAnimation(0, fmodf(time, _rmd->animations()[0].duration), bones);
+		RMDRenderMesh mesh;
+		assembleRMDMesh(*_rmd, _surfaces, 1, 1, 0.0f, animated ? &bones : nullptr, nullptr, mesh, nullptr, nullptr, false);
+		_mesh = mesh.triangles;
+	}
+
+	const Common::Array<RMDRenderTriangle> &mesh() const { return _mesh; }
+
+	/**
+	 * Append the mesh placed by (v x scale) R(rotation) + position, coloured `rgba` (0..1), into
+	 * one batch per texture among out[firstBatch..].
+	 */
+	void emit(Common::Array<EffectBatch> &out, uint32 firstBatch, int blendMode, const float rotation[4], float scale,
+			const float position[3], const float rgba[4]) const {
+		for (uint t = 0; t < _mesh.size(); ++t) {
+			const RMDRenderTriangle &tri = _mesh[t];
+			EffectBatch *batch = nullptr;
+			for (uint b = firstBatch; b < out.size() && !batch; ++b)
+				if (out[b].texture.surface == tri.texture && out[b].blendMode == blendMode)
+					batch = &out[b];
+			if (!batch) {
+				out.push_back(EffectBatch());
+				batch = &out.back();
+				batch->blendMode = blendMode;
+				batch->texture.surface = tri.texture;
+			}
+			for (int k = 0; k < 3; ++k) {
+				const RMDRenderVertex &in = tri.v[k];
+				const float scaled[3] = {in.x * scale, in.y * scale, in.z * scale};
+				float world[3];
+				rotate(rotation, scaled, world);
+				EffectVertex v;
+				v.x = world[0] + position[0];
+				v.y = world[1] + position[1];
+				v.z = world[2] + position[2];
+				v.u = in.u;
+				v.v = in.v;
+				// The effect overrides the material colours; prelight only tints untextured meshes
+				// (textured ones can carry black prelight, as RMDRenderer notes).
+				const bool prelit = tri.texture == nullptr;
+				v.r = rgba[0] * (prelit ? in.r : 1); v.g = rgba[1] * (prelit ? in.g : 1); v.b = rgba[2] * (prelit ? in.b : 1);
+				v.a = rgba[3] * in.a;
+				batch->vertices.push_back(v);
+			}
+		}
+	}
+
+private:
+	Common::ScopedPtr<Common::RMD> _rmd;
+	Common::Array<Graphics::Surface *> _surfaces;
+	Common::Array<RMDRenderTriangle> _mesh;
+};
+
 // Kind 28: the particle emitter (after a 0x44-byte header) drawing a small embedded RW model per
 // particle, spinning about a per-particle axis and tinted by an optional six-colour palette.
 class ObjectParticleEmitter : public ParticleEmitter {
@@ -713,26 +801,8 @@ public:
 		_header.bytes = record.parameters;
 		_header.bytes.resize(MIN<uint>(record.parameters.size(), 0x44));
 		_spin.resize(_slots.size());
-		if (record.resourceKind != Common::EPL::kResourceRWStream || record.resource.empty())
-			return;
-		// The embedded stream (texture dictionary + clump) parses like an RMD without Persona chunks.
-		Common::MemoryReadStream stream(record.resource.data(), record.resource.size());
-		Common::RMD model(&stream);
-		if (!model.ok())
-			return;
-		_surfaces.resize(model.textures().size());
-		for (uint i = 0; i < _surfaces.size(); ++i)
-			_surfaces[i] = model.getTextureSurface(i);
-		RMDRenderMesh mesh;
-		assembleRMDMesh(model, _surfaces, 1, 1, 0.0f, nullptr, nullptr, mesh, nullptr, nullptr, false);
-		_mesh = mesh.triangles;
-	}
-	~ObjectParticleEmitter() override {
-		for (uint i = 0; i < _surfaces.size(); ++i)
-			if (_surfaces[i]) {
-				_surfaces[i]->free();
-				delete _surfaces[i];
-			}
+		if (record.resourceKind == Common::EPL::kResourceRWStream)
+			_model.load(record.resource);
 	}
 
 	void setScale(float scale) override {
@@ -741,7 +811,7 @@ public:
 	}
 
 	void draw(const EffectCamera &camera, uint32 nodeColor, Common::Array<EffectBatch> &out) override {
-		if (_ticks == 0 || _mesh.empty())
+		if (_ticks == 0 || _model.mesh().empty())
 			return;
 		const float spinAccel = _header.f32(0x1C);
 		const bool normaliseSize = _header.u16(0x20) != 0;
@@ -773,37 +843,7 @@ public:
 			}
 			float rgba[4];
 			colorToFloats(modulate(modulate(p.color, nodeColor), paletteColor(spin.palette, p.age)), rgba);
-			for (uint t = 0; t < _mesh.size(); ++t) {
-				const RMDRenderTriangle &tri = _mesh[t];
-				EffectBatch *batch = nullptr;
-				for (uint b = firstBatch; b < out.size() && !batch; ++b)
-					if (out[b].texture.surface == tri.texture)
-						batch = &out[b];
-				if (!batch) {
-					out.push_back(EffectBatch());
-					batch = &out.back();
-					batch->blendMode = _params.u16(0x54);
-					batch->texture.surface = tri.texture;
-				}
-				for (int k = 0; k < 3; ++k) {
-					const RMDRenderVertex &in = tri.v[k];
-					const float scaled[3] = {in.x * size, in.y * size, in.z * size};
-					float world[3];
-					rotate(rotation, scaled, world);
-					EffectVertex v;
-					v.x = world[0] + position[0];
-					v.y = world[1] + position[1];
-					v.z = world[2] + position[2];
-					v.u = in.u;
-					v.v = in.v;
-					// The game overrides the material colours; prelight only tints untextured meshes
-					// (textured ones can carry black prelight, as RMDRenderer notes).
-					const bool prelit = tri.texture == nullptr;
-					v.r = rgba[0] * (prelit ? in.r : 1); v.g = rgba[1] * (prelit ? in.g : 1); v.b = rgba[2] * (prelit ? in.b : 1);
-					v.a = rgba[3] * in.a;
-					batch->vertices.push_back(v);
-				}
-			}
+			_model.emit(out, firstBatch, _params.u16(0x54), rotation, size, position, rgba);
 		}
 		// shortcut: the game culls back faces and writes depth for these meshes; effect batches
 		// do neither, which only matters where the particles overlap themselves.
@@ -817,8 +857,7 @@ private:
 	};
 	Params _header;
 	Common::Array<Spin> _spin;
-	Common::Array<Graphics::Surface *> _surfaces;
-	Common::Array<RMDRenderTriangle> _mesh;
+	EmbeddedModel _model;
 	float _instanceScale = 1;
 
 	void spawned(uint32 index) override {
@@ -1436,6 +1475,44 @@ private:
 	int32 _age = 0;
 };
 
+// Kind 26: an embedded animated model placed at the node, tinted and scaled by keys.
+class ModelEffect : public GeometryPrimitive {
+public:
+	ModelEffect(const Common::EPL::Record &record) : GeometryPrimitive(record) {
+		if (record.resourceKind == Common::EPL::kResourceRWStream)
+			_model.load(record.resource);
+	}
+
+	void reset() override {
+		_elapsed = 0;
+		_model.pose(0);
+	}
+
+	void advance() override {
+		const int32 duration = _params.s32(0x60);
+		if (duration == 0 || _elapsed <= duration) {
+			++_elapsed;
+			_model.pose(_elapsed / 30.0f); // the model's animation advances one game tick
+		}
+	}
+
+	void draw(const EffectCamera &camera, uint32 nodeColor, Common::Array<EffectBatch> &out) override {
+		const int32 duration = _params.s32(0x60);
+		if (_model.mesh().empty())
+			return;
+		// TODO: duration 1225 switches the model to alpha blending and parameter 0x64 sets model
+		// flags 0x18; neither is modelled, the model is drawn in its effect draw list.
+		float rgba[4];
+		colorToFloats(modulate(_params.sampleColor(0x00, 0x24, _elapsed, duration), nodeColor), rgba);
+		const float scale = (_scale[0] + _scale[1] + _scale[2]) / 3 * _params.sampleScalar(0x34, _elapsed, duration) / 10;
+		_model.emit(out, out.size(), _params.u16(0x28), _rotation, scale, _position, rgba);
+	}
+
+private:
+	EmbeddedModel _model;
+	int32 _elapsed = 0;
+};
+
 EffectPrimitive *createPrimitive(const Common::EPL::Record &record, EffectTextureSource *textures) {
 	switch (record.kind) {
 	case Common::EPL::kParticle:
@@ -1448,11 +1525,12 @@ EffectPrimitive *createPrimitive(const Common::EPL::Record &record, EffectTextur
 		return new WindFunnel(record);
 	case Common::EPL::kObjectParticle:
 		return new ObjectParticleEmitter(record, textures);
+	case Common::EPL::kModel:
+		return new ModelEffect(record);
 	case Common::EPL::kBoard:
 		return new Board(record, textures);
 	default:
-		// TODO: model (26, an embedded mini-RMD) and the screen blur/filter kinds (4, 5) are
-		// parsed but not drawn.
+		// TODO: the screen blur/filter kinds (4, 5) are parsed but not drawn.
 		return nullptr;
 	}
 }
