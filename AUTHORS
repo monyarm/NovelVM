@@ -81,7 +81,9 @@ ScummVM Team
        Persona Modding community      - TGE, Shrinefox, Meloman19 and others;
                                         source code for their tools
        Raikaru                        - Persona 4 and Persona 3 FES
-                                        decompilations, the TMX reference
+                                        decompilations, used only to write
+                                        the TMX specs; no code taken from
+                                        them
 
   NovelVM Middleware
   ------------------
@@ -94,8 +96,9 @@ ScummVM Team
     ADX:
        vgmstream contributors         - CRI key derivation and the type 8 key
                                         table (ISC)
-       Raikaru                        - Persona 4 decompilation, used to
-                                        check CRI ADX behaviour
+       Raikaru                        - Persona 4 decompilation, used only to
+                                        write the CRI ADX behaviour notes; no
+                                        code taken from it
 
     AHX:
        Fabrice Bellard                - FFmpeg MPEG audio layer II decoder,
@@ -118,9 +121,12 @@ ScummVM Team
 
     EPL:
        Raikaru                        - Persona 4 and Persona 3 FES
-                                        decompilations, the EPL and AfPack
-                                        reference
-       snaku                          - Original Persona 3 FES decompilation
+                                        decompilations, used only to write
+                                        the EPL and AfPack specs; no code
+                                        taken from them
+       snaku                          - Original Persona 3 FES decompilation,
+                                        used only for specs; no code taken
+                                        from it
 
     GMO:
        Rich Whitehouse                - Noesis, used to compare GMO output
@@ -145,8 +151,9 @@ ScummVM Team
     RMD:
        TGE                            - AmicitiaLibrary, the RMD reference
        Raikaru                        - Persona 4 and Persona 3 FES
-                                        decompilations, the Persona RMD chunk
-                                        reference
+                                        decompilations, used only to write
+                                        the Persona RMD chunk specs; no code
+                                        taken from them
 
     USM:
        FFmpeg contributors            - USM container layout reference
