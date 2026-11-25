@@ -100,7 +100,7 @@ class BMD {
 	};
 	
 	void readFile(Common::SeekableReadStream *stream);
-	void readHeader(Common::SeekableReadStream *stream);
+	bool readHeader(Common::SeekableReadStream *stream);
 	void readRelocationTable(Common::SeekableReadStream *stream);
 	void readDialogHeaders(Common::SeekableReadStream *stream);
 	void readMessageDialog(Common::SeekableReadStream *stream, BinaryMessageDialog *message, int offset);
