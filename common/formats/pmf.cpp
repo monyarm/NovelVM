@@ -218,6 +218,8 @@ PMF::ATRAC3Audio PMF::extractATRAC3Audio() const {
 			ps->skip(hlen);
 			uint32 payload = len - consumed;
 			if (payload >= 4) {
+				// TODO: the sub-header is always taken as 4 bytes, which fits every real packet
+				// (channel 0x00/0x01); other titles' channel ranges (0x80-0xCF etc.) may differ.
 				ps->skip(4); // PSP audio sub-header (channel + 3 bytes)
 				payload -= 4;
 				uint32 old = es.size();
