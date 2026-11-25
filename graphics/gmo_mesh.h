@@ -39,6 +39,7 @@ struct Tri {
 	const Graphics::Surface *tex; // texture to sample, or null = flat
 	// material
 	float diffuse[3], ambient[3], emission[3], specular[3];
+	float alpha;                  // material (diffuse) alpha
 	float specPower, reflection, refraction, bump, mapFactor;
 	// layer
 	uint32 texFunc, texComp, texFilterMin, texFilterMag, wrapU, wrapV, mapType, texGen;
