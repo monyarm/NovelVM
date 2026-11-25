@@ -139,6 +139,31 @@ public:
 	const Common::Array<Clump> &clumps() const { return _clumps; }
 	const Common::Array<Animation> &animations() const { return _animations; }
 	const Common::Array<OpaqueNode> &opaqueNodes() const { return _opaqueNodes; }
+	/** 0xF0F00006 helper matrix: an offset matrix in the space of the bone with HAnim id frameId. */
+	struct HelperMatrix {
+		uint32 id = 0;
+		uint32 frameId = 0;
+		Matrix offset;
+	};
+	const Common::Array<HelperMatrix> &helperMatrices() const { return _helperMatrices; }
+	/**
+	 * 0xF0F000E0: an EPL effect tree (see Common::EPL), instanced once per helper id in
+	 * first..last. Blocks before the first clump belong to the whole model (slot -1), later
+	 * ones to the animation slot they appear in.
+	 */
+	struct EffectBlock {
+		uint16 first = 0, last = 0;
+		uint32 flags = 0; ///< bit 0: restart when the slot's animation loops
+		int32 slot = -1;
+		Common::Array<byte> payload;
+	};
+	const Common::Array<EffectBlock> &effectBlocks() const { return _effectBlocks; }
+	/** 0xF0F000E1: a weapon-trail (AfPack) payload for an animation slot, kept raw. */
+	struct TrailPack {
+		int32 slot = -1;
+		Common::Array<byte> payload;
+	};
+	const Common::Array<TrailPack> &trailPacks() const { return _trailPacks; }
 	/**
 	 * One Persona animation slot: the nodes up to a terminator (0xF0F00004). Games select
 	 * animations by slot index; placeholder slots are empty and instance slots reuse another.
@@ -228,6 +253,11 @@ private:
 	Common::Array<Animation> _animations;
 	Common::Array<OpaqueNode> _opaqueNodes;
 	Common::Array<AnimationSlot> _animationSlots;
+	Common::Array<HelperMatrix> _helperMatrices;
+	Common::Array<EffectBlock> _effectBlocks;
+	Common::Array<TrailPack> _trailPacks;
+	bool _seenClump = false;
+	uint32 _terminators = 0; ///< animation slot counter: number of 0xF0F00004 chunks so far
 	Common::Array<UVAnimation> _uvAnimations;
 	Common::Array<MaterialAnimation> _materialAnimations;
 	void resolveSlotInstances();

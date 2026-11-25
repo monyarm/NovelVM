@@ -468,72 +468,75 @@ public:
 		TS_ASSERT_EQUALS(rmd.animationForSlot(7), -1);
 	}
 
-	void testPreservesPersonaParticleListTrailer() {
-		Common::Array<byte> particle;
-		append32(particle, 0x12345678);
-		particle.push_back(0xA5);
-		particle.push_back(0x5A);
-		Common::Array<byte> data;
-		appendNode(data, 0xF0F000E0, particle, 0x40000000);
-		data.push_back(0);
-		data.push_back(0);
-		appendNode(data, 2, Common::Array<byte>());
+	// 0xF0F000E0 as in real P3 FES/P4 files: a 20-byte header, `pad` bytes so the payload
+	// starts 16-aligned, then `length` payload bytes; the chunk size is 20 + length, so the
+	// last `pad` payload bytes lie past the size the chunk header declares.
+	static Common::Array<byte> effectChunk(uint16 first, uint16 last, uint32 flags, uint32 pad,
+			const Common::Array<byte> &payload) {
+		Common::Array<byte> body;
+		append16(body, first); append16(body, last);
+		append32(body, payload.size()); append32(body, pad); append32(body, flags); append32(body, 0);
+		Common::Array<byte> chunk;
+		appendNode(chunk, 0xF0F000E0, body, 0x40000000);
+		// appendNode wrote a size of 20; the real one is 20 + length
+		const uint32 size = 20 + payload.size();
+		for (uint32 k = 0; k < 4; ++k)
+			chunk[4 + k] = (byte)(size >> (8 * k));
+		for (uint32 k = 0; k < pad; ++k)
+			chunk.push_back(0);
+		for (uint32 k = 0; k < payload.size(); ++k)
+			chunk.push_back(payload[k]);
+		return chunk;
+	}
+
+	void testParsesPaddedEffectBlockAndResynchronises() {
+		Common::Array<byte> payload;
+		for (uint32 i = 0; i < 0x40; ++i)
+			payload.push_back((byte)(0xA0 + i)); // non-zero tail: the old zero-skipping walker failed here
+		Common::Array<byte> data = effectChunk(3, 5, 1, 4, payload);
+		appendNode(data, 0xF0F00004, Common::Array<byte>()); // must still be found after the padded chunk
 
 		Common::RMD rmd = parse(data.data(), data.size());
 		TS_ASSERT(rmd.ok());
-		TS_ASSERT_EQUALS(rmd.opaqueNodes().size(), 1u);
-		if (rmd.opaqueNodes().size() == 1) {
-			TS_ASSERT_EQUALS(rmd.opaqueNodes()[0].type, 0xF0F000E0u);
-			TS_ASSERT_EQUALS(rmd.opaqueNodes()[0].payload.size(), particle.size());
-			TS_ASSERT_EQUALS(rmd.opaqueNodes()[0].payload[4], 0xA5u);
+		TS_ASSERT_EQUALS(rmd.effectBlocks().size(), 1u);
+		if (rmd.effectBlocks().size() == 1) {
+			const Common::RMD::EffectBlock &block = rmd.effectBlocks()[0];
+			TS_ASSERT_EQUALS(block.first, 3);
+			TS_ASSERT_EQUALS(block.last, 5);
+			TS_ASSERT_EQUALS(block.flags, 1u);
+			TS_ASSERT_EQUALS(block.slot, -1); // before any clump: model-wide
+			TS_ASSERT_EQUALS(block.payload.size(), 0x40u);
+			TS_ASSERT_EQUALS(block.payload[0], 0xA0);
+			TS_ASSERT_EQUALS(block.payload[0x3F], 0xDF);
 		}
+		TS_ASSERT_EQUALS(rmd.animationSlots().size(), 1u);
 	}
 
-	void testRejectsNonZeroParticleAlignment() {
-		Common::Array<byte> particle;
-		append32(particle, 0x12345678);
+	void testParsesHelperMatrixTable() {
+		Common::Array<byte> table;
+		append16(table, 2);
+		for (uint32 e = 0; e < 2; ++e) {
+			append32(table, 10 + e); append32(table, 5000 + e);
+			const float m[16] = {1, 0, 0, 0xCD, 0, 1, 0, 0xCD, 0, 0, 1, 0xCD, (float)e, 2, 3, 0xCD};
+			for (uint32 k = 0; k < 16; ++k) {
+				uint32 bits;
+				memcpy(&bits, &m[k], 4);
+				append32(table, bits);
+			}
+		}
 		Common::Array<byte> data;
-		appendNode(data, 0xF0F000E0, particle, 0x40000000);
-		data.push_back(0xA5);
-		appendNode(data, 2, Common::Array<byte>());
-
-		TS_ASSERT(!parse(data.data(), data.size()).ok());
-	}
-
-	void testAcceptsObservedParticleVariantAlignment() {
-		Common::Array<byte> particle;
-		append32(particle, 0x12345678);
-		Common::Array<byte> data;
-		appendNode(data, 0xF0F000E0, particle, 0x40000000);
-		data.push_back(0xBD);
-		data.push_back(0);
-		appendNode(data, 2, Common::Array<byte>());
-
-		TS_ASSERT(parse(data.data(), data.size()).ok());
-	}
-
-	void testRecoversParticleAfterObservedFesMarker() {
-		Common::Array<byte> particle;
-		append32(particle, 0x12345678);
-		Common::Array<byte> data;
-		appendNode(data, 0xF0F000E0, particle, 0x40000000);
-		data.push_back(0xAF); data.push_back(0x9F); data.push_back(0x10); data.push_back(0x00);
-		data.push_back(0x00); data.push_back(0x00);
-		data.push_back(0xA5); data.push_back(0x01); data.push_back(0x00); data.push_back(0x00);
-		append32(data, 0x1C020037);
-		appendNode(data, 2, Common::Array<byte>());
+		appendNode(data, 0xF0F00006, table, 0x40000000);
 		Common::RMD rmd = parse(data.data(), data.size());
 		TS_ASSERT(rmd.ok());
-	}
-
-	void testRecoversParticleAfterObservedP4Marker() {
-		Common::Array<byte> particle;
-		append32(particle, 0x12345678);
-		Common::Array<byte> data;
-		appendNode(data, 0xF0F000E0, particle, 0x40000000);
-		data.push_back(0x54); data.push_back(0x3C);
-		appendNode(data, 2, Common::Array<byte>());
-		TS_ASSERT(parse(data.data(), data.size()).ok());
+		TS_ASSERT_EQUALS(rmd.helperMatrices().size(), 2u);
+		if (rmd.helperMatrices().size() == 2) {
+			TS_ASSERT_EQUALS(rmd.helperMatrices()[1].id, 11u);
+			TS_ASSERT_EQUALS(rmd.helperMatrices()[1].frameId, 5001u);
+			TS_ASSERT_EQUALS(rmd.helperMatrices()[1].offset.m[12], 1.0f);
+			TS_ASSERT_EQUALS(rmd.helperMatrices()[1].offset.m[13], 2.0f);
+			TS_ASSERT_EQUALS(rmd.helperMatrices()[1].offset.m[3], 0.0f); // pad word dropped
+			TS_ASSERT_EQUALS(rmd.helperMatrices()[1].offset.m[15], 1.0f);
+		}
 	}
 
 	void testRecoversFillBeforeTransformOverride() {
