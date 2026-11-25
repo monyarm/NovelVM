@@ -16,9 +16,6 @@ NovelVM carries a small set of engines instead of ScummVM's full list:
 | `snatcher` | Snatcher, fully playable. Detects the English Sega CD NA and EU/PAL releases. |
 | `ags` | Adventure Game Studio, with VNDB ids and support levels for the VN titles that match. |
 
-Bible Black and Koihime † Musou are developed on their own engine branches
-rather than on `master`.
-
 An engine that only reads a game's file formats is marked `File Formats` in
 `--list-games`; the game is detected and its data can be inspected, but it
 does not run yet.
