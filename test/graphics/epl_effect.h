@@ -28,6 +28,30 @@ class EPLEffectTestSuite : public CxxTest::TestSuite {
 	// One particle node: cone emitter (sub 5) that does not move its particles, 1 per frame,
 	// lifetime 10, constant red colour, size 1, additive blend, texture slot 3. The node sits
 	// at offset (0, 5, 0).
+	// Root + one node + one record of the given kind/sub; parameters at return value + 0x11C.
+	static Common::Array<byte> makeTree(uint16 kind, uint16 sub, uint32 paramSize) {
+		const uint32 record = 0x90 + 0xC0;
+		Common::Array<byte> d(record + 0x2C + paramSize, 0);
+		putFloat(d, 0x74, 1.0f);
+		put32(d, 0x68, 0x80);
+		put32(d, 0x80, 1);
+		put32(d, 0x88, 0x90);
+		const uint32 n = 0x90;
+		putFloat(d, n + 0x4C, 1);
+		putFloat(d, n + 0x5C, 1);
+		putFloat(d, n + 0x60, 1);
+		put32(d, n + 0x64, 0xFFFFFFFF);
+		put32(d, n + 0x68, 0x80);
+		put32(d, n + 0x84, 1);
+		put32(d, n + 0x90, record);
+		put32(d, record, 210);
+		d[record + 4] = (byte)kind;
+		d[record + 0x0C] = (byte)sub;
+		put32(d, record + 0x10, 0x2C);
+		put32(d, record + 0x14, paramSize);
+		return d;
+	}
+
 	static Common::Array<byte> makeParticleTree() {
 		const uint32 record = 0x90 + 0xC0, params = record + 0x2C, paramSize = 0xE8;
 		Common::Array<byte> d(params + paramSize + 0x10 + 4, 0);
@@ -93,6 +117,43 @@ public:
 		TS_ASSERT_DELTA(r[0], 0.0f, 1e-5f);
 		TS_ASSERT_DELTA(r[2], -1.0f, 1e-5f);
 		TS_ASSERT_DELTA(q[0] * q[0] + q[1] * q[1] + q[2] * q[2] + q[3] * q[3], 1.0f, 1e-5f);
+	}
+
+	void testRingGrowsInLocalPlane() {
+		// Ring (sub 1): radius 10 growing 2 per frame, widths 1/1/1, 4 segments, white, opaque.
+		Common::Array<byte> d = makeTree(12, 1, 0x6C);
+		const uint32 p = 0x90 + 0xC0 + 0x2C;
+		put32(d, p + 0x04, 0x00FFFFFF);
+		put32(d, p + 0x24, 255);
+		d[p + 0x28] = 2;
+		putFloat(d, p + 0x30, 1.0f);
+		put32(d, p + 0x38, 4);
+		putFloat(d, p + 0x40, 10.0f);
+		put32(d, p + 0x44, 0xFFFFFFFF); put32(d, p + 0x48, 0xFFFFFFFF); put32(d, p + 0x4C, 0xFFFFFFFF);
+		putFloat(d, p + 0x50, 1.0f); putFloat(d, p + 0x54, 1.0f); putFloat(d, p + 0x58, 1.0f);
+		putFloat(d, p + 0x60, 2.0f);
+		Common::EPL epl(d.data(), d.size());
+		TS_ASSERT(epl.ok());
+		Graphics::EPLEffect effect(epl, nullptr);
+		Graphics::EffectCamera camera;
+		for (int i = 0; i < 3; ++i) // ages 0, 1, 2: drawn at age 2, radius 14
+			effect.advance(camera);
+		Common::Array<Graphics::EffectBatch> batches;
+		effect.draw(camera, batches);
+		TS_ASSERT_EQUALS(batches.size(), 1u);
+		if (batches.size() != 1)
+			return;
+		TS_ASSERT_EQUALS(batches[0].blendMode, 2);
+		TS_ASSERT_EQUALS(batches[0].vertices.size(), 4u * 18u);
+		float maxX = 0, minR = 1e9f;
+		for (uint i = 0; i < batches[0].vertices.size(); ++i) {
+			const Graphics::EffectVertex &v = batches[0].vertices[i];
+			TS_ASSERT_DELTA(v.y, 0.0f, 1e-4f); // node offset 0: flat in the XZ plane
+			maxX = MAX(maxX, v.x);
+			minR = MIN(minR, sqrtf(v.x * v.x + v.z * v.z));
+		}
+		TS_ASSERT_DELTA(minR, 14.0f, 1e-3f);
+		TS_ASSERT_DELTA(maxX, 17.0f, 1e-3f);
 	}
 
 	void testParticlesSpawnAtNodeAndBillboard() {
