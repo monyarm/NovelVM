@@ -324,7 +324,7 @@ CLAUDE.md
 
 # Ignore local agent artifacts
 /.plan/
-/docs/superpowers/
+/doc/superpowers/
 
 novelvm
 novelvm.*
