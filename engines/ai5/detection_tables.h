@@ -46,6 +46,20 @@ const AI5GameDescription gameDescriptions[] = {
 		GID_ISAKU
 	},
 
+	// Elf Classics (Elf Otona no Kanzume) release
+	{
+		{
+			"yuno",
+			"Elf Classics",
+			AD_ENTRY1s("MES.ARC", "24b705af92e9952cd28d0e6d82fed470", 4110549),
+			Common::JA_JPN,
+			Common::kPlatformWindows,
+			ADGF_UNSTABLE,
+			GUIO0()
+		},
+		GID_YUNO
+	},
+
 	{ AD_TABLE_END_MARKER, GID_ISAKU }
 };
 

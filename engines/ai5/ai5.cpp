@@ -31,6 +31,7 @@
 #include "ai5/gfx.h"
 #include "ai5/text.h"
 #include "ai5/vm.h"
+#include "ai5/games/classics.h"
 #include "ai5/games/isaku.h"
 
 namespace AI5 {
@@ -62,9 +63,15 @@ Common::Error AI5Engine::run() {
 	g_game = game.get();
 	g_animParser = animParser.get();
 
+	g_yunoEng = false;
 	switch (id) {
 	case GID_ISAKU:
 		initGameIsaku(*g_game);
+		break;
+	case GID_YUNO:
+		// the fan-made English patch renames the INI and changes the title
+		g_yunoEng = g_config.title.hasPrefix("YU-NO");
+		initGameYuno(*g_game);
 		break;
 	default:
 		return Common::Error(Common::kUnsupportedGameidError);

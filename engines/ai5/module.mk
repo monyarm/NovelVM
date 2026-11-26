@@ -24,8 +24,10 @@ MODULE_OBJS := \
 	sys.o \
 	text.o \
 	vm.o \
+	games/classics.o \
 	games/isaku.o \
-	games/isaku_item_window.o
+	games/isaku_item_window.o \
+	games/yuno.o
 
 # This module can be built as a plugin
 ifeq ($(ENABLE_AI5), DYNAMIC_PLUGIN)
