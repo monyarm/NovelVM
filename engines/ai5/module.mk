@@ -16,6 +16,7 @@ MODULE_OBJS := \
 	gcc.o \
 	gfx.o \
 	input.o \
+	map.o \
 	menu.o \
 	mes.o \
 	metaengine.o \
