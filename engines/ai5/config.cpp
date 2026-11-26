@@ -21,6 +21,7 @@
  *
  */
 
+#include "common/archive.h"
 #include "common/debug.h"
 #include "common/file.h"
 #include "common/formats/ini-file.h"
@@ -208,6 +209,13 @@ bool loadConfig() {
 
 	Common::String iniName(name);
 	g_config.exeName = iniName.substr(0, iniName.size() - 3) + "EXE";
+	if (!Common::File::exists(Common::Path(g_config.exeName))) {
+		// some re-releases rename the executable, e.g. AI5WIN_16bit_Color.exe
+		Common::ArchiveMemberList exes;
+		SearchMan.listMatchingMembers(exes, Common::Path(iniName.substr(0, iniName.size() - 4) + "*.EXE"));
+		if (!exes.empty())
+			g_config.exeName = exes.front()->getFileName();
+	}
 	return true;
 }
 
