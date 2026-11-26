@@ -47,6 +47,8 @@ void cursorGetPos(uint &x, uint &y);
 /** Advance the cursor animation; called while handling events. */
 void cursorUpdate();
 void cursorSetDirection(CursorDirection dir);
+/** Icon resource no. from the executable as a 32-bit RGBA surface, or nullptr. */
+const struct GfxSurface *iconGet(uint no);
 CursorDirection cursorGetDirection();
 
 } // End of namespace AI5

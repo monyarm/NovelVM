@@ -32,6 +32,7 @@
 #include "ai5/dungeon.h"
 #include "ai5/gfx.h"
 #include "ai5/input.h"
+#include "ai5/popupmenu.h"
 #include "ai5/savedata.h"
 #include "ai5/sys.h"
 #include "ai5/vm.h"
@@ -722,13 +723,106 @@ static void utilCreditsScroll(ParamList &params) {
 	gfxOverlayDisable(0);
 }
 
+static void itemWindowClicked() {
+	isakuItemWindowToggle();
+}
+
+static void saveDataClicked() {
+	menuOpen(g_saveMenu);
+}
+
+static void loadDataClicked() {
+	menuOpen(g_loadMenu);
+}
+
+static void hideMessageClicked() {
+	if (g_messageCleared)
+		g_messageCleared = false;
+	else
+		messageClear();
+}
+
+static void musicEnabledClicked(int index) {
+	if (index == 0) {
+		vmFlagOn(kFlagAudioEnable);
+		audioBgmPlay(g_bgmName, true);
+	} else {
+		audioStop(kAudioChBgm);
+		audioStop(kAudioChSe0);
+		vmFlagOff(kFlagAudioEnable);
+	}
+}
+
+static void voiceEnabledClicked(int index) {
+	if (index == 0) {
+		vmFlagOn(kFlagVoiceEnable);
+	} else {
+		audioStop(kAudioChVoice0);
+		vmFlagOff(kFlagVoiceEnable);
+	}
+}
+
+static void moveSpeedClicked(int index) {
+	dungeonSetMoveSpeed((DungeonSpeed)index);
+}
+
+static void quitGameClicked() {
+	g_engine->quitGame();
+}
+
+static void openContextMenu() {
+	PopupMenu m;
+	int itemId = m.appendEntry(1, "Item Window", "Space", itemWindowClicked);
+	int saveId = m.appendEntry(4, "Save Data", "S", saveDataClicked);
+	int loadId = m.appendEntry(3, "Load Data", "L", loadDataClicked);
+	m.appendSeparator();
+	int msgId = m.appendEntry(-1, "Hide Message", "Tab", hideMessageClicked);
+	m.appendSeparator();
+
+	static const char *const onOff[] = { "On", "Off" };
+	static const char *const fastNormalSlow[] = { "Fast", "Normal", "Slow" };
+
+	PopupMenu *music = new PopupMenu();
+	music->appendRadioGroup(onOff, 2, vmFlagIsOn(kFlagAudioEnable) ? 0 : 1, musicEnabledClicked);
+	PopupMenu *voice = new PopupMenu();
+	voice->appendRadioGroup(onOff, 2, vmFlagIsOn(kFlagVoiceEnable) ? 0 : 1, voiceEnabledClicked);
+	PopupMenu *moveSpeed = new PopupMenu();
+	moveSpeed->appendRadioGroup(fastNormalSlow, 3, dungeonGetMoveSpeed(), moveSpeedClicked);
+
+	PopupMenu *options = new PopupMenu();
+	options->appendSubmenu(-1, "Music", music);
+	options->appendSubmenu(-1, "Voice", voice);
+	options->appendSubmenu(-1, "Move Speed", moveSpeed);
+	m.appendSubmenu(-1, "Options", options);
+
+	m.appendSeparator();
+	m.appendEntry(-1, "Quit Game", "Alt+F4", quitGameClicked);
+	m.appendSeparator();
+	m.appendEntry(-1, "Cancel", nullptr, nullptr);
+
+	m.setActive(itemId, isakuItemWindowIsEnabled());
+	m.setActive(saveId, g_saveMenu.enabled);
+	m.setActive(loadId, g_loadMenu.enabled);
+	m.setActive(msgId, g_messageClearEnabled);
+
+	uint x, y;
+	cursorGetPos(x, y);
+	m.run(x, y);
+}
+
 static bool isakuHandleEvent(const Common::Event &e) {
 	if (isakuItemWindowIsOpen() && isakuItemWindowEvent(e))
 		return true;
 
-	// The original opens a popup menu on right click; its entries are also
-	// available as keys (Space, S, L, Tab).
-	return e.type == Common::EVENT_RBUTTONDOWN || e.type == Common::EVENT_RBUTTONUP;
+	switch (e.type) {
+	case Common::EVENT_RBUTTONDOWN:
+		return true;
+	case Common::EVENT_RBUTTONUP:
+		openContextMenu();
+		return true;
+	default:
+		return false;
+	}
 }
 
 static void isakuDrawText(const char *text) {
