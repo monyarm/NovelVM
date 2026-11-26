@@ -39,8 +39,12 @@ first and third lines changed to NovelVM:
 
 - Files inherited from upstream ScummVM keep the ScummVM header, even when
   NovelVM edits them.
-- Files ported or derived from third-party code keep their original header and
-  provenance notes. Do not replace them with the NovelVM header.
+- Files that carry third-party provenance notes (for example code ported from
+  FFmpeg or vgmstream) keep their existing header and notes. Do not replace them
+  with the NovelVM header.
+- Engines ported from another GPL-compatible project and then reworked use the
+  NovelVM header with a based-on line before the closing ` */`, for example:
+  ` * Based on VileVN, Copyright (C) ViLE Team (GPL-3.0).`
 
 Commit style is ScummVM/NovelVM style (`SUBSYSTEM: Short summary`), not
 Conventional Commits.
