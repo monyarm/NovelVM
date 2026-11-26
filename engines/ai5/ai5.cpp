@@ -19,15 +19,25 @@
  *
  */
 
-#include "common/events.h"
 #include "common/system.h"
-#include "engines/util.h"
+#include "common/textconsole.h"
 
 #include "ai5/ai5.h"
+#include "ai5/animplay.h"
+#include "ai5/asset.h"
+#include "ai5/audio.h"
+#include "ai5/config.h"
+#include "ai5/cursor.h"
+#include "ai5/gfx.h"
+#include "ai5/text.h"
+#include "ai5/vm.h"
 
 namespace AI5 {
 
-AI5Engine::AI5Engine(OSystem *syst, const AI5GameDescription *gameDesc) : Engine(syst), _gameDescription(gameDesc) {
+AI5Engine *g_ai5 = nullptr;
+
+AI5Engine::AI5Engine(OSystem *syst, const AI5GameDescription *gameDesc) : Engine(syst), _gameDescription(gameDesc), _rnd("ai5") {
+	g_ai5 = this;
 }
 
 bool AI5Engine::hasFeature(EngineFeature f) const {
@@ -35,16 +45,51 @@ bool AI5Engine::hasFeature(EngineFeature f) const {
 }
 
 Common::Error AI5Engine::run() {
-	initGraphics(640, 480);
+	const GameId id = _gameDescription->gameId;
+	if (!loadConfig())
+		return Common::Error(Common::kNoGameDataFoundError, "AI5WIN.INI");
 
-	while (!shouldQuit()) {
-		Common::Event event;
-		while (_system->getEventManager()->pollEvent(event))
-			;
-		_system->updateScreen();
-		_system->delayMillis(10);
+	Common::ScopedPtr<Memory> mem(new Memory());
+	Common::ScopedPtr<VM> vm(new VM());
+	Common::ScopedPtr<Game> game(new Game());
+	Common::ScopedPtr<AnimParser> animParser(new AnimParser(id));
+	memset(mem.get(), 0, sizeof(Memory));
+	memset(vm.get(), 0, sizeof(VM));
+	memset(game.get(), 0, sizeof(Game));
+	g_mem = mem.get();
+	g_vm = vm.get();
+	g_game = game.get();
+	g_animParser = animParser.get();
+
+	switch (id) {
+	default:
+		return Common::Error(Common::kUnsupportedGameidError);
 	}
 
+	mesSetGame(id);
+	assetInit(id);
+	g_game->memInit();
+	gfxInit();
+	gfxTextInit();
+	cursorInit(g_config.exeName.c_str());
+	audioInit();
+	vmInit();
+
+	if (g_game->init)
+		g_game->init();
+
+	vmLoadMes(g_config.startMes.c_str());
+	g_game->vm.exec();
+
+	audioFini();
+	cursorFini();
+	gfxTextFini();
+	gfxFini();
+	assetFini();
+	g_animParser = nullptr;
+	g_game = nullptr;
+	g_vm = nullptr;
+	g_mem = nullptr;
 	return Common::kNoError;
 }
 

@@ -22,6 +22,7 @@
 #ifndef AI5_AI5_H
 #define AI5_AI5_H
 
+#include "common/random.h"
 #include "engines/engine.h"
 
 #include "ai5/detection.h"
@@ -35,9 +36,14 @@ public:
 	Common::Error run() override;
 	bool hasFeature(EngineFeature f) const override;
 
+	Common::RandomSource &getRandom() { return _rnd; }
+
 private:
 	const AI5GameDescription *_gameDescription;
+	Common::RandomSource _rnd;
 };
+
+extern AI5Engine *g_ai5;
 
 } // End of namespace AI5
 

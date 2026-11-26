@@ -3,12 +3,25 @@ MODULE := engines/ai5
 MODULE_OBJS := \
 	ai5.o \
 	anim.o \
+	animplay.o \
 	archive.o \
 	asset.o \
+	audio.o \
+	backlog.o \
 	cg.o \
 	config.o \
+	cursor.o \
+	effect.o \
 	gcc.o \
-	metaengine.o
+	gfx.o \
+	input.o \
+	menu.o \
+	mes.o \
+	metaengine.o \
+	savedata.o \
+	sys.o \
+	text.o \
+	vm.o
 
 # This module can be built as a plugin
 ifeq ($(ENABLE_AI5), DYNAMIC_PLUGIN)
