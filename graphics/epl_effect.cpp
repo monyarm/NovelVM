@@ -21,7 +21,6 @@
 
 #include "graphics/epl_effect.h"
 
-#include <cmath>
 
 #include "common/endian.h"
 #include "common/memstream.h"

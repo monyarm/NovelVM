@@ -21,7 +21,6 @@
 
 #include "graphics/afpack_trail.h"
 
-#include <cmath>
 
 #include "common/endian.h"
 #include "common/util.h"

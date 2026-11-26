@@ -22,7 +22,6 @@
 #include "common/formats/rmd.h"
 
 #include <cstring>
-#include <cmath>
 
 #include "common/endian.h"
 #include "graphics/ps2texture.h"
@@ -67,7 +66,7 @@ uint64 readUint64LE(const Common::Array<byte> &data, uint32 offset) {
 float readFloatLE(const Common::Array<byte> &data, uint32 offset) {
 	uint32 bits = readUint32LE(data, offset);
 	float value;
-	std::memcpy(&value, &bits, sizeof(value));
+	memcpy(&value, &bits, sizeof(value));
 	return value;
 }
 
@@ -79,7 +78,7 @@ float decodePersonaPackedFloat(uint16 value) {
 		bits |= (uint32)(value & 0x07FF) << 12;
 	}
 	float result;
-	std::memcpy(&result, &bits, sizeof(result));
+	memcpy(&result, &bits, sizeof(result));
 	return result;
 }
 
@@ -593,7 +592,7 @@ void RMD::parseNode(const Node &node) {
 			for (uint32 j = 0; j < 12; ++j)
 				frame.transform[j] = readFloatLE(_data, p + j * 4);
 			for (uint32 j = 0; j < 12; ++j)
-				if (!std::isfinite(frame.transform[j])) {
+				if (!isfinite(frame.transform[j])) {
 					_ok = false;
 					return;
 				}
@@ -1159,12 +1158,12 @@ void RMD::parseSkin(const Node &node) {
 		for (uint32 i = 0; i < 4; ++i)
 			influence.weights[i] = integerWeights ? (float)weightBits[i] : readFloatLE(_data, (uint32)offset + i * 4);
 		float sum = influence.weights[0] + influence.weights[1] + influence.weights[2] + influence.weights[3];
-		if (!std::isfinite(sum) || sum <= 0.0f) {
+		if (!isfinite(sum) || sum <= 0.0f) {
 			_ok = false;
 			return;
 		}
 		for (uint32 i = 0; i < 4; ++i) {
-			if (!std::isfinite(influence.weights[i]) || influence.weights[i] < 0.0f ||
+			if (!isfinite(influence.weights[i]) || influence.weights[i] < 0.0f ||
 					(influence.weights[i] > 0.0f && influence.indices[i] >= numBones)) {
 				_ok = false;
 				return;
@@ -1178,7 +1177,7 @@ void RMD::parseSkin(const Node &node) {
 		for (uint32 row = 0; row < 4; ++row) {
 			for (uint32 column = 0; column < 3; ++column) {
 				const float value = readFloatLE(_data, (uint32)offset + (row * 4 + column) * 4);
-				if (!std::isfinite(value)) {
+				if (!isfinite(value)) {
 					_ok = false;
 					return;
 				}
@@ -1269,7 +1268,7 @@ void RMD::parsePersonaAnimation(const Node &node) {
 		const uint32 keyCount = readUint32LE(_data, p + 8);
 		const float duration = readFloatLE(_data, p + 16);
 		if (readUint32LE(_data, p + 4) != 0x44A07195 || readUint32LE(_data, p + 12) != 0 ||
-				keyCount > 100000 || !std::isfinite(duration)) {
+				keyCount > 100000 || !isfinite(duration)) {
 			_ok = false;
 			return;
 		}
@@ -1316,11 +1315,11 @@ void RMD::parsePersonaAnimation(const Node &node) {
 			// part of the current pose API, so keep them opaque.
 			const uint32 prev = readUint32LE(_data, offset + 48);
 			const bool hasPrevious = prev % 52 == 0 && prev < keyCount * 52;
-			if (!std::isfinite(key.time) || key.time < 0 || key.time > duration ||
-					!std::isfinite(key.rotation.x) || !std::isfinite(key.rotation.y) ||
-					!std::isfinite(key.rotation.z) || !std::isfinite(key.rotation.w) ||
-					!std::isfinite(key.translation.x) || !std::isfinite(key.translation.y) ||
-					!std::isfinite(key.translation.z)) {
+			if (!isfinite(key.time) || key.time < 0 || key.time > duration ||
+					!isfinite(key.rotation.x) || !isfinite(key.rotation.y) ||
+					!isfinite(key.rotation.z) || !isfinite(key.rotation.w) ||
+					!isfinite(key.translation.x) || !isfinite(key.translation.y) ||
+					!isfinite(key.translation.z)) {
 				valid = false;
 				break;
 			}
@@ -1397,7 +1396,7 @@ void RMD::parsePersonaAnimation(const Node &node) {
 	animation.keyframeCount = keyCount;
 	animation.duration = readFloatLE(_data, p + 16);
 	if (readUint32LE(_data, p) != 0x100 || trackCount == 0 || (trackCount != 2 && trackCount > _frames.size()) ||
-			keyCount == 0 || keyCount > 100000 || !std::isfinite(animation.duration)) {
+			keyCount == 0 || keyCount > 100000 || !isfinite(animation.duration)) {
 		_ok = false;
 		return;
 	}
@@ -1429,19 +1428,19 @@ void RMD::parsePersonaAnimation(const Node &node) {
 				key.translation.y = ty * scalar.y + offset.y;
 				key.translation.z = tz * scalar.z + offset.z;
 				const uint32 prev = readUint32LE(_data, keyData + 18);
-				if (!std::isfinite(offset.x) || !std::isfinite(offset.y) || !std::isfinite(offset.z) ||
-						!std::isfinite(scalar.x) || !std::isfinite(scalar.y) || !std::isfinite(scalar.z) ||
+				if (!isfinite(offset.x) || !isfinite(offset.y) || !isfinite(offset.z) ||
+						!isfinite(scalar.x) || !isfinite(scalar.y) || !isfinite(scalar.z) ||
 						fabsf(offset.x) > 1000000.0f || fabsf(offset.y) > 1000000.0f || fabsf(offset.z) > 1000000.0f ||
 						fabsf(scalar.x) > 1000000.0f || fabsf(scalar.y) > 1000000.0f || fabsf(scalar.z) > 1000000.0f ||
-						!std::isfinite(key.time) || key.time < 0 || key.time > animation.duration ||
-						!std::isfinite(key.rotation.x) || !std::isfinite(key.rotation.y) ||
-						!std::isfinite(key.rotation.z) || !std::isfinite(key.rotation.w) ||
+						!isfinite(key.time) || key.time < 0 || key.time > animation.duration ||
+						!isfinite(key.rotation.x) || !isfinite(key.rotation.y) ||
+						!isfinite(key.rotation.z) || !isfinite(key.rotation.w) ||
 						fabsf(key.rotation.x) > 1.0f || fabsf(key.rotation.y) > 1.0f ||
 						fabsf(key.rotation.z) > 1.0f || fabsf(key.rotation.w) > 1.0f ||
 						// No +-1 bound on tx/ty/tz: an axis with scalar 0 stores filler (decodes to -2/-1).
-						!std::isfinite(tx) || !std::isfinite(ty) || !std::isfinite(tz) ||
-						!std::isfinite(key.translation.x) || !std::isfinite(key.translation.y) ||
-						!std::isfinite(key.translation.z) || fabsf(key.translation.x) > 1000000.0f ||
+						!isfinite(tx) || !isfinite(ty) || !isfinite(tz) ||
+						!isfinite(key.translation.x) || !isfinite(key.translation.y) ||
+						!isfinite(key.translation.z) || fabsf(key.translation.x) > 1000000.0f ||
 						fabsf(key.translation.y) > 1000000.0f || fabsf(key.translation.z) > 1000000.0f) {
 					valid = false;
 					break;
@@ -1529,10 +1528,10 @@ void RMD::parsePersonaAnimation(const Node &node) {
 		key.rotation.y = readFloatLE(_data, base + 20);
 		key.rotation.z = readFloatLE(_data, base + 24);
 		key.rotation.w = readFloatLE(_data, base + 28);
-		if (bone >= trackCount || !std::isfinite(key.time) || !std::isfinite(key.translation.x) ||
-				!std::isfinite(key.translation.y) || !std::isfinite(key.translation.z) ||
-				!std::isfinite(key.rotation.x) || !std::isfinite(key.rotation.y) ||
-				!std::isfinite(key.rotation.z) || !std::isfinite(key.rotation.w)) {
+		if (bone >= trackCount || !isfinite(key.time) || !isfinite(key.translation.x) ||
+				!isfinite(key.translation.y) || !isfinite(key.translation.z) ||
+				!isfinite(key.rotation.x) || !isfinite(key.rotation.y) ||
+				!isfinite(key.rotation.z) || !isfinite(key.rotation.w)) {
 			_ok = false;
 			return;
 		}
@@ -1563,7 +1562,7 @@ void RMD::parseAnimation(const Node &node) {
 		animation.keyframeCount = frameCount;
 		animation.duration = readFloatLE(_data, offset + 12);
 		offset += 16;
-		if (frameCount == 0 || frameCount > 100000 || !std::isfinite(animation.duration) ||
+		if (frameCount == 0 || frameCount > 100000 || !isfinite(animation.duration) ||
 				!canRead(offset, (uint64)frameCount * 40, node.payloadEnd) ||
 				offset + (uint64)frameCount * 40 != node.payloadEnd) {
 			_ok = false;
@@ -1580,9 +1579,9 @@ void RMD::parseAnimation(const Node &node) {
 			key.translation.x = readFloatLE(_data, offset + 20); key.translation.y = readFloatLE(_data, offset + 24);
 			key.translation.z = readFloatLE(_data, offset + 28);
 			const int32 prev = (int32)readUint32LE(_data, offset + 32);
-			if (!std::isfinite(key.time) || !std::isfinite(key.rotation.x) || !std::isfinite(key.rotation.y) ||
-					!std::isfinite(key.rotation.z) || !std::isfinite(key.rotation.w) || !std::isfinite(key.translation.x) ||
-					!std::isfinite(key.translation.y) || !std::isfinite(key.translation.z) ||
+			if (!isfinite(key.time) || !isfinite(key.rotation.x) || !isfinite(key.rotation.y) ||
+					!isfinite(key.rotation.z) || !isfinite(key.rotation.w) || !isfinite(key.translation.x) ||
+					!isfinite(key.translation.y) || !isfinite(key.translation.z) ||
 					(prev != -1 && (prev < 0 || (uint32)prev % 40 != 0 || (uint32)prev >= frameCount * 40)))
 			{
 				_ok = false;
@@ -1634,7 +1633,7 @@ void RMD::parseAnimation(const Node &node) {
 	animation.keyframeCount = readUint32LE(_data, offset + 4);
 	animation.duration = readFloatLE(_data, offset + 8);
 	offset += 12;
-	if (boneCount == 0 || boneCount > 4096 || animation.keyframeCount > 100000 || !std::isfinite(animation.duration)) {
+	if (boneCount == 0 || boneCount > 4096 || animation.keyframeCount > 100000 || !isfinite(animation.duration)) {
 		_ok = false;
 		return;
 	}
@@ -1673,9 +1672,9 @@ void RMD::parseAnimation(const Node &node) {
 				key.rotation.z = readFloatLE(_data, offset + 24); key.rotation.w = readFloatLE(_data, offset + 28);
 				offset += 32;
 			}
-			if (!std::isfinite(key.time) || !std::isfinite(key.translation.x) || !std::isfinite(key.translation.y) ||
-					!std::isfinite(key.translation.z) || !std::isfinite(key.rotation.x) || !std::isfinite(key.rotation.y) ||
-					!std::isfinite(key.rotation.z) || !std::isfinite(key.rotation.w))
+			if (!isfinite(key.time) || !isfinite(key.translation.x) || !isfinite(key.translation.y) ||
+					!isfinite(key.translation.z) || !isfinite(key.rotation.x) || !isfinite(key.rotation.y) ||
+					!isfinite(key.rotation.z) || !isfinite(key.rotation.w))
 			{
 				_ok = false;
 				return;
@@ -1903,12 +1902,12 @@ bool RMD::validateReferences() const {
 				float sum = 0;
 				for (uint32 weight = 0; weight < 4; ++weight) {
 					const SkinInfluence &influence = skin.influences[vertex];
-					if (!std::isfinite(influence.weights[weight]) || influence.weights[weight] < 0 ||
+					if (!isfinite(influence.weights[weight]) || influence.weights[weight] < 0 ||
 							(influence.weights[weight] > 0 && influence.indices[weight] >= skin.boneCount))
 						return false;
 					sum += influence.weights[weight];
 				}
-				if (!std::isfinite(sum) || sum <= 0)
+				if (!isfinite(sum) || sum <= 0)
 					return false;
 			}
 		}
@@ -1926,7 +1925,7 @@ bool RMD::validateReferences() const {
 			if (_clumps[i].atomics[j] >= _atomics.size()) return false;
 	}
 	for (uint32 i = 0; i < _animations.size(); ++i) {
-		if (!std::isfinite(_animations[i].duration) || _animations[i].duration < 0)
+		if (!isfinite(_animations[i].duration) || _animations[i].duration < 0)
 			return false;
 		for (uint32 j = 0; j < _animations[i].tracks.size(); ++j)
 			if (_animations[i].tracks[j].bone >= _frames.size() || _animations[i].tracks[j].keys.empty())

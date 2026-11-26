@@ -21,7 +21,6 @@
 
 #include "graphics/rmd_render_mesh.h"
 
-#include <cmath>
 
 #include "common/array.h"
 
@@ -180,7 +179,7 @@ void assembleRMDMesh(const Common::RMD &rmd, const Common::Array<Graphics::Surfa
 					bool validInfluence = true;
 					x = y = z = 0;
 					for (int w = 0; w < 4; ++w) {
-						if (inf.weights[w] < 0 || !std::isfinite(inf.weights[w]) || inf.indices[w] >= g.skin.inverseBindMatrices.size() ||
+						if (inf.weights[w] < 0 || !isfinite(inf.weights[w]) || inf.indices[w] >= g.skin.inverseBindMatrices.size() ||
 								inf.indices[w] >= g.skin.rendererBoneFrames.size()) {
 							validInfluence = false;
 							break;
@@ -204,7 +203,7 @@ void assembleRMDMesh(const Common::RMD &rmd, const Common::Array<Graphics::Surfa
 						x += tx * inf.weights[w]; y += ty * inf.weights[w]; z += tz * inf.weights[w];
 					}
 					const float weightSum = inf.weights[0] + inf.weights[1] + inf.weights[2] + inf.weights[3];
-					if (validInfluence && std::isfinite(weightSum) && weightSum > 0) {
+					if (validInfluence && isfinite(weightSum) && weightSum > 0) {
 						p = {x, y, z};
 					} else {
 						x = p.x; y = p.y; z = p.z;
