@@ -335,23 +335,23 @@ void buildGMOMesh(const Common::GMO &gmo, const Common::Array<Graphics::Surface 
 				}
 				if (materialPose && mesh.material.index >= 0 &&
 				    mesh.material.index < materialPose->materialCount) {
-					int mi = mesh.material.index;
-					if (materialPose->hasDiffuse[mi]) {
-						for (int i = 0; i < 3; i++) matDiff[i] = CLIP(materialPose->diffuse[mi * 4 + i], 0.0f, 1.0f);
-						matAlpha = CLIP(materialPose->diffuse[mi * 4 + 3], 0.0f, 1.0f);
+					int matIdx = mesh.material.index;
+					if (materialPose->hasDiffuse[matIdx]) {
+						for (int i = 0; i < 3; i++) matDiff[i] = CLIP(materialPose->diffuse[matIdx * 4 + i], 0.0f, 1.0f);
+						matAlpha = CLIP(materialPose->diffuse[matIdx * 4 + 3], 0.0f, 1.0f);
 					}
-					if (materialPose->hasEmission[mi])
-						for (int i = 0; i < 3; i++) matEmi[i] = CLIP(materialPose->emission[mi * 4 + i], 0.0f, 1.0f);
-					if (materialPose->hasAmbient[mi])
-						for (int i = 0; i < 3; i++) matAmb[i] = CLIP(materialPose->ambient[mi * 4 + i], 0.0f, 1.0f);
-					if (materialPose->hasSpecular[mi])
-						for (int i = 0; i < 3; i++) matSpec[i] = CLIP(materialPose->specular[mi * 4 + i], 0.0f, 1.0f);
+					if (materialPose->hasEmission[matIdx])
+						for (int i = 0; i < 3; i++) matEmi[i] = CLIP(materialPose->emission[matIdx * 4 + i], 0.0f, 1.0f);
+					if (materialPose->hasAmbient[matIdx])
+						for (int i = 0; i < 3; i++) matAmb[i] = CLIP(materialPose->ambient[matIdx * 4 + i], 0.0f, 1.0f);
+					if (materialPose->hasSpecular[matIdx])
+						for (int i = 0; i < 3; i++) matSpec[i] = CLIP(materialPose->specular[matIdx * 4 + i], 0.0f, 1.0f);
 					// Animated TEXCROP (P3P field objects scroll their textures this way).
-					if (mi < (int)materialPose->hasTexCrop.size() && materialPose->hasTexCrop[mi]) {
-						crop0 = materialPose->texCrop[mi * 4 + 0];
-						crop1 = materialPose->texCrop[mi * 4 + 1];
-						crop2 = materialPose->texCrop[mi * 4 + 2];
-						crop3 = materialPose->texCrop[mi * 4 + 3];
+					if (matIdx < (int)materialPose->hasTexCrop.size() && materialPose->hasTexCrop[matIdx]) {
+						crop0 = materialPose->texCrop[matIdx * 4 + 0];
+						crop1 = materialPose->texCrop[matIdx * 4 + 1];
+						crop2 = materialPose->texCrop[matIdx * 4 + 2];
+						crop3 = materialPose->texCrop[matIdx * 4 + 3];
 					}
 				}
 				if (texIdx < 0)
@@ -410,10 +410,10 @@ void buildGMOMesh(const Common::GMO &gmo, const Common::Array<Graphics::Surface 
 									float w = a.weights[(uint)v * weightCount + k];
 									if (w == 0.0f)
 										continue;
-									unsigned idx = (k < (int)mesh.blendSubset.size()) ? mesh.blendSubset[k] : (unsigned)k;
-									if (idx >= own.blendBones.size())
+									unsigned slot = (k < (int)mesh.blendSubset.size()) ? mesh.blendSubset[k] : (unsigned)k;
+									if (slot >= own.blendBones.size())
 										continue;
-									int bj = own.blendBones[idx].index;
+									int bj = own.blendBones[slot].index;
 									if (bj < 0 || bj >= nb)
 										continue;
 									// r * bindWorld_j^-1 * posedWorld_j
