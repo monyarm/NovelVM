@@ -21,18 +21,22 @@
  *
  */
 
+#include "common/ptr.h"
 #include "common/textconsole.h"
 
 #include "ai5/ai5.h"
 #include "ai5/animplay.h"
+#include "ai5/archive.h"
 #include "ai5/asset.h"
 #include "ai5/audio.h"
 #include "ai5/backlog.h"
+#include "ai5/cg.h"
 #include "ai5/cursor.h"
 #include "ai5/effect.h"
 #include "ai5/gfx.h"
 #include "ai5/input.h"
 #include "ai5/map.h"
+#include "ai5/movie.h"
 #include "ai5/savedata.h"
 #include "ai5/sys.h"
 #include "ai5/vm.h"
@@ -866,12 +870,306 @@ static void utilMisaTrainOut(ParamList &params) {
 	gfxCopy(0, 0, 640, 480, 2, 0, 0, 0);
 }
 
-static void utilMovieLoad(ParamList &params) {
-	warning("Util.movie_load: movie playback not implemented yet");
+namespace {
+
+struct MovieOverlay {
+	int w, h;
+	Common::Array<byte> pixels; // RGBA
+};
+
+struct MovieState {
+	Common::ScopedPtr<ArcArchive> arc;
+	Common::ScopedPtr<Movie> movie;
+	bool isEnding;
+	MovieOverlay credits;
+	MovieOverlay chara;
+} movieState;
+
+} // End of anonymous namespace
+
+static void movieEnd() {
+	movieState.movie.reset();
+	movieState.isEnding = false;
+	movieState.credits.pixels.clear();
+	movieState.chara.pixels.clear();
 }
 
+static const char *charaFileName(uint i) {
+	static const char *const names[] = {
+		"mai.g16", "misa.g16", "miho.g16", "satomi.g16", "kurumi.g16", "chiharu.g16", "yoshiko.g16",
+		"mako.g16", "ako.g16", "hiromi.g16", "reiko.g16", "kaori.g16", "yayoi.g16", "natuko.g16"
+	};
+	return i < ARRAYSIZE(names) ? names[i] : nullptr;
+}
+
+static bool loadMovieOverlay(const char *name, MovieOverlay &out) {
+	// load file from movie archive
+	Common::ScopedPtr<Common::SeekableReadStream> file(movieState.arc->createReadStreamForMember(Common::Path(name)));
+	if (!file) {
+		warning("Failed to open %s", name);
+		return false;
+	}
+	Common::Array<byte> data(file->size());
+	file->read(data.data(), data.size());
+
+	// decode CG
+	Common::SharedPtr<CG> cg = assetCgDecode(name, data);
+	if (!cg || cg->isIndexed()) {
+		warning("Failed to decode CG \"%s\"", name);
+		return false;
+	}
+
+	// convert color key to alpha
+	out.w = cg->w;
+	out.h = cg->h;
+	out.pixels = cg->pixels;
+	for (uint i = 0; i + 3 < out.pixels.size(); i += 4) {
+		byte *p = &out.pixels[i];
+		if (p[0] == 0 && p[1] == 248 && p[2] == 0)
+			p[3] = 0;
+	}
+	return true;
+}
+
+static void drawMovieOverlay(const MovieOverlay &o, int srcY, int dstX, int dstY, int w, int h, GfxSurface *dst) {
+	for (int row = 0; row < h; row++) {
+		if (srcY + row >= o.h || dstY + row >= dst->h)
+			break;
+		const byte *src = &o.pixels[((srcY + row) * o.w) * 4];
+		byte *out = gfxPixel(dst, dstX, dstY + row);
+		for (int col = 0; col < w && col < o.w && dstX + col < dst->w; col++, src += 4, out += 3) {
+			if (src[3])
+				memcpy(out, src, 3);
+		}
+	}
+}
+
+static void utilMovieLoad(ParamList &params) {
+	if (!movieState.arc) {
+		movieState.arc.reset(ArcArchive::open(Common::Path("STREAM.DAT"), GID_DOUKYUUSEI, 0));
+		if (!movieState.arc) {
+			warning("Failed to open archive: STREAM.DAT");
+			movieEnd();
+			return;
+		}
+	}
+
+	const char *videoName = vmStringParam(params, 4);
+	Common::SeekableReadStream *video = movieState.arc->createReadStreamForMember(Common::Path(videoName));
+	if (!video) {
+		warning("Failed to open video file: %s", videoName);
+		movieEnd();
+		return;
+	}
+	Common::SeekableReadStream *audio = nullptr;
+	if (params.nrParams > 8) {
+		assetSetVoiceArchive("SSIDE.ARC");
+		if (!(audio = assetVoiceLoad(vmStringParam(params, 8))))
+			warning("Failed to open audio file: %s", vmStringParam(params, 8));
+	}
+
+	movieState.movie.reset(new Movie());
+	if (!movieState.movie->load(video, audio)) {
+		warning("Failed to load movie");
+		movieEnd();
+		return;
+	}
+
+	if (!scumm_stricmp(videoName, "end.avi")) {
+		// load overlay images
+		const char *charaName = charaFileName(vmExprParam(params, 1));
+		if (!charaName || !loadMovieOverlay(charaName, movieState.chara)
+				|| !loadMovieOverlay("staff.g16", movieState.credits)) {
+			movieEnd();
+			return;
+		}
+		movieState.isEnding = true;
+	}
+}
+
+static bool movieCancelled() {
+	vmPeek();
+	if (g_engine->shouldQuit())
+		return true;
+	if (memGetVar4(4047) && inputDown(kInputCancel)) {
+		memSetVar32(18, 1);
+		return true;
+	}
+	return false;
+}
+
+#define MS(minutes, seconds, ms) ((((minutes) * 60) + (seconds)) * 1000 + (ms))
+
+static void playEnding(GfxSurface *frame, GfxSurface *s0) {
+	struct MovieSeek {
+		int t;
+		uint frame;
+	};
+	static const MovieSeek seek[] = {
+		{ MS(0, 24,   0), 185 },
+		{ MS(0, 29, 400), 185 },
+		{ MS(0, 34, 900),  95 },
+		{ MS(0, 49, 300), 185 },
+		{ MS(0, 54, 700), 185 },
+		{ MS(1,  0, 100), 185 },
+		{ MS(1,  5, 500),  95 },
+		{ MS(1, 14, 700),  95 },
+		{ MS(1, 29, 100), 185 },
+		{ MS(1, 34, 500), 185 },
+		{ MS(1, 40,   0),  95 },
+		{ MS(1, 54, 400), 185 },
+		{ MS(1, 59, 800), 185 },
+		{ MS(2,  5, 200), 185 },
+		{ MS(2, 10, 600),  95 },
+		{ MS(2, 25, 100),  95 },
+		// transition to evening
+		{ MS(2, 46, 500), 400 },
+		{ MS(2, 51, 300), 310 },
+		{ MS(3,  5,   0), 400 },
+		{ MS(3,  9, 800), 310 },
+		{ MS(3, 23, 500), 400 },
+		{ MS(3, 28, 300), 400 },
+		{ MS(3, 33, 100), 310 },
+		{ MS(3, 46, 800), 400 },
+		{ MS(3, 51, 600), 310 },
+		{ MS(4,  5, 300), 400 },
+		{ MS(4, 10, 100), 310 },
+		{ MS(4, 23, 800), 310 }
+	};
+	uint seekI = 0;
+
+	struct MovieCreditsFrame {
+		int t;
+		int srcY;
+		int dstY;
+		int h;
+	};
+	static const MovieCreditsFrame credits[] = {
+		//  frame time    srcY   dstY    h
+		{ MS(0,  0,   0),    0,     0,   0 },
+		{ MS(0, 10,   0),    0,   128,  53 },
+		{ MS(0, 20,   0),    0,     0,   0 },
+		{ MS(0, 21, 500),   57,   113,  89 },
+		{ MS(0, 31, 500),    0,     0,   0 },
+		{ MS(0, 33,   0),  158,   134,  47 },
+		{ MS(0, 43,   0),    0,     0,   0 },
+		{ MS(0, 44, 500),  214,   134,  47 },
+		{ MS(0, 54, 500),    0,     0,   0 },
+		{ MS(0, 56,   0),  264,    88, 139 },
+		{ MS(1,  6,   0),    0,     0,   0 },
+		{ MS(1,  7, 500),  413,   101, 114 },
+		{ MS(1, 17, 500),    0,     0,   0 },
+		{ MS(1, 19,   0),  529,   121,  72 },
+		{ MS(1, 29,   0),    0,     0,   0 },
+		{ MS(1, 30, 500),  611,   122,  69 },
+		{ MS(1, 40, 500),    0,     0,   0 },
+		{ MS(1, 42,   0),  684,   100, 114 },
+		{ MS(1, 52,   0),    0,     0,   0 },
+		{ MS(1, 53, 500),  804,   100, 114 },
+		{ MS(2,  3, 500),    0,     0,   0 },
+		{ MS(2,  5,   0),  924,   100, 114 },
+		{ MS(2, 15,   0),    0,     0,   0 },
+		{ MS(2, 16, 500), 1044,   100, 114 },
+		{ MS(2, 26, 500),    0,     0,   0 },
+		{ MS(2, 28,   0), 1162,   122,  70 },
+		{ MS(2, 38,   0),    0,     0,   0 },
+		{ MS(2, 45,   0), 1236,   100, 114 },
+		{ MS(2, 55,   0),    0,     0,   0 },
+		{ MS(2, 56, 500), 1356,   100, 114 },
+		{ MS(3,  6, 500),    0,     0,   0 },
+		{ MS(3,  8,   0), 1479,   111,  93 },
+		{ MS(3, 18,   0),    0,     0,   0 },
+		{ MS(3, 19, 500), 1580,    99, 115 },
+		{ MS(3, 29, 500),    0,     0,   0 },
+		{ MS(3, 31,   0), 1700,   100, 114 },
+		{ MS(3, 41,   0),    0,     0,   0 },
+		{ MS(3, 42, 500), 1820,   100, 114 },
+		{ MS(3, 52, 500),    0,     0,   0 },
+		{ MS(3, 54,   0), 1940,   100, 114 },
+		{ MS(4,  4,   0),    0,     0,   0 },
+		{ MS(4,  5, 500), 2060,   100, 114 },
+		{ MS(4, 15, 500),    0,     0,   0 },
+	};
+	uint creditsI = 0;
+
+	static const int chara[] = {
+		MS(0,  0,   0),
+		MS(2, 42,   0), MS(2, 42, 100), MS(2, 42, 200), MS(2, 42, 300), MS(2, 42, 400),
+		MS(2, 42, 500), MS(2, 42, 600), MS(2, 42, 700), MS(2, 42, 800), MS(2, 42, 900),
+		MS(2, 43,   0), MS(2, 43, 100), MS(2, 43, 200), MS(2, 43, 300), MS(2, 43, 400),
+		MS(2, 43, 500), MS(2, 43, 600), MS(2, 43, 700), MS(2, 43, 800), MS(2, 43, 900),
+		MS(4, 17, 100), MS(4, 17, 400), MS(4, 17, 600), MS(4, 17, 800), MS(4, 18,   0),
+		MS(4, 18, 200), MS(4, 18, 400), MS(4, 18, 600), MS(4, 18, 800), MS(4, 19, 300),
+		MS(4, 19, 500), MS(4, 37, 600), MS(4, 37, 700), MS(4, 37, 800), MS(4, 37, 900),
+		MS(4, 38,   0), MS(4, 38, 100), MS(4, 38, 200),
+	};
+	int charaSrcY = 0;
+	uint charaI = 0;
+
+	Movie *movie = movieState.movie.get();
+	while (!movie->isEnd()) {
+		int pos = movie->getPosition();
+		if (seekI < ARRAYSIZE(seek) && pos - seek[seekI].t > -2) {
+			movie->seekVideo(seek[seekI].frame);
+			seekI++;
+		}
+		int r = movie->draw(frame);
+		if (r < 0)
+			break;
+		if (r > 0) {
+			// draw credits/characters on top of video
+			if (creditsI + 1 < ARRAYSIZE(credits) && pos - credits[creditsI + 1].t >= 0)
+				creditsI++;
+			if (charaI + 1 < ARRAYSIZE(chara) && pos - chara[charaI + 1] >= 0) {
+				charaI++;
+				charaSrcY += 200;
+			}
+			memcpy(s0->pixels, frame->pixels, frame->pitch * frame->h);
+			const MovieCreditsFrame &c = credits[creditsI];
+			if (c.h)
+				drawMovieOverlay(movieState.credits, c.srcY, 208, c.dstY, 224, c.h, s0);
+			if (pos < MS(4, 38, 300))
+				drawMovieOverlay(movieState.chara, charaSrcY, 160, 265, 205, 200, s0);
+			gfxWholeSurfaceDirty(0);
+		}
+		if (movieCancelled())
+			break;
+	}
+}
+
+#undef MS
+
 static void utilMoviePlay(ParamList &params) {
-	warning("Util.movie_play: movie playback not implemented yet");
+	if (!movieState.movie) {
+		warning("No movie loaded");
+		return;
+	}
+
+	GfxSurface *s0 = gfxGetSurface(0);
+	Common::Array<byte> frameBuf(s0->pitch * s0->h);
+	GfxSurface frame = { frameBuf.data(), s0->w, s0->h, s0->pitch, s0->bytesPerPixel };
+
+	movieState.movie->play(18);
+	if (movieState.isEnding) {
+		playEnding(&frame, s0);
+	} else {
+		Movie *movie = movieState.movie.get();
+		while (!movie->isEnd()) {
+			int r = movie->draw(s0);
+			if (r < 0)
+				break;
+			if (r > 0)
+				gfxWholeSurfaceDirty(0);
+			if (movieCancelled())
+				break;
+		}
+	}
+
+	// leave the last video frame (without overlays) on surface 0
+	if (movieState.isEnding)
+		memcpy(s0->pixels, frame.pixels, frame.pitch * frame.h);
+	gfxWholeSurfaceDirty(0);
+	movieEnd();
 }
 
 static void util500(ParamList &params) {
@@ -901,6 +1199,8 @@ static void utilEndWait(ParamList &params) {
 static void doukyuuseiInit() {
 	g_mapVersion = kMapVersionNew;
 	mapInit();
+	movieState.arc.reset();
+	movieEnd();
 	audioSetVolume(kAudioChBgm, -1500);
 	audioSetVolume(kAudioChSe0, -1500);
 	audioSetVolume(kAudioChVoice0, -500);

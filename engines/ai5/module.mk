@@ -20,6 +20,7 @@ MODULE_OBJS := \
 	menu.o \
 	mes.o \
 	metaengine.o \
+	movie.o \
 	popupmenu.o \
 	savedata.o \
 	sys.o \
