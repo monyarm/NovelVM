@@ -39,6 +39,20 @@ Rows with no recorded metadata stay blank, which is what most upstream ScummVM
 rows look like. See [doc/updating.md](doc/updating.md) for the table
 conventions.
 
+## Game versions
+
+Any official release of a supported game can be submitted. The official policy
+is to only acknowledge official releases and prototypes.
+
+Engines will launch games even if they don't properly match a known release,
+but support for unofficial versions (fan translation patches, bootlegs) is not
+officially given. If running an unofficial version reveals an engine bug, the
+bug is still fixed — as an engine bug, not as support for that version.
+
+Formats whose entire catalog is fanmade, such as VNDS conversions, are the one
+exception: they are supported as a generic fallback loader with no per-game
+entries.
+
 ## Building
 
 No prebuilt binaries are published; build it yourself:
