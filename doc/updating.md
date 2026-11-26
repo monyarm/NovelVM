@@ -90,7 +90,7 @@ commits are the fallback. `--from REV` overrides it.
 Current values:
 
 ```sh
-NOVELVM_ENGINES="smt"
+NOVELVM_ENGINES="smt koihime_doki"
 PATCHED_ENGINES="director snatcher ags"
 REVIEW_ENGINES="director"
 REVIEW_PATHS="engines/director/detection_tables.h"
