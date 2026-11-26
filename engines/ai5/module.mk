@@ -11,6 +11,7 @@ MODULE_OBJS := \
 	cg.o \
 	config.o \
 	cursor.o \
+	dungeon.o \
 	effect.o \
 	gcc.o \
 	gfx.o \
@@ -21,7 +22,9 @@ MODULE_OBJS := \
 	savedata.o \
 	sys.o \
 	text.o \
-	vm.o
+	vm.o \
+	games/isaku.o \
+	games/isaku_item_window.o
 
 # This module can be built as a plugin
 ifeq ($(ENABLE_AI5), DYNAMIC_PLUGIN)

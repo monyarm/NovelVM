@@ -31,6 +31,7 @@
 #include "ai5/gfx.h"
 #include "ai5/text.h"
 #include "ai5/vm.h"
+#include "ai5/games/isaku.h"
 
 namespace AI5 {
 
@@ -62,6 +63,9 @@ Common::Error AI5Engine::run() {
 	g_animParser = animParser.get();
 
 	switch (id) {
+	case GID_ISAKU:
+		initGameIsaku(*g_game);
+		break;
 	default:
 		return Common::Error(Common::kUnsupportedGameidError);
 	}
