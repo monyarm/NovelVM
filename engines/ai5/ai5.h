@@ -23,9 +23,14 @@
 #define AI5_AI5_H
 
 #include "common/random.h"
+#include "common/str.h"
 #include "engines/engine.h"
 
 #include "ai5/detection.h"
+
+namespace Common {
+class U32String;
+}
 
 namespace AI5 {
 
@@ -36,11 +41,17 @@ public:
 	Common::Error run() override;
 	bool hasFeature(EngineFeature f) const override;
 
+	Common::Error saveGameState(int slot, const Common::String &desc, bool isAutosave) override;
+	Common::Error loadGameState(int slot) override;
+	bool canSaveGameStateCurrently(Common::U32String *msg) override;
+	bool canLoadGameStateCurrently(Common::U32String *msg) override;
+
 	Common::RandomSource &getRandom() { return _rnd; }
 
 private:
 	const AI5GameDescription *_gameDescription;
 	Common::RandomSource _rnd;
+	bool _gameInitialized = false;
 };
 
 extern AI5Engine *g_ai5;

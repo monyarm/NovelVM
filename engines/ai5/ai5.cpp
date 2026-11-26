@@ -31,6 +31,7 @@
 #include "ai5/gfx.h"
 #include "ai5/map.h"
 #include "ai5/text.h"
+#include "ai5/savedata.h"
 #include "ai5/vm.h"
 #include "ai5/games/aishimai.h"
 #include "ai5/games/beyond.h"
@@ -49,7 +50,9 @@ AI5Engine::AI5Engine(OSystem *syst, const AI5GameDescription *gameDesc) : Engine
 }
 
 bool AI5Engine::hasFeature(EngineFeature f) const {
-	return f == kSupportsReturnToLauncher;
+	return f == kSupportsReturnToLauncher
+		|| f == kSupportsLoadingDuringRuntime
+		|| f == kSupportsSavingDuringRuntime;
 }
 
 Common::Error AI5Engine::run() {
@@ -134,6 +137,7 @@ Common::Error AI5Engine::run() {
 	if (g_game->init)
 		g_game->init();
 
+	_gameInitialized = true;
 	vmLoadMes(g_config.startMes.c_str());
 	g_game->vm.exec();
 
@@ -147,6 +151,26 @@ Common::Error AI5Engine::run() {
 	g_game = nullptr;
 	g_vm = nullptr;
 	g_mem = nullptr;
+	return Common::kNoError;
+}
+
+bool AI5Engine::canLoadGameStateCurrently(Common::U32String *) {
+	return _gameInitialized;
+}
+
+bool AI5Engine::canSaveGameStateCurrently(Common::U32String *msg) {
+	if (!_gameInitialized && msg)
+		*msg = Common::U32String("The game is not ready");
+	return _gameInitialized;
+}
+
+Common::Error AI5Engine::saveGameState(int slot, const Common::String &desc, bool isAutosave) {
+	savedataSaveFull(savedataSlotName(slot), desc);
+	return Common::kNoError;
+}
+
+Common::Error AI5Engine::loadGameState(int slot) {
+	savedataLoadFull(savedataSlotName(slot));
 	return Common::kNoError;
 }
 
