@@ -22,6 +22,26 @@ AI authorship does **not** apply here.
   what you could not test. Keep comments and commit messages short and in the
   surrounding style.
 
+## License headers
+
+New files written for NovelVM use the standard ScummVM GPLv3+ header with the
+first and third lines changed to NovelVM:
+
+```
+/* NovelVM - Visual Novel Engine
+ *
+ * NovelVM is the legal property of its developers, whose names
+ * are too numerous to list here. Please refer to the COPYRIGHT
+ * file distributed with this source distribution.
+ *
+ * (rest identical to the ScummVM header)
+```
+
+- Files inherited from upstream ScummVM keep the ScummVM header, even when
+  NovelVM edits them.
+- Files ported or derived from third-party code keep their original header and
+  provenance notes. Do not replace them with the NovelVM header.
+
 Commit style is ScummVM/NovelVM style (`SUBSYSTEM: Short summary`), not
 Conventional Commits.
 
