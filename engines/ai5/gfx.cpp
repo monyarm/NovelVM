@@ -286,6 +286,20 @@ static void blendOverlay(GfxSurface *src, GfxRect r) {
 	}
 }
 
+void gfxPresentFrame(const GfxSurface *frame) {
+	GfxSurface *src = const_cast<GfxSurface *>(frame);
+	GfxRect r = { 0, 0, frame->w, frame->h };
+	GfxPoint p = { 0, 0 };
+	if (!gfxCopyClip(src, &r, g_gfx.display, &p))
+		return;
+	for (int row = 0; row < r.h; row++)
+		memcpy(gfxPixel(g_gfx.display, 0, row), gfxPixel(src, 0, row), r.w * 3);
+	presentRect(r);
+	g_system->updateScreen();
+	// the next update redraws the screen surface
+	gfxScreenDirty();
+}
+
 void gfxUpdate() {
 	GfxSurfaceState *screen = &g_gfx.surface[g_gfx.screen];
 	if (g_gfx.hidden || !screen->dirty)

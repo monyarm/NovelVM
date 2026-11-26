@@ -35,6 +35,7 @@
 #include "ai5/games/classics.h"
 #include "ai5/games/doukyuusei.h"
 #include "ai5/games/isaku.h"
+#include "ai5/games/kakyuusei.h"
 
 namespace AI5 {
 
@@ -73,6 +74,27 @@ Common::Error AI5Engine::run() {
 	case GID_DOUKYUUSEI:
 		initGameDoukyuusei(*g_game);
 		break;
+	case GID_KAKYUUSEI: {
+		// all files are in archives, and voices are in EVENT.ARC/EVERY.ARC
+		const struct {
+			ConfigArcFile *file;
+			const char *name;
+		} files[] = {
+			{ &g_config.file.bg, "BG.ARC" },
+			{ &g_config.file.mes, "MES.ARC" },
+			{ &g_config.file.bgm, "BGM.ARC" },
+			{ &g_config.file.voice, "EVENT.ARC" },
+			{ &g_config.file.voice2, "EVERY.ARC" },
+			{ &g_config.file.data, "DATA.ARC" }
+		};
+		for (uint i = 0; i < ARRAYSIZE(files); i++) {
+			files[i].file->arc = true;
+			if (files[i].file->name.empty())
+				files[i].file->name = files[i].name;
+		}
+		initGameKakyuusei(*g_game);
+		break;
+	}
 	case GID_YUNO:
 		// the fan-made English patch renames the INI and changes the title
 		g_yunoEng = g_config.title.hasPrefix("YU-NO");
