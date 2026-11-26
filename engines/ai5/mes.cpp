@@ -79,14 +79,58 @@ static const MesCodeTables defaultTables = {
 	}
 };
 
+static const MesCodeTables classicsTables = {
+	{ 0x00, 0x01, 0x02, 0x0d, 0x11 },
+	{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, kMesCodeInvalid, kMesCodeInvalid, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23 },
+	{ 0, 1, 2, kMesCodeInvalid, kMesCodeInvalid, kMesCodeInvalid, 5, kMesCodeInvalid, 7, 8, 9, kMesCodeInvalid, kMesCodeInvalid }
+};
+
+static const MesCodeTables aiShimaiTables = {
+	{ 0x00, 0x01, 0x02, 0x0b, 0x0f },
+	{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, kMesCodeInvalid, kMesCodeInvalid, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, kMesCodeInvalid },
+	{ 0, 1, 2, 3, 4, 5, kMesCodeInvalid, 6, 7, 8, 9, 10, 11 }
+};
+
+static const MesCodeTables allstarsTables = {
+	{ 0x00, 0x01, 0x02, 0x0b, 0x0f },
+	{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, kMesCodeInvalid, kMesCodeInvalid, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23 },
+	{ 0, 1, 2, 3, 4, 5, kMesCodeInvalid, 6, 7, 8, 9, 10, 11 }
+};
+
+static const MesCodeTables kakyuuseiTables = {
+	{ 0x00, 0x01, 0x02, 0x0b, 0x0f },
+	{ 0, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, kMesCodeInvalid, 13, 14, 15, 16, 17, 18, 21, 22, 23, 24, 26, 27, 25 },
+	{ kMesCodeInvalid, 0, 1, 2, 3, 4, kMesCodeInvalid, 5, 6, 7, 8, 9, kMesCodeInvalid }
+};
+
+static const MesCodeTables shuusakuTables = {
+	{ 0x00, 0x01, 0x02, 0x0b, 0x0f },
+	{ kMesCodeInvalid, 12, 14, kMesCodeInvalid, kMesCodeInvalid, 2, 3, 4, 5, 0, 1, 7, kMesCodeInvalid, kMesCodeInvalid, kMesCodeInvalid, kMesCodeInvalid, kMesCodeInvalid, kMesCodeInvalid, 18, 8, 9, 10, 11, kMesCodeInvalid, kMesCodeInvalid, kMesCodeInvalid },
+	{ kMesCodeInvalid, kMesCodeInvalid, kMesCodeInvalid, kMesCodeInvalid, kMesCodeInvalid, kMesCodeInvalid, kMesCodeInvalid, kMesCodeInvalid, kMesCodeInvalid, kMesCodeInvalid, kMesCodeInvalid, kMesCodeInvalid, kMesCodeInvalid }
+};
+
 void mesSetGame(GameId game) {
 	switch (game) {
-	case GID_ISAKU:
-	case GID_DOUKYUUSEI:
-		g_mesCodes = defaultTables;
+	case GID_YUNO:
+	case GID_SHANGRLIA:
+		g_mesCodes = classicsTables;
+		break;
+	case GID_AISHIMAI:
+		g_mesCodes = aiShimaiTables;
+		break;
+	case GID_BEYOND:
+		g_mesCodes = allstarsTables;
+		break;
+	case GID_KAKYUUSEI:
+	case GID_DOUKYUUSEI2:
+		g_mesCodes = kakyuuseiTables;
+		break;
+	case GID_SHUUSAKU:
+		g_mesCodes = shuusakuTables;
 		break;
 	default:
-		error("mesSetGame: code tables for game %d not ported yet", game);
+		g_mesCodes = defaultTables;
+		break;
 	}
 }
 
