@@ -91,7 +91,7 @@ bool PMF::load() {
 		PMFStream stream;
 		stream.streamId = f.readByte();
 		stream.subStreamId = f.readByte();
-		byte typeFlag1 = f.readByte();
+		f.skip(1); // type flags, unused
 		stream.codecFlag = f.readByte(); // per-type codec byte
 
 		if ((stream.streamId & 0xF0) == kVideoStreamId) {

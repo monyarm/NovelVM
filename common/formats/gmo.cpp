@@ -62,14 +62,6 @@ uint32 weightCountFromFormat(uint32 f) {
 	return c + 1; // 1<<14 = 2, ... 7<<14 = 8
 }
 
-float expandSigned(int raw, int bits) {
-	if (bits == 32)
-		return (float)(int32)raw;
-	if (bits == 16)
-		return (float)(int16)raw / 32768.0f;
-	return (float)(int8)raw / 128.0f;
-}
-
 // IEEE 754 binary16 -> binary32 (used for FCurve FLOAT16 frames).
 float halfToFloat(uint16 h) {
 	uint32 sign = (uint32)(h & 0x8000) << 16;
