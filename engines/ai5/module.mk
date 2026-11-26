@@ -2,6 +2,7 @@ MODULE := engines/ai5
 
 MODULE_OBJS := \
 	ai5.o \
+	archive.o \
 	metaengine.o
 
 # This module can be built as a plugin
