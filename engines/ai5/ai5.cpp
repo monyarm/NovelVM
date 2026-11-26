@@ -32,6 +32,7 @@
 #include "ai5/map.h"
 #include "ai5/text.h"
 #include "ai5/vm.h"
+#include "ai5/games/aishimai.h"
 #include "ai5/games/classics.h"
 #include "ai5/games/doukyuusei.h"
 #include "ai5/games/isaku.h"
@@ -70,6 +71,9 @@ Common::Error AI5Engine::run() {
 	switch (id) {
 	case GID_ISAKU:
 		initGameIsaku(*g_game);
+		break;
+	case GID_AISHIMAI:
+		initGameAiShimai(*g_game);
 		break;
 	case GID_DOUKYUUSEI:
 		initGameDoukyuusei(*g_game);

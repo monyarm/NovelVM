@@ -413,7 +413,7 @@ static const byte charCloser[] = {
 	0x7a, // 】
 };
 
-static bool charIsOpener(const char *s) {
+bool charIsOpener(const char *s) {
 	const byte *ch = (const byte *)s;
 	if (ch[0] != 0x81 || ch[1] < 0x69 || ch[1] > 0x79)
 		return false;
@@ -424,7 +424,7 @@ static bool charIsOpener(const char *s) {
 	return false;
 }
 
-static bool charIsCloser(const char *s) {
+bool charIsCloser(const char *s) {
 	const byte *ch = (const byte *)s;
 	if (ch[0] != 0x81 || ch[1] < 0x41 || ch[1] > 0x7a)
 		return false;

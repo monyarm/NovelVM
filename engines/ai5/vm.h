@@ -104,6 +104,9 @@ uint32 vmExprParam(ParamList &params, uint i);
 void vmReadTextAiw(char *str, byte term);
 void vmMesjmpAiw(const char *name);
 void vmDrawText(const char *text, uint mult);
+/** Whether the Shift-JIS character at s is an opening/closing bracket. */
+bool charIsOpener(const char *s);
+bool charIsCloser(const char *s);
 
 // generic stack operations
 void vmExprPlus();

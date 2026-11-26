@@ -26,6 +26,7 @@ MODULE_OBJS := \
 	sys.o \
 	text.o \
 	vm.o \
+	games/aishimai.o \
 	games/classics.o \
 	games/doukyuusei.o \
 	games/isaku.o \

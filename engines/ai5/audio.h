@@ -79,6 +79,8 @@ void audioSeFade(int vol, uint t, bool stop, bool sync, uint ch);
 void audioVoicePlay(const char *name, uint ch);
 void audioVoiceStop(uint ch);
 void audioVoicesubPlay(const char *name);
+inline void audioVoicesubStop() { audioStop(kAudioChVoice1); }
+inline bool audioVoicesubIsPlaying() { return audioIsPlaying(kAudioChVoice1); }
 
 } // End of namespace AI5
 
