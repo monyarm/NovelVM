@@ -97,6 +97,8 @@ extern Gfx g_gfx;
 
 /** Show an RGB24 frame in place of the screen surface until the next update. */
 void gfxPresentFrame(const GfxSurface *frame);
+/** Show a non-fatal warning to the user. */
+void gfxWarningMessage(const char *message);
 
 int gfxViewWidth();
 int gfxViewHeight();

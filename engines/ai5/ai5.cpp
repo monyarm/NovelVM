@@ -82,6 +82,9 @@ Common::Error AI5Engine::run() {
 	case GID_DOUKYUUSEI:
 		initGameDoukyuusei(*g_game);
 		break;
+	case GID_DOUKYUUSEI2:
+		initGameDoukyuusei2(*g_game);
+		break;
 	case GID_KAKYUUSEI: {
 		// all files are in archives, and voices are in EVENT.ARC/EVERY.ARC
 		const struct {

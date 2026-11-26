@@ -24,6 +24,7 @@
 #include "common/system.h"
 #include "common/textconsole.h"
 #include "engines/util.h"
+#include "gui/message.h"
 #include "graphics/surface.h"
 
 #include "ai5/ai5.h"
@@ -298,6 +299,12 @@ void gfxPresentFrame(const GfxSurface *frame) {
 	g_system->updateScreen();
 	// the next update redraws the screen surface
 	gfxScreenDirty();
+}
+
+void gfxWarningMessage(const char *message) {
+	warning("%s", message);
+	GUI::MessageDialog dialog(message);
+	dialog.runModal();
 }
 
 void gfxUpdate() {

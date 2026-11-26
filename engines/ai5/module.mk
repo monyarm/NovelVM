@@ -30,6 +30,7 @@ MODULE_OBJS := \
 	games/beyond.o \
 	games/classics.o \
 	games/doukyuusei.o \
+	games/doukyuusei2.o \
 	games/isaku.o \
 	games/isaku_item_window.o \
 	games/kakyuusei.o \

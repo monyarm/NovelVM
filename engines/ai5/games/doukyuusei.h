@@ -29,6 +29,7 @@ namespace AI5 {
 struct Game;
 
 void initGameDoukyuusei(Game &game);
+void initGameDoukyuusei2(Game &game);
 
 } // End of namespace AI5
 

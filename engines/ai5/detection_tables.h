@@ -60,6 +60,19 @@ const AI5GameDescription gameDescriptions[] = {
 		GID_DOUKYUUSEI
 	},
 
+	{
+		{
+			"doukyuusei2",
+			"",
+			AD_ENTRY1s("MES.ARC", "2ea8c108b86c23603eb99d68e77edfa7", 3017674),
+			Common::JA_JPN,
+			Common::kPlatformWindows,
+			ADGF_UNSTABLE,
+			GUIO0()
+		},
+		GID_DOUKYUUSEI2
+	},
+
 	// Elf Classics (Elf Otona no Kanzume) release
 	{
 		{
