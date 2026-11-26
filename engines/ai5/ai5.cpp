@@ -73,6 +73,9 @@ Common::Error AI5Engine::run() {
 		g_yunoEng = g_config.title.hasPrefix("YU-NO");
 		initGameYuno(*g_game);
 		break;
+	case GID_SHANGRLIA:
+		initGameShangrlia(*g_game);
+		break;
 	default:
 		return Common::Error(Common::kUnsupportedGameidError);
 	}

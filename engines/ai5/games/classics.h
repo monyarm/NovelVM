@@ -42,6 +42,7 @@ void classicsGetTextColors(ParamList &params);
 void classicsSetOps(Game &game);
 
 void initGameYuno(Game &game);
+void initGameShangrlia(Game &game);
 
 } // End of namespace AI5
 

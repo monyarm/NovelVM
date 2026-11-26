@@ -29,6 +29,7 @@ const PlainGameDescriptor ai5Games[] = {
 	{ "kakyuusei", "Kakyuusei", kUnstableGame, "https://vndb.org/v2341" },
 	{ "shuusaku", "Shuusaku", kUnstableGame, "https://vndb.org/v1130" },
 	{ "aishimai", "Ai Shimai: Futari no Kajitsu", kUnstableGame, "https://vndb.org/v1836" },
+	{ "shangrlia", "Shangrlia", kUnstableGame, "https://vndb.org/v3182" },
 	{ nullptr, nullptr }
 };
 
@@ -58,6 +59,20 @@ const AI5GameDescription gameDescriptions[] = {
 			GUIO0()
 		},
 		GID_YUNO
+	},
+
+	// Elf Classics (Elf Otona no Kanzume) release; incomplete upstream
+	{
+		{
+			"shangrlia",
+			"Elf Classics",
+			AD_ENTRY1s("MES.ARC", "0f456a466e380c6a81b56c556d5036cd", 95632),
+			Common::JA_JPN,
+			Common::kPlatformWindows,
+			ADGF_UNSTABLE,
+			GUIO0()
+		},
+		GID_SHANGRLIA
 	},
 
 	{ AD_TABLE_END_MARKER, GID_ISAKU }

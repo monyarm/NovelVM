@@ -27,6 +27,7 @@ MODULE_OBJS := \
 	games/classics.o \
 	games/isaku.o \
 	games/isaku_item_window.o \
+	games/shangrlia.o \
 	games/yuno.o
 
 # This module can be built as a plugin
