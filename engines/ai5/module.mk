@@ -3,6 +3,8 @@ MODULE := engines/ai5
 MODULE_OBJS := \
 	ai5.o \
 	archive.o \
+	cg.o \
+	gcc.o \
 	metaengine.o
 
 # This module can be built as a plugin
