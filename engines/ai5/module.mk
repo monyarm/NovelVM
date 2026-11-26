@@ -2,6 +2,7 @@ MODULE := engines/ai5
 
 MODULE_OBJS := \
 	ai5.o \
+	anim.o \
 	archive.o \
 	cg.o \
 	gcc.o \
