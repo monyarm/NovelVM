@@ -28,7 +28,22 @@
 
 namespace AI5 {
 
+void gfxBlinkFade(int x, int y, int w, int h, uint dstI);
+void gfxFadeDown(int x, int y, int w, int h, uint dstI, int srcI);
+void gfxFadeRight(int x, int y, int w, int h, uint dstI, int srcI);
+void gfxPixelate(int x, int y, int w, int h, uint dstI, uint mag);
+void gfxFadeProgressive(int x, int y, int w, int h, uint dstI);
 void gfxCopyProgressive(int srcX, int srcY, int w, int h, uint srcI, int dstX, int dstY, uint dstI);
+void gfxPixelCrossfade(int srcX, int srcY, int w, int h, uint srcI, int dstX, int dstY, uint dstI,
+		uint frameT, bool (*update)(float t, void *data), void *data);
+void gfxPixelCrossfadeMasked(int srcX, int srcY, int w, int h, uint srcI, int dstX, int dstY, uint dstI,
+		uint32 maskColor);
+void gfxPixelCrossfadeMaskedIndexed(int srcX, int srcY, int w, int h, uint srcI, int dstX, int dstY,
+		uint dstI, byte maskColor);
+void gfxPixelCrossfadeMaskedIndexed8x8(int srcX, int srcY, int w, int h, uint srcI, int dstX, int dstY,
+		uint dstI, byte maskColor, uint frameMs);
+void gfxScaleH(uint i, int mag);
+void gfxZoom(int srcX, int srcY, int w, int h, uint srcI, uint dstI, uint ms);
 
 } // End of namespace AI5
 

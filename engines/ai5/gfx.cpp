@@ -291,6 +291,42 @@ void gfxUpdate() {
 	if (g_gfx.hidden || !screen->dirty)
 		return;
 
+	if (screen->scaled) {
+		// redraw the whole view with the source rectangle scaled to the
+		// destination rectangle
+		memset(g_gfx.display->pixels, 0, g_gfx.display->pitch * g_gfx.display->h);
+		GfxSurface *view = g_gfx.display;
+		GfxSurface conv = { nullptr, screen->s->w, screen->s->h, screen->s->w * 3, 3 };
+		Common::Array<byte> buf;
+		if (screen->s->bytesPerPixel == 1) {
+			// expand indexed pixels through the palette first
+			buf.resize(conv.pitch * conv.h);
+			conv.pixels = buf.data();
+			for (int y = 0; y < conv.h; y++) {
+				const byte *sp = gfxPixel(screen->s, 0, y);
+				byte *dp = gfxPixel(&conv, 0, y);
+				for (int x = 0; x < conv.w; x++, dp += 3) {
+					const GfxColor &c = g_gfx.screenPalette[sp[x]];
+					dp[0] = c.r;
+					dp[1] = c.g;
+					dp[2] = c.b;
+				}
+			}
+		} else {
+			conv = *screen->s;
+		}
+		gfxBlitScaled(&conv, screen->src, view, screen->dst);
+		GfxRect all = { 0, 0, g_viewW, g_viewH };
+		for (int i = 0; i < kGfxNrOverlays; i++) {
+			if (g_gfx.overlay[i].s && g_gfx.overlay[i].enabled)
+				blendOverlay(g_gfx.overlay[i].s, all);
+		}
+		presentRect(all);
+		g_system->updateScreen();
+		gfxClean(g_gfx.screen);
+		return;
+	}
+
 	GfxRect dstR = screen->damaged;
 	// only Shuusaku uses this
 	dstR.y -= screen->src.y;
@@ -300,8 +336,6 @@ void gfxUpdate() {
 		if (g_gfx.overlay[i].s && g_gfx.overlay[i].enabled)
 			blendOverlay(g_gfx.overlay[i].s, screen->damaged);
 	}
-	if (screen->scaled)
-		warning("gfxUpdate: scaled screen surfaces are not supported");
 
 	GfxSurface view = { nullptr, g_viewW, g_viewH, 0, 0 };
 	if (gfxFillClip(&view, &dstR))
@@ -937,6 +971,24 @@ void gfxBlendFill(int x, int y, int w, int h, uint i, uint32 c, byte rate) {
 		}
 	}
 	gfxDirty(i, x, y, w, h);
+}
+
+void gfxBlitScaled(GfxSurface *src, const GfxRect &srcR, GfxSurface *dst, const GfxRect &dstR) {
+	if (srcR.w <= 0 || srcR.h <= 0 || dstR.w <= 0 || dstR.h <= 0)
+		return;
+	assert(src->bytesPerPixel == dst->bytesPerPixel);
+	const int bpp = src->bytesPerPixel;
+	for (int y = MAX(dstR.y, 0); y < MIN(dstR.y + dstR.h, dst->h); y++) {
+		int sy = srcR.y + (y - dstR.y) * srcR.h / dstR.h;
+		if (sy < 0 || sy >= src->h)
+			continue;
+		for (int x = MAX(dstR.x, 0); x < MIN(dstR.x + dstR.w, dst->w); x++) {
+			int sx = srcR.x + (x - dstR.x) * srcR.w / dstR.w;
+			if (sx < 0 || sx >= src->w)
+				continue;
+			memcpy(gfxPixel(dst, x, y), gfxPixel(src, sx, sy), bpp);
+		}
+	}
 }
 
 void gfxDrawCG(uint i, const CG &cg) {

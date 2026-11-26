@@ -163,6 +163,8 @@ void gfxFill(int x, int y, int w, int h, uint i, uint32 c);
 void gfxSwapColors(int x, int y, int w, int h, uint i, uint32 c1, uint32 c2);
 void gfxBlendFill(int x, int y, int w, int h, uint i, uint32 c, byte rate);
 void gfxDrawCG(uint i, const CG &cg);
+/** Nearest-neighbour scaled blit, clipped to the destination. */
+void gfxBlitScaled(GfxSurface *src, const GfxRect &srcR, GfxSurface *dst, const GfxRect &dstR);
 
 inline byte *gfxPixel(GfxSurface *s, int x, int y) {
 	return s->pixels + y * s->pitch + x * s->bytesPerPixel;
