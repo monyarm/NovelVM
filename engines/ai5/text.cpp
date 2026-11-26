@@ -21,6 +21,8 @@
  *
  */
 
+#include "common/archive.h"
+#include "common/compression/unzip.h"
 #include "common/file.h"
 #include "common/ptr.h"
 #include "common/textconsole.h"
@@ -54,6 +56,7 @@ static int g_nrFonts = 0;
 static FontEntry *g_curFont = nullptr;
 static bool g_curBold = false;
 static Graphics::Font *g_uiFont = nullptr;
+static Common::Archive *g_fontArchive = nullptr; // ai5.dat
 static int g_uiAscent = 0;
 
 const char *sjisNextChar(const char *s, uint32 &ch) {
@@ -74,6 +77,15 @@ enum FontType {
 	kFontEng
 };
 
+static Graphics::Font *loadShippedFont(const char *name, int size, Graphics::TTFRenderMode mode) {
+	if (!g_fontArchive)
+		return nullptr;
+	Common::SeekableReadStream *s = g_fontArchive->createReadStreamForMember(Common::Path(name));
+	if (!s)
+		return nullptr;
+	return Graphics::loadTTFFont(s, DisposeAfterUse::YES, size, Graphics::kTTFSizeModeCharacter, 0, 0, mode);
+}
+
 // Fonts: a user-supplied msgothic.ttc, then the fonts shipped in ai5.dat,
 // then the CJK fonts shipped with ScummVM.
 static Graphics::Font *openFont(FontType type, int size, bool mono) {
@@ -89,7 +101,7 @@ static Graphics::Font *openFont(FontType type, int size, bool mono) {
 	}
 
 	static const char *const shipped[] = { "DotGothic16-Regular.ttf", "Kosugi-Regular.ttf", "NotoSansJP-Thin.ttf" };
-	Graphics::Font *font = Graphics::loadTTFFontFromArchive(shipped[type], size, Graphics::kTTFSizeModeCharacter, 0, 0, mode);
+	Graphics::Font *font = loadShippedFont(shipped[type], size, mode);
 	if (!font)
 		font = Graphics::loadTTFFontFromArchive("NotoSansJP-Regular.otf", size, Graphics::kTTFSizeModeCharacter, 0, 0, mode);
 	if (!font)
@@ -125,6 +137,9 @@ static FontEntry *fontInsert(int size, Graphics::Font *font) {
 }
 
 void gfxTextInit() {
+	g_fontArchive = Common::makeZipArchive("ai5.dat");
+	if (!g_fontArchive)
+		warning("AI5: ai5.dat not found, using fallback fonts");
 	gfxTextSetSize(memGetSysvar16(kSysVarFontHeight), memGetSysvar16(kSysVarFontWeight));
 }
 
@@ -135,6 +150,8 @@ void gfxTextFini() {
 	g_curFont = nullptr;
 	delete g_uiFont;
 	g_uiFont = nullptr;
+	delete g_fontArchive;
+	g_fontArchive = nullptr;
 }
 
 void gfxTextSetColors(uint32 bg, uint32 fg) {
@@ -294,7 +311,7 @@ uint gfxTextDrawGlyph(int x, int y, uint i, uint32 ch) {
 static bool uiFontInit() {
 	if (g_uiFont)
 		return true;
-	g_uiFont = Graphics::loadTTFFontFromArchive("wine_tahoma.ttf", kUIFontSize, Graphics::kTTFSizeModeCharacter, 0, 0, Graphics::kTTFRenderModeMonochrome);
+	g_uiFont = loadShippedFont("wine_tahoma.ttf", kUIFontSize, Graphics::kTTFRenderModeMonochrome);
 	if (!g_uiFont)
 		g_uiFont = Graphics::loadTTFFontFromArchive("LiberationSans-Regular.ttf", kUIFontSize, Graphics::kTTFSizeModeCharacter, 0, 0, Graphics::kTTFRenderModeMonochrome);
 	if (!g_uiFont) {

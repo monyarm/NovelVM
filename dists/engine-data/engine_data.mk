@@ -1,6 +1,9 @@
 ifdef ENABLE_ACCESS
 DIST_FILES_LIST += dists/engine-data/access.dat
 endif
+ifdef ENABLE_AI5
+DIST_FILES_LIST += dists/engine-data/ai5.dat
+endif
 ifdef ENABLE_BAGEL
 DIST_FILES_LIST += dists/engine-data/bagel.dat
 endif
