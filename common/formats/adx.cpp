@@ -1,6 +1,5 @@
 #include "common/formats/adx.h"
 
-#include <cmath>
 
 #include "audio/audiostream.h"
 #include "common/array.h"

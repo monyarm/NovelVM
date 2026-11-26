@@ -23,7 +23,6 @@
 
 #if defined(USE_OPENGL_SHADERS) || defined(RMD_RENDER_COMPILE_CHECK)
 
-#include <cmath>
 #include <cstring>
 
 #include "common/array.h"
