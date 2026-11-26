@@ -4,7 +4,9 @@ MODULE_OBJS := \
 	ai5.o \
 	anim.o \
 	archive.o \
+	asset.o \
 	cg.o \
+	config.o \
 	gcc.o \
 	metaengine.o
 
