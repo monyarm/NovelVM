@@ -64,6 +64,16 @@ ScummVM Team
        rofl0r                         - AGS
        Berian Williams                - AgsCreditz
 
+    AI5:
+       Nunuhara Cabbage               - ai5-sdl2 and libai5, which the engine
+                                        is ported from
+       morkt                          - GARbro GCC image decoder (MIT)
+       monyarm                        - Engine port
+       DotGothic16 Project Authors    - DotGothic16 font (OFL)
+       Kosugi Project Authors         - Kosugi font (Apache 2.0)
+       Adobe                          - Noto Sans JP font (OFL)
+       Larry Snyder                   - Wine Tahoma font (LGPL)
+
     Director:
        Eugene Sandulenko
        Crane Yang                     - GSoC Student
@@ -92,6 +102,12 @@ ScummVM Team
                                         which these decoders are ported from
                                         (LGPL)
        Benjamin Larsson               - FFmpeg ATRAC3 decoder (LGPL)
+
+    LZSS:
+       Haruhiko Okumura               - LZSS.C, the original LZSS algorithm
+       Nunuhara Cabbage               - libai5 LZSS decoders, which the
+                                        decompressor is ported from
+                                        (GPL-2.0-or-later)
 
   Backend Teams
   -------------
