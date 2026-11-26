@@ -9,10 +9,6 @@ TESTS        := $(srcdir)/test/common/*.h \
 	$(srcdir)/test/common/compression/*.h \
 	$(srcdir)/test/common/formats/*.h \
 	$(srcdir)/test/audio/*.h \
-	$(srcdir)/test/video/*.h \
-	$(srcdir)/test/graphics/ps2texture.h \
-	$(srcdir)/test/graphics/epl_effect.h \
-	$(srcdir)/test/graphics/afpack_trail.h \
 	$(srcdir)/test/math/*.h \
 	$(srcdir)/test/image/*.h
 TEST_LIBS    :=
@@ -24,8 +20,7 @@ TEST_LIBS += test/system/null_osystem.o \
 	backends/fs/posix/posix-iostream.o \
 	backends/fs/abstract-fs.o \
 	backends/fs/stdiostream.o \
-	backends/modular-backend.o \
-	backends/mixer/null/null-mixer.o
+	backends/modular-backend.o
 endif
 
 ifdef WIN32
@@ -35,7 +30,6 @@ TEST_LIBS += test/system/null_osystem.o \
 	backends/fs/abstract-fs.o \
 	backends/fs/stdiostream.o \
 	backends/modular-backend.o \
-	backends/mixer/null/null-mixer.o \
 	backends/platform/sdl/win32/win32_wrapper.o
 endif
 
@@ -43,13 +37,8 @@ ifdef USE_TINYGL
 TESTS += $(srcdir)/test/graphics/tinygl*.h
 endif
 
-ifeq ($(ENABLE_SMT), STATIC_PLUGIN)
-	TESTS += $(srcdir)/test/engines/smt/*.h
-	TEST_LIBS += engines/smt/libsmt.a engines/libengines.a
-endif
-
 # libcommon needs libformats and libformats needs libcommon: so libcommon is put twice
-TEST_LIBS +=	video/libvideo.a audio/libaudio.a math/libmath.a common/libcommon.a common/formats/libformats.a common/compression/libcompression.a common/libcommon.a image/libimage.a graphics/libgraphics.a
+TEST_LIBS +=	audio/libaudio.a math/libmath.a common/libcommon.a common/formats/libformats.a common/compression/libcompression.a common/libcommon.a image/libimage.a graphics/libgraphics.a
 
 ifeq ($(ENABLE_WINTERMUTE), STATIC_PLUGIN)
 	TESTS += $(srcdir)/test/engines/wintermute/*.h
@@ -68,10 +57,25 @@ ifeq ($(ENABLE_TWINE), STATIC_PLUGIN)
 	TEST_LIBS += engines/twine/libtwine.a
 endif
 
+ifeq ($(ENABLE_IKURA), STATIC_PLUGIN)
+	TESTS += $(srcdir)/test/engines/ikura/*.h
+	TEST_LIBS += engines/ikura/libikura.a
+endif
+
 # Engine test libs above can need symbols from the shared libs listed
 # earlier (e.g. an image codec test needing image/libimage.a); ld only
 # scans each archive once, left to right, so repeat them here.
 TEST_LIBS += audio/libaudio.a math/libmath.a common/libcommon.a common/formats/libformats.a common/compression/libcompression.a common/libcommon.a image/libimage.a graphics/libgraphics.a
+
+# graphics/libgraphics.a's TTF font loader (loadTTFFontFromArchive, only
+# compiled in under USE_FREETYPE2) needs Common::makeZipArchive from
+# common/compression/libcompression.a, but that always lands earlier in
+# the list above - same one-pass-per-archive ld issue as the comment
+# above, just the reverse direction (graphics needing compression,
+# instead of an engine needing graphics). One more pass fixes it.
+ifdef USE_FREETYPE2
+TEST_LIBS += common/compression/libcompression.a
+endif
 
 #
 TEST_FLAGS   := --runner=StdioPrinter --no-std --no-eh
