@@ -29,9 +29,11 @@
 #include "ai5/config.h"
 #include "ai5/cursor.h"
 #include "ai5/gfx.h"
+#include "ai5/map.h"
 #include "ai5/text.h"
 #include "ai5/vm.h"
 #include "ai5/games/classics.h"
+#include "ai5/games/doukyuusei.h"
 #include "ai5/games/isaku.h"
 
 namespace AI5 {
@@ -68,6 +70,9 @@ Common::Error AI5Engine::run() {
 	case GID_ISAKU:
 		initGameIsaku(*g_game);
 		break;
+	case GID_DOUKYUUSEI:
+		initGameDoukyuusei(*g_game);
+		break;
 	case GID_YUNO:
 		// the fan-made English patch renames the INI and changes the title
 		g_yunoEng = g_config.title.hasPrefix("YU-NO");
@@ -95,6 +100,7 @@ Common::Error AI5Engine::run() {
 	vmLoadMes(g_config.startMes.c_str());
 	g_game->vm.exec();
 
+	mapFini();
 	audioFini();
 	cursorFini();
 	gfxTextFini();

@@ -26,6 +26,7 @@ MODULE_OBJS := \
 	text.o \
 	vm.o \
 	games/classics.o \
+	games/doukyuusei.o \
 	games/isaku.o \
 	games/isaku_item_window.o \
 	games/shangrlia.o \
