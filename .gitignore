@@ -332,3 +332,6 @@ vilevn
 
 /testdata/
 /.env
+
+# Ignore downloaded game data used for local engine testing
+/testdata/
