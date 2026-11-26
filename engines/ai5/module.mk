@@ -35,6 +35,12 @@ MODULE_OBJS := \
 	games/isaku_item_window.o \
 	games/kakyuusei.o \
 	games/shangrlia.o \
+	games/shuusaku.o \
+	games/shuusaku_menu.o \
+	games/shuusaku_name.o \
+	games/shuusaku_schedule.o \
+	games/shuusaku_status.o \
+	games/shuusaku_view.o \
 	games/yuno.o
 
 # This module can be built as a plugin

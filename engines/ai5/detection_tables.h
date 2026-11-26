@@ -101,6 +101,20 @@ const AI5GameDescription gameDescriptions[] = {
 		GID_SHANGRLIA
 	},
 
+	// DVD-ROM release
+	{
+		{
+			"shuusaku",
+			"",
+			AD_ENTRY1s("MESSAGE.ARC", "37ae0d69197fef8df4353855dc0e8338", 3124775),
+			Common::JA_JPN,
+			Common::kPlatformWindows,
+			ADGF_UNSTABLE,
+			GUIO0()
+		},
+		GID_SHUUSAKU
+	},
+
 	{ AD_TABLE_END_MARKER, GID_ISAKU }
 };
 

@@ -38,6 +38,7 @@
 #include "ai5/games/doukyuusei.h"
 #include "ai5/games/isaku.h"
 #include "ai5/games/kakyuusei.h"
+#include "ai5/games/shuusaku.h"
 
 namespace AI5 {
 
@@ -113,6 +114,9 @@ Common::Error AI5Engine::run() {
 		break;
 	case GID_SHANGRLIA:
 		initGameShangrlia(*g_game);
+		break;
+	case GID_SHUUSAKU:
+		initGameShuusaku(*g_game);
 		break;
 	default:
 		return Common::Error(Common::kUnsupportedGameidError);
