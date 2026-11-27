@@ -37,6 +37,7 @@
 #include "ai5/savedata.h"
 #include "ai5/vm.h"
 #include "ai5/games/aishimai.h"
+#include "ai5/games/allstars.h"
 #include "ai5/games/beyond.h"
 #include "ai5/games/classics.h"
 #include "ai5/games/doukyuusei.h"
@@ -116,6 +117,9 @@ Common::Error AI5Engine::run() {
 		break;
 	case GID_BEYOND:
 		initGameBeyond(*g_game);
+		break;
+	case GID_ALLSTARS:
+		initGameAllstars(*g_game);
 		break;
 	case GID_DOUKYUUSEI:
 		initGameDoukyuusei(*g_game);

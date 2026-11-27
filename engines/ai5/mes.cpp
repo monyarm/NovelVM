@@ -119,6 +119,7 @@ void mesSetGame(GameId game) {
 		g_mesCodes = aiShimaiTables;
 		break;
 	case GID_BEYOND:
+	case GID_ALLSTARS:
 		g_mesCodes = allstarsTables;
 		break;
 	case GID_KAKYUUSEI:

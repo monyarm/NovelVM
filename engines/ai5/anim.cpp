@@ -35,6 +35,7 @@ AnimParser::AnimParser(GameId game) : _game(game) {
 	case GID_DOUKYUUSEI:
 	case GID_AISHIMAI:
 	case GID_BEYOND:
+	case GID_ALLSTARS:
 		_drawCallSize = 17;
 		_type = kAnimA;
 		break;
