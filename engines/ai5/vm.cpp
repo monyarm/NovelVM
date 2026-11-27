@@ -806,8 +806,10 @@ static void doStmtSys() {
 
 	if (no >= kGameMaxSys)
 		error("VM: invalid System call number: %u", no);
-	if (!g_game->sys[no])
+	if (!g_game->sys[no]) {
+		ai5FallbackLog("VM: System.function[%u] not implemented", no);
 		error("VM: System.function[%u] not implemented", no);
+	}
 	g_game->sys[no](params);
 }
 
@@ -949,8 +951,10 @@ void vmStmtUtil() {
 	uint32 no = vmExprParam(params, 0);
 	if (no >= kGameMaxUtil)
 		error("VM: invalid Util number: %u", no);
-	if (!g_game->util[no])
+	if (!g_game->util[no]) {
+		ai5FallbackLog("VM: Util.function[%u] not implemented", no);
 		error("VM: Util.function[%u] not implemented", no);
+	}
 	g_game->util[no](params);
 }
 

@@ -57,6 +57,7 @@ const char *sysSaveName(ParamList &params) {
 }
 
 void utilWarnUnimplemented(ParamList &params) {
+	ai5FallbackLog("Util.function[%u] not implemented", params.params[0].val);
 	warning("Util.function[%u] not implemented", params.params[0].val);
 }
 

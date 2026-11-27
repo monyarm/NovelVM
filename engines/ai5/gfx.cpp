@@ -302,6 +302,7 @@ void gfxPresentFrame(const GfxSurface *frame) {
 }
 
 void gfxWarningMessage(const char *message) {
+	ai5FallbackLog("%s", message);
 	warning("%s", message);
 	GUI::MessageDialog dialog(message);
 	dialog.runModal();

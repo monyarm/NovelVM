@@ -56,6 +56,13 @@ private:
 
 extern AI5Engine *g_ai5;
 
+// Set when the engine runs a game that was detected by the fallback
+// detector (an AI5WIN release that is not in the detection table).
+// Enables additional diagnostics: engine warnings are then also
+// appended to an "ai5-fallback.log" next to the game data.
+extern bool g_ai5Fallback;
+void ai5FallbackLog(const char *fmt, ...) GCC_PRINTF(1, 2);
+
 } // End of namespace AI5
 
 #endif // AI5_AI5_H

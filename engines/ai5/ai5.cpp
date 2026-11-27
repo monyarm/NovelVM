@@ -19,6 +19,8 @@
  *
  */
 
+#include "common/config-manager.h"
+#include "common/file.h"
 #include "common/system.h"
 #include "common/textconsole.h"
 
@@ -37,6 +39,7 @@
 #include "ai5/games/beyond.h"
 #include "ai5/games/classics.h"
 #include "ai5/games/doukyuusei.h"
+#include "ai5/games/fallback.h"
 #include "ai5/games/isaku.h"
 #include "ai5/games/kakyuusei.h"
 #include "ai5/games/shuusaku.h"
@@ -47,6 +50,38 @@ AI5Engine *g_ai5 = nullptr;
 
 AI5Engine::AI5Engine(OSystem *syst, const AI5GameDescription *gameDesc) : Engine(syst), _gameDescription(gameDesc), _rnd("ai5") {
 	g_ai5 = this;
+}
+
+bool g_ai5Fallback = false;
+
+static Common::DumpFile g_fallbackLog;
+static bool g_fallbackLogOpen = false;
+
+static void openFallbackLog() {
+	Common::String logPath = ConfMan.get("path") + "/ai5-fallback.log";
+	if (g_fallbackLog.open(Common::Path(logPath))) {
+		g_fallbackLogOpen = true;
+	} else {
+		warning("Failed to open \"%s\" for writing; logging to console only", logPath.c_str());
+	}
+}
+
+void ai5FallbackLog(const char *fmt, ...) {
+	if (!g_ai5Fallback)
+		return;
+
+	char buf[512];
+	va_list va;
+	va_start(va, fmt);
+	vsnprintf(buf, sizeof(buf), fmt, va);
+	va_end(va);
+
+	if (g_fallbackLogOpen) {
+		Common::String line = Common::String::format("[%u] %s\n", (uint)g_system->getMillis(), buf);
+		g_fallbackLog.write(line.c_str(), line.size());
+		g_fallbackLog.flush();
+	}
+	warning("%s", buf);
 }
 
 bool AI5Engine::hasFeature(EngineFeature f) const {
@@ -120,6 +155,12 @@ Common::Error AI5Engine::run() {
 		break;
 	case GID_SHUUSAKU:
 		initGameShuusaku(*g_game);
+		break;
+	case GID_AI5_FALLBACK:
+		g_ai5Fallback = true;
+		openFallbackLog();
+		ai5FallbackLog("generic AI5WIN fallback mode (unknown release)");
+		initGameAi5Fallback(*g_game);
 		break;
 	default:
 		return Common::Error(Common::kUnsupportedGameidError);

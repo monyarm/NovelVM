@@ -35,7 +35,8 @@ enum GameId {
 	GID_SHUUSAKU,
 	GID_AISHIMAI,
 	GID_BEYOND,
-	GID_SHANGRLIA
+	GID_SHANGRLIA,
+	GID_AI5_FALLBACK
 };
 
 struct AI5GameDescription {

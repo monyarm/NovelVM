@@ -31,6 +31,7 @@ MODULE_OBJS := \
 	games/classics.o \
 	games/doukyuusei.o \
 	games/doukyuusei2.o \
+	games/fallback.o \
 	games/isaku.o \
 	games/isaku_item_window.o \
 	games/kakyuusei.o \
