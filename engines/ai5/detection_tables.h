@@ -115,6 +115,19 @@ const AI5GameDescription gameDescriptions[] = {
 		GID_SHUUSAKU
 	},
 
+	{
+		{
+			"aishimai",
+			"",
+			AD_ENTRY1s("MES.ARC", "3f0d723d56bdf404eff5e1bbb6705d28", 740970),
+			Common::JA_JPN,
+			Common::kPlatformWindows,
+			ADGF_UNSTABLE,
+			GUIO0()
+		},
+		GID_AISHIMAI
+	},
+
 	{ AD_TABLE_END_MARKER, GID_ISAKU }
 };
 
