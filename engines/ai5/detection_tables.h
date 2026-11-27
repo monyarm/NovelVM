@@ -32,6 +32,7 @@ const PlainGameDescriptor ai5Games[] = {
 	{ "shangrlia", "Shangrlia", kUnstableGame, "https://vndb.org/v3182" },
 	{ "beyond", "Be-Yond", kUnstableGame, "https://vndb.org/v1973" },
 	{ "kawarazaki", "Kawarazaki-ke no Ichizoku", kUnstableGame, "https://vndb.org/r4579" },
+	{ "allstars", "Elf All Stars Datsui Jan", kUnstableGame, "https://vndb.org/v2339" },
 	{ nullptr, nullptr }
 };
 
@@ -167,6 +168,19 @@ const AI5GameDescription gameDescriptions[] = {
 			GUIO0()
 		},
 		GID_KAWARAZAKIKE
+	},
+
+	{
+		{
+			"allstars",
+			"",
+			AD_ENTRY1s("MES.ARC", "6c9d21797bc3e734301961a007ea1a56", 447866),
+			Common::JA_JPN,
+			Common::kPlatformWindows,
+			ADGF_UNSTABLE,
+			GUIO0()
+		},
+		GID_ALLSTARS
 	},
 
 	{ AD_TABLE_END_MARKER, GID_ISAKU }

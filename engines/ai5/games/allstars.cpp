@@ -190,6 +190,17 @@ static void allstarsSavedata(ParamList &params) {
 				vmExprParam(params, 3)); break;
 	// TODO: System.SaveData.function 9/10 (in-memory save/restore of var4
 	//       plus the 50 dwords at var32[12]) are unimplemented upstream.
+	//       The scripts call 9; accept and skip it until it is known.
+	case 9:
+	case 10: {
+		static bool warned = false;
+		if (!warned) {
+			warned = true;
+			warning("Elf All Stars: System.SaveData.function[%u] is not implemented",
+					params.params[0].val);
+		}
+		break;
+	}
 	default: error("System.SaveData.function[%u] not implemented",
 				 params.params[0].val);
 	}
@@ -400,6 +411,63 @@ static void allstarsMap(ParamList &params) {
 	}
 }
 
+// TODO: System.overlay (function 22) is unimplemented. libai5 leaves
+//       it commented out, and AI5WIN.EXE gives no reference for its
+//       parameters or its drawing, so it is accepted and skipped.
+static void allstarsOverlay(ParamList &params) {
+	static bool warned = false;
+	if (!warned) {
+		warned = true;
+		warning("Elf All Stars: System.overlay is not implemented");
+	}
+	if (params.nrParams > 0 && params.params[0].type == kMesParamExpression)
+		vmExprParam(params, 0);
+}
+
+// TODO: Elf All Stars' game-specific util calls (the numbers below) live in
+//       the retail runtime and are unimplemented. They carry the game's own
+//       logic: message page flush/close, scene and menu setup, character and
+//       scene drawing, CG unlocking, the shop/status screens and the mahjong
+//       setup. The scripts can run with these accepted and skipped, but the
+//       game stays incomplete until their behaviour is reverse engineered.
+#define ALLSTARS_UTIL_STUB(nr, what) \
+	static void allstarsUtil##nr(ParamList &) { \
+		static bool warned = false; \
+		if (!warned) { \
+			warned = true; \
+			warning("Elf All Stars: Util %u is not implemented (%s)", nr, what); \
+		} \
+	}
+
+ALLSTARS_UTIL_STUB(1, "message page flush")
+ALLSTARS_UTIL_STUB(2, "message page close")
+ALLSTARS_UTIL_STUB(43, "mahjong state init")
+ALLSTARS_UTIL_STUB(44, "UI mode enter/leave")
+ALLSTARS_UTIL_STUB(45, "character selection commit")
+ALLSTARS_UTIL_STUB(46, "history screen draw")
+ALLSTARS_UTIL_STUB(47, "idle timer")
+ALLSTARS_UTIL_STUB(48, "backlog clear")
+ALLSTARS_UTIL_STUB(50, "score/cash update")
+ALLSTARS_UTIL_STUB(51, "mahjong players init")
+ALLSTARS_UTIL_STUB(52, "mahjong asset init")
+ALLSTARS_UTIL_STUB(53, "sound effect control")
+ALLSTARS_UTIL_STUB(55, "opponent route select")
+ALLSTARS_UTIL_STUB(56, "opponent restore")
+ALLSTARS_UTIL_STUB(57, "character parts draw")
+ALLSTARS_UTIL_STUB(58, "status bars draw")
+ALLSTARS_UTIL_STUB(59, "list row highlight")
+ALLSTARS_UTIL_STUB(60, "list row highlight")
+ALLSTARS_UTIL_STUB(61, "animation pause/resume")
+ALLSTARS_UTIL_STUB(64, "number/digit block draw")
+ALLSTARS_UTIL_STUB(65, "CG unlock")
+ALLSTARS_UTIL_STUB(66, "console image load")
+ALLSTARS_UTIL_STUB(67, "pre-match dialogue setup")
+ALLSTARS_UTIL_STUB(68, "menu branch action")
+ALLSTARS_UTIL_STUB(69, "menu branch action")
+ALLSTARS_UTIL_STUB(90, "installer dialog control")
+ALLSTARS_UTIL_STUB(91, "title transition")
+ALLSTARS_UTIL_STUB(99, "profile view open")
+
 // TODO: System.FaceWindow (function 23) is unimplemented. Neither
 //       AI5WIN.EXE's behaviour nor upstream's table (all children NULL)
 //       provides the parameter list or the window's drawing semantics.
@@ -468,6 +536,8 @@ void initGameAllstars(Game &g) {
 	g.vm.endCode = 0x00;
 	vmSetDefaultOps(g);
 
+	mapInit();
+
 	g.sys[0] = sysSetFontSize;
 	g.sys[1] = sysDisplayNumber;
 	g.sys[2] = allstarsCursor;
@@ -489,9 +559,48 @@ void initGameAllstars(Game &g) {
 	g.sys[18] = sysCheckInput;
 	// System.function 19/20 are unused upstream and left unset.
 	g.sys[21] = sysStrlen;
-	// System.function 22 (overlay) is unused upstream and left unset.
+	g.sys[22] = allstarsOverlay;
 	g.sys[23] = allstarsFaceWindow;
 	g.sys[24] = allstarsRunMahjong;
+
+	// TODO: The game-specific util calls are accepted and skipped; see the
+	//       ALLSTARS_UTIL_STUB block above. Their behaviour lives in the
+	//       retail runtime and is not implemented.
+	static const struct {
+		int nr;
+		SysFunc fn;
+	} utilStubs[] = {
+		{ 1, allstarsUtil1 },
+		{ 2, allstarsUtil2 },
+		{ 43, allstarsUtil43 },
+		{ 44, allstarsUtil44 },
+		{ 45, allstarsUtil45 },
+		{ 46, allstarsUtil46 },
+		{ 47, allstarsUtil47 },
+		{ 48, allstarsUtil48 },
+		{ 50, allstarsUtil50 },
+		{ 51, allstarsUtil51 },
+		{ 52, allstarsUtil52 },
+		{ 53, allstarsUtil53 },
+		{ 55, allstarsUtil55 },
+		{ 56, allstarsUtil56 },
+		{ 57, allstarsUtil57 },
+		{ 58, allstarsUtil58 },
+		{ 59, allstarsUtil59 },
+		{ 60, allstarsUtil60 },
+		{ 61, allstarsUtil61 },
+		{ 64, allstarsUtil64 },
+		{ 65, allstarsUtil65 },
+		{ 66, allstarsUtil66 },
+		{ 67, allstarsUtil67 },
+		{ 68, allstarsUtil68 },
+		{ 69, allstarsUtil69 },
+		{ 90, allstarsUtil90 },
+		{ 91, allstarsUtil91 },
+		{ 99, allstarsUtil99 }
+	};
+	for (uint i = 0; i < ARRAYSIZE(utilStubs); i++)
+		g.util[utilStubs[i].nr] = utilStubs[i].fn;
 
 	g.flags[kFlagMenuReturn] = 0x0008;
 	g.flags[kFlagReturn] = 0x0010;
