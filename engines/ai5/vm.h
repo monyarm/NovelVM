@@ -101,7 +101,7 @@ void vmReadParams(ParamList &params);
 void vmReadParamsAiw(ParamList &params);
 char *vmStringParam(ParamList &params, uint i);
 uint32 vmExprParam(ParamList &params, uint i);
-void vmReadTextAiw(char *str, byte term);
+void vmReadTextAiw(char *str, uint size, byte term);
 void vmMesjmpAiw(const char *name);
 void vmDrawText(const char *text, uint mult);
 /** Whether the Shift-JIS character at s is an opening/closing bracket. */

@@ -508,14 +508,21 @@ static void readHankaku(char *str) {
 	str[strI] = 0;
 }
 
-void vmReadTextAiw(char *str, byte term) {
+void vmReadTextAiw(char *str, uint size, byte term) {
 	byte c;
 	int strI = 0;
 	while ((c = vmReadByte()) != term) {
+		if (strI >= (int)size - 1) {
+			warning("VM: string is too long (truncated at %u)", g_vm->ip.ptr);
+			break;
+		}
 		str[strI++] = c;
 		if (vmPeekByte() == term) {
 			warning("VM: string is not word-aligned");
-			str[strI++] = ' ';
+			if (strI < (int)size - 1)
+				str[strI++] = ' ';
+			// Consume the terminator to keep the stream word-aligned.
+			vmReadByte();
 			break;
 		}
 		str[strI++] = vmReadByte();
