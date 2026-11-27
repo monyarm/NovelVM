@@ -297,6 +297,13 @@ static void beyondVoice(ParamList &params) {
 
 static void beyondDisplay(ParamList &params) {
 	switch (vmExprParam(params, 0)) {
+	case 1:
+		if (params.nrParams > 1) {
+			gfxDisplayFadeOut(vmExprParam(params, 1), 250);
+		} else {
+			gfxDisplayFadeIn(250);
+		}
+		break;
 	default: error("System.Display.function[%u] not implemented",
 				 params.params[0].val);
 	}
@@ -497,6 +504,12 @@ void initGameBeyond(Game &g) {
 	g.util[6] = util6;
 	g.util[11] = beyondSetVolume;
 	g.util[12] = beyondGetIniValues;
+	// The retail scripts call Utils 20, 25, 30, 31 during the prologue; upstream
+	// doesn't register it either, so no-op them to get past the calls.
+	g.util[20] = utilNoop;
+	g.util[25] = utilNoop;
+	g.util[30] = utilNoop;
+	g.util[31] = utilNoop;
 
 	g.flags[kFlagMenuReturn] = 0x0008;
 	g.flags[kFlagReturn] = 0x0010;
