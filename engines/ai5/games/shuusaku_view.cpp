@@ -209,7 +209,7 @@ int shuusakuSceneViewerCharSelect() {
 
 	shuusakuCrossfade(g_mem->palette, false);
 
-	int clicked;
+	int clicked = -1;
 	while (!g_engine->shouldQuit()) {
 		vmPeek();
 		clicked = charSelectHandleInput();
@@ -251,7 +251,7 @@ int shuusakuSceneViewerSceneSelect(int ch, bool needBg) {
 	// save screen to surface 8
 	gfxCopy(0, 0, 640, 480, 0, 0, 0, 8);
 
-	int clicked;
+	int clicked = -1;
 	while (!g_engine->shouldQuit()) {
 		vmPeek();
 		clicked = sceneSelectHandleInput(list, sceneEnabled);
