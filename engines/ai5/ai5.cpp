@@ -21,6 +21,7 @@
 
 #include "common/config-manager.h"
 #include "common/file.h"
+#include "common/savefile.h"
 #include "common/system.h"
 #include "common/textconsole.h"
 
@@ -54,16 +55,14 @@ AI5Engine::AI5Engine(OSystem *syst, const AI5GameDescription *gameDesc) : Engine
 
 bool g_ai5Fallback = false;
 
-static Common::DumpFile g_fallbackLog;
-static bool g_fallbackLogOpen = false;
+static Common::WriteStream *g_fallbackLog = nullptr;
 
 static void openFallbackLog() {
-	Common::String logPath = ConfMan.get("path") + "/ai5-fallback.log";
-	if (g_fallbackLog.open(Common::Path(logPath))) {
-		g_fallbackLogOpen = true;
-	} else {
-		warning("Failed to open \"%s\" for writing; logging to console only", logPath.c_str());
-	}
+	// The saves directory is guaranteed writable, unlike the game data
+	// directory, which may be mounted read-only.
+	g_fallbackLog = g_system->getSavefileManager()->openForSaving("ai5-fallback.log", false);
+	if (!g_fallbackLog)
+		warning("Failed to open the fallback log for writing; logging to console only");
 }
 
 void ai5FallbackLog(const char *fmt, ...) {
@@ -76,10 +75,10 @@ void ai5FallbackLog(const char *fmt, ...) {
 	vsnprintf(buf, sizeof(buf), fmt, va);
 	va_end(va);
 
-	if (g_fallbackLogOpen) {
+	if (g_fallbackLog) {
 		Common::String line = Common::String::format("[%u] %s\n", (uint)g_system->getMillis(), buf);
-		g_fallbackLog.write(line.c_str(), line.size());
-		g_fallbackLog.flush();
+		g_fallbackLog->write(line.c_str(), line.size());
+		g_fallbackLog->flush();
 	}
 	warning("%s", buf);
 }
