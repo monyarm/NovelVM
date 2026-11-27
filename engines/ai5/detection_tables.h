@@ -30,6 +30,7 @@ const PlainGameDescriptor ai5Games[] = {
 	{ "shuusaku", "Shuusaku", kUnstableGame, "https://vndb.org/v1130" },
 	{ "aishimai", "Ai Shimai: Futari no Kajitsu", kUnstableGame, "https://vndb.org/v1836" },
 	{ "shangrlia", "Shangrlia", kUnstableGame, "https://vndb.org/v3182" },
+	{ "beyond", "Be-Yond", kUnstableGame, "https://vndb.org/v1973" },
 	{ nullptr, nullptr }
 };
 
@@ -139,6 +140,19 @@ const AI5GameDescription gameDescriptions[] = {
 			GUIO0()
 		},
 		GID_AISHIMAI
+	},
+
+	{
+		{
+			"beyond",
+			"",
+			AD_ENTRY1s("MES.ARC", "8eb19cd0c92de866fe6b335cda8c8185", 2343289),
+			Common::JA_JPN,
+			Common::kPlatformWindows,
+			ADGF_UNSTABLE,
+			GUIO0()
+		},
+		GID_BEYOND
 	},
 
 	{ AD_TABLE_END_MARKER, GID_ISAKU }
