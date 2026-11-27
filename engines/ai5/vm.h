@@ -99,6 +99,7 @@ uint32 vmEval();
 uint32 vmEvalAiw();
 void vmReadParams(ParamList &params);
 void vmReadParamsAiw(ParamList &params);
+void vmStmtCommitMessageAiw();
 char *vmStringParam(ParamList &params, uint i);
 uint32 vmExprParam(ParamList &params, uint i);
 void vmReadTextAiw(char *str, uint size, byte term);

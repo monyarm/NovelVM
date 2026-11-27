@@ -579,7 +579,7 @@ void stmtTxt() {
 		backlogPushByte(g_mesCodes.stmtOpToInt[kMesStmtZenkaku]);
 	}
 	char str[kVMTxtBufSize];
-	vmReadTextAiw(str, sizeof(str), 0xff);
+	vmReadTextAiw(str, sizeof(str), g_game->mesTextTermNul ? 0x00 : 0xff);
 	shuusakuDrawText(str);
 	if (vmFlagIsOn(kFlagLogEnable) && vmFlagIsOn(kFlagLogText))
 		vmFlagOff(kFlagLog);

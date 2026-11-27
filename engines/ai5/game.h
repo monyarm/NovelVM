@@ -82,6 +82,12 @@ struct Game {
 	uint bpp;
 	uint32 var4Size;
 	uint32 mem16Size;
+	// Some games' mes files start with a table of code offsets.
+	bool mesAddressTable;
+	// Their lists may also end on 0xfe instead of just 0xff.
+	bool mesListTermFe;
+	// Their text operands are terminated by 0x00 instead of 0xff.
+	bool mesTextTermNul;
 
 	void (*init)();                       // before running the initial mes file
 	void (*update)();                     // called in vmPeek

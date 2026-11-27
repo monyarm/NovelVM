@@ -125,6 +125,7 @@ void mesSetGame(GameId game) {
 	case GID_DOUKYUUSEI2:
 		g_mesCodes = kakyuuseiTables;
 		break;
+	case GID_KAWARAZAKIKE:
 	case GID_SHUUSAKU:
 		g_mesCodes = shuusakuTables;
 		break;

@@ -31,6 +31,7 @@ const PlainGameDescriptor ai5Games[] = {
 	{ "aishimai", "Ai Shimai: Futari no Kajitsu", kUnstableGame, "https://vndb.org/v1836" },
 	{ "shangrlia", "Shangrlia", kUnstableGame, "https://vndb.org/v3182" },
 	{ "beyond", "Be-Yond", kUnstableGame, "https://vndb.org/v1973" },
+	{ "kawarazaki", "Kawarazaki-ke no Ichizoku", kUnstableGame, "https://vndb.org/r4579" },
 	{ nullptr, nullptr }
 };
 
@@ -153,6 +154,19 @@ const AI5GameDescription gameDescriptions[] = {
 			GUIO0()
 		},
 		GID_BEYOND
+	},
+
+	{
+		{
+			"kawarazaki",
+			"",
+			AD_ENTRY1s("mes.ARC", "99c7b8c989e6b32dcf0bb392f0532f6d", 1156317),
+			Common::JA_JPN,
+			Common::kPlatformWindows,
+			ADGF_UNSTABLE,
+			GUIO0()
+		},
+		GID_KAWARAZAKIKE
 	},
 
 	{ AD_TABLE_END_MARKER, GID_ISAKU }

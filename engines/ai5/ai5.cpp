@@ -152,6 +152,44 @@ Common::Error AI5Engine::run() {
 	case GID_SHANGRLIA:
 		initGameShangrlia(*g_game);
 		break;
+	case GID_KAWARAZAKIKE: {
+		// The 2003 AIWIN re-release ships without the archive and
+		// compression keys the config parser expects (its AI.INI
+		// isn't read at all), so set the start script, the archive
+		// names, and the raw mes members here.
+		g_config.startMes = "STARTUP.MES";
+		g_config.mesType = false;
+		const struct {
+			ConfigArcFile *file;
+			const char *name;
+		} files[] = {
+			{ &g_config.file.mes, "mes.ARC" },
+			{ &g_config.file.bg, "gcc.ARC" },
+			{ &g_config.file.bgm, "bgm.AWF" },
+			{ &g_config.file.voice, "voice.ARC" },
+			{ &g_config.file.effect, "effect.AWF" }
+		};
+		for (uint i = 0; i < ARRAYSIZE(files); i++) {
+			files[i].file->arc = true;
+			if (files[i].file->name.empty())
+				files[i].file->name = files[i].name;
+		}
+		// Kawarazaki-ke uses the same AIW tables as Shuusaku
+		// (libai5: mes_sys_kawarazakike = mes_sys_shuusaku).
+		initGameShuusaku(*g_game);
+		// Its scripts also carry unprefixed text like Doukyuusei 2's,
+		// so accept those instead of erroring like Shuusaku does.
+		g_game->unprefixedZen = vmStmtTxtNoLog;
+		g_game->unprefixedHan = vmStmtStrNoLog;
+		// Its mes files start with an offset table, its lists may
+		// end on 0xfe, and its text operands and CommitMessage
+		// parameters differ from the later AIW games.
+		g_game->mesAddressTable = true;
+		g_game->mesListTermFe = true;
+		g_game->mesTextTermNul = true;
+		g_game->stmtOp[0x22] = vmStmtCommitMessageAiw;
+		break;
+	}
 	case GID_SHUUSAKU:
 		initGameShuusaku(*g_game);
 		break;

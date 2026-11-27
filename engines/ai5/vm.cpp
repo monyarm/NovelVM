@@ -128,6 +128,16 @@ void vmLoadMes(const char *name) {
 		memName[i] = toupper(memName[i]);
 	if (!loadStream(assetMesLoad(memName), 0, memName))
 		error("VM: failed to load MES file \"%s\"", memName);
+	if (g_game->mesAddressTable) {
+		// The file starts with a count and a table of code offsets.
+		// Code addresses in the statements are relative to the code
+		// after the table, so strip it and make byte 0 the code.
+		uint32 count = READ_LE_UINT32(g_mem->fileData);
+		uint32 header = 4 + count * 4;
+		if (header >= kMemFileDataSize)
+			error("VM: bad mes address table");
+		memmove(g_mem->fileData, g_mem->fileData + header, kMemFileDataSize - header);
+	}
 }
 
 void vmExprVar16() {
@@ -347,10 +357,19 @@ void vmReadParams(ParamList &params) {
 	params.nrParams = i;
 }
 
+// The CommitMessage statement of the 2003-era games takes a parameter
+// list instead of a text operand. The parameters are not interpreted
+// yet; consume them to keep the stream aligned.
+void vmStmtCommitMessageAiw() {
+	ParamList params;
+
+	vmReadParamsAiw(params);
+}
+
 void vmReadParamsAiw(ParamList &params) {
 	uint i;
 	byte b;
-	for (i = 0; (b = vmPeekByte()) != 0xff; i++) {
+	for (i = 0; (b = vmPeekByte()) != 0xff && !(g_game->mesListTermFe && b == 0xfe); i++) {
 		if (i >= kMaxParams)
 			error("VM: too many parameters");
 		if (b == 0xf5) {
