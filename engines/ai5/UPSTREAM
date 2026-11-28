@@ -1,0 +1,6 @@
+This engine is a port of ai5-sdl2 and libai5 by Nunuhara Cabbage
+(GPL-2.0-or-later). When porting an upstream change, update the commit here
+in the same commit.
+
+ai5-sdl2  https://github.com/nunuhara/ai5-sdl2  ad7a703f1c9f56e127d23c10d54fec0dcd4eaef3  2026-08-18
+libai5    https://github.com/nunuhara/libai5    779913d775046787225b512b99f439639596d869  2026-07-20
