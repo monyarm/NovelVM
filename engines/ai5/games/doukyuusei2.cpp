@@ -1147,6 +1147,10 @@ void initGameDoukyuusei2(Game &g) {
 	g.flags[kFlagLogEnable] = 0x0400;
 	g.flags[kFlagAudioEnable] = kFlagAlwaysOn;
 	g.flags[kFlagWaitKeyup] = kFlagAlwaysOn;
+
+	// TODO: after the startup logo the title script only repeats a
+	//       System.Graphics copy loop and never loads the title art, so
+	//       the game stays marked unstable.
 }
 
 } // End of namespace AI5

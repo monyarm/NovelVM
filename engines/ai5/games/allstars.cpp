@@ -614,12 +614,9 @@ void initGameAllstars(Game &g) {
 	g.flags[kFlagSkipKeyup] = 0x0800;
 	g.flags[kFlagLogSys] = 0x1000;
 
-	// TODO: only the mahjong match is missing; keep the game marked as
-	//       incomplete until it is implemented.
-	//
-	// TODO: the detection table entry is deferred: no retail MES.ARC is
-	//       available to compute its md5. When it is added, mark it
-	//       ADGF_UNSTABLE because of the missing mahjong match.
+	// TODO: the mahjong match and the util-driven scene, drawing and
+	//       message calls are unimplemented, so the game stays marked
+	//       unstable and stops at its boot scene.
 	warning("Elf All Stars: the mahjong match is not implemented");
 }
 
