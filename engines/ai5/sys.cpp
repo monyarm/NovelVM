@@ -30,6 +30,7 @@
 #include "ai5/config.h"
 #include "ai5/cursor.h"
 #include "ai5/effect.h"
+#include "ai5/game.h"
 #include "ai5/gfx.h"
 #include "ai5/input.h"
 #include "ai5/menu.h"
@@ -41,14 +42,21 @@ namespace AI5 {
 
 // Helper for System.SaveData functions.
 const char *sysSaveNameFmt(const char *fmt, uint saveNo) {
-	static char saveName[7];
-	if (saveNo > 99)
-		error("Invalid save number: %u", saveNo);
+	static char saveName[10];
 	snprintf(saveName, sizeof(saveName), fmt, saveNo);
 	return saveName;
 }
 
 const char *sysSaveNameNo(uint saveNo) {
+	// The 2003 Kawarazaki re-release uses four-digit slot names; its
+	// save directory carries FLAG0000..FLAG0023 and FLAG0100.
+	if (g_game && g_game->saveNameFourDigits) {
+		if (saveNo > 9999)
+			error("Invalid save number: %u", saveNo);
+		return sysSaveNameFmt("FLAG%04u", saveNo);
+	}
+	if (saveNo > 99)
+		error("Invalid save number: %u", saveNo);
 	return sysSaveNameFmt("FLAG%02u", saveNo);
 }
 
@@ -163,7 +171,8 @@ void sysLoadImageAt(const char *name, uint i, uint xMult) {
 		error("CG data would exceed buffer size");
 	vmLoadFile(data.data(), data.size(), off);
 
-	Common::SharedPtr<CG> cg = assetCgDecode(name, data);
+	Common::SharedPtr<CG> cg = assetCgDecode(
+			g_assetCgName.empty() ? name : g_assetCgName.c_str(), data);
 	if (!cg) {
 		warning("Failed to decode CG \"%s\"", name);
 		return;

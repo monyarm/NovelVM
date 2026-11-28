@@ -165,16 +165,54 @@ static void handleKey(Config &c, const Common::String &section, const Common::St
 #undef MATCH
 }
 
-bool loadConfig() {
-	static const char *const names[] = { "AI5ENG.INI", "AI5WIN.INI", "syuusaku.ini", "aiwin.ini" };
+// A re-release may ship its config under a name we do not know. Accept a file
+// only if it still looks like an AI5 config, i.e. it parses and carries one of
+// the sections the parser understands, so unrelated INI files are not used.
+static bool isAi5Config(const Common::String &name) {
 	Common::File f;
-	const char *name = nullptr;
-	for (uint i = 0; i < ARRAYSIZE(names) && !name; i++) {
+	if (!f.open(Common::Path(name)))
+		return false;
+
+	Common::INIFile ini;
+	ini.allowNonEnglishCharacters();
+	if (!ini.loadFromStream(f))
+		return false;
+
+	const Common::INIFile::SectionList sections = ini.getSections();
+	for (Common::INIFile::SectionList::const_iterator s = sections.begin(); s != sections.end(); ++s) {
+		if (s->name.equalsIgnoreCase("CONFIG") || s->name.equalsIgnoreCase("FILE"))
+			return true;
+	}
+	return false;
+}
+
+bool loadConfig() {
+	static const char *const names[] = { "AI5ENG.INI", "AI5WIN.INI", "AI.INI", "syuusaku.ini", "aiwin.ini" };
+	Common::File f;
+	Common::String name;
+	for (uint i = 0; i < ARRAYSIZE(names) && name.empty(); i++) {
 		if (f.open(names[i]))
 			name = names[i];
 	}
-	if (!name)
-		return false;
+	if (name.empty()) {
+		// Some re-releases rename the config file. Look for one by shape,
+		// preferring names that still look like an AI5 config.
+		static const char *const patterns[] = { "AI5*.INI", "AI*.INI", "*.INI" };
+		for (uint p = 0; p < ARRAYSIZE(patterns) && name.empty(); p++) {
+			Common::ArchiveMemberList files;
+			SearchMan.listMatchingMembers(files, Common::Path(patterns[p]));
+			for (Common::ArchiveMemberList::const_iterator it = files.begin(); it != files.end(); ++it) {
+				const Common::String candidate = (*it)->getName();
+				if (isAi5Config(candidate) && f.open(Common::Path(candidate))) {
+					name = candidate;
+					break;
+				}
+			}
+		}
+		if (name.empty())
+			return false;
+		warning("AI5: no known config file found, using \"%s\"", name.c_str());
+	}
 
 	Common::INIFile ini;
 	ini.allowNonEnglishCharacters();

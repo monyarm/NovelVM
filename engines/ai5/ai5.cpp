@@ -90,6 +90,35 @@ bool AI5Engine::hasFeature(EngineFeature f) const {
 		|| f == kSupportsSavingDuringRuntime;
 }
 
+// Kawarazaki-ke's game-specific util calls live in the retail runtime and
+// have no upstream definition: libai5 points this game at an empty util
+// namespace (kawarazakike_tables.util = mes_util_none). Accept and skip the
+// ones its scripts call, warning once for each.
+#define KAWARAZAKI_UTIL_STUB(nr, what) \
+	static void kawarazakiUtil##nr(ParamList &) { \
+		static bool warned = false; \
+		if (!warned) { \
+			warned = true; \
+			warning("Kawarazaki-ke: Util %u is not implemented (%s)", nr, what); \
+		} \
+	}
+
+KAWARAZAKI_UTIL_STUB(34, "special display mode enter/leave")
+KAWARAZAKI_UTIL_STUB(35, "background mode select")
+KAWARAZAKI_UTIL_STUB(36, "title menu state")
+KAWARAZAKI_UTIL_STUB(37, "title menu input")
+KAWARAZAKI_UTIL_STUB(38, "title menu exit")
+KAWARAZAKI_UTIL_STUB(40, "game over screen")
+KAWARAZAKI_UTIL_STUB(41, "sound options menu")
+KAWARAZAKI_UTIL_STUB(42, "ending sequence")
+KAWARAZAKI_UTIL_STUB(43, "scene transition")
+KAWARAZAKI_UTIL_STUB(44, "CG gallery init")
+KAWARAZAKI_UTIL_STUB(45, "menu branch test")
+KAWARAZAKI_UTIL_STUB(46, "CG gallery page")
+KAWARAZAKI_UTIL_STUB(47, "title screen setup")
+KAWARAZAKI_UTIL_STUB(48, "credits frame wait")
+KAWARAZAKI_UTIL_STUB(49, "title screen input")
+
 Common::Error AI5Engine::run() {
 	const GameId id = _gameDescription->gameId;
 	if (!loadConfig())
@@ -158,9 +187,8 @@ Common::Error AI5Engine::run() {
 		break;
 	case GID_KAWARAZAKIKE: {
 		// The 2003 AIWIN re-release ships without the archive and
-		// compression keys the config parser expects (its AI.INI
-		// isn't read at all), so set the start script, the archive
-		// names, and the raw mes members here.
+		// compression keys the config parser expects, so set the start
+		// script, the archive names, and the raw mes members here.
 		g_config.startMes = "STARTUP.MES";
 		g_config.mesType = false;
 		const struct {
@@ -181,6 +209,37 @@ Common::Error AI5Engine::run() {
 		// Kawarazaki-ke uses the same AIW tables as Shuusaku
 		// (libai5: mes_sys_kawarazakike = mes_sys_shuusaku).
 		initGameShuusaku(*g_game);
+		// Its scripts call game-specific utils that upstream never
+		// defined; accept and skip them. The utils shuusaku implements
+		// itself are left alone.
+		static const struct {
+			int nr;
+			SysFunc fn;
+		} utilStubs[] = {
+			{ 34, kawarazakiUtil34 },
+			{ 35, kawarazakiUtil35 },
+			{ 36, kawarazakiUtil36 },
+			{ 37, kawarazakiUtil37 },
+			{ 38, kawarazakiUtil38 },
+			{ 40, kawarazakiUtil40 },
+			{ 41, kawarazakiUtil41 },
+			{ 42, kawarazakiUtil42 },
+			{ 43, kawarazakiUtil43 },
+			{ 44, kawarazakiUtil44 },
+			{ 45, kawarazakiUtil45 },
+			{ 46, kawarazakiUtil46 },
+			{ 47, kawarazakiUtil47 },
+			{ 48, kawarazakiUtil48 },
+			{ 49, kawarazakiUtil49 }
+		};
+		for (uint i = 0; i < ARRAYSIZE(utilStubs); i++)
+			g_game->util[utilStubs[i].nr] = utilStubs[i].fn;
+		// Its scripts draw their own menus, so drop the shuusaku
+		// overlay UI this disc does not ship art for.
+		g_game->init = nullptr;
+		// Its images are 24-bit (gcc.ARC), unlike the indexed art the
+		// earlier AIW games use, so run the game in high color.
+		g_game->bpp = 24;
 		// Its scripts also carry unprefixed text like Doukyuusei 2's,
 		// so accept those instead of erroring like Shuusaku does.
 		g_game->unprefixedZen = vmStmtTxtNoLog;
@@ -192,6 +251,8 @@ Common::Error AI5Engine::run() {
 		g_game->mesListTermFe = true;
 		g_game->mesTextTermNul = true;
 		g_game->stmtOp[0x22] = vmStmtCommitMessageAiw;
+		// Its save slots use four-digit names (FLAG0000, FLAG0100).
+		g_game->saveNameFourDigits = true;
 		break;
 	}
 	case GID_SHUUSAKU:

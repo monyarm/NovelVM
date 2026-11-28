@@ -585,15 +585,28 @@ void stmtTxt() {
 		vmFlagOff(kFlagLog);
 }
 
+// The Load and Save statements name their file after the slot number.
+// The 2003 Kawarazaki re-release pads it to four digits (FLAG0100),
+// the other games write the bare number (FLAG100).
+static const char *saveSlotName(ParamList &params) {
+	const uint slot = vmExprParam(params, 1);
+	if (g_game->saveNameFourDigits)
+		return sysSaveNameNo(slot);
+	return sysSaveNameFmt("FLAG%u", slot);
+}
+
 void stmtLoad() {
 	ParamList params = ParamList();
 	g_game->vm.readParams(params);
-	const char *name = sysSaveNameFmt("FLAG%u", vmExprParam(params, 1));
+	const char *name = saveSlotName(params);
 
 	switch (vmExprParam(params, 0)) {
 	case 0:
 		savedataRead(name, memRaw(), 0, kMem16Size);
 		vmMesjmpAiw(memMesName());
+		break;
+	case 1:
+		savedataLoad(name, 0);
 		break;
 	case 2:
 		savedataRead(name, memRaw(), kVar4Off, kSysvar16Off - kVar4Off);
@@ -612,13 +625,16 @@ void stmtLoad() {
 void stmtSave() {
 	ParamList params = ParamList();
 	g_game->vm.readParams(params);
-	const char *name = sysSaveNameFmt("FLAG%u", vmExprParam(params, 1));
+	const char *name = saveSlotName(params);
 
 	uint16 var = memGetVar16(116);
 	memSetVar16(116, 0);
 	switch (vmExprParam(params, 0)) {
 	case 0:
 		savedataWrite(name, memRaw(), 0, kMem16Size);
+		break;
+	case 1:
+		savedataSave(name, 0);
 		break;
 	case 3:
 		shuusakuSaveFlags(name);
@@ -903,6 +919,21 @@ void stmtAnim() {
 	case 8:
 		animUnpause(1);
 		break;
+	case 10:
+	case 26: {
+		// TODO: Anim.function 10 and 26 are unimplemented. They mirror
+		//       each other the way the 0-4 calls mirror 16-20, i.e. one
+		//       per animation stream, but libai5's shuusaku table
+		//       leaves both unset, so their behaviour is unknown;
+		//       accept and skip them for now.
+		static bool warned = false;
+		if (!warned) {
+			warned = true;
+			warning("Anim.function[%u] is not implemented",
+					params.params[0].val);
+		}
+		break;
+	}
 	case 16:
 		animInitStreamFrom(11, vmExprParam(params, 2), kAnimOffset + kAnimSize);
 		break;

@@ -205,6 +205,17 @@ Common::SeekableReadStream *assetDataLoad(const char *name) {
 
 bool assetCgLoadRaw(const char *name, Common::Array<byte> &data) {
 	Common::ScopedPtr<Common::SeekableReadStream> s(arcLoad(kAssetBg, name, &g_assetCgName));
+	if (!s) {
+		// The 2003 Kawarazaki re-release keeps its images in .gcc
+		// members while its scripts ask for .bmp and .gpx names.
+		Common::String alt(name);
+		if (alt.hasSuffixIgnoreCase(".bmp") ||
+				alt.hasSuffixIgnoreCase(".gpx")) {
+			alt.erase(alt.size() - 4);
+			alt += ".gcc";
+			s.reset(arcLoad(kAssetBg, alt.c_str(), &g_assetCgName));
+		}
+	}
 	if (!s)
 		return false;
 	data.resize(s->size());
@@ -244,7 +255,9 @@ Common::SharedPtr<CG> assetCgLoad(const char *name) {
 	Common::Array<byte> data;
 	if (!assetCgLoadRaw(name, data))
 		return Common::SharedPtr<CG>();
-	return assetCgDecode(name, data);
+	// Decode by the member name that was actually loaded; the 2003
+	// Kawarazaki re-release names its .bmp and .gpx images .gcc.
+	return assetCgDecode(g_assetCgName.empty() ? name : g_assetCgName.c_str(), data);
 }
 
 } // End of namespace AI5

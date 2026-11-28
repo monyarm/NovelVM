@@ -88,6 +88,9 @@ struct Game {
 	bool mesListTermFe;
 	// Their text operands are terminated by 0x00 instead of 0xff.
 	bool mesTextTermNul;
+	// The 2003 Kawarazaki re-release numbers its save slots with four
+	// digits (FLAG0000, FLAG0100, ...), earlier games with two.
+	bool saveNameFourDigits = false;
 
 	void (*init)();                       // before running the initial mes file
 	void (*update)();                     // called in vmPeek
