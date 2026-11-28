@@ -310,8 +310,18 @@ void gfxWarningMessage(const char *message) {
 
 void gfxUpdate() {
 	GfxSurfaceState *screen = &g_gfx.surface[g_gfx.screen];
-	if (g_gfx.hidden || !screen->dirty)
+	// The backend draws the mouse cursor when the screen is presented, so a
+	// moved pointer has to be presented even when nothing else is dirty.
+	static int lastMouseX = -1, lastMouseY = -1;
+	Common::Point mouse = g_system->getEventManager()->getMousePos();
+	const bool mouseMoved = mouse.x != lastMouseX || mouse.y != lastMouseY;
+	lastMouseX = mouse.x;
+	lastMouseY = mouse.y;
+	if (g_gfx.hidden || !screen->dirty) {
+		if (mouseMoved)
+			g_system->updateScreen();
 		return;
+	}
 
 	if (screen->scaled) {
 		// redraw the whole view with the source rectangle scaled to the

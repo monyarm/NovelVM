@@ -100,6 +100,7 @@ void handleEvents() {
 			break;
 		case Common::EVENT_SCREEN_CHANGED:
 			gfxScreenDirty();
+			cursorRefresh();
 			break;
 		default:
 			break;

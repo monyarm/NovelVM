@@ -31,7 +31,7 @@
 
 namespace AI5 {
 
-Config g_config;
+Config &g_config = *new Config();
 
 Config::Config() : voice(false), voicesub(false), sound(false), music(false), effect(false), screen(false),
 		notify(false), bgType(false),

@@ -79,7 +79,9 @@ struct Config {
 	Config();
 };
 
-extern Config g_config;
+// Never destroyed: its Strings would release the string pool mutex during
+// exit handlers, when g_system (which creates that mutex) is already gone.
+extern Config &g_config;
 
 /** Load the first INI file found from AI5ENG.INI, AI5WIN.INI, syuusaku.ini and aiwin.ini. */
 bool loadConfig();

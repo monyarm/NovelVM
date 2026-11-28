@@ -229,6 +229,19 @@ void cursorReload() {
 	cursorLoad(g_currentCursor, g_cursorNrFrames, frameTime);
 }
 
+void cursorRefresh() {
+	// The backend applies the game screen scale when it builds the cursor, so it
+	// has to be installed again after the window size changes.
+	if (g_cursorLoaded && g_cursorAnimating &&
+			g_currentCursor + g_cursorFrame < g_cursors.size() &&
+			g_cursors[g_currentCursor + g_cursorFrame] &&
+			!g_cursors[g_currentCursor + g_cursorFrame]->cursors.empty()) {
+		CursorMan.replaceCursor(g_cursors[g_currentCursor + g_cursorFrame]->cursors[0].cursor);
+	} else if (g_systemCursor) {
+		CursorMan.replaceCursor(g_systemCursor);
+	}
+}
+
 void cursorShow() {
 	if (g_cursorLoaded)
 		g_cursorAnimating = true;

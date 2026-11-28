@@ -40,6 +40,7 @@ void cursorFini();
 void cursorLoad(uint no, uint nrFrames, const uint *frameTime);
 void cursorUnload();
 void cursorReload();
+void cursorRefresh();
 void cursorShow();
 void cursorHide();
 void cursorSetPos(uint x, uint y);
